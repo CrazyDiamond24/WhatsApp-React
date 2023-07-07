@@ -1,0 +1,19 @@
+.contact-preview {
+    background: clear;
+
+    box-shadow: 0 0 11px #0000002b;
+    display: flex;
+  
+    cursor: pointer;
+
+    .contact-preview-image {
+        margin:10px;
+        background-color: rgb(128, 128, 128, 0.2);
+        height: 50px;
+        border-radius: 50%;
+    }
+
+    &:hover .actions {
+        transform: translateY(0);
+    }
+}
