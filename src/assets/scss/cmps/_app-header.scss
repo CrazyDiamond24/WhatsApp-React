@@ -6,26 +6,15 @@
     padding:10px;
     display:flex;
   
-
-    section.container {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        width: 100%;
-        h1.logo {
-            flex-grow: 1;
-            font-weight: 600;
-        }
-
-        .back {
-            flex-grow: 1;
-        }
-
-        nav {
-            a:not(:last-child) {
-                margin-right: 10px;
+        .user-header {
+            display:flex;
+            align-items: center;
+            gap: 10px;
+            img {
+                height: 50px;
+                border-radius: 50%;
             }
-        }
+
     }
 
 }

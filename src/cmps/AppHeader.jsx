@@ -12,16 +12,13 @@ export function AppHeader(props) {
     navigate(-1)
   }
 
-  const { name } = loggedInUser
+  const { fullName, img ,username } = loggedInUser
   return (
     <header className='app-header'>
-      <section className='container'>
-        <h1 className='logo'>Contacts</h1>
-
-        <section className='user-header'>
-          <p>Welcome, {name}</p>
+  <section className='user-header'>
+          <img src={img} alt={username}></img>
+          <p>Welcome, {fullName}!</p>
         </section>
-      </section>
     </header>
   )
 }

@@ -2,10 +2,15 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { robotService } from '../services/robot.service'
+import { useSelector } from 'react-redux'
 
 export function ChatWindow({ robotId }) {
   const [robot, setRobot] = useState(null)
   const navigate = useNavigate()
+
+  const loggedInUser = useSelector((storeState) => {
+    return storeState.userModule.loggedInUser
+  })
 
   useEffect(() => {
     loadRobot(robotId)
@@ -24,12 +29,19 @@ export function ChatWindow({ robotId }) {
     navigate('/')
   }
 
-  const messages = [
-    'Hello, how are you?',
-    "I'm doing well, thank you!",
-    'How about you?',
-    "I'm good, thanks for asking!",
-  ]
+  const allMessages = robot
+    ? [...loggedInUser.msgs, ...robot.msgs]
+    : loggedInUser.msgs
+
+
+  //TODO: Move the filtering and sorting to the backend later
+  const messages = allMessages
+    .filter(
+      (msg) =>
+        (msg.senderId === loggedInUser._id && msg.recipientId === robotId) ||
+        (msg.senderId === robotId && msg.recipientId === loggedInUser._id)
+    )
+    .sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp))
 
   return (
     <div className='chat-window'>
@@ -47,10 +59,12 @@ export function ChatWindow({ robotId }) {
         {messages.map((message, index) => (
           <li
             key={index}
-            className={`chat-message ${index % 2 === 0 ? 'received' : 'sent'}`}
+            className={`chat-message ${
+              message.senderId === loggedInUser._id ? 'sent' : 'received'
+            }`}
           >
             <div className='message-container'>
-              <span>{message}</span>
+              <span>{message.content}</span>
             </div>
           </li>
         ))}

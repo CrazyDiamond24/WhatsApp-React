@@ -29,7 +29,7 @@ const gDefaultRobots = [
       {
         id: 'msg2',
         senderId: '101',
-        recipientId: '102',
+        recipientId: '105',
         content: "I'm doing well, thank you!",
         timestamp: '2023-07-19T12:36:00.123Z',
       },
@@ -144,7 +144,6 @@ function save(robotToSave) {
     gRobots.splice(idx, 1, robotToSave)
   } else {
     robotToSave._id = makeId()
-    robotToSave.batteryStatus = 100
     gRobots.push(robotToSave)
   }
   storageService.store(STORAGE_KEY, gRobots)

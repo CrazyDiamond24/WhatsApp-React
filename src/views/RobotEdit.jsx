@@ -35,26 +35,19 @@ export function RobotEdit(props) {
     }
   }
 
-  const { model, type } = robot
+  const { fullName } = robot
   return (
     <section className='robot-edit'>
-      <h1>{robot._id ? 'Edit' : 'Add'} Entity</h1>
+      <h1>{robot._id ? 'Edit' : 'Add'} Contact</h1>
       <form onSubmit={onSaveRobot}>
-        <label htmlFor='model'>Text</label>
+        <label htmlFor='name'>Text</label>
         <input
-          value={model}
+          value={fullName}
           onChange={handleChange}
           type='text'
-          name='model'
-          id='model'
+          name='fullName'
+          id='fullName'
         />
-
-        <label htmlFor='type'>dropdown</label>
-        <select value={type} onChange={handleChange} name='type' id='type'>
-          <option disabled value=''>
-            option
-          </option>
-        </select>
 
         <button>Save</button>
       </form>
