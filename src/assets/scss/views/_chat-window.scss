@@ -9,6 +9,14 @@
     background-color: $clr6;
     color: $clr7;
     padding: 10px;
+    display:flex;
+    align-items: center;
+    gap: 10px;
+    img {
+      height: 50px;
+      border-radius: 50%;
+      background-color: rgb($secondaryClr , 0.4);
+    }
   }
 
   .conversation-container {

@@ -1,4 +1,5 @@
 {
+  "homepage": "http://CrazyDiamond24.github.io/WhatsApp-React",
   "name": "robots-react-inclass",
   "version": "0.1.0",
   "private": true,
@@ -20,7 +21,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
@@ -41,6 +44,7 @@
     ]
   },
   "devDependencies": {
-    "@types/react-router-dom": "^5.3.3"
+    "@types/react-router-dom": "^5.3.3",
+    "gh-pages": "^5.0.0"
   }
 }

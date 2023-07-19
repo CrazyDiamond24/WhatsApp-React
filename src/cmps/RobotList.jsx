@@ -1,6 +1,6 @@
 import { memo } from 'react'
 import { RobotPreview } from './RobotPreview'
-function _RobotList({ robots, onRemoveRobot }) {
+function _RobotList({ robots, onRemoveRobot, onSelectContact }) {
   console.log('ROBOT LIST RENDERED')
   return (
     <section className='robot-list simple-cards-grid'>
@@ -9,11 +9,11 @@ function _RobotList({ robots, onRemoveRobot }) {
           key={robot._id}
           robot={robot}
           onRemoveRobot={onRemoveRobot}
+          onSelectContact={() => onSelectContact(robot._id)}
         />
       ))}
     </section>
   )
 }
 
-//comparing the current props with the previous props, and only re-rendering the component if the props have changed.
 export const RobotList = memo(_RobotList)

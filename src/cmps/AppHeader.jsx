@@ -12,7 +12,7 @@ export function AppHeader(props) {
     navigate(-1)
   }
 
-  const { name, balance } = loggedInUser
+  const { name } = loggedInUser
   return (
     <header className='app-header'>
       <section className='container'>
