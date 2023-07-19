@@ -16,7 +16,6 @@ export function AppHeader(props) {
   return (
     <header className='app-header'>
       <section className='container'>
-        
         <h1 className='logo'>Contacts</h1>
 
         <section className='user-header'>

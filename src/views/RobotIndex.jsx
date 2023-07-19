@@ -55,7 +55,7 @@ export function RobotIndex(props) {
 
       <section className='chat-window'>
         {selectedRobotId ? (
-          <ChatWindow robotId={selectedRobotId} />
+          <ChatWindow key={selectedRobotId} robotId={selectedRobotId} />
         ) : (
           <h2>Select a robot to chat</h2>
         )}

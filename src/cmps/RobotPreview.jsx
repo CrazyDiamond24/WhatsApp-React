@@ -1,10 +1,9 @@
 import React from 'react'
 
 export function RobotPreview({ robot, onRemoveRobot, onSelectContact }) {
-
   const handleClick = () => {
-    onSelectContact();
-  };
+    onSelectContact()
+  }
 
   return (
     <article className='contact-preview' onClick={handleClick}>
