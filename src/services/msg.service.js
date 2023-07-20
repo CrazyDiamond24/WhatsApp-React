@@ -3,8 +3,8 @@ export const msgService = {
 }
 
 function addMsgToContact(fromUser,toUser,msgContent) {
-    fromUser.msgs.map(m => m.push(msgContent))
-    toUser.msgs.map(m => m.push(msgContent))
+    fromUser.msgs.push(msgContent)
+    toUser.msgs.push(msgContent)
 
     return {fromUser, toUser}
 }

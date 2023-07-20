@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import { userService } from "../services/user.service"
 import { useDispatch, useSelector } from "react-redux"
 import { addMsg } from "../store/actions/msg.actions"
+import { Link } from 'react-router-dom'
 
 export function ChatWindow() {
   // const [user, setUser] = useState(null)
@@ -11,6 +12,7 @@ export function ChatWindow() {
   const [sendMsg, setSendMsg] = useState(msgContent)
   const navigate = useNavigate()
   const dispatch = useDispatch()
+
   const loggedInUser = useSelector((storeState) => {
     return storeState.userModule.loggedInUser
   })
@@ -27,18 +29,7 @@ export function ChatWindow() {
     return () => clearTimeout(debounceTimer)
   }, [msgContent])
 
-  // useEffect(() => {
-  //   loadUser(userId)
-  // }, [userId])
-
-  // async function loadUser(userId) {
-  //   try {
-  //     const user = await userService.getById(userId)
-  //     setUser(user)
-  //   } catch (error) {
-  //     console.log('error:', error)
-  //   }
-  // }
+  
   function handelSendMsg(e) {
     e.preventDefault()
     console.log("e.target.vaule handel", e.target.value)
@@ -71,6 +62,7 @@ export function ChatWindow() {
       <div className="header-area">
         <img src={user?.img} alt={user?.username} />
         <h2>{user?.fullName}</h2>
+        <Link to="/login">Login</Link>
       </div>
 
       <ul className="conversation-container">
