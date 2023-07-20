@@ -17,6 +17,10 @@ export function UserIndex(props) {
   const [selectedUserId, setSelectedUserId] = useState(null)
   const dispatch = useDispatch()
 
+  const user = useSelector((storeState) => {
+    return storeState.userModule.selectedUser
+  })
+
   useEffect(() => {
     dispatch(loadUsers())
   }, [])
@@ -54,7 +58,7 @@ export function UserIndex(props) {
       </section>
 
       <section className="chat-window">
-        <ChatWindow />
+        <ChatWindow key={user._id}  />
       </section>
     </section>
   )
