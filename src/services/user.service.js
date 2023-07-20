@@ -1,3 +1,4 @@
+import { httpService } from './http.service.js'
 import { storageService } from './storage.service.js'
 import { makeId } from './util.service.js'
 
@@ -7,7 +8,6 @@ export const userService = {
   remove,
   getById,
   getEmptyUser,
-  tryUser,
 }
 
 const STORAGE_KEY = 'users'
@@ -123,15 +123,13 @@ function query(filterBy) {
     //   );
   }
   return Promise.resolve([...usersToReturn])
+  // return httpService.get(`/${filterBy}`)
 }
-function tryUser(id) {
-  const user = gUsers.find((user) => user._id === id)
-  user.batteryStatus -= 10
-  return Promise.resolve()
-}
+
 function getById(id) {
   const user = gUsers.find((user) => user._id === id)
   return Promise.resolve({ ...user })
+  // return httpService.get(`/${id}`)
 }
 
 function remove(id) {
@@ -140,6 +138,7 @@ function remove(id) {
   if (!gUsers.length) gUsers = gDefaultUsers.slice()
   storageService.store(STORAGE_KEY, gUsers)
   return Promise.resolve()
+  // return httpService.delete(`/${id}`)
 }
 
 function save(userToSave) {
@@ -152,12 +151,16 @@ function save(userToSave) {
   }
   storageService.store(STORAGE_KEY, gUsers)
   return Promise.resolve(userToSave)
+  // return httpService.get(`/${id}`)
 }
 
 function getEmptyUser() {
   return {
-    model: '',
-    type: '',
+    fullName: '',
+    username: '',
+    img: 'https://randomuser.me/api/portraits/men/1.jpg',
+    contacts: [],
+    msgs: [],
   }
 }
 
