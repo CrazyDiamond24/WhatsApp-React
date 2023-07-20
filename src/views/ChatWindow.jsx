@@ -1,23 +1,32 @@
-import React from 'react'
-import { useNavigate } from 'react-router-dom'
-import { useEffect, useState } from 'react'
-import { userService } from '../services/user.service'
-import { useSelector } from 'react-redux'
+import React from "react"
+import { useNavigate } from "react-router-dom"
+import { useEffect, useState } from "react"
+import { userService } from "../services/user.service"
+import { useDispatch, useSelector } from "react-redux"
+import { addMsg } from "../store/actions/msg.actions"
 
 export function ChatWindow() {
   // const [user, setUser] = useState(null)
+  const [msgContent, setMsgContent] = useState("")
+  const [sendMsg, setSendMsg] = useState(msgContent)
   const navigate = useNavigate()
-  console.log('by')
-
+  console.log("by")
+  const dispatch = useDispatch()
   const loggedInUser = useSelector((storeState) => {
     return storeState.userModule.loggedInUser
   })
   const user = useSelector((storeState) => {
     return storeState.userModule.selectedUser
   })
-  console.log('loggedInUser', loggedInUser)
 
-  console.log('user', user)
+  useEffect(() => {
+    const delay = 1000
+    const debounceTimer = setTimeout(() => {
+      setSendMsg(msgContent)
+    }, delay)
+
+    return () => clearTimeout(debounceTimer)
+  }, [msgContent])
 
   // useEffect(() => {
   //   loadUser(userId)
@@ -31,11 +40,19 @@ export function ChatWindow() {
   //     console.log('error:', error)
   //   }
   // }
-
-  function onBack() {
-    navigate('/')
+  function handelSendMsg(e) {
+    e.preventDefault()
+    console.log("e.target.vaule handel", e.target.value)
+    dispatch(addMsg(loggedInUser,user,msgContent))
   }
 
+  function handelInputChange(e) {
+    setMsgContent(e.target.value)
+  }
+
+  function onBack() {
+    navigate("/")
+  }
   const allMessages = user
     ? [...loggedInUser?.msgs, ...user?.msgs]
     : loggedInUser?.msgs
@@ -62,7 +79,7 @@ export function ChatWindow() {
           <li
             key={index}
             className={`chat-message ${
-              message.senderId === loggedInUser?._id ? 'sent' : 'received'
+              message.senderId === loggedInUser?._id ? "sent" : "received"
             }`}
           >
             <div className="message-container">
@@ -72,8 +89,13 @@ export function ChatWindow() {
         ))}
       </ul>
 
-      <form className="message-input">
-        <input type="text" placeholder="Type a message..." />
+      <form className="message-input" onSubmit={(e) => handelSendMsg(e)}>
+        <input
+          type="text"
+          placeholder="Type a message..."
+          value={msgContent}
+          onChange={handelInputChange}
+        />
         <input type="submit" value="Send" />
       </form>
     </div>
