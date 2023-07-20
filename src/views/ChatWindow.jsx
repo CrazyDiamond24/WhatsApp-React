@@ -37,17 +37,16 @@ export function ChatWindow() {
   }
 
   const allMessages = user
-    ? [...loggedInUser.msgs, ...user.msgs]
-    : loggedInUser.msgs
+  ? [...loggedInUser?.msgs, ...user?.msgs]
+  : loggedInUser?.msgs
 
-  //TODO: Move the filtering and sorting to the backend later
-  const messages = allMessages
-    ?.filter(
-      (msg) =>
-        (msg.senderId === loggedInUser._id && msg.recipientId === user._id) ||
-        (msg.senderId === user._id && msg.recipientId === loggedInUser._id)
-    )
-    .sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp))
+const messages = allMessages
+  ?.filter(
+    (msg) =>
+      (msg.senderId === loggedInUser?._id && msg.recipientId === user?._id) ||
+      (msg.senderId === user?._id && msg.recipientId === loggedInUser?._id)
+  )
+  .sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
 
   if (!user) return <h2>Select a user to chat</h2>
 
@@ -63,7 +62,7 @@ export function ChatWindow() {
           <li
             key={index}
             className={`chat-message ${
-              message.senderId === loggedInUser._id ? 'sent' : 'received'
+              message.senderId === loggedInUser?._id ? 'sent' : 'received'
             }`}
           >
             <div className="message-container">
