@@ -10,7 +10,6 @@ export function ChatWindow() {
   const [msgContent, setMsgContent] = useState("")
   const [sendMsg, setSendMsg] = useState(msgContent)
   const navigate = useNavigate()
-  console.log("by")
   const dispatch = useDispatch()
   const loggedInUser = useSelector((storeState) => {
     return storeState.userModule.loggedInUser
