@@ -18,27 +18,6 @@ export function ChatWindow() {
     return storeState.userModule.selectedUser
   })
 
-  useEffect(() => {
-    const delay = 1000
-    const debounceTimer = setTimeout(() => {
-      setSendMsg(msgContent)
-    }, delay)
-
-    return () => clearTimeout(debounceTimer)
-  }, [msgContent])
-
-  // useEffect(() => {
-  //   loadUser(userId)
-  // }, [userId])
-
-  // async function loadUser(userId) {
-  //   try {
-  //     const user = await userService.getById(userId)
-  //     setUser(user)
-  //   } catch (error) {
-  //     console.log('error:', error)
-  //   }
-  // }
   function handelSendMsg(e) {
     e.preventDefault()
     console.log('e.target.vaule handel', e.target.value)

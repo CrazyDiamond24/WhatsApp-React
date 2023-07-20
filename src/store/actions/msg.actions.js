@@ -5,14 +5,14 @@ import { ADD_MSG } from "../reducers/msg.reducer"
 export function addMsg(fromUser, toUser, msgContent) {
   return async (dispatch) => {
     try {
-      const updatedUsersList = await msgService.addMsgToContact(
+      const updatedUsers = await msgService.addMsgToContact(
         fromUser,
         toUser,
         msgContent
       )
       const action = {
         type: ADD_MSG,
-        updatedUsersList,
+        updatedUsers,
       }
       dispatch(action)
       console.log("success")
