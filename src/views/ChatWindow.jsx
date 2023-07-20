@@ -1,13 +1,13 @@
-import React from "react"
-import { useNavigate } from "react-router-dom"
-import { useEffect, useState } from "react"
-import { userService } from "../services/user.service"
-import { useDispatch, useSelector } from "react-redux"
-import { addMsg } from "../store/actions/msg.actions"
+import React from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { userService } from '../services/user.service'
+import { useDispatch, useSelector } from 'react-redux'
+import { addMsg } from '../store/actions/msg.actions'
 
 export function ChatWindow() {
   // const [user, setUser] = useState(null)
-  const [msgContent, setMsgContent] = useState("")
+  const [msgContent, setMsgContent] = useState('')
   const [sendMsg, setSendMsg] = useState(msgContent)
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -41,8 +41,8 @@ export function ChatWindow() {
   // }
   function handelSendMsg(e) {
     e.preventDefault()
-    console.log("e.target.vaule handel", e.target.value)
-    dispatch(addMsg(loggedInUser,user,msgContent))
+    console.log('e.target.vaule handel', e.target.value)
+    dispatch(addMsg(loggedInUser, user, msgContent))
   }
 
   function handelInputChange(e) {
@@ -50,7 +50,7 @@ export function ChatWindow() {
   }
 
   function onBack() {
-    navigate("/")
+    navigate('/')
   }
   const allMessages = user
     ? [...loggedInUser?.msgs, ...user?.msgs]
@@ -78,7 +78,7 @@ export function ChatWindow() {
           <li
             key={index}
             className={`chat-message ${
-              message.senderId === loggedInUser?._id ? "sent" : "received"
+              message.senderId === loggedInUser?._id ? 'sent' : 'received'
             }`}
           >
             <div className="message-container">

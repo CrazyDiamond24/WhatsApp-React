@@ -9,12 +9,12 @@ import { ChatWindow } from './views/ChatWindow'
 function App() {
   return (
     <Router>
-      <section className='main-app'>
-        <main className='container'>
+      <section className="main-app">
+        <main className="container">
           <Routes>
-            <Route path='/' element={<UserIndex isDark={true} />} />
-            <Route path='/user/edit/:id?' element={<UserEdit />} />
-            <Route path='/about' element={<About />} />
+            <Route path="/" element={<UserIndex isDark={true} />} />
+            <Route path="/user/edit/:id?" element={<UserEdit />} />
+            <Route path="/about" element={<About />} />
           </Routes>
         </main>
       </section>
