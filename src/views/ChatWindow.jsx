@@ -62,7 +62,7 @@ export function ChatWindow() {
           <li
             key={index}
             className={`chat-message ${
-              message.senderId === loggedInUser._id ? 'sent' : 'received'
+              message.senderId === loggedInUser?._id ? 'sent' : 'received'
             }`}
           >
             <div className="message-container">
