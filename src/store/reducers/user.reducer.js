@@ -11,6 +11,9 @@ const INITIAL_STATE = {
     username: 'sarah.adams',
     img: 'https://randomuser.me/api/portraits/women/11.jpg',
     contacts: [],
+    story: [],
+    groups: [],
+    status: "",
     msgs: [
       {
         id: 'msg9',

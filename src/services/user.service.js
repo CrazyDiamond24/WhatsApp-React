@@ -19,6 +19,9 @@ const gDefaultUsers = [
     username: 'john.doe',
     img: 'https://randomuser.me/api/portraits/men/1.jpg',
     contacts: [],
+    story: [],
+    groups: [],
+    status: "",
     msgs: [
       {
         id: 'msg1',
@@ -42,6 +45,9 @@ const gDefaultUsers = [
     username: 'jane.smith',
     img: 'https://randomuser.me/api/portraits/women/2.jpg',
     contacts: [],
+    story: [],
+    groups: [],
+    status: "",
     msgs: [
       {
         id: 'msg3',
@@ -58,6 +64,9 @@ const gDefaultUsers = [
     username: 'mike.johnson',
     img: 'https://randomuser.me/api/portraits/men/3.jpg',
     contacts: [],
+    story: [],
+    groups: [],
+    status: "",
     msgs: [
       {
         id: 'msg4',
@@ -81,6 +90,9 @@ const gDefaultUsers = [
     username: 'emily.brown',
     img: 'https://randomuser.me/api/portraits/women/4.jpg',
     contacts: [],
+    story: [],
+    groups: [],
+    status: "",
     msgs: [
       {
         id: 'msg6',
