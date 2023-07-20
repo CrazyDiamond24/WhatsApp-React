@@ -180,6 +180,17 @@ function getEmptyUser() {
   }
 }
 
+// function createNewMsg() {
+
+//   return {
+//     fullName: '',
+//     username: '',
+//     img: 'https://randomuser.me/api/portraits/men/1.jpg',
+//     contacts: [],
+//     msgs: [],
+//   }
+// }
+
 function _loadUsers() {
   let users = storageService.load(STORAGE_KEY)
   if (!users || !users.length) users = gDefaultUsers

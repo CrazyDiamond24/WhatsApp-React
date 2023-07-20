@@ -4,6 +4,10 @@ export const ADD_USER = 'ADD_USER'
 export const REMOVE_USER = 'REMOVE_USER'
 export const UPDATE_USER = 'UPDATE_USER'
 export const SET_FILTER_BY = 'SET_FILTER_BY'
+export const SIGNUP = 'SIGNUP'
+export const LOGIN = 'LOGIN'
+export const LOGOUT = 'LOGOUT'
+export const SET_LOGGEDIN_USER = 'SET_LOGGEDIN_USER'
 
 const INITIAL_STATE = {
   filterBy: {},
@@ -58,6 +62,28 @@ export function userReducer(state = INITIAL_STATE, action = {}) {
       return {
         ...state,
         users: action.users,
+      }
+    case SIGNUP:
+      return {
+        ...state,
+        loggedInUser: action.user,
+        users: [...state.users, action.user],
+      }
+    case LOGIN:
+      return {
+        ...state,
+        loggedInUser: action.user,
+      }
+    case SET_LOGGEDIN_USER:
+      return {
+        ...state,
+        loggedInUser: action.user,
+      }
+
+    case LOGOUT:
+      return {
+        ...state,
+        loggedInUser: null,
       }
     case SET_USER:
       return {

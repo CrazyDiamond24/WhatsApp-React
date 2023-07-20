@@ -9,13 +9,19 @@ import {LoginSignup} from './views/LoginSignup'
 function App() {
   return (
     <Router>
-      <section className='main-app'>
-        <main className='container'>
+      <section className="main-app">
+        <main className="container">
           <Routes>
+<<<<<<< HEAD
             <Route path='/' element={<UserIndex isDark={true} />} />
             <Route path='/user/edit/:id?' element={<UserEdit />} />
             <Route path='/about' element={<About />} />
             <Route path='/login' element={<LoginSignup/>}/>
+=======
+            <Route path="/" element={<UserIndex isDark={true} />} />
+            <Route path="/user/edit/:id?" element={<UserEdit />} />
+            <Route path="/about" element={<About />} />
+>>>>>>> 0e7b9be018b255af040f694eeec26ee315d2c970
           </Routes>
         </main>
       </section>
