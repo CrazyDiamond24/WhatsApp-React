@@ -1,5 +1,5 @@
 import { httpService } from './http.service'
-import { stationService } from './station.service'
+// import { stationService } from './station.service'
 import { utilService } from './util.service'
 
 const STORAGE_KEY_LOGGEDIN_USER = 'loggedinUser'
@@ -17,13 +17,13 @@ export const authService = {
   getLoggedinUserDetails,
   signupGuest,
   prepareData,
-  updateLatestStations,
+  // updateLatestStations,
   updateUser,
   updateStations,
   removeSong,
 }
 
-window.userService = userService
+window.authService = authService
 
 function getUsers() {
   return httpService.get(`user`)
@@ -146,9 +146,9 @@ function prepareData(userCred) {
   }
 }
 
-async function updateLatestStations(stationId, user) {
-  const station = await stationService.getById(stationId)
-  const userCopy = { ...user }
-  userCopy.latestStations = [...userCopy.latestStations, station]
-  return httpService.put(`user/latest/${userCopy._id}`, userCopy)
-}
+// async function updateLatestStations(stationId, user) {
+//   const station = await stationService.getById(stationId)
+//   const userCopy = { ...user }
+//   userCopy.latestStations = [...userCopy.latestStations, station]
+//   return httpService.put(`user/latest/${userCopy._id}`, userCopy)
+// }

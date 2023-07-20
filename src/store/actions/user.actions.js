@@ -1,5 +1,6 @@
 import { userService } from '../../services/user.service'
 import { authService } from '../../services/auth.service'
+import { showErrorMsg, showSuccessMsg } from '../../services/event-bus.service'
 import {
   REMOVE_USER,
   SET_FILTER_BY,

@@ -15,6 +15,7 @@ function App() {
             <Route path="/" element={<UserIndex isDark={true} />} />
             <Route path="/user/edit/:id?" element={<UserEdit />} />
             <Route path="/about" element={<About />} />
+            <Route path="/login" element={<LoginSignup />} />
           </Routes>
         </main>
       </section>

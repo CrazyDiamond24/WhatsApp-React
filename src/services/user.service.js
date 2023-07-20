@@ -1,6 +1,6 @@
 import { httpService } from './http.service.js'
 import { storageService } from './storage.service.js'
-import { makeId } from './util.service.js'
+import { utilService } from './util.service.js'
 
 export const userService = {
   query,
@@ -162,7 +162,7 @@ function save(userToSave) {
     const idx = gUsers.findIndex((user) => user._id === userToSave._id)
     gUsers.splice(idx, 1, userToSave)
   } else {
-    userToSave._id = makeId()
+    userToSave._id = utilService.makeId()
     gUsers.push(userToSave)
   }
   storageService.store(STORAGE_KEY, gUsers)
