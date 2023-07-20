@@ -3,8 +3,17 @@ export const msgService = {
 }
 
 function addMsgToContact(fromUser,toUser,msgContent) {
-    fromUser.msgs.map(m => m.push(msgContent))
-    toUser.msgs.map(m => m.push(msgContent))
+    fromUser.msgs.push(msgContent)
+    toUser.msgs.push(msgContent)
 
-    return {fromUser, toUser}
+    return [fromUser, toUser]
+}
+
+function createNewMsg(fromUser , toUser ,content) {
+    return {
+        senderId: fromUser._id,
+        recipientId: toUser._id,
+        content,
+        timestamp: Date.now(),
+    }
 }

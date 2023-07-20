@@ -6,9 +6,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { addMsg } from "../store/actions/msg.actions"
 
 export function ChatWindow() {
-  // const [user, setUser] = useState(null)
   const [msgContent, setMsgContent] = useState("")
-  const [sendMsg, setSendMsg] = useState(msgContent)
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const loggedInUser = useSelector((storeState) => {
@@ -18,27 +16,6 @@ export function ChatWindow() {
     return storeState.userModule.selectedUser
   })
 
-  useEffect(() => {
-    const delay = 1000
-    const debounceTimer = setTimeout(() => {
-      setSendMsg(msgContent)
-    }, delay)
-
-    return () => clearTimeout(debounceTimer)
-  }, [msgContent])
-
-  // useEffect(() => {
-  //   loadUser(userId)
-  // }, [userId])
-
-  // async function loadUser(userId) {
-  //   try {
-  //     const user = await userService.getById(userId)
-  //     setUser(user)
-  //   } catch (error) {
-  //     console.log('error:', error)
-  //   }
-  // }
   function handelSendMsg(e) {
     e.preventDefault()
     console.log("e.target.vaule handel", e.target.value)
