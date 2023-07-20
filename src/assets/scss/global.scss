@@ -14,17 +14,17 @@
 @import "basics/animations";
 
 // Views
-@import "views/robot-index";
-@import "views/robot-details";
-@import "views/robot-edit";
-@import "views/about";
-@import "views/chat-window";
+@import "views/UserIndex";
+@import "views/UserDetails";
+@import "views/UserEdit";
+@import "views/About";
+@import "views/ChatWindow";
 
 // Components
-@import "cmps/robot-preview";
-@import "cmps/robot-list";
-@import "cmps/robot-filter";
-@import "cmps/app-header";
+@import "cmps/UserPreview";
+@import "cmps/UserList";
+@import "cmps/UserFilter";
+@import "cmps/AppHeader";
 @import "cmps/nice-button";
 
 

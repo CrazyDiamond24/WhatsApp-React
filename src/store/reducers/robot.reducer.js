@@ -1,49 +1,49 @@
-export const SET_ROBOTS = 'SET_ROBOTS'
-export const ADD_ROBOT = 'ADD_ROBOT'
-export const REMOVE_ROBOT = 'REMOVE_ROBOT'
-export const UPDATE_ROBOT = 'UPDATE_ROBOT'
-export const SET_FILTER_BY = 'SET_FILTER_BY'
+// export const SET_USERS = 'SET_USERS'
+// export const ADD_USER = 'ADD_USER'
+// export const REMOVE_USER = 'REMOVE_USER'
+// export const UPDATE_USER = 'UPDATE_USER'
+// export const SET_FILTER_BY = 'SET_FILTER_BY'
 
-const INITIAL_STATE = {
-    robots: null,
-    filterBy: {
-        model: '',
-        type: '',
-        minBatteryStatus: '',
-        maxBatteryStatus: '',
-    }
-}
+// const INITIAL_STATE = {
+//     users: null,
+//     filterBy: {
+//         model: '',
+//         type: '',
+//         minBatteryStatus: '',
+//         maxBatteryStatus: '',
+//     }
+// }
 
-export function robotReducer(state = INITIAL_STATE, action = {}) {
+// export function userReducer(state = INITIAL_STATE, action = {}) {
 
-    switch (action.type) {
-        case SET_ROBOTS:
-            return {
-                ...state,
-                robots: action.robots
-            }
-        case ADD_ROBOT:
-            return {
-                ...state,
-                robots: [...state.robots, action.robot]
-            }
-        case REMOVE_ROBOT:
-            return {
-                ...state,
-                robots: state.robots.filter(robot => robot._id !== action.robotId)
-            }
-        case UPDATE_ROBOT:
-            return {
-                ...state,
-                robots: state.robots.map(robot => robot._id === action.robot._id ? action.robot : robot)
-            }
-        case SET_FILTER_BY:
-            return {
-                ...state,
-                filterBy: { ...action.filterBy }
-            }
+//     switch (action.type) {
+//         case SET_USERS:
+//             return {
+//                 ...state,
+//                 users: action.users
+//             }
+//         case ADD_USER:
+//             return {
+//                 ...state,
+//                 users: [...state.users, action.user]
+//             }
+//         case REMOVE_USER:
+//             return {
+//                 ...state,
+//                 users: state.users.filter(user => user._id !== action.userId)
+//             }
+//         case UPDATE_USER:
+//             return {
+//                 ...state,
+//                 users: state.users.map(user => user._id === action.user._id ? action.user : user)
+//             }
+//         case SET_FILTER_BY:
+//             return {
+//                 ...state,
+//                 filterBy: { ...action.filterBy }
+//             }
 
-        default:
-            return state;
-    }
-}
+//         default:
+//             return state;
+//     }
+// }

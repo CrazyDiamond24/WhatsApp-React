@@ -1,45 +1,45 @@
 import { Component, useEffect, useState } from 'react'
-import { robotService } from '../services/robot.service'
+import { userService } from '../services/user.service'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useForm } from '../customHooks/useForm'
 
-export function RobotEdit(props) {
-  const [robot, handleChange, setRobot] = useForm(robotService.getEmptyRobot())
+export function UserEdit(props) {
+  const [user, handleChange, setUser] = useForm(userService.getEmptyUser())
 
   const params = useParams()
   const navigate = useNavigate()
 
   useEffect(() => {
-    loadRobot()
+    loadUser()
   }, [])
 
-  async function loadRobot() {
-    const robotId = params.id
-    if (robotId) {
+  async function loadUser() {
+    const userId = params.id
+    if (userId) {
       try {
-        const robot = await robotService.getById(robotId)
-        setRobot(robot)
+        const user = await userService.getById(userId)
+        setUser(user)
       } catch (error) {
         console.log('error:', error)
       }
     }
   }
 
-  async function onSaveRobot(ev) {
+  async function onSaveUser(ev) {
     ev.preventDefault()
     try {
-      await robotService.save({ ...robot })
+      await userService.save({ ...user })
       navigate('/')
     } catch (error) {
       console.log('error:', error)
     }
   }
 
-  const { fullName } = robot
+  const { fullName } = user
   return (
-    <section className='robot-edit'>
-      <h1>{robot._id ? 'Edit' : 'Add'} Contact</h1>
-      <form onSubmit={onSaveRobot}>
+    <section className='user-edit'>
+      <h1>{user._id ? 'Edit' : 'Add'} Contact</h1>
+      <form onSubmit={onSaveUser}>
         <label htmlFor='name'>Text</label>
         <input
           value={fullName}

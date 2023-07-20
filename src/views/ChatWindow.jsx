@@ -1,11 +1,11 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
-import { robotService } from '../services/robot.service'
+import { userService } from '../services/user.service'
 import { useSelector } from 'react-redux'
 
-export function ChatWindow({ robotId }) {
-  const [robot, setRobot] = useState(null)
+export function ChatWindow({ userId }) {
+  const [user, setUser] = useState(null)
   const navigate = useNavigate()
 
   const loggedInUser = useSelector((storeState) => {
@@ -13,13 +13,13 @@ export function ChatWindow({ robotId }) {
   })
 
   useEffect(() => {
-    loadRobot(robotId)
-  }, [robotId])
+    loadUser(userId)
+  }, [userId])
 
-  async function loadRobot(robotId) {
+  async function loadUser(userId) {
     try {
-      const robot = await robotService.getById(robotId)
-      setRobot(robot)
+      const user = await userService.getById(userId)
+      setUser(user)
     } catch (error) {
       console.log('error:', error)
     }
@@ -29,8 +29,8 @@ export function ChatWindow({ robotId }) {
     navigate('/')
   }
 
-  const allMessages = robot
-    ? [...loggedInUser.msgs, ...robot.msgs]
+  const allMessages = user
+    ? [...loggedInUser.msgs, ...user.msgs]
     : loggedInUser.msgs
 
 
@@ -38,21 +38,21 @@ export function ChatWindow({ robotId }) {
   const messages = allMessages
     .filter(
       (msg) =>
-        (msg.senderId === loggedInUser._id && msg.recipientId === robotId) ||
-        (msg.senderId === robotId && msg.recipientId === loggedInUser._id)
+        (msg.senderId === loggedInUser._id && msg.recipientId === userId) ||
+        (msg.senderId === userId && msg.recipientId === loggedInUser._id)
     )
     .sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp))
 
   return (
     <div className='chat-window'>
       <div className='header-area'>
-        {robot && (
+        {user && (
           <>
-            <img src={robot.img} alt={robot.username} />
-            <h2>{robot.fullName}</h2>
+            <img src={user.img} alt={user.username} />
+            <h2>{user.fullName}</h2>
           </>
         )}
-        {!robot && <h2>Loading robot...</h2>}
+        {!user && <h2>Loading user...</h2>}
       </div>
 
       <ul className='conversation-container'>

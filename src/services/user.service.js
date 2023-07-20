@@ -1,27 +1,28 @@
 import { storageService } from './storage.service.js'
 import { makeId } from './util.service.js'
 
-export const robotService = {
+export const userService = {
   query,
   save,
   remove,
   getById,
-  getEmptyRobot,
-  tryRobot,
+  getEmptyUser,
+  tryUser,
 }
 
-const STORAGE_KEY = 'robots'
+const STORAGE_KEY = 'users'
 
-const gDefaultRobots = [
+const gDefaultUsers = [
   {
     _id: '101',
     fullName: 'John Doe',
     username: 'john.doe',
     img: 'https://randomuser.me/api/portraits/men/1.jpg',
+    contacts: [],
     msgs: [
       {
         id: 'msg1',
-        senderId: '102',
+        senderId: '105',
         recipientId: '101',
         content: 'Hello, how are you?',
         timestamp: '2023-07-19T12:34:56.789Z',
@@ -40,6 +41,7 @@ const gDefaultRobots = [
     fullName: 'Jane Smith',
     username: 'jane.smith',
     img: 'https://randomuser.me/api/portraits/women/2.jpg',
+    contacts: [],
     msgs: [
       {
         id: 'msg3',
@@ -55,6 +57,7 @@ const gDefaultRobots = [
     fullName: 'Mike Johnson',
     username: 'mike.johnson',
     img: 'https://randomuser.me/api/portraits/men/3.jpg',
+    contacts: [],
     msgs: [
       {
         id: 'msg4',
@@ -77,6 +80,7 @@ const gDefaultRobots = [
     fullName: 'Emily Brown',
     username: 'emily.brown',
     img: 'https://randomuser.me/api/portraits/women/4.jpg',
+    contacts: [],
     msgs: [
       {
         id: 'msg6',
@@ -103,63 +107,63 @@ const gDefaultRobots = [
   },
 ]
 
-var gRobots = _loadRobots()
+var gUsers = _loadUsers()
 
 function query(filterBy) {
-  let robotsToReturn = gRobots
+  let usersToReturn = gUsers
   console.log(filterBy)
   if (filterBy) {
     const { fullName, username, img } = filterBy
 
-    //   robotsToReturn = gRobots.filter(
-    //     (robot) =>
-    //       robot.fullName.toLowerCase().includes(fullName.toLowerCase()) &&
-    //       robot.username.toLowerCase().includes(username.toLowerCase()) &&
-    //       robot.img === img
+    //   usersToReturn = gUsers.filter(
+    //     (user) =>
+    //       user.fullName.toLowerCase().includes(fullName.toLowerCase()) &&
+    //       user.username.toLowerCase().includes(username.toLowerCase()) &&
+    //       user.img === img
     //   );
   }
-  return Promise.resolve([...robotsToReturn])
+  return Promise.resolve([...usersToReturn])
 }
-function tryRobot(id) {
-  const robot = gRobots.find((robot) => robot._id === id)
-  robot.batteryStatus -= 10
+function tryUser(id) {
+  const user = gUsers.find((user) => user._id === id)
+  user.batteryStatus -= 10
   return Promise.resolve()
 }
 function getById(id) {
-  const robot = gRobots.find((robot) => robot._id === id)
-  return Promise.resolve({ ...robot })
+  const user = gUsers.find((user) => user._id === id)
+  return Promise.resolve({ ...user })
 }
 
 function remove(id) {
-  const idx = gRobots.findIndex((robot) => robot._id === id)
-  gRobots.splice(idx, 1)
-  if (!gRobots.length) gRobots = gDefaultRobots.slice()
-  storageService.store(STORAGE_KEY, gRobots)
+  const idx = gUsers.findIndex((user) => user._id === id)
+  gUsers.splice(idx, 1)
+  if (!gUsers.length) gUsers = gDefaultUsers.slice()
+  storageService.store(STORAGE_KEY, gUsers)
   return Promise.resolve()
 }
 
-function save(robotToSave) {
-  if (robotToSave._id) {
-    const idx = gRobots.findIndex((robot) => robot._id === robotToSave._id)
-    gRobots.splice(idx, 1, robotToSave)
+function save(userToSave) {
+  if (userToSave._id) {
+    const idx = gUsers.findIndex((user) => user._id === userToSave._id)
+    gUsers.splice(idx, 1, userToSave)
   } else {
-    robotToSave._id = makeId()
-    gRobots.push(robotToSave)
+    userToSave._id = makeId()
+    gUsers.push(userToSave)
   }
-  storageService.store(STORAGE_KEY, gRobots)
-  return Promise.resolve(robotToSave)
+  storageService.store(STORAGE_KEY, gUsers)
+  return Promise.resolve(userToSave)
 }
 
-function getEmptyRobot() {
+function getEmptyUser() {
   return {
     model: '',
     type: '',
   }
 }
 
-function _loadRobots() {
-  let robots = storageService.load(STORAGE_KEY)
-  if (!robots || !robots.length) robots = gDefaultRobots
-  storageService.store(STORAGE_KEY, robots)
-  return robots
+function _loadUsers() {
+  let users = storageService.load(STORAGE_KEY)
+  if (!users || !users.length) users = gDefaultUsers
+  storageService.store(STORAGE_KEY, users)
+  return users
 }

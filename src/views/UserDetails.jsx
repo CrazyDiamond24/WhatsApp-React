@@ -1,22 +1,22 @@
 // import { Component, useEffect, useState } from 'react'
-// import { robotService } from '../services/robot.service'
+// import { userService } from '../services/user.service'
 // import { Link, useNavigate, useParams } from 'react-router-dom'
 // import { ChatWindow } from './ChatWindow'
 
-// export function RobotDetails(props) {
+// export function UserDetails(props) {
 //   console.log('entity details')
-//   const [robot, setRobot] = useState(null)
+//   const [user, setUser] = useState(null)
 //   const params = useParams()
 //   const navigate = useNavigate()
 
 //   useEffect(() => {
-//     loadRobot()
+//     loadUser()
 //   }, [params.id])
 
-//   async function loadRobot() {
+//   async function loadUser() {
 //     try {
-//       const robot = await robotService.getById(params.id)
-//       setRobot(robot)
+//       const user = await userService.getById(params.id)
+//       setUser(user)
 //     } catch (error) {
 //       console.log('error:', error)
 //     }
@@ -28,14 +28,14 @@
 
 //   console.log('render')
 
-//   if (!robot) return <div>Loading...</div>
+//   if (!user) return <div>Loading...</div>
 //   return (
-//     <section className='robot-details'>
+//     <section className='user-details'>
 //       <section>
 //         <h3>Lorem ipsum dolor</h3>
 //       </section>
 
-//       <img src={`https://robohash.org/${robot._id}`} />
+//       <img src={`https://robohash.org/${user._id}`} />
 
 //       <button onClick={onBack}>Back</button>
 //     </section>

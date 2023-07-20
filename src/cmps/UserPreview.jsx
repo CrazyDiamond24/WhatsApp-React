@@ -1,6 +1,6 @@
 import React from 'react'
 
-export function RobotPreview({ robot, onRemoveRobot, onSelectContact }) {
+export function UserPreview({ user, onRemoveUser, onSelectContact }) {
   const handleClick = () => {
     onSelectContact()
   }
@@ -9,15 +9,15 @@ export function RobotPreview({ robot, onRemoveRobot, onSelectContact }) {
     <article className='contact-preview' onClick={handleClick}>
       <img
         className='contact-preview-image'
-        src={robot.img}
-        alt={robot.fullName}
+        src={user.img}
+        alt={user.fullName}
       />
-      <h2>{robot.fullName}</h2>
+      <h2>{user.fullName}</h2>
     </article>
   )
 }
 
 /* <section className='actions'>
-<button onClick={() => onRemoveRobot(robot._id)}>X</button>
-<Link to={`/robot/edit/${robot._id}`}>Edit</Link>
+<button onClick={() => onRemoveUser(user._id)}>X</button>
+<Link to={`/user/edit/${user._id}`}>Edit</Link>
 </section> */

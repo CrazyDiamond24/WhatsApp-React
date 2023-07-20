@@ -1,9 +1,9 @@
 import { Route, HashRouter as Router, Routes } from 'react-router-dom'
 import './assets/scss/global.scss'
-import { RobotIndex } from './views/RobotIndex'
+import { UserIndex } from './views/UserIndex'
 import { About } from './views/About'
-import { RobotDetails } from './views/RobotDetails'
-import { RobotEdit } from './views/RobotEdit'
+import { UserDetails } from './views/UserDetails'
+import { UserEdit } from './views/UserEdit'
 import { ChatWindow } from './views/ChatWindow'
 
 function App() {
@@ -12,8 +12,8 @@ function App() {
       <section className='main-app'>
         <main className='container'>
           <Routes>
-            <Route path='/' element={<RobotIndex isDark={true} />} />
-            <Route path='/robot/edit/:id?' element={<RobotEdit />} />
+            <Route path='/' element={<UserIndex isDark={true} />} />
+            <Route path='/user/edit/:id?' element={<UserEdit />} />
             <Route path='/about' element={<About />} />
           </Routes>
         </main>
