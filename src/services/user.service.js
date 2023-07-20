@@ -21,7 +21,7 @@ const gDefaultUsers = [
     contacts: [],
     story: [],
     groups: [],
-    status: "",
+    status: '',
     msgs: [
       {
         id: 'msg1',
@@ -47,7 +47,7 @@ const gDefaultUsers = [
     contacts: [],
     story: [],
     groups: [],
-    status: "",
+    status: '',
     msgs: [
       {
         id: 'msg3',
@@ -66,7 +66,7 @@ const gDefaultUsers = [
     contacts: [],
     story: [],
     groups: [],
-    status: "",
+    status: '',
     msgs: [
       {
         id: 'msg4',
@@ -92,7 +92,7 @@ const gDefaultUsers = [
     contacts: [],
     story: [],
     groups: [],
-    status: "",
+    status: '',
     msgs: [
       {
         id: 'msg6',
@@ -122,26 +122,30 @@ const gDefaultUsers = [
 var gUsers = _loadUsers()
 
 function query(filterBy) {
-  let usersToReturn = gUsers
-  console.log(filterBy)
-  if (filterBy) {
-    const { fullName, username, img } = filterBy
-
-    //   usersToReturn = gUsers.filter(
-    //     (user) =>
-    //       user.fullName.toLowerCase().includes(fullName.toLowerCase()) &&
-    //       user.username.toLowerCase().includes(username.toLowerCase()) &&
-    //       user.img === img
-    //   );
-  }
-  return Promise.resolve([...usersToReturn])
-  // return httpService.get(`/${filterBy}`)
+  // const stations = await httpService.get(`station`)
+  // return stations
+  // let usersToReturn = gUsers
+  // console.log(filterBy)
+  // if (filterBy) {
+  //   const { fullName, username, img } = filterBy
+  //   usersToReturn = gUsers.filter(
+  //     (user) =>
+  //       user.fullName.toLowerCase().includes(fullName.toLowerCase()) &&
+  //       user.username.toLowerCase().includes(username.toLowerCase()) &&
+  //       user.img === img
+  //   );
+  return httpService.get('contact')
 }
+// return Promise.resolve([...usersToReturn])
+// }
 
-function getById(id) {
-  const user = gUsers.find((user) => user._id === id)
-  return Promise.resolve({ ...user })
-  // return httpService.get(`/${id}`)
+async function getById(id) {
+  console.log('id service front', id)
+  // const user = gUsers.find((user) => user._id === id)
+  // return Promise.resolve({ ...user })
+  const user = await httpService.get(`contact/${id}`)
+  console.log('user', user)
+  return user
 }
 
 function remove(id) {

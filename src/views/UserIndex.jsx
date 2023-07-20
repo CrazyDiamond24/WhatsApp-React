@@ -41,11 +41,11 @@ export function UserIndex(props) {
   if (!users) return <div>Loading...</div>
 
   return (
-    <section className='home-page'>
-      <section className='contact-list'>
+    <section className="home-page">
+      <section className="contact-list">
         <AppHeader />
         <UserFilter filterBy={filterBy} onChangeFilter={onChangeFilter} />
-        <Link to='/user/edit'>Add contact</Link>
+        <Link to="/user/edit">Add contact</Link>
         <UserList
           users={users}
           onRemoveUser={onRemoveUser}
@@ -53,12 +53,8 @@ export function UserIndex(props) {
         />
       </section>
 
-      <section className='chat-window'>
-        {selectedUserId ? (
-          <ChatWindow key={selectedUserId} userId={selectedUserId} />
-        ) : (
-          <h2>Select a user to chat</h2>
-        )}
+      <section className="chat-window">
+        <ChatWindow />
       </section>
     </section>
   )

@@ -1,12 +1,11 @@
-import { memo } from 'react'
 import { UserPreview } from './UserPreview'
-function _UserList({ users, onRemoveUser, onSelectContact }) {
+export function UserList({ users, onRemoveUser, onSelectContact }) {
   console.log('USER LIST RENDERED')
   return (
-    <section className='user-list simple-cards-grid'>
-      {users.map((user) => (
+    <section className="user-list simple-cards-grid">
+      {users?.map((user) => (
         <UserPreview
-          key={user._id}
+          key={user?._id}
           user={user}
           onRemoveUser={onRemoveUser}
           onSelectContact={() => onSelectContact(user._id)}
@@ -15,5 +14,3 @@ function _UserList({ users, onRemoveUser, onSelectContact }) {
     </section>
   )
 }
-
-export const UserList = memo(_UserList)
