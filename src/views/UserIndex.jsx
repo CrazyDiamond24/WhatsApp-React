@@ -58,7 +58,7 @@ export function UserIndex(props) {
       </section>
 
       <section className="chat-window">
-        <ChatWindow key={user._id}  />
+        <ChatWindow key={user?._id}  />
       </section>
     </section>
   )
