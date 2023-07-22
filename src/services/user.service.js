@@ -40,11 +40,8 @@ async function createNewMsg(msg, senderId, recipientId) {
     content: msg,
     timestamp: Date.now(),
   }
-
-  // Add the message to the sender's messages array
   await httpService.post(`contact/${senderId}/message`, newMsg)
 
-  // Add the message to the recipient's messages array
   await httpService.post(`contact/${recipientId}/message`, newMsg)
 
   return newMsg

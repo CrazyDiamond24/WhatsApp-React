@@ -1,0 +1,36 @@
+.emojis-container {
+    position: relative;
+  
+    .smiley {
+      font-size: 24px;
+      cursor: pointer;
+  
+      &.expanded {
+        transform: rotate(180deg);
+      }
+    }
+  
+    .emojis-window {
+      position: absolute;
+      bottom: 45px;
+      left: 10px;
+      width: 200px;
+      background-color: #f1f1f1;
+      border: 1px solid #ccc;
+      padding: 10px;
+      border-radius: 4px;
+      display: flex;
+      flex-wrap: wrap;
+  
+      .emoji {
+        font-size: 24px;
+        cursor: pointer;
+        padding: 5px;
+  
+        &:hover {
+          background-color: #e0e0e0;
+        }
+      }
+    }
+  }
+  

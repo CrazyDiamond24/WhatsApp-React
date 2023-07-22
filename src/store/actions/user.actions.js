@@ -1,5 +1,6 @@
 import { userService } from '../../services/user.service'
 import { authService } from '../../services/auth.service'
+import { msgService } from '../../services/msg.service'
 import { showErrorMsg, showSuccessMsg } from '../../services/event-bus.service'
 import {
   REMOVE_USER,
@@ -140,7 +141,7 @@ export function addMsg(msgContent, userId) {
   return async (dispatch, getState) => {
     try {
       const loggedInUser = getState().userModule.loggedInUser
-      const msg = await userService.createNewMsg(
+      const msg = await msgService.createNewMsg(
         msgContent,
         loggedInUser._id,
         userId
