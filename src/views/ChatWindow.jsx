@@ -1,12 +1,13 @@
 import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { addMsg } from '../store/actions/user.actions'
-import {Emojis} from '../cmps/Emojis'
+import { Emojis } from '../cmps/Emojis'
 
 export function ChatWindow() {
   const [msgContent, setMsgContent] = useState('')
+  const messagesContainerRef = useRef(null)
 
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -19,6 +20,24 @@ export function ChatWindow() {
     return storeState.userModule.selectedUser
   })
 
+  const messages = user
+  ? user.msgs
+      .filter(
+        (msg) =>
+          (msg.senderId === loggedInUser?._id &&
+            msg.recipientId === user._id) ||
+          (msg.senderId === user._id && msg.recipientId === loggedInUser?._id)
+      )
+      .sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp))
+  : []
+
+  useEffect(() => {
+    if (messagesContainerRef.current) {
+      messagesContainerRef.current.scrollTop =
+        messagesContainerRef.current.scrollHeight
+    }
+  }, [messages])
+
   function handelSendMsg(e) {
     e.preventDefault()
     dispatch(addMsg(msgContent, user._id))
@@ -29,24 +48,14 @@ export function ChatWindow() {
     setMsgContent(e.target.value)
   }
 
-  function handleEmojiSelect(emoji){
-    setMsgContent(prevMsg => prevMsg + emoji)
+  function handleEmojiSelect(emoji) {
+    setMsgContent((prevMsg) => prevMsg + emoji)
   }
 
   function onBack() {
     navigate('/')
   }
 
-  const messages = user
-    ? user.msgs
-        .filter(
-          (msg) =>
-            (msg.senderId === loggedInUser?._id &&
-              msg.recipientId === user._id) ||
-            (msg.senderId === user._id && msg.recipientId === loggedInUser?._id)
-        )
-        .sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp))
-    : []
 
   if (!user) return <h2>Select a user to chat</h2>
 
@@ -58,7 +67,7 @@ export function ChatWindow() {
         <Link to='/login'>Login</Link>
       </div>
 
-      <ul className='conversation-container'>
+      <ul className='conversation-container' ref={messagesContainerRef}>
         {messages?.map((message, index) => (
           <li
             key={index}
@@ -74,7 +83,7 @@ export function ChatWindow() {
       </ul>
 
       <form className='message-input' onSubmit={(e) => handelSendMsg(e)}>
-      <Emojis onSelectEmoji={handleEmojiSelect}/> 
+        <Emojis onSelectEmoji={handleEmojiSelect} />
         <input
           type='text'
           placeholder='Type a message...'
