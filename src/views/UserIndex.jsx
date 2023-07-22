@@ -56,16 +56,6 @@ export function UserIndex(props) {
     <section className="home-page">
       <section className="contact-list">
         <AppHeader />
-<<<<<<< HEAD
-        {/* <input
-          type="text"
-          placeholder="Search"
-          value={filterBy}
-          onChange={(e) => handleInput(e)}
-        /> */}
-        {/* <UserFilter filterBy={filterBy} onChangeFilter={onChangeFilter} /> */}
-        {/* <Link to="/user/edit">Add contact</Link> */}
-=======
         <div className="svg-input-container">
           <span
             className="pointer search-svg"
@@ -85,9 +75,8 @@ export function UserIndex(props) {
           {/* <UserFilter filterBy={filterBy} onChangeFilter={onChangeFilter} /> */}
         </div>
         <div className="add-contact">
-          <Link to="/user/edit">Add contact</Link>
+          {/* <Link to="/user/edit">Add contact</Link> */}
         </div>
->>>>>>> 49399a8864d22b6ace0bf34734fc436a6e6be419
         <UserList
           filterBy={filterBy}
           // users={users}
