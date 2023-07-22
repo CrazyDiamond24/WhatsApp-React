@@ -14,9 +14,8 @@ export const userService = {
 
 const STORAGE_KEY = 'users'
 
-function query(loggedInUser) {
-  if (!loggedInUser) return
-  return httpService.get(`contact?loggedInUserId=${loggedInUser._id}`)
+function query() {
+  return httpService.get(`contact`)
 }
 async function addContact(loggedInUserId, contactName) {
   const contact = await httpService.post(
