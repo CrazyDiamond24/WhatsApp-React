@@ -53,14 +53,14 @@ export function UserIndex(props) {
     <section className="home-page">
       <section className="contact-list">
         <AppHeader />
-        <input
+        {/* <input
           type="text"
           placeholder="Search"
           value={filterBy}
           onChange={(e) => handleInput(e)}
-        />
+        /> */}
         {/* <UserFilter filterBy={filterBy} onChangeFilter={onChangeFilter} /> */}
-        <Link to="/user/edit">Add contact</Link>
+        {/* <Link to="/user/edit">Add contact</Link> */}
         <UserList
           filterBy={filterBy}
           // users={users}
@@ -68,10 +68,7 @@ export function UserIndex(props) {
           onSelectContact={handleUserClick}
         />
       </section>
-
-      <section className="chat-window">
         <ChatWindow key={user?._id} />
-      </section>
     </section>
   )
 }

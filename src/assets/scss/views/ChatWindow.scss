@@ -1,17 +1,23 @@
 .chat-window {
   display: flex;
   flex-direction: column;
-  height: 100vh;
-  width: 100%;
+  align-items: center;
+  height: 97vh;
+  width: 90%;
+  margin-inline:10px;
+  margin-block-start: 3px;
   background-color: $clr1;
-
+  border-radius: 1rem;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
   .header-area {
-    background-color: $clr6;
+    background-color: #075E54;
+    width: 100%;
     color: $clr7;
     padding: 10px;
     display:flex;
     align-items: center;
     gap: 10px;
+    border-radius: 1rem 1rem 0 0;
     img {
       height: 50px;
       border-radius: 50%;
@@ -22,9 +28,9 @@
   .conversation-container {
     flex-grow: 1;
     overflow-y: auto;
-    padding: 30px;
+    padding: 25px;
     list-style: none;
-
+    width: 100%;
     .chat-message {
       margin-bottom: 10px;
       background-color: $secondaryClr;
@@ -52,7 +58,8 @@
     background-color: $clr1;
     padding: 10px;
     border-top: 1px solid $clr8;
-
+    width: 100%;
+    border-radius: 1rem;
     input[type='text'] {
       flex-grow: 1;
       margin-right: 10px;

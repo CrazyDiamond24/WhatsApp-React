@@ -1,5 +1,6 @@
 .contact-preview {
-    background: clear;
+    background: rgb($clr2, 0.9);
+    border-radius: 1rem;
 
     box-shadow: 0 0 11px #0000002b;
     display: flex;
@@ -13,7 +14,4 @@
         border-radius: 50%;
     }
 
-    &:hover .actions {
-        transform: translateY(0);
-    }
 }

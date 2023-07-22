@@ -53,22 +53,29 @@ export function doSignup(userCred) {
 export function doLogin(userCred) {
   return async (dispatch, getState) => {
     try {
-      const navigate = useNavigate()
+      // const navigate = useNavigate()
+
+
+
       const user = await authService.login(userCred)
       const action = {
         type: LOGIN,
         user,
       }
       dispatch(action)
-      navigate('/')
+
+
+      // navigate('/')
+
+      
       showSuccessMsg('like')
     } catch (error) {
-      const errorMsg = 'username not found please signup'
-      const ErrorAction = {
-        type: LOGIN_ERROR,
-        errorMsg,
-      }
-      dispatch(ErrorAction)
+      // const errorMsg = 'username not found please signup'
+      // const ErrorAction = {
+      //   type: LOGIN_ERROR,
+      //   errorMsg,
+      // }
+      // dispatch(ErrorAction)
     }
   }
 }

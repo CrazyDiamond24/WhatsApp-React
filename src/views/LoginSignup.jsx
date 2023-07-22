@@ -31,6 +31,7 @@ export function LoginSignup() {
     e.preventDefault()
     if (hasAccount) {
       dispatch(doLogin(signupCred))
+      navigate('/')
     } else {
       if (!signupCred.fullName || !signupCred.password || !signupCred.username)
         return

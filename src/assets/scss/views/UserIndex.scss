@@ -1,4 +1,8 @@
 .home-page {
   display: flex;
-  justify-content: flex-start;
+  background: linear-gradient($primaryClr 1%, $clr2 80%);
+  .contact-list {
+    width: 30%;
+  }
 }
+
