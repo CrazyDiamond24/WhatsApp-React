@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+import { UserPreview } from './UserPreview'
+export function UserList({ users, onRemoveUser, onSelectContact }) {  
+=======
 import { useEffect, useState } from "react"
 import { UserPreview } from "./UserPreview"
 import { useSelector } from "react-redux"
@@ -20,6 +24,7 @@ export function UserList({ filterBy, onRemoveUser, onSelectContact }) {
       )
     })
   }
+>>>>>>> cda4b3f548106ad1ee6fd0ad2e3a586c6a673201
   return (
     <section className="user-list simple-cards-grid">
       {filteredUsers?.map((user) => (

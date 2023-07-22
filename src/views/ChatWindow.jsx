@@ -2,7 +2,7 @@ import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useEffect, useState, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { addMsg } from '../store/actions/user.actions'
+import { addMsg, addAutoMsg } from '../store/actions/user.actions'
 import { Emojis } from '../cmps/Emojis'
 
 export function ChatWindow() {
@@ -38,10 +38,33 @@ export function ChatWindow() {
     }
   }, [messages])
 
+  //TODO: move to service later with actual functionality
+  function getAutoResponse() {
+    const responses = [
+      "Hello, welcome to our app! I can't say anything else.",
+      'Hi there! How can I assist you today?',
+      'Greetings! Feel free to ask me anything.',
+      'Hey! Nice to see you here. How can I help?',
+      "Welcome! I'm here to answer your questions.",
+    ]
+
+    const randomIndex = Math.floor(Math.random() * responses.length)
+    return responses[randomIndex]
+  }
+
   function handelSendMsg(e) {
     e.preventDefault()
-    dispatch(addMsg(msgContent, user._id))
     setMsgContent('')
+    //parameters: content, recipient, sender
+    dispatch(addMsg(msgContent, user._id, loggedInUser._id))
+
+    //hardcoded - ready for real use
+    if (user.username === 'john.doe' || 'jane.smith' || 'emily.brown') {
+      setTimeout(() => {
+        const autoMessage = getAutoResponse()
+        dispatch(addMsg(autoMessage, loggedInUser._id, user._id))
+      }, 1000)
+    }
   }
 
   function handelInputChange(e) {
