@@ -13,7 +13,7 @@ const INITIAL_STATE = {
   users: null,
   loggedInUser: {
     _id: '64b8f461ae4055140221c3e3',
-    fullname: 'Sarah Adams',
+    fullName: 'Sarah Adams',
     username: 'sarah.adams',
     img: 'https://randomuser.me/api/portraits/women/11.jpg',
     contacts: [],

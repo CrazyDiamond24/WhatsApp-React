@@ -1,13 +1,14 @@
 import { httpService } from './http.service.js'
 import { storageService } from './storage.service.js'
 import { utilService } from './util.service.js'
-
+import { authService } from './auth.service.js'
 export const userService = {
   query,
   save,
   remove,
   getById,
   getEmptyUser,
+  createNewMsg,
 }
 
 const STORAGE_KEY = 'users'
@@ -180,16 +181,17 @@ function getEmptyUser() {
   }
 }
 
-// function createNewMsg() {
-
-//   return {
-//     fullName: '',
-//     username: '',
-//     img: 'https://randomuser.me/api/portraits/men/1.jpg',
-//     contacts: [],
-//     msgs: [],
-//   }
-// }
+async function createNewMsg(msg, userId) {
+  let loggedinUser = await authService.getLoggedinUser()
+  const newMsg = {
+    senderId: loggedinUser._id,
+    recipientId: userId,
+    content: msg,
+    timestamp: Date.now(),
+  }
+  console.log('newMsg', newMsg)
+  // return httpService.post('station', newMsg)
+}
 
 function _loadUsers() {
   let users = storageService.load(STORAGE_KEY)

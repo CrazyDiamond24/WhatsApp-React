@@ -1,16 +1,15 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { doSignup } from '../store/actions/auth.actions'
+import { doSignup } from '../store/actions/user.actions'
 export function LoginSignup() {
   const [hasAccount, setHasAccount] = useState(true)
   const [signupCred, setSignupCred] = useState({
     username: '',
     password: '',
-    fullname: '',
-    imgUrl:
-      'https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg',
-    msgs: [1],
+    fullName: '',
+    img: 'https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg',
+    msgs: [],
     contacts: [],
     status: '',
     groups: [],
@@ -29,7 +28,7 @@ export function LoginSignup() {
     if (hasAccount) {
       console.log('Logging in...', signupCred)
     } else {
-      if (!signupCred.fullname || !signupCred.password || !signupCred.username)
+      if (!signupCred.fullName || !signupCred.password || !signupCred.username)
         return
       dispatch(doSignup(signupCred))
       navigate('/')
@@ -48,9 +47,9 @@ export function LoginSignup() {
               <input
                 type="text"
                 placeholder="Full Name"
-                value={signupCred.fullname}
+                value={signupCred.fullName}
                 onChange={(e) =>
-                  setSignupCred({ ...signupCred, fullname: e.target.value })
+                  setSignupCred({ ...signupCred, fullName: e.target.value })
                 }
                 required
               />

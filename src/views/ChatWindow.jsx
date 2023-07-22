@@ -3,17 +3,17 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { userService } from '../services/user.service'
 import { useDispatch, useSelector } from 'react-redux'
-import { addMsg } from '../store/actions/msg.actions'
+import { addMsg } from '../store/actions/user.actions'
 
 export function ChatWindow() {
   // const [user, setUser] = useState(null)
   const [msgContent, setMsgContent] = useState('')
-  const [sendMsg, setSendMsg] = useState(msgContent)
+
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
   const loggedInUser = useSelector((storeState) => {
-    return storeState.authModule.loggedInUser
+    return storeState.userModule.loggedInUser
   })
   console.log('loggedInUser', loggedInUser)
   const user = useSelector((storeState) => {
@@ -22,8 +22,7 @@ export function ChatWindow() {
 
   function handelSendMsg(e) {
     e.preventDefault()
-    console.log('e.target.vaule handel', e.target.value)
-    dispatch(addMsg(loggedInUser, user, msgContent))
+    dispatch(addMsg(msgContent, user._id))
   }
 
   function handelInputChange(e) {
@@ -34,8 +33,8 @@ export function ChatWindow() {
     navigate('/')
   }
   const allMessages = user
-    ? [...loggedInUser?.msgs, ...user?.msgs]
-    : loggedInUser?.msgs
+    ? [...(loggedInUser?.msgs || []), ...(user?.msgs || [])]
+    : loggedInUser?.msgs || []
 
   const messages = allMessages
     ?.filter(

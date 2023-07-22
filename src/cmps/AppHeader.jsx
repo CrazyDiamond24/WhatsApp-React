@@ -5,7 +5,7 @@ export function AppHeader(props) {
   const navigate = useNavigate()
 
   const loggedInUser = useSelector((storeState) => {
-    return storeState.authModule.loggedInUser
+    return storeState.userModule.loggedInUser
   })
 
   function onBack() {

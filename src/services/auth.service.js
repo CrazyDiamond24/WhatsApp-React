@@ -89,7 +89,9 @@ async function login(userCred) {
 }
 
 async function signup(userCred) {
+  console.log('userCred in front service', userCred)
   const user = await httpService.post('auth/signup', userCred)
+  console.log('userCred in front service after', userCred)
   return saveLocalUser(user)
 }
 
