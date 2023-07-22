@@ -5,7 +5,7 @@ import { showErrorMsg, showSuccessMsg } from '../../services/event-bus.service'
 import { useNavigate } from 'react-router-dom'
 import {
   REMOVE_USER,
-  SET_FILTER_BY,
+  // SET_FILTER_BY,
   SET_USERS,
   SET_USER,
   SIGNUP,
@@ -163,8 +163,8 @@ export function addMsg(msgContent, userId) {
   }
 }
 
-export function setFilterBy(filterBy) {
-  return (dispatch) => {
-    dispatch({ type: SET_FILTER_BY, filterBy })
-  }
-}
+// export function setFilterBy(filterBy) {
+//   return (dispatch) => {
+//     dispatch({ type: SET_FILTER_BY, filterBy })
+//   }
+// }

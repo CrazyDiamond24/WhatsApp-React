@@ -11,10 +11,6 @@ export function UserFilter(props) {
                 <label htmlFor="model">Text</label>
                 <input {...register('model', 'text')} />
             </section>
-            <section>
-                <label htmlFor="minBatteryStatus">Numerical</label>
-                <input {...register('minBatteryStatus', 'number')} />
-            </section>
         </form>
     )
 }
