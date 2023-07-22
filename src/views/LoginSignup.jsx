@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { doSignup } from '../store/actions/user.actions'
+import { doSignup, doLogin } from '../store/actions/user.actions'
 export function LoginSignup() {
   const [hasAccount, setHasAccount] = useState(true)
   const [signupCred, setSignupCred] = useState({
@@ -26,7 +26,8 @@ export function LoginSignup() {
   function handleSubmit(e) {
     e.preventDefault()
     if (hasAccount) {
-      console.log('Logging in...', signupCred)
+      dispatch(doLogin(signupCred))
+      navigate('/')
     } else {
       if (!signupCred.fullName || !signupCred.password || !signupCred.username)
         return
