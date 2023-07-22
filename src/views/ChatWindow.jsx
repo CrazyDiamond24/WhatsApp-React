@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import React from "react"
 import { useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react"
@@ -6,14 +5,6 @@ import { userService } from "../services/user.service"
 import { useDispatch, useSelector } from "react-redux"
 import { addMsg } from "../store/actions/msg.actions"
 import { Link } from 'react-router-dom'
-=======
-import React from 'react'
-import { useNavigate } from 'react-router-dom'
-import { useEffect, useState } from 'react'
-import { userService } from '../services/user.service'
-import { useDispatch, useSelector } from 'react-redux'
-import { addMsg } from '../store/actions/msg.actions'
->>>>>>> 0e7b9be018b255af040f694eeec26ee315d2c970
 
 export function ChatWindow() {
   // const [user, setUser] = useState(null)
@@ -29,19 +20,6 @@ export function ChatWindow() {
     return storeState.userModule.selectedUser
   })
 
-<<<<<<< HEAD
-  useEffect(() => {
-    const delay = 1000
-    const debounceTimer = setTimeout(() => {
-      setSendMsg(msgContent)
-    }, delay)
-
-    return () => clearTimeout(debounceTimer)
-  }, [msgContent])
-
-  
-=======
->>>>>>> 0e7b9be018b255af040f694eeec26ee315d2c970
   function handelSendMsg(e) {
     e.preventDefault()
     console.log('e.target.vaule handel', e.target.value)
