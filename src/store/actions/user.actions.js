@@ -11,7 +11,24 @@ import {
   LOGOUT,
   SET_LOGGEDIN_USER,
   ADD_MSG,
+  ADD_CONTACT,
 } from '../reducers/user.reducer'
+
+export function addContactToUser(name) {
+  return async (dispatch, getState) => {
+    try {
+      const loggedInUser = getState().userModule.loggedInUser
+      const contact = await userService.addContact(loggedInUser._id, name)
+      const action = {
+        type: ADD_CONTACT,
+        contact,
+      }
+      dispatch(action)
+    } catch (error) {
+      console.log('error:', error)
+    }
+  }
+}
 
 export function doSignup(userCred) {
   return async (dispatch, getState) => {
@@ -75,11 +92,11 @@ export function doLogout() {
     }
   }
 }
-
 export function loadUsers() {
   return async (dispatch, getState) => {
     try {
-      const users = await userService.query()
+      const loggedInUser = getState().userModule.loggedInUser
+      const users = await userService.query(loggedInUser)
       const action = {
         type: SET_USERS,
         users,
@@ -90,7 +107,6 @@ export function loadUsers() {
     }
   }
 }
-
 export function setCurrUser(UserId) {
   console.log('UserId', UserId)
   return async (dispatch, getState) => {

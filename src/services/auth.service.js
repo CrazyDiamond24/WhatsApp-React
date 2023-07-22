@@ -115,7 +115,7 @@ function saveLocalUser(user) {
   user = {
     _id: user._id,
     username: user.username,
-    fullName: user.email,
+    fullName: user.fullName,
     msgs: user.msgs,
     contacts: user.contacts,
     groups: user.groups,
@@ -129,11 +129,12 @@ function saveLocalUser(user) {
 
 function getLoggedinUser() {
   const user = JSON.parse(sessionStorage.getItem(STORAGE_KEY_LOGGEDIN_USER))
+  console.log('user', user)
   if (user) {
     if (user.username === 'guest') {
       return JSON.parse(sessionStorage.getItem(STORAGE_KEY_LOGGEDIN_USER))
     } else {
-      return httpService.get(`user/${user._id}`)
+      return httpService.get(`contact/${user._id}`)
     }
   }
 }

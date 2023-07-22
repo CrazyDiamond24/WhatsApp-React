@@ -5,8 +5,16 @@ import { About } from './views/About'
 import { UserDetails } from './views/UserDetails'
 import { AddContact } from './views/AddContact'
 import { LoginSignup } from './views/LoginSignup'
-
+import { useDispatch } from 'react-redux'
+import { getUser } from './store/actions/user.actions'
+import { useEffect } from 'react'
 function App() {
+  const dispatch = useDispatch()
+
+  // useEffect(() => {
+  //   const user = dispatch(getUser())
+  //   console.log('user', user)
+  // }, [])
   return (
     <Router>
       <section className="main-app">

@@ -1,23 +1,23 @@
 import { useSelector } from 'react-redux'
-import { NavLink, useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 export function AppHeader(props) {
   const navigate = useNavigate()
 
-  const loggedInUser = useSelector((storeState) => {
-    return storeState.userModule.loggedInUser
-  })
+  const user = useSelector((storeState) => storeState.userModule.loggedInUser)
+
+  console.log('user', user)
 
   function onBack() {
     navigate(-1)
   }
 
-  const { fullname, img, username } = loggedInUser
   return (
     <header className="app-header">
       <section className="user-header">
-        <img src={img} alt={username}></img>
-        <p>Welcome, {fullname}!</p>
+        <img src={user?.img} alt={user?.username} />
+        <p>Welcome, {user?.fullName}!</p>
+        <Link to="/login">Login</Link>
       </section>
     </header>
   )

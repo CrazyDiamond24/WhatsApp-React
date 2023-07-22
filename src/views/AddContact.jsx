@@ -3,36 +3,36 @@ import { userService } from '../services/user.service'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useForm } from '../customHooks/useForm'
 import { useDispatch } from 'react-redux'
-
+import { addContactToUser } from '../store/actions/user.actions'
 export function AddContact(props) {
   const [name, setName] = useState('')
 
   const params = useParams()
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  useEffect(() => {
-    loadUser()
-  }, [])
+  // useEffect(() => {
+  //   loadUser()
+  // }, [])
 
-  async function loadUser() {
-    const userId = params.id
-    if (userId) {
-      try {
-        const user = await userService.getById(userId)
-        setUser(user)
-      } catch (error) {
-        console.log('error:', error)
-      }
-    }
-  }
+  // async function loadUser() {
+  //   const userId = params.id
+  //   if (userId) {
+  //     try {
+  //       const user = await userService.getById(userId)
+  //       setUser(user)
+  //     } catch (error) {
+  //       console.log('error:', error)
+  //     }
+  //   }
+  // }
 
-  function handleChange() {
+  function handleChange(e) {
     setName(e.target.value)
   }
 
   function onAddContact(ev) {
     ev.preventDefault()
-    dispatch(AddContact(name))
+    dispatch(addContactToUser(name))
     navigate('/')
   }
 

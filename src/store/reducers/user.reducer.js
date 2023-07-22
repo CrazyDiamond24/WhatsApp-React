@@ -6,6 +6,7 @@ export const UPDATE_USER = 'UPDATE_USER'
 export const SET_FILTER_BY = 'SET_FILTER_BY'
 export const SIGNUP = 'SIGNUP'
 export const ADD_MSG = 'ADD_MSG'
+export const ADD_CONTACT = 'ADD_CONTACT'
 export const LOGIN = 'LOGIN'
 export const LOGOUT = 'LOGOUT'
 export const SET_LOGGEDIN_USER = 'SET_LOGGEDIN_USER'
@@ -105,7 +106,14 @@ export function userReducer(state = INITIAL_STATE, action = {}) {
               }
             : state.selectedUser,
       }
-
+    case ADD_CONTACT:
+      return {
+        ...state,
+        loggedInUser: {
+          ...state.loggedInUser,
+          contacts: [...state.loggedInUser.contacts, action.contact],
+        },
+      }
     case LOGOUT:
       return {
         ...state,
