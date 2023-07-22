@@ -6,7 +6,7 @@ export function AppHeader(props) {
 
   const user = useSelector((storeState) => storeState.userModule.loggedInUser)
 
-  console.log('user', user)
+  console.log('loggedinuser', user)
 
   function onBack() {
     navigate(-1)

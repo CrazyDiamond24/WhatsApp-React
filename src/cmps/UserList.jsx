@@ -1,6 +1,5 @@
 import { UserPreview } from './UserPreview'
-export function UserList({ users, onRemoveUser, onSelectContact }) {
-  console.log('USER LIST RENDERED')
+export function UserList({ users, onRemoveUser, onSelectContact }) {  
   return (
     <section className="user-list simple-cards-grid">
       {users?.map((user) => (

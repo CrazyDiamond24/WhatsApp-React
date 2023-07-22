@@ -13,6 +13,7 @@ import {
   SET_LOGGEDIN_USER,
   ADD_MSG,
   ADD_CONTACT,
+  ADD_AUTO_MSG,
 } from '../reducers/user.reducer'
 
 export function addContactToUser(name) {
@@ -137,16 +138,17 @@ export function removeUser(userId) {
   }
 }
 
-export function addMsg(msgContent, userId) {
+export function addMsg(msgContent, recipientId, senderId) {
   return async (dispatch, getState) => {
     try {
-      const loggedInUser = getState().userModule.loggedInUser
       const msg = await msgService.createNewMsg(
         msgContent,
-        loggedInUser._id,
-        userId
+        senderId,
+        recipientId
       )
-      const action = { type: ADD_MSG, msg }
+      const loggedInUserId = getState().userModule.loggedInUser._id
+      const type = recipientId !== loggedInUserId ? ADD_MSG : ADD_AUTO_MSG
+      const action = { type, msg }
       dispatch(action)
     } catch (error) {
       console.log('error:', error)
