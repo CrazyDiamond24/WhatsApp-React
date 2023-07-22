@@ -1,4 +1,60 @@
 .home-page {
   display: flex;
   justify-content: flex-start;
+  position: relative;
+  .svg-input-container {
+    margin: rem(10px) 0 0 rem(10px);
+    .search-input {
+      border: 1px solid black;
+      border-radius: 4px;
+      height: rem(30px);
+      padding: rem(8px) rem(30px);
+      text-overflow: ellipsis;
+      position: absolute;
+      transition: all 0.3s ease-in;
+      width: 0;
+      &.open {
+        animation: inputExpand 0.2s forwards;
+      }
+      &.close {
+        animation: inputCollapse 0.2s forwards;
+      }
+      &:focus {
+        outline: none;
+      }
+    }
+    .search-svg {
+      margin-inline-start: rem(3px);
+      position: absolute;
+      top: 9%;
+      z-index: 1;
+    }
+  }
+  .add-contact {
+    margin: rem(50px) 0 rem(10px) rem(10px);
+  }
+}
+
+@keyframes inputExpand {
+  0% {
+    width: 0;
+  }
+  50% {
+    width: rem(100px);
+  }
+  100% {
+    width: rem(200px);
+  }
+}
+
+@keyframes inputCollapse {
+  0% {
+    width: rem(200px);
+  }
+  50% {
+    width: rem(100px);
+  }
+  100% {
+    width: 0;
+  }
 }
