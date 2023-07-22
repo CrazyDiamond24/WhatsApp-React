@@ -21,15 +21,15 @@ export function ChatWindow() {
   })
 
   const messages = user
-  ? user.msgs
-      .filter(
-        (msg) =>
-          (msg.senderId === loggedInUser?._id &&
-            msg.recipientId === user._id) ||
-          (msg.senderId === user._id && msg.recipientId === loggedInUser?._id)
-      )
-      .sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp))
-  : []
+    ? user.msgs
+        .filter(
+          (msg) =>
+            (msg.senderId === loggedInUser?._id &&
+              msg.recipientId === user._id) ||
+            (msg.senderId === user._id && msg.recipientId === loggedInUser?._id)
+        )
+        .sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp))
+    : []
 
   useEffect(() => {
     if (messagesContainerRef.current) {
@@ -55,7 +55,6 @@ export function ChatWindow() {
   function onBack() {
     navigate('/')
   }
-
 
   if (!user) return <h2>Select a user to chat</h2>
 
