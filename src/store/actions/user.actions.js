@@ -54,20 +54,29 @@ export function doLogin(userCred) {
   return async (dispatch, getState) => {
     try {
       // const navigate = useNavigate()
+<<<<<<< HEAD
 
 
 
+=======
+>>>>>>> 49399a8864d22b6ace0bf34734fc436a6e6be419
       const user = await authService.login(userCred)
       const action = {
         type: LOGIN,
         user,
       }
+      console.log('hi')
       dispatch(action)
+<<<<<<< HEAD
 
 
       // navigate('/')
 
       
+=======
+      console.log('hi')
+      // navigate('/')
+>>>>>>> 49399a8864d22b6ace0bf34734fc436a6e6be419
       showSuccessMsg('like')
     } catch (error) {
       // const errorMsg = 'username not found please signup'

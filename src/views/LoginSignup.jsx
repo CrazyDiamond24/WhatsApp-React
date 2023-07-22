@@ -30,6 +30,7 @@ export function LoginSignup() {
   function handleSubmit(e) {
     e.preventDefault()
     if (hasAccount) {
+      console.log('hi')
       dispatch(doLogin(signupCred))
       navigate('/')
     } else {

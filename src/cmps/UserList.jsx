@@ -1,6 +1,12 @@
+<<<<<<< HEAD
 import { useEffect, useState } from "react";
 import { UserPreview } from "./UserPreview";
 import { useSelector } from "react-redux";
+=======
+import { useEffect, useState } from "react"
+import { UserPreview } from "./UserPreview"
+import { useSelector } from "react-redux"
+>>>>>>> 49399a8864d22b6ace0bf34734fc436a6e6be419
 
 export function UserList({ filterBy, onRemoveUser, onSelectContact }) {
   const [filteredUsers, setFilteredUsers] = useState([]);
@@ -18,6 +24,7 @@ export function UserList({ filterBy, onRemoveUser, onSelectContact }) {
     const regexPattern = new RegExp(filterBy, "i");
     return users?.filter((user) => {
       return (
+<<<<<<< HEAD
         user._id !== loggedInUser?._id &&
         (regexPattern.test(user.fullName) ||
           user.msgs.some((msg) => regexPattern.test(msg.content)))
@@ -25,6 +32,13 @@ export function UserList({ filterBy, onRemoveUser, onSelectContact }) {
     });
   };
 
+=======
+        regexPattern.test(user.fullName) ||
+        user.msgs.some((msg) => regexPattern.test(msg.content))
+      )
+    })
+  }
+>>>>>>> 49399a8864d22b6ace0bf34734fc436a6e6be419
   return (
     <section className="user-list simple-cards-grid">
       {filteredUsers?.map((user) => (

@@ -15,9 +15,9 @@ export function UserIndex(props) {
   const users = useSelector((storeState) => storeState.userModule.users)
   // const filterBy = useSelector((storeState) => storeState.userModule.filterBy)
   const [filterBy, setFilterBy] = useState("")
+  const [isInputOpen, setIsInputOpen] = useState(false)
   const [selectedUserId, setSelectedUserId] = useState(null)
   const dispatch = useDispatch()
-
   const user = useSelector((storeState) => {
     return storeState.userModule.selectedUser
   })
@@ -42,9 +42,12 @@ export function UserIndex(props) {
   const handleUserClick = (userId) => {
     setSelectedUserId(userId)
   }
-  
+
   const handleInput = (e) => {
     setFilterBy(e.target.value)
+  }
+  const handleOpenInput = () => {
+    setIsInputOpen((prevIsInputOpen) => !prevIsInputOpen)
   }
 
   // if (!users) return <div>Loading...</div>
@@ -53,6 +56,7 @@ export function UserIndex(props) {
     <section className="home-page">
       <section className="contact-list">
         <AppHeader />
+<<<<<<< HEAD
         {/* <input
           type="text"
           placeholder="Search"
@@ -61,6 +65,29 @@ export function UserIndex(props) {
         /> */}
         {/* <UserFilter filterBy={filterBy} onChangeFilter={onChangeFilter} /> */}
         {/* <Link to="/user/edit">Add contact</Link> */}
+=======
+        <div className="svg-input-container">
+          <span
+            className="pointer search-svg"
+            onClick={() => handleOpenInput()}
+          >
+            🔎
+          </span>
+          {isInputOpen && (
+            <input
+              className={`search-input ${isInputOpen ? "open" : "close"}`}
+              type="text"
+              placeholder="Search"
+              value={filterBy}
+              onChange={(e) => handleInput(e)}
+            />
+          )}
+          {/* <UserFilter filterBy={filterBy} onChangeFilter={onChangeFilter} /> */}
+        </div>
+        <div className="add-contact">
+          <Link to="/user/edit">Add contact</Link>
+        </div>
+>>>>>>> 49399a8864d22b6ace0bf34734fc436a6e6be419
         <UserList
           filterBy={filterBy}
           // users={users}
