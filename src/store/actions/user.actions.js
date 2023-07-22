@@ -95,8 +95,8 @@ export function doLogout() {
 export function loadUsers() {
   return async (dispatch, getState) => {
     try {
-      const loggedInUser = getState().userModule.loggedInUser
-      const users = await userService.query(loggedInUser)
+      // const loggedInUser = getState().userModule.loggedInUser
+      const users = await userService.query()
       const action = {
         type: SET_USERS,
         users,
