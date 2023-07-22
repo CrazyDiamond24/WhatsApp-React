@@ -2,9 +2,10 @@ import { userService } from '../../services/user.service'
 import { authService } from '../../services/auth.service'
 import { msgService } from '../../services/msg.service'
 import { showErrorMsg, showSuccessMsg } from '../../services/event-bus.service'
+import { useNavigate } from 'react-router-dom'
 import {
   REMOVE_USER,
-  SET_FILTER_BY,
+  // SET_FILTER_BY,
   SET_USERS,
   SET_USER,
   SIGNUP,
@@ -12,6 +13,7 @@ import {
   LOGOUT,
   SET_LOGGEDIN_USER,
   ADD_MSG,
+  LOGIN_ERROR,
   ADD_CONTACT,
   ADD_AUTO_MSG,
 } from '../reducers/user.reducer'
@@ -51,15 +53,22 @@ export function doSignup(userCred) {
 export function doLogin(userCred) {
   return async (dispatch, getState) => {
     try {
+      const navigate = useNavigate()
       const user = await authService.login(userCred)
       const action = {
         type: LOGIN,
         user,
       }
       dispatch(action)
+      navigate('/')
       showSuccessMsg('like')
     } catch (error) {
-      showErrorMsg('username or email not found please signup')
+      const errorMsg = 'username not found please signup'
+      const ErrorAction = {
+        type: LOGIN_ERROR,
+        errorMsg,
+      }
+      dispatch(ErrorAction)
     }
   }
 }
@@ -156,8 +165,8 @@ export function addMsg(msgContent, recipientId, senderId) {
   }
 }
 
-export function setFilterBy(filterBy) {
-  return (dispatch) => {
-    dispatch({ type: SET_FILTER_BY, filterBy })
-  }
-}
+// export function setFilterBy(filterBy) {
+//   return (dispatch) => {
+//     dispatch({ type: SET_FILTER_BY, filterBy })
+//   }
+// }

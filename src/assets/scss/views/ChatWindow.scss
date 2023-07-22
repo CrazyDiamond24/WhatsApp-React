@@ -32,7 +32,10 @@
       border-radius: 10px;
       color: $clr4;
       max-width: max-content;
-
+      .timestamp {
+        color: $clr10;
+        font-size: .6875rem;
+      }
       &.sent {
         background-color: $secondaryClr;
         margin-inline-start: auto;

@@ -5,17 +5,19 @@ export const SET_USER = 'SET_USER'
 export const ADD_USER = 'ADD_USER'
 export const REMOVE_USER = 'REMOVE_USER'
 export const UPDATE_USER = 'UPDATE_USER'
-export const SET_FILTER_BY = 'SET_FILTER_BY'
+// export const SET_FILTER_BY = 'SET_FILTER_BY'
 export const SIGNUP = 'SIGNUP'
 export const ADD_MSG = 'ADD_MSG'
 export const ADD_CONTACT = 'ADD_CONTACT'
 export const LOGIN = 'LOGIN'
 export const LOGOUT = 'LOGOUT'
+export const LOGIN_ERROR = 'LOGIN_ERROR'
 export const SET_LOGGEDIN_USER = 'SET_LOGGEDIN_USER'
 export const ADD_AUTO_MSG = 'ADD_AUTO_MSG'
 
 const INITIAL_STATE = {
-  filterBy: {},
+  loginError: '',
+  // filterBy: {},
   selectedUser: null,
   users: null,
   loggedInUser: authService.getLoggedinUser,
@@ -28,11 +30,17 @@ export function userReducer(state = INITIAL_STATE, action = {}) {
         ...state,
         users: action.users,
       }
+    case LOGIN_ERROR:
+      return {
+        ...state,
+        loginError: action.errorMsg,
+      }
     case SIGNUP:
       return {
         ...state,
         loggedInUser: action.user,
         users: [...state.users, action.user],
+        loginError: '',
       }
     case LOGIN:
       return {
@@ -138,11 +146,11 @@ export function userReducer(state = INITIAL_STATE, action = {}) {
           user._id === action.user._id ? action.user : user
         ),
       }
-    case SET_FILTER_BY:
-      return {
-        ...state,
-        filterBy: { ...action.filterBy },
-      }
+    // case SET_FILTER_BY:
+    //   return {
+    //     ...state,
+    //     filterBy: { ...action.filterBy },
+    //   }
 
     default:
       return state
