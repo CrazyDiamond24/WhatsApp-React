@@ -5,6 +5,7 @@ export const REMOVE_USER = 'REMOVE_USER'
 export const UPDATE_USER = 'UPDATE_USER'
 export const SET_FILTER_BY = 'SET_FILTER_BY'
 export const SIGNUP = 'SIGNUP'
+export const ADD_MSG = 'ADD_MSG'
 export const LOGIN = 'LOGIN'
 export const LOGOUT = 'LOGOUT'
 export const SET_LOGGEDIN_USER = 'SET_LOGGEDIN_USER'
@@ -78,6 +79,31 @@ export function userReducer(state = INITIAL_STATE, action = {}) {
       return {
         ...state,
         loggedInUser: action.user,
+      }
+    case ADD_MSG:
+      return {
+        ...state,
+        users: state.users.map((user) =>
+          user._id === action.msg.senderId ||
+          user._id === action.msg.recipientId
+            ? { ...user, msgs: [...user.msgs, action.msg] }
+            : user
+        ),
+        loggedInUser:
+          state.loggedInUser._id === action.msg.senderId
+            ? {
+                ...state.loggedInUser,
+                msgs: [...state.loggedInUser.msgs, action.msg],
+              }
+            : state.loggedInUser,
+        selectedUser:
+          state.selectedUser &&
+          state.selectedUser._id === action.msg.recipientId
+            ? {
+                ...state.selectedUser,
+                msgs: [...state.selectedUser.msgs, action.msg],
+              }
+            : state.selectedUser,
       }
 
     case LOGOUT:

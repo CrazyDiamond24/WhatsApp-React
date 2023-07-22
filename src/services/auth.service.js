@@ -91,7 +91,7 @@ async function login(userCred) {
 async function signup(userCred) {
   console.log('userCred in front service', userCred)
   const user = await httpService.post('auth/signup', userCred)
-  console.log('userCred in front service after', userCred)
+  console.log('userCred in front service after', user)
   return saveLocalUser(user)
 }
 
@@ -115,11 +115,13 @@ function saveLocalUser(user) {
   user = {
     _id: user._id,
     username: user.username,
-    email: user.email,
-    stations: [],
-    imgUrl:
-      'https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg',
-    LikedSongs: [],
+    fullName: user.email,
+    msgs: user.msgs,
+    contacts: user.contacts,
+    groups: user.groups,
+    story: user.story,
+    img: user.img,
+    status: '',
   }
   sessionStorage.setItem(STORAGE_KEY_LOGGEDIN_USER, JSON.stringify(user))
   return user

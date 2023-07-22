@@ -10,12 +10,14 @@ import {
   LOGIN,
   LOGOUT,
   SET_LOGGEDIN_USER,
+  ADD_MSG,
 } from '../reducers/user.reducer'
 
 export function doSignup(userCred) {
   return async (dispatch, getState) => {
     try {
       const user = await authService.signup(userCred)
+      console.log('user in actions after back', user)
       const action = {
         type: SIGNUP,
         user,
@@ -119,21 +121,18 @@ export function removeUser(userId) {
 }
 
 export function addMsg(msgContent, userId) {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
     try {
-      const updatedUsers = await userService.createNewMsg(msgContent, userId)
-      console.log('updatedUsers', updatedUsers)
-
-      // const action = {
-      //   type: ADD_MSG,
-      //   updatedUsers,
-      // }
-      // dispatch(action)
-      // console.log("success")
-      // showSuccessMsg(`msg added `)
+      const loggedInUser = getState().userModule.loggedInUser
+      const msg = await userService.createNewMsg(
+        msgContent,
+        loggedInUser._id,
+        userId
+      )
+      const action = { type: ADD_MSG, msg }
+      dispatch(action)
     } catch (error) {
-      // showErrorMsg(`Cannot add msg`)
-      console.log('error')
+      console.log('error:', error)
     }
   }
 }

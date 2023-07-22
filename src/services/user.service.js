@@ -122,23 +122,9 @@ const gDefaultUsers = [
 
 var gUsers = _loadUsers()
 
-function query(filterBy) {
-  // const stations = await httpService.get(`station`)
-  // return stations
-  // let usersToReturn = gUsers
-  // console.log(filterBy)
-  // if (filterBy) {
-  //   const { fullName, username, img } = filterBy
-  //   usersToReturn = gUsers.filter(
-  //     (user) =>
-  //       user.fullName.toLowerCase().includes(fullName.toLowerCase()) &&
-  //       user.username.toLowerCase().includes(username.toLowerCase()) &&
-  //       user.img === img
-  //   );
+function query() {
   return httpService.get('contact')
 }
-// return Promise.resolve([...usersToReturn])
-// }
 
 async function getById(id) {
   console.log('id service front', id)
@@ -147,6 +133,22 @@ async function getById(id) {
   const user = await httpService.get(`contact/${id}`)
   console.log('user', user)
   return user
+}
+async function createNewMsg(msg, senderId, recipientId) {
+  const newMsg = {
+    senderId: senderId,
+    recipientId: recipientId,
+    content: msg,
+    timestamp: Date.now(),
+  }
+
+  // Add the message to the sender's messages array
+  await httpService.post(`contact/${senderId}/message`, newMsg)
+
+  // Add the message to the recipient's messages array
+  await httpService.post(`contact/${recipientId}/message`, newMsg)
+
+  return newMsg
 }
 
 function remove(id) {
@@ -179,18 +181,6 @@ function getEmptyUser() {
     contacts: [],
     msgs: [],
   }
-}
-
-async function createNewMsg(msg, userId) {
-  let loggedinUser = await authService.getLoggedinUser()
-  const newMsg = {
-    senderId: loggedinUser._id,
-    recipientId: userId,
-    content: msg,
-    timestamp: Date.now(),
-  }
-  console.log('newMsg', newMsg)
-  // return httpService.post('station', newMsg)
 }
 
 function _loadUsers() {
