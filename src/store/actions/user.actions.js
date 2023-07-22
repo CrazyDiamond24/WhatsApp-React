@@ -1,5 +1,6 @@
 import { userService } from '../../services/user.service'
 import { authService } from '../../services/auth.service'
+import { showErrorMsg, showSuccessMsg } from '../../services/event-bus.service'
 import {
   REMOVE_USER,
   SET_FILTER_BY,
@@ -9,55 +10,23 @@ import {
   LOGIN,
   LOGOUT,
   SET_LOGGEDIN_USER,
+  ADD_MSG,
+  ADD_CONTACT,
 } from '../reducers/user.reducer'
 
-export function loadUsers() {
+export function addContactToUser(name) {
   return async (dispatch, getState) => {
     try {
-      const users = await userService.query()
+      const loggedInUser = getState().userModule.loggedInUser
+      const contact = await userService.addContact(loggedInUser._id, name)
       const action = {
-        type: SET_USERS,
-        users,
+        type: ADD_CONTACT,
+        contact,
       }
       dispatch(action)
     } catch (error) {
       console.log('error:', error)
     }
-  }
-}
-
-export function setCurrUser(UserId) {
-  console.log('UserId', UserId)
-  return async (dispatch, getState) => {
-    try {
-      const user = await userService.getById(UserId)
-      const action = {
-        type: SET_USER,
-        user,
-      }
-      dispatch(action)
-    } catch (error) {
-      console.log('error:', error)
-    }
-  }
-}
-
-export function removeUser(userId) {
-  return async (dispatch) => {
-    try {
-      await userService.remove(userId)
-      const action = { type: REMOVE_USER, userId }
-      dispatch(action)
-      return 'Removed!'
-    } catch (error) {
-      console.log('error:', error)
-    }
-  }
-}
-
-export function setFilterBy(filterBy) {
-  return (dispatch) => {
-    dispatch({ type: SET_FILTER_BY, filterBy })
   }
 }
 
@@ -65,6 +34,7 @@ export function doSignup(userCred) {
   return async (dispatch, getState) => {
     try {
       const user = await authService.signup(userCred)
+      console.log('user in actions after back', user)
       const action = {
         type: SIGNUP,
         user,
@@ -120,5 +90,71 @@ export function doLogout() {
     } catch (error) {
       console.log('error:', error)
     }
+  }
+}
+export function loadUsers() {
+  return async (dispatch, getState) => {
+    try {
+      const loggedInUser = getState().userModule.loggedInUser
+      const users = await userService.query(loggedInUser)
+      const action = {
+        type: SET_USERS,
+        users,
+      }
+      dispatch(action)
+    } catch (error) {
+      console.log('error:', error)
+    }
+  }
+}
+export function setCurrUser(UserId) {
+  console.log('UserId', UserId)
+  return async (dispatch, getState) => {
+    try {
+      const user = await userService.getById(UserId)
+      const action = {
+        type: SET_USER,
+        user,
+      }
+      dispatch(action)
+    } catch (error) {
+      console.log('error:', error)
+    }
+  }
+}
+
+export function removeUser(userId) {
+  return async (dispatch) => {
+    try {
+      await userService.remove(userId)
+      const action = { type: REMOVE_USER, userId }
+      dispatch(action)
+      return 'Removed!'
+    } catch (error) {
+      console.log('error:', error)
+    }
+  }
+}
+
+export function addMsg(msgContent, userId) {
+  return async (dispatch, getState) => {
+    try {
+      const loggedInUser = getState().userModule.loggedInUser
+      const msg = await userService.createNewMsg(
+        msgContent,
+        loggedInUser._id,
+        userId
+      )
+      const action = { type: ADD_MSG, msg }
+      dispatch(action)
+    } catch (error) {
+      console.log('error:', error)
+    }
+  }
+}
+
+export function setFilterBy(filterBy) {
+  return (dispatch) => {
+    dispatch({ type: SET_FILTER_BY, filterBy })
   }
 }

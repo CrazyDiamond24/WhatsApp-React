@@ -1,5 +1,5 @@
 import { httpService } from './http.service'
-import { stationService } from './station.service'
+// import { stationService } from './station.service'
 import { utilService } from './util.service'
 
 const STORAGE_KEY_LOGGEDIN_USER = 'loggedinUser'
@@ -17,13 +17,13 @@ export const authService = {
   getLoggedinUserDetails,
   signupGuest,
   prepareData,
-  updateLatestStations,
+  // updateLatestStations,
   updateUser,
   updateStations,
   removeSong,
 }
 
-window.userService = userService
+window.authService = authService
 
 function getUsers() {
   return httpService.get(`user`)
@@ -89,7 +89,9 @@ async function login(userCred) {
 }
 
 async function signup(userCred) {
+  console.log('userCred in front service', userCred)
   const user = await httpService.post('auth/signup', userCred)
+  console.log('userCred in front service after', user)
   return saveLocalUser(user)
 }
 
@@ -113,11 +115,13 @@ function saveLocalUser(user) {
   user = {
     _id: user._id,
     username: user.username,
-    email: user.email,
-    stations: [],
-    imgUrl:
-      'https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg',
-    LikedSongs: [],
+    fullName: user.fullName,
+    msgs: user.msgs,
+    contacts: user.contacts,
+    groups: user.groups,
+    story: user.story,
+    img: user.img,
+    status: '',
   }
   sessionStorage.setItem(STORAGE_KEY_LOGGEDIN_USER, JSON.stringify(user))
   return user
@@ -125,11 +129,12 @@ function saveLocalUser(user) {
 
 function getLoggedinUser() {
   const user = JSON.parse(sessionStorage.getItem(STORAGE_KEY_LOGGEDIN_USER))
+  console.log('user', user)
   if (user) {
     if (user.username === 'guest') {
       return JSON.parse(sessionStorage.getItem(STORAGE_KEY_LOGGEDIN_USER))
     } else {
-      return httpService.get(`user/${user._id}`)
+      return httpService.get(`contact/${user._id}`)
     }
   }
 }
@@ -146,9 +151,9 @@ function prepareData(userCred) {
   }
 }
 
-async function updateLatestStations(stationId, user) {
-  const station = await stationService.getById(stationId)
-  const userCopy = { ...user }
-  userCopy.latestStations = [...userCopy.latestStations, station]
-  return httpService.put(`user/latest/${userCopy._id}`, userCopy)
-}
+// async function updateLatestStations(stationId, user) {
+//   const station = await stationService.getById(stationId)
+//   const userCopy = { ...user }
+//   userCopy.latestStations = [...userCopy.latestStations, station]
+//   return httpService.put(`user/latest/${userCopy._id}`, userCopy)
+// }
