@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { doSignup, doLogin } from '../store/actions/user.actions'
 export function LoginSignup() {
@@ -16,6 +16,10 @@ export function LoginSignup() {
     story: [],
   })
 
+  const loginError = useSelector(
+    (storeState) => storeState.userModule.loginError
+  )
+
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
@@ -27,7 +31,6 @@ export function LoginSignup() {
     e.preventDefault()
     if (hasAccount) {
       dispatch(doLogin(signupCred))
-      navigate('/')
     } else {
       if (!signupCred.fullName || !signupCred.password || !signupCred.username)
         return
@@ -78,6 +81,9 @@ export function LoginSignup() {
               required
             />
           </div>
+          {loginError && hasAccount && (
+            <div className="error-message">{loginError}</div>
+          )}
           <div className="form-group">
             <button type="submit">{hasAccount ? 'Login' : 'Sign Up'}</button>
           </div>

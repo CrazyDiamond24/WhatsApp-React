@@ -9,9 +9,11 @@ export const ADD_MSG = 'ADD_MSG'
 export const ADD_CONTACT = 'ADD_CONTACT'
 export const LOGIN = 'LOGIN'
 export const LOGOUT = 'LOGOUT'
+export const LOGIN_ERROR = 'LOGIN_ERROR'
 export const SET_LOGGEDIN_USER = 'SET_LOGGEDIN_USER'
 
 const INITIAL_STATE = {
+  loginError: '',
   filterBy: {},
   selectedUser: null,
   users: null,
@@ -65,11 +67,17 @@ export function userReducer(state = INITIAL_STATE, action = {}) {
         ...state,
         users: action.users,
       }
+    case LOGIN_ERROR:
+      return {
+        ...state,
+        loginError: action.errorMsg,
+      }
     case SIGNUP:
       return {
         ...state,
         loggedInUser: action.user,
         users: [...state.users, action.user],
+        loginError: '',
       }
     case LOGIN:
       return {
