@@ -10,10 +10,24 @@
   .user-header {
     display: flex;
     align-items: center;
-    gap: 10px;
     img {
       height: 50px;
       border-radius: 50%;
+      margin-left: 0;
+    }
+    .user-info-header {
+      display: flex;
+      gap: 10px;
+      white-space: nowrap;
+      align-items: center;
+    }
+  }
+  .header-login {
+    margin-left: 75%;
+    &:hover {
+      text-decoration: none;
+      color: $secondaryClr;
+      font-weight: bold;
     }
   }
 }

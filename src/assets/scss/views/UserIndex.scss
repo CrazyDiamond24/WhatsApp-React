@@ -1,6 +1,7 @@
 .home-page {
   display: flex;
   background: linear-gradient($primaryClr 1%, $clr2 80%);
+  width: 100vw;
   .contact-list {
     width: 30%;
   }

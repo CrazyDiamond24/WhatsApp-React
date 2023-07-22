@@ -20,7 +20,7 @@ function App() {
       <section className="main-app">
         <main className="container">
           <Routes>
-            <Route path="/" element={<UserIndex isDark={true} />} />
+            <Route path="/" element={<UserIndex />} />
             <Route path="/user/edit/:id?" element={<AddContact />} />
             <Route path="/about" element={<About />} />
             <Route path="/login" element={<LoginSignup />} />
