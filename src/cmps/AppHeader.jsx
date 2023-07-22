@@ -5,20 +5,20 @@ export function AppHeader(props) {
   const navigate = useNavigate()
 
   const loggedInUser = useSelector((storeState) => {
-    return storeState.userModule.loggedInUser
+    return storeState.authModule.loggedInUser
   })
 
   function onBack() {
     navigate(-1)
   }
 
-  const { fullName, img ,username } = loggedInUser
+  const { fullname, img, username } = loggedInUser
   return (
-    <header className='app-header'>
-  <section className='user-header'>
-          <img src={img} alt={username}></img>
-          <p>Welcome, {fullName}!</p>
-        </section>
+    <header className="app-header">
+      <section className="user-header">
+        <img src={img} alt={username}></img>
+        <p>Welcome, {fullname}!</p>
+      </section>
     </header>
   )
 }

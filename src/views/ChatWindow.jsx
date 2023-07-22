@@ -13,8 +13,9 @@ export function ChatWindow() {
   const dispatch = useDispatch()
 
   const loggedInUser = useSelector((storeState) => {
-    return storeState.userModule.loggedInUser
+    return storeState.authModule.loggedInUser
   })
+  console.log('loggedInUser', loggedInUser)
   const user = useSelector((storeState) => {
     return storeState.userModule.selectedUser
   })
