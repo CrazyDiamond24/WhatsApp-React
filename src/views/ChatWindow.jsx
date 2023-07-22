@@ -52,10 +52,17 @@ export function ChatWindow() {
     setMsgContent((prevMsg) => prevMsg + emoji)
   }
 
+  const getTimestamp = (timestamp) => {
+      const date = new Date(timestamp)
+      const hours = date.getHours().toString().padStart(2, '0')
+      const minutes = date.getMinutes().toString().padStart(2, '0')
+      return `${hours}:${minutes}`
+  }
+
   function onBack() {
     navigate('/')
   }
-
+  console.log('messages', messages)
   if (!user) return <h2>Select a user to chat</h2>
 
   return (
@@ -77,6 +84,7 @@ export function ChatWindow() {
             <div className='message-container'>
               <span>{message?.content}</span>
             </div>
+            <span className="timestamp">{getTimestamp(message.timestamp)}</span>
           </li>
         ))}
       </ul>
