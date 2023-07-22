@@ -2,13 +2,14 @@ import { Component, useEffect, useState } from 'react'
 import { userService } from '../services/user.service'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useForm } from '../customHooks/useForm'
+import { useDispatch } from 'react-redux'
 
-export function UserEdit(props) {
-  const [user, handleChange, setUser] = useForm(userService.getEmptyUser())
+export function AddContact(props) {
+  const [name, setName] = useState('')
 
   const params = useParams()
   const navigate = useNavigate()
-
+  const dispatch = useDispatch()
   useEffect(() => {
     loadUser()
   }, [])
@@ -25,28 +26,27 @@ export function UserEdit(props) {
     }
   }
 
-  async function onSaveUser(ev) {
-    ev.preventDefault()
-    try {
-      await userService.save({ ...user })
-      navigate('/')
-    } catch (error) {
-      console.log('error:', error)
-    }
+  function handleChange() {
+    setName(e.target.value)
   }
 
-  const { fullName } = user
+  function onAddContact(ev) {
+    ev.preventDefault()
+    dispatch(AddContact(name))
+    navigate('/')
+  }
+
   return (
-    <section className='user-edit'>
-      <h1>{user._id ? 'Edit' : 'Add'} Contact</h1>
-      <form onSubmit={onSaveUser}>
-        <label htmlFor='name'>Text</label>
+    <section className="user-edit">
+      <h1>Add Contact</h1>
+      <form onSubmit={onAddContact}>
+        <label htmlFor="name">Text</label>
         <input
-          value={fullName}
+          value={name}
           onChange={handleChange}
-          type='text'
-          name='fullName'
-          id='fullName'
+          type="text"
+          name="fullName"
+          id="fullName"
         />
 
         <button>Save</button>

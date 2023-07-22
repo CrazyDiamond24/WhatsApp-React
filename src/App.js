@@ -3,7 +3,7 @@ import './assets/scss/global.scss'
 import { UserIndex } from './views/UserIndex'
 import { About } from './views/About'
 import { UserDetails } from './views/UserDetails'
-import { UserEdit } from './views/UserEdit'
+import { AddContact } from './views/AddContact'
 import { LoginSignup } from './views/LoginSignup'
 
 function App() {
@@ -13,7 +13,7 @@ function App() {
         <main className="container">
           <Routes>
             <Route path="/" element={<UserIndex isDark={true} />} />
-            <Route path="/user/edit/:id?" element={<UserEdit />} />
+            <Route path="/user/edit/:id?" element={<AddContact />} />
             <Route path="/about" element={<About />} />
             <Route path="/login" element={<LoginSignup />} />
           </Routes>
