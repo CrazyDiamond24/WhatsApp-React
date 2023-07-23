@@ -3,12 +3,11 @@ import { emojisService } from '../services/emojis.service'
 
 export function Emojis({ onSelectEmoji }) {
   const [isExpanded, setIsExpanded] = useState(false)
-  const [emojisList, setEmojisList] = useState([])
+  const [emojisList, setEmojisList] = useState({})
 
   useEffect(() => {
     const loadEmojis = async () => {
       const emojis = await emojisService.fetchEmojis()
-      console.log('emojis', emojis)
       setEmojisList(emojis)
     }
     loadEmojis()
@@ -28,14 +27,19 @@ export function Emojis({ onSelectEmoji }) {
       </div>
       {isExpanded && (
         <div className="emojis-window">
-          {emojisList?.map((emoji, index) => (
-            <span
-              key={index}
-              className="emoji"
-              onClick={() => handleEmojiClick(emoji)}
-            >
-              {emoji}
-            </span>
+          {Object.entries(emojisList).map(([category, emojis]) => (
+            <div key={category}>
+              <h3>{category}</h3>
+              {emojis?.map((emoji, index) => (
+                <span
+                  key={index}
+                  className="emoji"
+                  onClick={() => handleEmojiClick(emoji)}
+                >
+                  {emoji}
+                </span>
+              ))}
+            </div>
           ))}
         </div>
       )}

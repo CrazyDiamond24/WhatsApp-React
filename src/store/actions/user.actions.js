@@ -153,14 +153,17 @@ export function removeUser(userId) {
   }
 }
 
-export function addMsg(msgContent, recipientId, senderId) {
+export function addMsg(msgContent, recipientId, senderId, messageType) {
+  console.log('message type', messageType)
   return async (dispatch, getState) => {
     try {
       const msg = await msgService.createNewMsg(
         msgContent,
         senderId,
-        recipientId
+        recipientId,
+        messageType
       )
+
       const loggedInUserId = getState().userModule.loggedInUser._id
       const type = recipientId !== loggedInUserId ? ADD_MSG : ADD_AUTO_MSG
       const action = { type, msg }

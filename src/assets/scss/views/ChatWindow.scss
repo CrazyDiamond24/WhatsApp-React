@@ -39,6 +39,10 @@
       border-radius: 10px;
       color: $clr4;
       max-width: max-content;
+
+      .gif-msg {
+        height: 200px;
+      }
       .timestamp {
         color: $clr10;
         font-size: 0.6875rem;
