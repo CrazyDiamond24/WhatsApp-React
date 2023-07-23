@@ -153,7 +153,7 @@ export function removeUser(userId) {
 }
 
 export function addMsg(msgContent, recipientId, senderId, messageType) {
-  console.log('message type' , messageType)
+  console.log('message type', messageType)
   return async (dispatch, getState) => {
     try {
       const msg = await msgService.createNewMsg(
