@@ -10,6 +10,8 @@ export function MsgOptionsModal({ position, closeModal , user ,loggedInUser , me
        dispatch(removeMsg(message, user._id ,loggedInUser._id))
         closeModal()
     }
+    console.log('user', user)
+    console.log('loggedInUser', loggedInUser)
     
   return (
     <>

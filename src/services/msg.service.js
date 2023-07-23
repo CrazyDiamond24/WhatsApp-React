@@ -8,7 +8,7 @@ export const msgService = {
 
 async function createNewMsg(msg, senderId, recipientId) {
     const newMsg = {
-      _id: utilService.makeId(12),
+      id: utilService.makeId(12),
       senderId: senderId,
       recipientId: recipientId,
       content: msg,
@@ -21,7 +21,8 @@ async function createNewMsg(msg, senderId, recipientId) {
   
   async function deleteMsg(msg, recipientId , senderId) {
     console.log('msg', msg)
+    console.log('sender', senderId)
     const msgId = msg._id
-  await httpService.put(`contact/message/`, msgId ,senderId)
+  await httpService.put(`contact/message/edit`, {msgId ,senderId})
   // await httpService.delete(`contact/${recipientId}/message/delete/${msg._id}`)
 }
