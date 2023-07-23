@@ -1,8 +1,8 @@
-import { userService } from "../../services/user.service"
-import { authService } from "../../services/auth.service"
-import { msgService } from "../../services/msg.service"
-import { showErrorMsg, showSuccessMsg } from "../../services/event-bus.service"
-import { useNavigate } from "react-router-dom"
+import { userService } from '../../services/user.service'
+import { authService } from '../../services/auth.service'
+import { msgService } from '../../services/msg.service'
+import { showErrorMsg, showSuccessMsg } from '../../services/event-bus.service'
+import { useNavigate } from 'react-router-dom'
 import {
   REMOVE_USER,
   // SET_FILTER_BY,
@@ -17,7 +17,8 @@ import {
   ADD_CONTACT,
   ADD_AUTO_MSG,
   REMOVE_MSG,
-} from "../reducers/user.reducer"
+  REMOVE_CONTACT,
+} from '../reducers/user.reducer'
 
 export function addContactToUser(name) {
   return async (dispatch, getState) => {
@@ -30,7 +31,7 @@ export function addContactToUser(name) {
       }
       dispatch(action)
     } catch (error) {
-      console.log("error:", error)
+      console.log('error:', error)
     }
   }
 }
@@ -39,14 +40,14 @@ export function doSignup(userCred) {
   return async (dispatch, getState) => {
     try {
       const user = await authService.signup(userCred)
-      console.log("user in actions after back", user)
+      console.log('user in actions after back', user)
       const action = {
         type: SIGNUP,
         user,
       }
       dispatch(action)
     } catch (error) {
-      console.log("error:", error)
+      console.log('error:', error)
     }
   }
 }
@@ -56,16 +57,16 @@ export function doLogin(userCred) {
     try {
       // const navigate = useNavigate()
       const user = await authService.login(userCred)
-      console.log("user", user)
+      console.log('user', user)
       const action = {
         type: LOGIN,
         user,
       }
-      console.log("hi")
+      console.log('hi')
       dispatch(action)
-      console.log("hi")
+      console.log('hi')
       // window.location.href = '/'
-      showSuccessMsg("like")
+      showSuccessMsg('like')
     } catch (err) {
       // const errorMsg = 'username not found please signup'
       // const ErrorAction = {
@@ -74,7 +75,7 @@ export function doLogin(userCred) {
       // }
       // window.location.href = '/login'
       // dispatch(ErrorAction)
-      console.log("erorrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr", err)
+      console.log('erorrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr', err)
     }
   }
 }
@@ -91,7 +92,7 @@ export function getUser() {
       dispatch(action)
       return user
     } catch (error) {
-      console.log("error:", error)
+      console.log('error:', error)
     }
   }
 }
@@ -105,7 +106,7 @@ export function doLogout() {
       }
       dispatch(action)
     } catch (error) {
-      console.log("error:", error)
+      console.log('error:', error)
     }
   }
 }
@@ -120,12 +121,29 @@ export function loadUsers() {
       }
       dispatch(action)
     } catch (error) {
-      console.log("error:", error)
+      console.log('error:', error)
     }
   }
 }
+
+export function removeContactFromUser(loggedInUserId, contactId) {
+  return async (dispatch, getState) => {
+    try {
+      await userService.removeContact(loggedInUserId, contactId)
+      const action = {
+        type: REMOVE_CONTACT,
+        contactId,
+        loggedInUserId,
+      }
+      dispatch(action)
+    } catch (error) {
+      console.log('error:', error)
+    }
+  }
+}
+
 export function setCurrUser(UserId) {
-  console.log("UserId", UserId)
+  console.log('UserId', UserId)
   return async (dispatch, getState) => {
     try {
       const user = await userService.getById(UserId)
@@ -135,7 +153,7 @@ export function setCurrUser(UserId) {
       }
       dispatch(action)
     } catch (error) {
-      console.log("error:", error)
+      console.log('error:', error)
     }
   }
 }
@@ -146,9 +164,9 @@ export function removeUser(userId) {
       await userService.remove(userId)
       const action = { type: REMOVE_USER, userId }
       dispatch(action)
-      return "Removed!"
+      return 'Removed!'
     } catch (error) {
-      console.log("error:", error)
+      console.log('error:', error)
     }
   }
 }
@@ -169,7 +187,7 @@ export function addMsg(msgContent, recipientId, senderId, messageType) {
       const action = { type, msg }
       dispatch(action)
     } catch (error) {
-      console.log("error:", error)
+      console.log('error:', error)
     }
   }
 }
@@ -181,7 +199,7 @@ export function removeMsg(messege, recipientId, senderId) {
       const action = { type: REMOVE_MSG, messege }
       dispatch(action)
     } catch (error) {
-      console.log("error:", error)
+      console.log('error:', error)
     }
   }
 }

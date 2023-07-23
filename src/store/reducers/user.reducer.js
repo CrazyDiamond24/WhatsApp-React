@@ -1,23 +1,24 @@
-import { authService } from "../../services/auth.service"
+import { authService } from '../../services/auth.service'
 
-export const SET_USERS = "SET_USERS"
-export const SET_USER = "SET_USER"
-export const ADD_USER = "ADD_USER"
-export const REMOVE_USER = "REMOVE_USER"
-export const UPDATE_USER = "UPDATE_USER"
+export const SET_USERS = 'SET_USERS'
+export const SET_USER = 'SET_USER'
+export const ADD_USER = 'ADD_USER'
+export const REMOVE_USER = 'REMOVE_USER'
+export const UPDATE_USER = 'UPDATE_USER'
 // export const SET_FILTER_BY = 'SET_FILTER_BY'
-export const SIGNUP = "SIGNUP"
-export const ADD_MSG = "ADD_MSG"
-export const ADD_CONTACT = "ADD_CONTACT"
-export const LOGIN = "LOGIN"
-export const LOGOUT = "LOGOUT"
-export const LOGIN_ERROR = "LOGIN_ERROR"
-export const SET_LOGGEDIN_USER = "SET_LOGGEDIN_USER"
-export const ADD_AUTO_MSG = "ADD_AUTO_MSG"
-export const REMOVE_MSG = "REMOVE_MSG"
+export const SIGNUP = 'SIGNUP'
+export const ADD_MSG = 'ADD_MSG'
+export const ADD_CONTACT = 'ADD_CONTACT'
+export const REMOVE_CONTACT = 'REMOVE_CONTACT'
+export const LOGIN = 'LOGIN'
+export const LOGOUT = 'LOGOUT'
+export const LOGIN_ERROR = 'LOGIN_ERROR'
+export const SET_LOGGEDIN_USER = 'SET_LOGGEDIN_USER'
+export const ADD_AUTO_MSG = 'ADD_AUTO_MSG'
+export const REMOVE_MSG = 'REMOVE_MSG'
 
 const INITIAL_STATE = {
-  loginError: "",
+  loginError: '',
   // filterBy: {},
   selectedUser: null,
   users: null,
@@ -31,6 +32,16 @@ export function userReducer(state = INITIAL_STATE, action = {}) {
         ...state,
         users: action.users,
       }
+    case REMOVE_CONTACT:
+      return {
+        ...state,
+        loggedInUser: {
+          ...state.loggedInUser,
+          contacts: state.loggedInUser.contacts.filter(
+            (contact) => contact._id !== action.contactId
+          ),
+        },
+      }
     case LOGIN_ERROR:
       return {
         ...state,
@@ -41,7 +52,7 @@ export function userReducer(state = INITIAL_STATE, action = {}) {
         ...state,
         loggedInUser: action.user,
         users: [...state.users, action.user],
-        loginError: "",
+        loginError: '',
       }
     case LOGIN:
       return {
