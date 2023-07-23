@@ -6,10 +6,13 @@ import { addMsg, addAutoMsg } from '../store/actions/user.actions'
 import { Emojis } from '../cmps/Emojis'
 import { ReactComponent as TextingSVG } from '../assets/imgs/texting.svg'
 import { LoginSignup } from './LoginSignup'
+import { GIPHY } from '../cmps/GIPHY'
 
 export function ChatWindow() {
   const [msgContent, setMsgContent] = useState('')
   const messagesContainerRef = useRef(null)
+  const [selectedGif, setSelectedGif] = useState('')
+  const [sentGifs, setSentGifs] = useState([])
 
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -78,6 +81,15 @@ export function ChatWindow() {
     setMsgContent((prevMsg) => prevMsg + emoji)
   }
 
+  function handleGifSelect(gif, gifImgUrl) {
+    const newGif = gifImgUrl
+    setSentGifs((prevSentGifs) => [...prevSentGifs, newGif])
+    console.log(newGif, "that's the new gif url")
+    dispatch(
+      addMsg(gif.images.downsized.url, user._id, loggedInUser._id, 'image')
+    )
+  }
+
   const getTimestamp = (timestamp) => {
     const date = new Date(timestamp)
     const hours = date.getHours().toString().padStart(2, '0')
@@ -108,18 +120,24 @@ export function ChatWindow() {
                   message.senderId === loggedInUser?._id ? 'sent' : 'received'
                 }`}
               >
-                <div className='message-container'>
-                  <span>{message?.content}</span>
-                </div>
+                {message.type === 'image' ? (
+                  <div className='message-container'>
+                    <img className='gif-msg' src={message?.content} alt='GIF' />
+                  </div>
+                ) : (
+                  <div className='message-container'>
+                    <span>{message?.content}</span>
+                  </div>
+                )}
                 <span className='timestamp'>
                   {getTimestamp(message.timestamp)}
                 </span>
               </li>
             ))}
           </ul>
-
           <form className='message-input' onSubmit={(e) => handelSendMsg(e)}>
             <Emojis onSelectEmoji={handleEmojiSelect} />
+            <GIPHY onSelectGif={handleGifSelect} />
             <input
               type='text'
               placeholder='Type a message...'
