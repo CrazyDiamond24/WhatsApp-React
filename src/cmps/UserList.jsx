@@ -3,7 +3,9 @@ import { UserPreview } from './UserPreview'
 import { useSelector } from 'react-redux'
 
 export function UserList({ filterBy, onRemoveUser, onSelectContact }) {
+
   const [filteredUsers, setFilteredUsers] = useState([])
+  
   const users = useSelector((storeState) => storeState.userModule.users)
   const loggedInUser = useSelector((storeState) => {
     return storeState.userModule.loggedInUser
@@ -14,7 +16,7 @@ export function UserList({ filterBy, onRemoveUser, onSelectContact }) {
     setFilteredUsers(filteredUsers)
   }, [filterBy, users])
 
-  const filterUsers = (users, filterBy) => {
+function filterUsers(users, filterBy){
     const regexPattern = new RegExp(filterBy, 'i')
     return users?.filter((user) => {
       return (

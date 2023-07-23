@@ -1,15 +1,16 @@
-import { Component, useEffect, useState } from 'react'
-import { userService } from '../services/user.service'
+import { useState } from 'react'
+
 import { useNavigate, useParams } from 'react-router-dom'
-import { useForm } from '../customHooks/useForm'
 import { useDispatch } from 'react-redux'
 import { addContactToUser } from '../store/actions/user.actions'
+
 export function AddContact(props) {
   const [name, setName] = useState('')
 
   const params = useParams()
   const navigate = useNavigate()
   const dispatch = useDispatch()
+
   // useEffect(() => {
   //   loadUser()
   // }, [])
