@@ -1,4 +1,8 @@
 import emojiData from 'emoji-datasource'
+import { GiphyFetch } from '@giphy/js-fetch-api'
+import { utilService } from '../services/util.service'
+
+const giphyFetch = new GiphyFetch('KRJj7rArYYq9avub9yRoWar6P2SvYhje')
 
 function fetchEmojis() {
   const emojisByCategory = emojiData.reduce((categories, emoji) => {
@@ -14,6 +18,25 @@ function fetchEmojis() {
   return emojisByCategory
 }
 
+async function fetchGiphy(query, limit = 20) {
+  try {
+    const cacheKey = `giphy_${query}`
+    const cachedResult = utilService.loadFromStorage(cacheKey)
+
+    if (cachedResult) {
+      return cachedResult
+    } else {
+      const gifs = await giphyFetch.search(query, { limit })
+      utilService.saveToStorage(cacheKey, gifs.data)
+      return gifs.data
+    }
+  } catch (error) {
+    console.error('Error fetching GIFs:', error)
+    return []
+  }
+}
+
 export const emojisService = {
   fetchEmojis,
+  fetchGiphy,
 }

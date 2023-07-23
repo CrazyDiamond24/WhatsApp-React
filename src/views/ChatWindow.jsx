@@ -6,13 +6,12 @@ import { addMsg } from '../store/actions/user.actions'
 import { Emojis } from '../cmps/Emojis'
 import { ReactComponent as TextingSVG } from '../assets/imgs/texting.svg'
 import { MsgOptions } from '../cmps/MsgOptions'
-import { GIPHY } from '../cmps/GIPHY'
+import { Giphy } from '../cmps/Giphy'
+import { useAutoAnimate } from '@formkit/auto-animate/react'
 
 export function ChatWindow() {
   const [msgContent, setMsgContent] = useState('')
   const [isHovered, setIsHovered] = useState(null)
-  const messagesContainerRef = useRef(null)
-  const [selectedGif, setSelectedGif] = useState('')
   const [sentGifs, setSentGifs] = useState([])
 
   const navigate = useNavigate()
@@ -38,9 +37,9 @@ export function ChatWindow() {
     : []
 
   useEffect(() => {
-    if (messagesContainerRef.current) {
-      messagesContainerRef.current.scrollTop =
-        messagesContainerRef.current.scrollHeight
+    const container = document.querySelector('.conversation-container')
+    if (container) {
+      container.scrollTop = container.scrollHeight
     }
   }, [messages])
 
@@ -66,7 +65,7 @@ export function ChatWindow() {
     dispatch(addMsg(msgContent, user._id, loggedInUser._id))
 
     //hardcoded - ready for real use
-    if (user.username === 'john.doe' || 'jane.smith' || 'emily.brown') {
+    if (user.username) {
       setTimeout(() => {
         const autoMessage = getAutoResponse()
         dispatch(addMsg(autoMessage, loggedInUser._id, user._id))
@@ -74,7 +73,7 @@ export function ChatWindow() {
     }
   }
 
-  function handelInputChange(e) {
+  function handleInputChange(e) {
     setMsgContent(e.target.value)
   }
 
@@ -92,7 +91,7 @@ export function ChatWindow() {
     setMsgContent((prevMsg) => prevMsg + emoji)
   }
 
-  function handleGifSelect(gif, gifImgUrl) {
+  function handleGifSelect(gifImgUrl) {
     const newGif = gifImgUrl
     setSentGifs((prevSentGifs) => [...prevSentGifs, newGif])
     dispatch(addMsg(newGif, user._id, loggedInUser._id, 'image'))
@@ -105,23 +104,17 @@ export function ChatWindow() {
     return `${hours}:${minutes}`
   }
 
-  function onBack() {
-    navigate('/')
-  }
-
+  const [animationParent] = useAutoAnimate()
   return (
-    <div className='chat-window'>
+    <div className='chat-window' ref={animationParent}>
       {user ? (
         <>
           <div className='header-area'>
             <img src={user?.img} alt={user?.username} />
             <h2>{user?.fullName}</h2>
-            <Link to='/login'>Login</Link>
           </div>
-          <ul
-            className='conversation-container flex'
-            ref={messagesContainerRef}
-          >
+          =
+          <ul className='conversation-container flex' ref={animationParent}>
             {messages?.map((message, index) => (
               <li
                 key={index}
@@ -149,12 +142,12 @@ export function ChatWindow() {
           </ul>
           <form className='message-input' onSubmit={(e) => handelSendMsg(e)}>
             <Emojis onSelectEmoji={handleEmojiSelect} />
-            <GIPHY onSelectGif={handleGifSelect} />
+            <Giphy onSelectGif={handleGifSelect} />
             <input
               type='text'
               placeholder='Type a message...'
               value={msgContent}
-              onChange={handelInputChange}
+              onChange={handleInputChange}
             />
             <input type='submit' value='Send' />
           </form>
