@@ -1,4 +1,5 @@
 import { httpService } from './http.service.js'
+import { utilService } from './util.service.js'
 
 export const msgService = {
     createNewMsg,
@@ -7,6 +8,7 @@ export const msgService = {
 
 async function createNewMsg(msg, senderId, recipientId) {
     const newMsg = {
+      _id: utilService.makeId(12),
       senderId: senderId,
       recipientId: recipientId,
       content: msg,
