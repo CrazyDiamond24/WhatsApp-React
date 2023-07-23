@@ -4,6 +4,7 @@ import { emojisService } from '../services/emojis.service'
 export function Emojis({ onSelectEmoji }) {
   const [isExpanded, setIsExpanded] = useState(false)
   const [emojisList, setEmojisList] = useState({})
+  const [selectedCategory, setSelectedCategory] = useState('Smileys & Emotion')
 
   useEffect(() => {
     const loadEmojis = async () => {
@@ -17,8 +18,62 @@ export function Emojis({ onSelectEmoji }) {
     onSelectEmoji(emoji)
   }
 
+  const handleCategoryClick = (category) => {
+    setSelectedCategory(category)
+  }
+
+  const excludedCategories = ['Component', 'Flags']
+
+  const brokenEmojis = [
+    '🫨',
+    '🩷',
+    '🩶',
+    '🩵',
+    '🪮',
+    '🪭',
+    '🫸',
+    '🫷',
+    '🪻',
+    '🪼',
+    '🪽',
+    '🪿',
+    '🫎',
+    '🫏',
+    '🫛',
+    '🫚',
+    '🪯',
+    '🛜',
+    '☺️',
+    '❤️‍🩹',
+  ]
+
+  // Function to map category names to their corresponding emojis
+  const getCategoryEmoji = (categoryName) => {
+    switch (categoryName) {
+      case 'Animals & Nature':
+        return '🌷'
+      case 'People & Body':
+        return '🤵‍♀️'
+      case 'Smileys & Emotion':
+        return '🙂'
+      case 'Objects':
+        return '💡'
+      case 'Food & Drink':
+        return '🍔'
+      case 'Travel & Places':
+        return '🚗'
+      case 'Activities':
+        return '🏀'
+      case 'Symbols':
+        return '🔠'
+
+      default:
+        return '📁'
+    }
+  }
+
   return (
-    <div className="emojis-container">
+    <div className='emojis-container'>
       <div
         className={`smiley ${isExpanded ? 'expanded' : ''}`}
         onClick={() => setIsExpanded((prevState) => !prevState)}
@@ -27,21 +82,50 @@ export function Emojis({ onSelectEmoji }) {
         😀
       </div>
       {isExpanded && (
-        <div className="emojis-window">
-          {Object.entries(emojisList).map(([category, emojis]) => (
-            <div key={category}>
-              <h3>{category}</h3>
-              {emojis?.map((emoji, index) => (
-                <span
-                  key={index}
-                  className="emoji"
-                  onClick={() => handleEmojiClick(emoji)}
+        <div className='emojis-window'>
+          {Object.entries(emojisList).map(([category, emojis]) => {
+            if (excludedCategories.includes(category)) {
+              return null
+            }
+
+            const filteredEmojis = emojis
+              .filter((emoji) => !brokenEmojis.includes(emoji))
+              .reverse()
+
+            const gridClass =
+              category === 'Animals & Nature' || category === 'People & Body'
+                ? 'emoji-grid six-columns'
+                : 'emoji-grid seven-columns'
+
+            return (
+              <div className='category-wrapper' title={category} key={category}>
+                <div
+                  className={`emoji-category ${
+                    category === selectedCategory ? 'selected' : ''
+                  }`}
+                  onClick={() => handleCategoryClick(category)}
                 >
-                  {emoji}
-                </span>
-              ))}
-            </div>
-          ))}
+                  {getCategoryEmoji(category)}
+                </div>
+
+                <div
+                  className={`emoji-grid ${
+                    category === selectedCategory ? 'visible' : ''
+                  } ${gridClass}`}
+                >
+                  {filteredEmojis.map((emoji, index) => (
+                    <span
+                      key={index}
+                      className='emoji'
+                      onClick={() => handleEmojiClick(emoji)}
+                    >
+                      {emoji}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )
+          })}
         </div>
       )}
     </div>
