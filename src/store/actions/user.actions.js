@@ -55,6 +55,7 @@ export function doLogin(userCred) {
     try {
       // const navigate = useNavigate()
       const user = await authService.login(userCred)
+      console.log('user', user)
       const action = {
         type: LOGIN,
         user,
@@ -62,15 +63,17 @@ export function doLogin(userCred) {
       console.log('hi')
       dispatch(action)
       console.log('hi')
-      // navigate('/')
+      // window.location.href = '/'
       showSuccessMsg('like')
-    } catch (error) {
+    } catch (err) {
       // const errorMsg = 'username not found please signup'
       // const ErrorAction = {
       //   type: LOGIN_ERROR,
       //   errorMsg,
       // }
+      // window.location.href = '/login'
       // dispatch(ErrorAction)
+      console.log('erorrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr', err)
     }
   }
 }

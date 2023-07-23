@@ -27,11 +27,11 @@ export function LoginSignup() {
     setHasAccount((prevHasAccount) => !prevHasAccount)
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault()
     if (hasAccount) {
-      console.log('hi')
       dispatch(doLogin(signupCred))
+      navigate('/')
     } else {
       if (!signupCred.fullName || !signupCred.password || !signupCred.username)
         return
