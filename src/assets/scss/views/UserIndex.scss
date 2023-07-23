@@ -1,6 +1,10 @@
 .home-page {
   display: flex;
-  justify-content: flex-start;
+  background: linear-gradient($primaryClr 1%, $clr2 80%);
+  width: 100vw;
+  .contact-list {
+    width: 30%;
+  }
   .svg-input-container {
     position: relative;
     margin: rem(10px) 0 0 rem(10px);

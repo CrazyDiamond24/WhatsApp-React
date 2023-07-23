@@ -75,7 +75,7 @@ export function UserIndex(props) {
           {/* <UserFilter filterBy={filterBy} onChangeFilter={onChangeFilter} /> */}
         </div>
         <div className="add-contact">
-          <Link to="/user/edit">Add contact</Link>
+          {/* <Link to="/user/edit">Add contact</Link> */}
         </div>
         <UserList
           filterBy={filterBy}
@@ -84,10 +84,7 @@ export function UserIndex(props) {
           onSelectContact={handleUserClick}
         />
       </section>
-
-      <section className="chat-window">
         <ChatWindow key={user?._id} />
-      </section>
     </section>
   )
 }
