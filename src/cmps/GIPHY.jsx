@@ -4,7 +4,7 @@ import { emojisService } from '../services/emojis.service'
 export function Giphy({ onSelectGif }) {
   const [isExpanded, setIsExpanded] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
-  const [searchedGifs, setSearchedGifs] = useState([]) 
+  const [searchedGifs, setSearchedGifs] = useState([])
 
   const handleSearchInputChange = (e) => {
     const { value } = e.target
@@ -26,7 +26,7 @@ export function Giphy({ onSelectGif }) {
         const gifs = await emojisService.fetchGiphy(value)
         setSearchedGifs(gifs)
       } else {
-        setSearchedGifs([]) 
+        setSearchedGifs([])
       }
     }
 
@@ -35,8 +35,9 @@ export function Giphy({ onSelectGif }) {
         fetchGifs(searchQuery)
       }, 500)
     } else {
-      setSearchedGifs([]) 
+      setSearchedGifs([])
     }
+
     return () => {
       if (debounceTimeout) {
         clearTimeout(debounceTimeout)

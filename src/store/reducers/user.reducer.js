@@ -9,18 +9,20 @@ export const UPDATE_USER = 'UPDATE_USER'
 export const SIGNUP = 'SIGNUP'
 export const ADD_MSG = 'ADD_MSG'
 export const ADD_CONTACT = 'ADD_CONTACT'
+export const REMOVE_CONTACT = 'REMOVE_CONTACT'
 export const LOGIN = 'LOGIN'
 export const LOGOUT = 'LOGOUT'
 export const LOGIN_ERROR = 'LOGIN_ERROR'
 export const SET_LOGGEDIN_USER = 'SET_LOGGEDIN_USER'
 export const ADD_AUTO_MSG = 'ADD_AUTO_MSG'
+export const REMOVE_MSG = 'REMOVE_MSG'
 
 const INITIAL_STATE = {
   loginError: '',
   // filterBy: {},
   selectedUser: null,
   users: null,
-  loggedInUser: authService.getLoggedinUser,
+  loggedInUser: authService.getLoggedinUser(),
 }
 
 export function userReducer(state = INITIAL_STATE, action = {}) {
@@ -29,6 +31,16 @@ export function userReducer(state = INITIAL_STATE, action = {}) {
       return {
         ...state,
         users: action.users,
+      }
+    case REMOVE_CONTACT:
+      return {
+        ...state,
+        loggedInUser: {
+          ...state.loggedInUser,
+          contacts: state.loggedInUser.contacts.filter(
+            (contact) => contact._id !== action.contactId
+          ),
+        },
       }
     case LOGIN_ERROR:
       return {
@@ -77,6 +89,16 @@ export function userReducer(state = INITIAL_STATE, action = {}) {
                 msgs: [...state.selectedUser.msgs, action.msg],
               }
             : state.selectedUser,
+      }
+    case REMOVE_MSG:
+      return {
+        ...state,
+        loggedInUser: state.loggedInUser.msgs.filter(
+          (m) => m._id !== action.msg._id
+        ),
+        selectedUser: state.selectedUser.msgs.filter(
+          (m) => m._id !== action.msg._id
+        ),
       }
 
     case ADD_AUTO_MSG:

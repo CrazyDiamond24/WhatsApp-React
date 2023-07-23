@@ -22,6 +22,7 @@ export function Emojis({ onSelectEmoji }) {
       <div
         className={`smiley ${isExpanded ? 'expanded' : ''}`}
         onClick={() => setIsExpanded((prevState) => !prevState)}
+        title='Emo'
       >
         😀
       </div>

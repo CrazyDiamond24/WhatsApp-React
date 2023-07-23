@@ -66,17 +66,20 @@
     border-top: 1px solid $clr8;
     width: 100%;
     border-radius: 1rem;
-    
-    input[type='text'] {
+
+    .chat-msg-input {
+      text-indent: 80px;
       flex-grow: 1;
       margin-right: 10px;
+    }
+
+    input[type='text'] {
       padding: 10px;
       border-radius: 10px;
       border: 1px solid $clr8;
     }
 
     input[type='submit'] {
-      
       background-color: $clr6;
       color: $clr7;
       border: none;
@@ -89,33 +92,9 @@
       }
     }
   }
-
-  .giphy-grid {
-    position: absolute;
-    padding: 10px;
-    bottom: 100px;
-    width: 400px;
-    max-height: 300px;
-    overflow-y: scroll;
+  .multimedia-container {
     display: flex;
-    gap: 3px;
-    flex-wrap: wrap;
-    background-color: rgba($clr3, 0.2);
-    border-radius: 1rem;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); 
-  }
-  
-  
-  .giphy-grid img {
-    max-height: 100px;
-    flex-grow: 1; 
-    object-fit: cover; 
-  }
-  
-  .giphy-search-input {
-    position: absolute;
-    bottom: 8%;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+    text-align: center;
   }
 }
 

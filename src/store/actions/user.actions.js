@@ -16,6 +16,8 @@ import {
   LOGIN_ERROR,
   ADD_CONTACT,
   ADD_AUTO_MSG,
+  REMOVE_MSG,
+  REMOVE_CONTACT,
 } from '../reducers/user.reducer'
 
 export function addContactToUser(name) {
@@ -123,6 +125,23 @@ export function loadUsers() {
     }
   }
 }
+
+export function removeContactFromUser(loggedInUserId, contactId) {
+  return async (dispatch, getState) => {
+    try {
+      await userService.removeContact(loggedInUserId, contactId)
+      const action = {
+        type: REMOVE_CONTACT,
+        contactId,
+        loggedInUserId,
+      }
+      dispatch(action)
+    } catch (error) {
+      console.log('error:', error)
+    }
+  }
+}
+
 export function setCurrUser(UserId) {
   console.log('UserId', UserId)
   return async (dispatch, getState) => {
@@ -166,6 +185,18 @@ export function addMsg(msgContent, recipientId, senderId, messageType) {
       const loggedInUserId = getState().userModule.loggedInUser._id
       const type = recipientId !== loggedInUserId ? ADD_MSG : ADD_AUTO_MSG
       const action = { type, msg }
+      dispatch(action)
+    } catch (error) {
+      console.log('error:', error)
+    }
+  }
+}
+
+export function removeMsg(messege, recipientId, senderId) {
+  return async (dispatch, getState) => {
+    try {
+      await msgService.deleteMsg(messege, senderId, recipientId)
+      const action = { type: REMOVE_MSG, messege }
       dispatch(action)
     } catch (error) {
       console.log('error:', error)

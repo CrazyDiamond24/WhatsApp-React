@@ -1,9 +1,13 @@
 .emojis-container {
-  position: relative;
+  position: absolute;
+  left: 20px;
+  height: 200px;
+  overflow-y: scroll;
 
   .smiley {
-    font-size: 24px;
+    font-size: 1.5rem;
     cursor: pointer;
+    transform: translateY(1.5px);
 
     &.expanded {
       transform: rotate(180deg);
@@ -12,24 +16,69 @@
 
   .emojis-window {
     position: absolute;
-    bottom: 45px;
+    top: -100px;
     left: 10px;
-    width: 200px;
+    width: 500px;
+    // height: 200px;
     background-color: #f1f1f1;
     border: 1px solid #ccc;
     padding: 10px;
     border-radius: 4px;
-    display: flex;
-    flex-wrap: wrap;
 
-    .emoji {
-      font-size: 24px;
-      cursor: pointer;
-      padding: 5px;
-
-      &:hover {
-        background-color: #e0e0e0;
-      }
+    div {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 10px;
     }
   }
+
+  .emoji {
+    font-size: 24px;
+    cursor: pointer;
+    padding: 5px;
+
+    &:hover {
+      background-color: #e0e0e0;
+    }
+  }
+}
+
+//GIF
+
+.giphy-container {
+  position: absolute;
+  left: 55px;
+
+  .giphy-icon {
+    font-size: 1.5rem;
+    cursor: pointer;
+  }
+.giphy-grid {
+  position: absolute;
+  padding: 15px;
+  bottom: 90px;
+  width: 400px;
+  max-height: 300px;
+  overflow-y: scroll;
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+  background-color: rgba($clr6, 0.2);
+  border-radius: 1rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.giphy-grid img {
+  max-height: 100px;
+  flex-grow: 1;
+  object-fit: cover;
+}
+
+.giphy-search-input {
+  position: absolute;
+  bottom: 100%;
+  transform: translate(-10px, -5px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  text-align: left;
+}
 }

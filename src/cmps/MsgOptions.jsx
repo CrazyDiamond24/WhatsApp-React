@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import { MsgOptionsModal } from "./MsgOptionsModal"
 
-export function MsgOptions({ message }) {
+export function MsgOptions({ message, loggedInUser, user }) {
   const [modalPosition, setModalPosition] = useState({ top: 0, left: 0 })
   const [showModal, setShowOptionsModal] = useState(false)
 
@@ -14,14 +14,17 @@ export function MsgOptions({ message }) {
     setShowOptionsModal((prevState) => !prevState)
   }
   return (
-  <>
+    <>
       <div onClick={(e) => showSongOptionsModal(e)}>🔽</div>
       {showModal && (
         <MsgOptionsModal
+          user={user}
+          message={message}
+          loggedInUser={loggedInUser}
           position={modalPosition}
           closeModal={() => setShowOptionsModal(false)}
         />
-      )}  
-  </>
+      )}
+    </>
   )
 }
