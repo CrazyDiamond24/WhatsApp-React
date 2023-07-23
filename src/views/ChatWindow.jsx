@@ -95,9 +95,8 @@ export function ChatWindow() {
   function handleGifSelect(gif, gifImgUrl) {
     const newGif = gifImgUrl
     setSentGifs((prevSentGifs) => [...prevSentGifs, newGif])
-    console.log(newGif, "that's the new gif url")
     dispatch(
-      addMsg(gif.images.downsized.url, user._id, loggedInUser._id, 'image')
+      addMsg(newGif, user._id, loggedInUser._id, 'image')
     )
   }
 
