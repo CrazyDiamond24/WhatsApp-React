@@ -115,7 +115,6 @@ export function ChatWindow() {
             <img src={user?.img} alt={user?.username} />
             <h2>{user?.fullName}</h2>
           </div>
-          =
           <ul className='conversation-container flex' ref={animationParent}>
             {messages?.map((message, index) => (
               <li
