@@ -129,7 +129,7 @@ export function ChatWindow() {
                     {getTimestamp(message.timestamp)}
                   </span>
                   {isHovered === index &&
-                  <MsgOptions />
+                  <MsgOptions message={message} loggedInUser={loggedInUser} user={user} />
                   }
               </li>
             ))}
