@@ -1,14 +1,17 @@
-import axios from 'axios'
+import emojiData from 'emoji-datasource'
 
-async function fetchEmojis() {
-  try {
-    const response = await axios.get(
-      `https://emoji-api.com/emojis?access_key=${process.env.REACT_APP_EMOJIS_KEY}`
+function fetchEmojis() {
+  const emojisByCategory = emojiData.reduce((categories, emoji) => {
+    if (!categories[emoji.category]) {
+      categories[emoji.category] = []
+    }
+    categories[emoji.category].push(
+      String.fromCodePoint(...emoji.unified.split('-').map((u) => '0x' + u))
     )
-    return response.data.map((emoji) => emoji.character)
-  } catch (error) {
-    console.error('Failed to fetch emojis', error)
-  }
+    return categories
+  }, {})
+
+  return emojisByCategory
 }
 
 export const emojisService = {
