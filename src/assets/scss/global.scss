@@ -1,38 +1,39 @@
-//fonts 
+//fonts
 @font-face {
-    font-family: rubik-regular;
-    src: url('../fonts/Rubik-Regular.ttf');
-  }
+  font-family: rubik-regular;
+  src: url('../fonts/Rubik-Regular.ttf');
+}
 @font-face {
-    font-family: nunito-regular;
-    src: url('../fonts/Nunito-Regular.ttf');
-  }
+  font-family: nunito-regular;
+  src: url('../fonts/Nunito-Regular.ttf');
+}
 // Setup
-@import "setup/variables";
-@import "setup/functions";
-@import "setup/mixins";
+@import 'setup/variables';
+@import 'setup/functions';
+@import 'setup/mixins';
 
 // Basics
-@import "basics/typography";
-@import "basics/base";
-@import "basics/helpers";
-@import "basics/layout";
-@import "basics/modals";
-@import "basics/animations";
+@import 'basics/typography';
+@import 'basics/base';
+@import 'basics/helpers';
+@import 'basics/layout';
+@import 'basics/modals';
+@import 'basics/animations';
 
 // Views
-@import "views/UserIndex";
-@import "views/UserDetails";
-@import "views/UserEdit";
-@import "views/About";
-@import "views/ChatWindow";
-@import "views/LoginSignup";
+@import 'views/UserIndex';
+@import 'views/UserDetails';
+@import 'views/UserEdit';
+@import 'views/About';
+@import 'views/ChatWindow';
+@import 'views/LoginSignup';
 
 // Components
-@import "cmps/UserPreview";
-@import "cmps/UserList";
-@import "cmps/UserFilter";
-@import "cmps/AppHeader";
-@import "cmps/nice-button";
-@import "cmps/Emojis";
+@import 'cmps/UserPreview';
+@import 'cmps/UserList';
+@import 'cmps/UserFilter';
+@import 'cmps/AppHeader';
+@import 'cmps/nice-button';
+@import 'cmps/Emojis';
 
+@import 'cmps/ContactOptionsModal.scss';

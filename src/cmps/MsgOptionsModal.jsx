@@ -1,16 +1,21 @@
-import React, { useRef } from "react"
-import { useDispatch } from "react-redux"
+import React, { useRef } from 'react'
+import { useDispatch } from 'react-redux'
 import { removeMsg } from '../store/actions/user.actions'
 
-export function MsgOptionsModal({ position, closeModal , user ,loggedInUser , message }) {
-  
-    const msgModalRef = useRef()
-    const dispatch = useDispatch()
-    const deleteMsg = () => {
-       dispatch(removeMsg(message, user._id ,loggedInUser._id))
-        closeModal()
-    }
-    
+export function MsgOptionsModal({
+  position,
+  closeModal,
+  user,
+  loggedInUser,
+  message,
+}) {
+  const msgModalRef = useRef()
+  const dispatch = useDispatch()
+  const deleteMsg = () => {
+    dispatch(removeMsg(message, user._id, loggedInUser._id))
+    closeModal()
+  }
+
   return (
     <>
       <div
@@ -22,7 +27,7 @@ export function MsgOptionsModal({ position, closeModal , user ,loggedInUser , me
         }}
       >
         <ul>
-            <li onClick={deleteMsg}>Delete message</li>
+          <li onClick={deleteMsg}>Delete message</li>
         </ul>
       </div>
     </>

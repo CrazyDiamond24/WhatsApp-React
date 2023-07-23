@@ -10,6 +10,7 @@ export const userService = {
   getEmptyUser,
   createNewMsg,
   addContact,
+  removeContact,
 }
 
 const STORAGE_KEY = 'users'
@@ -23,6 +24,11 @@ async function addContact(loggedInUserId, contactName) {
     { contactName }
   )
   return contact
+}
+async function removeContact(loggedInUserId, contactId) {
+  await httpService.delete(
+    `contact/${loggedInUserId}/remove-contact/${contactId}`
+  )
 }
 
 async function getById(id) {
