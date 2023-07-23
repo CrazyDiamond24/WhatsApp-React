@@ -1,13 +1,15 @@
-import React from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import { useEffect, useState, useRef } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { addMsg } from '../store/actions/user.actions'
-import { Emojis } from '../cmps/Emojis'
-import { ReactComponent as TextingSVG } from '../assets/imgs/texting.svg'
+import React from "react"
+import { Link, useNavigate } from "react-router-dom"
+import { useEffect, useState, useRef } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { addMsg } from "../store/actions/user.actions"
+import { Emojis } from "../cmps/Emojis"
+import { ReactComponent as TextingSVG } from "../assets/imgs/texting.svg"
+import { MsgOptions } from "../cmps/MsgOptions"
 
 export function ChatWindow() {
-  const [msgContent, setMsgContent] = useState('')
+  const [msgContent, setMsgContent] = useState("")
+  const [isHovered, setIsHovered] = useState(null)
   const messagesContainerRef = useRef(null)
 
   const navigate = useNavigate()
@@ -43,9 +45,9 @@ export function ChatWindow() {
   function getAutoResponse() {
     const responses = [
       "Hello, welcome to our app! I can't say anything else.",
-      'Hi there! How can I assist you today?',
-      'Greetings! Feel free to ask me anything.',
-      'Hey! Nice to see you here. How can I help?',
+      "Hi there! How can I assist you today?",
+      "Greetings! Feel free to ask me anything.",
+      "Hey! Nice to see you here. How can I help?",
       "Welcome! I'm here to answer your questions.",
     ]
 
@@ -56,12 +58,12 @@ export function ChatWindow() {
   function handelSendMsg(e) {
     e.preventDefault()
     if (!loggedInUser) return
-    setMsgContent('')
+    setMsgContent("")
     //parameters: content, recipient, sender
     dispatch(addMsg(msgContent, user._id, loggedInUser._id))
 
     //hardcoded - ready for real use
-    if (user.username === 'john.doe' || 'jane.smith' || 'emily.brown') {
+    if (user.username === "john.doe" || "jane.smith" || "emily.brown") {
       setTimeout(() => {
         const autoMessage = getAutoResponse()
         dispatch(addMsg(autoMessage, loggedInUser._id, user._id))
@@ -73,21 +75,30 @@ export function ChatWindow() {
     setMsgContent(e.target.value)
   }
 
+  function handelMouseEnter(index) {
+    setIsHovered(index)
+    console.log("enter")
+  }
+
+  function handelMouseLeave() {
+    setIsHovered(null)
+    console.log("leave")
+  }
+
   function handleEmojiSelect(emoji) {
     setMsgContent((prevMsg) => prevMsg + emoji)
   }
 
   const getTimestamp = (timestamp) => {
     const date = new Date(timestamp)
-    const hours = date.getHours().toString().padStart(2, '0')
-    const minutes = date.getMinutes().toString().padStart(2, '0')
+    const hours = date.getHours().toString().padStart(2, "0")
+    const minutes = date.getMinutes().toString().padStart(2, "0")
     return `${hours}:${minutes}`
   }
 
   function onBack() {
-    navigate('/')
+    navigate("/")
   }
-  console.log('messages', messages)
 
   return (
     <div className="chat-window">
@@ -98,21 +109,28 @@ export function ChatWindow() {
             <h2>{user?.fullName}</h2>
             <Link to="/login">Login</Link>
           </div>
-
-          <ul className="conversation-container" ref={messagesContainerRef}>
+          <ul
+            className="conversation-container flex"
+            ref={messagesContainerRef}
+          >
             {messages?.map((message, index) => (
               <li
                 key={index}
                 className={`chat-message ${
-                  message.senderId === loggedInUser?._id ? 'sent' : 'received'
+                  message.senderId === loggedInUser?._id ? "sent" : "received"
                 }`}
+                onMouseEnter={() => handelMouseEnter(index)}
+                onMouseLeave={handelMouseLeave}
               >
-                <div className="message-container">
-                  <span>{message?.content}</span>
-                </div>
-                <span className="timestamp">
-                  {getTimestamp(message.timestamp)}
-                </span>
+                  <div className="message-container">
+                    <span>{message?.content}</span>
+                  </div>
+                  <span className="timestamp">
+                    {getTimestamp(message.timestamp)}
+                  </span>
+                  {isHovered === index &&
+                  <MsgOptions />
+                  }
               </li>
             ))}
           </ul>
@@ -132,7 +150,7 @@ export function ChatWindow() {
         <section className="welcome-chatroom">
           <div className="logo-without-word-container">
             <img
-              src={require('../assets/imgs/Logo-without-word.png')}
+              src={require("../assets/imgs/Logo-without-word.png")}
               alt="logo"
               className="logo-without-word"
             ></img>
@@ -146,14 +164,14 @@ export function ChatWindow() {
             </p>
             <TextingSVG className="text-welcome-svg" />
             <p className="login-or-signup">
-              To get started, please{' '}
+              To get started, please{" "}
               <Link to="/login" className="login-signup-link">
                 log in
-              </Link>{' '}
-              or{' '}
+              </Link>{" "}
+              or{" "}
               <Link to="/login" className="login-signup-link">
                 sign up
-              </Link>{' '}
+              </Link>{" "}
               if you don't have an account.
             </p>
           </div>
