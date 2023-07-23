@@ -12,7 +12,6 @@ export function GIPHY({ onSelectGif }) {
   const handleSearchInputChange = (e) => {
     setSearchQuery(e.target.value)
     if (e.target.value.trim() !== '') {
-      // Fetch gifs based on the search query
       giphyFetch
         .search(e.target.value, { limit: 5 })
         .then((gifs) => setSearchedGifs(gifs.data))
@@ -45,7 +44,7 @@ export function GIPHY({ onSelectGif }) {
                 src={gif.images.fixed_height.url}
                 alt={gif.title}
                 onClick={() => {
-                  onSelectGif(gif , gif.images.downsized.url)
+                  onSelectGif(gif, gif.images.downsized.url)
                   setIsExpanded(false)
                 }}
               />
