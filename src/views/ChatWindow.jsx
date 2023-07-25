@@ -81,12 +81,10 @@ export function ChatWindow() {
 
   function handelMouseEnter(index) {
     setIsHovered(index)
-    console.log("enter")
   }
 
   function handelMouseLeave() {
     setIsHovered(null)
-    console.log("leave")
   }
 
   function handleEmojiSelect(emoji) {

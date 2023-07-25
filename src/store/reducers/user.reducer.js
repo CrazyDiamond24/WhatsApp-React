@@ -15,7 +15,7 @@ export const LOGOUT = 'LOGOUT'
 export const LOGIN_ERROR = 'LOGIN_ERROR'
 export const SET_LOGGEDIN_USER = 'SET_LOGGEDIN_USER'
 export const ADD_AUTO_MSG = 'ADD_AUTO_MSG'
-export const REMOVE_MSG = 'REMOVE_MSG'
+export const UPDATE_MSG = 'UPDATE_MSG'
 
 const INITIAL_STATE = {
   loginError: '',
@@ -90,7 +90,7 @@ export function userReducer(state = INITIAL_STATE, action = {}) {
               }
             : state.selectedUser,
       }
-    case REMOVE_MSG:
+    case UPDATE_MSG:
       return {
         ...state,
         loggedInUser: state.loggedInUser.msgs.filter(

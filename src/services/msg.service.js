@@ -3,7 +3,7 @@ import { utilService } from './util.service.js'
 
 export const msgService = {
     createNewMsg,
-    deleteMsg,
+    updateMsg,
 }
 
 async function createNewMsg(msg, senderId, recipientId, type) {
@@ -20,7 +20,7 @@ async function createNewMsg(msg, senderId, recipientId, type) {
     return newMsg
   }
   
-  async function deleteMsg(msg, recipientId , senderId) {
+  async function updateMsg(msg, recipientId , senderId) {
     console.log('msg', msg)
     console.log('sender', senderId)
     const msgId = msg._id

@@ -16,7 +16,7 @@ import {
   LOGIN_ERROR,
   ADD_CONTACT,
   ADD_AUTO_MSG,
-  REMOVE_MSG,
+  UPDATE_MSG,
   REMOVE_CONTACT,
 } from '../reducers/user.reducer'
 
@@ -192,11 +192,11 @@ export function addMsg(msgContent, recipientId, senderId, messageType) {
   }
 }
 
-export function removeMsg(messege, recipientId, senderId) {
+export function updateMsg(messege, recipientId, senderId) {
   return async (dispatch, getState) => {
     try {
-      await msgService.deleteMsg(messege, senderId, recipientId)
-      const action = { type: REMOVE_MSG, messege }
+      await msgService.updateMsg(messege, senderId, recipientId)
+      const action = { type: UPDATE_MSG, messege }
       dispatch(action)
     } catch (error) {
       console.log('error:', error)
