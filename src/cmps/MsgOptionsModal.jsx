@@ -1,6 +1,6 @@
-import React, { useRef } from 'react'
-import { useDispatch } from 'react-redux'
-import { updateMsg } from '../store/actions/user.actions'
+import React, { useRef } from 'react';
+import { useDispatch } from 'react-redux';
+import { deleteMsg } from '../store/actions/user.actions';
 
 export function MsgOptionsModal({
   position,
@@ -9,12 +9,21 @@ export function MsgOptionsModal({
   loggedInUser,
   message,
 }) {
-  const msgModalRef = useRef()
-  const dispatch = useDispatch()
-  const deleteMsg = () => {
-    dispatch(updateMsg(message, user._id, loggedInUser._id))
-    closeModal()
-  }
+  const msgModalRef = useRef();
+  const dispatch = useDispatch();
+
+  const deleteMsgHandler = () => {
+    dispatch(deleteMsg(message.id, loggedInUser._id  ));
+    console.log(
+      'message from modal',
+      message,
+      'user (recipient)',
+      user._id,
+      'logged in (sender)',
+      loggedInUser._id
+    );
+    closeModal();
+  };
 
   return (
     <>
@@ -27,9 +36,9 @@ export function MsgOptionsModal({
         }}
       >
         <ul>
-          <li onClick={deleteMsg}>Delete message</li>
+          <li onClick={deleteMsgHandler}>Delete message</li>
         </ul>
       </div>
     </>
-  )
+  );
 }

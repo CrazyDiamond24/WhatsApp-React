@@ -57,6 +57,7 @@ export function ChatWindow() {
   }
 
   function handelSendMsg(e) {
+    console.log(loggedInUser , 'after everything')
     e.preventDefault()
     if (!loggedInUser) return
     setMsgContent("")
