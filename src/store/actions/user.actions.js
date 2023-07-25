@@ -175,16 +175,16 @@ export function addMsg(
   msgContent,
   recipientId,
   senderId,
-  messageType = 'text'
+  msgType = 'text'
 ) {
-  console.log('message type', messageType)
+  console.log('msg type', msgType)
   return async (dispatch, getState) => {
     try {
       const msg = await msgService.createNewMsg(
         msgContent,
         senderId,
         recipientId,
-        messageType
+        msgType
       )
 
       const loggedInUserId = getState().userModule.loggedInUser._id
@@ -197,16 +197,16 @@ export function addMsg(
   }
 }
 
-export function deleteMsg(messageId, senderId) {
+export function deleteMsg(msgId, senderId) {
   return async (dispatch, getState) => {
     try {
-      const updatedMessage = {
-        id: messageId,
-        content: 'message deleted',
+      const updatedMsg = {
+        id: msgId,
+        content: 'Message deleted',
       }
-      await msgService.updateMsg(updatedMessage, senderId)
+      await msgService.updateMsg(updatedMsg, senderId)
 
-      dispatch({ type: UPDATE_MSG_CONTENT, message: updatedMessage })
+      dispatch({ type: UPDATE_MSG_CONTENT, msg: updatedMsg })
     } catch (error) {
       console.log('Error:', error)
     }

@@ -24,7 +24,7 @@ export function ChatWindow() {
     return storeState.userModule.selectedUser
   })
 
-  const messages = user
+  const msgs = user
     ? user.msgs
         .filter(
           (msg) =>
@@ -40,7 +40,7 @@ export function ChatWindow() {
     if (container) {
       container.scrollTop = container.scrollHeight
     }
-  }, [messages])
+  }, [msgs])
 
   //TODO: move to service later with actual functionality
   function getAutoResponse() {
@@ -67,8 +67,8 @@ export function ChatWindow() {
     //hardcoded - ready for real use
     if (user.username) {
       setTimeout(() => {
-        const autoMessage = getAutoResponse()
-        dispatch(addMsg(autoMessage, loggedInUser._id, user._id))
+        const autoMsg = getAutoResponse()
+        dispatch(addMsg(autoMsg, loggedInUser._id, user._id))
       }, 1000)
     }
   }
@@ -114,38 +114,38 @@ export function ChatWindow() {
             <h2>{user?.fullName}</h2>
           </div>
           <ul className='conversation-container flex' ref={animationParent}>
-            {messages?.map((message, index) => (
+            {msgs?.map((msg, index) => (
               <li
                 key={index}
-                className={`chat-message ${
-                  message.senderId === loggedInUser?._id ? "sent" : "received"
+                className={`chat-msg ${
+                  msg.senderId === loggedInUser?._id ? "sent" : "received"
                 }`}
                 onMouseEnter={() => handelMouseEnter(index)}
                 onMouseLeave={handelMouseLeave}
               >
-                {message.type === "image" ? (
-                  <div className="message-container">
-                    <img className="gif-msg" src={message?.content} alt="GIF" />
+                {msg.type === "image" ? (
+                  <div className="msg-container">
+                    <img className="gif-msg" src={msg?.content} alt="GIF" />
                   </div>
                 ) : (
-                  <div className="message-container">
-                    <span>{message?.content}</span>
+                  <div className="msg-container">
+                    <span>{msg?.content}</span>
                   </div>
                 )}
                 <span className="timestamp">
-                  {getTimestamp(message.timestamp)}
+                  {getTimestamp(msg.timestamp)}
                 </span>
                 {isHovered === index && (
                   <MsgOptions
                     user={user}
-                    message={message}
+                    msg={msg}
                     loggedInUser={loggedInUser}
                   />
                 )}
               </li>
             ))}
           </ul>
-          <form className="message-input" onSubmit={(e) => handelSendMsg(e)}>
+          <form className="msg-input" onSubmit={(e) => handelSendMsg(e)}>
             <div className='multimedia-container'>
             <Emojis onSelectEmoji={handleEmojiSelect} />
             <Giphy onSelectGif={handleGifSelect} />

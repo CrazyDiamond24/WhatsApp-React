@@ -7,16 +7,16 @@ export function MsgOptionsModal({
   closeModal,
   user,
   loggedInUser,
-  message,
+  msg,
 }) {
   const msgModalRef = useRef();
   const dispatch = useDispatch();
 
   const deleteMsgHandler = () => {
-    dispatch(deleteMsg(message.id, loggedInUser._id  ));
+    dispatch(deleteMsg(msg.id, loggedInUser._id  ));
     console.log(
-      'message from modal',
-      message,
+      'msg from modal',
+      msg,
       'user (recipient)',
       user._id,
       'logged in (sender)',

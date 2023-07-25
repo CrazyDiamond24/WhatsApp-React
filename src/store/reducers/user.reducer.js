@@ -96,16 +96,16 @@ export function userReducer(state = INITIAL_STATE, action = {}) {
         loggedInUser: {
           ...state.loggedInUser,
           msgs: state.loggedInUser.msgs.map((m) =>
-            m.id === action.message.id
-              ? { ...m, content: action.message.content }
+            m.id === action.msg.id
+              ? { ...m, content: action.msg.content }
               : m
           ),
         },
         selectedUser: {
           ...state.selectedUser,
           msgs: state.selectedUser.msgs.map((m) =>
-            m.id === action.message.id
-              ? { ...m, content: action.message.content }
+            m.id === action.msg.id
+              ? { ...m, content: action.msg.content }
               : m
           ),
         },
