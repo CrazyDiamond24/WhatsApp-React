@@ -1,6 +1,6 @@
 import React, { useRef } from 'react'
 import { useDispatch } from 'react-redux'
-import { removeMsg } from '../store/actions/user.actions'
+import { updateMsg } from '../store/actions/user.actions'
 
 export function MsgOptionsModal({
   position,
@@ -12,7 +12,7 @@ export function MsgOptionsModal({
   const msgModalRef = useRef()
   const dispatch = useDispatch()
   const deleteMsg = () => {
-    dispatch(removeMsg(message, user._id, loggedInUser._id))
+    dispatch(updateMsg(message, user._id, loggedInUser._id))
     closeModal()
   }
 
