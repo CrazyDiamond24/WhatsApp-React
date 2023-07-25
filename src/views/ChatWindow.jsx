@@ -12,11 +12,8 @@ import { useAutoAnimate } from '@formkit/auto-animate/react'
 export function ChatWindow() {
   const [msgContent, setMsgContent] = useState("")
   const [isHovered, setIsHovered] = useState(null)
-  const messagesContainerRef = useRef(null)
-  const [selectedGif, setSelectedGif] = useState("")
   const [sentGifs, setSentGifs] = useState([])
 
-  const navigate = useNavigate()
   const dispatch = useDispatch()
 
   const loggedInUser = useSelector((storeState) => {
@@ -95,11 +92,13 @@ export function ChatWindow() {
 
   function handleGifSelect(gifImgUrl) {
     const newGif = gifImgUrl
+    
     setSentGifs((prevSentGifs) => [...prevSentGifs, newGif])
     dispatch(addMsg(newGif, user._id, loggedInUser._id, "image"))
   }
 
   const getTimestamp = (timestamp) => {
+  
     const date = new Date(timestamp)
     const hours = date.getHours().toString().padStart(2, "0")
     const minutes = date.getMinutes().toString().padStart(2, "0")
