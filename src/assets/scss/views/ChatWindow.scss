@@ -58,6 +58,10 @@
       }
     }
   }
+  .msg-deleted {
+    font-style: italic;
+    color: $clr11;
+  }
 
   .msg-input {
     display: flex;

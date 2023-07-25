@@ -4,6 +4,7 @@ import { utilService } from './util.service.js'
 export const msgService = {
     createNewMsg,
     updateMsg,
+    getUserMessages
 }
 
 async function createNewMsg(msg, senderId, recipientId, type) {
@@ -24,6 +25,20 @@ async function createNewMsg(msg, senderId, recipientId, type) {
     console.log('msg from service', msg)
     console.log('sender from service', senderId)
     const msgId = msg.id
-  await httpService.put(`contact/msg/edit`, {msgId ,senderId})
+  await httpService.put(`contact/msg/edit`, {msgId ,senderId , recipientId})
   // await httpService.delete(`contact/${recipientId}/msg/delete/${msg._id}`)
 }
+
+
+// frontend service
+async function getUserMessages(userId, loggedInUserId) {
+  try {
+    const response = await httpService.get(`contact/${loggedInUserId}/user/${userId}/messages`);
+    return response.data;
+  } catch (error) {
+    console.log('Error fetching user messages:', error);
+    throw error;
+  }
+}
+
+// ... other service functions ...

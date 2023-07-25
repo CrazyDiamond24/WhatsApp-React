@@ -12,13 +12,13 @@ export function UserPreview({ user }) {
     return storeState.userModule.loggedInUser
   })
 
-  const lastMsg = user.msgs.filter(
+  const lastMsg = user?.msgs?.filter(
     (msg) =>
       msg.senderId === loggedInUser._id || msg.recipientId === loggedInUser._id
   )
 
   const lastMsgContent =
-    lastMsg.length > 0
+    lastMsg?.length > 0
       ? lastMsg[lastMsg.length - 1].type !== 'image'
         ? lastMsg[lastMsg.length - 1].content
         : '🖼️ Shared an Image'

@@ -197,14 +197,14 @@ export function addMsg(
   }
 }
 
-export function deleteMsg(msgId, senderId) {
+export function deleteMsg(msgId, senderId , recipientId) {
   return async (dispatch, getState) => {
     try {
       const updatedMsg = {
         id: msgId,
         content: 'Message deleted',
       }
-      await msgService.updateMsg(updatedMsg, senderId)
+      await msgService.updateMsg(updatedMsg, senderId , recipientId)
 
       dispatch({ type: UPDATE_MSG_CONTENT, msg: updatedMsg })
     } catch (error) {
