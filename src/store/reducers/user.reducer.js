@@ -16,6 +16,7 @@ export const LOGIN_ERROR = 'LOGIN_ERROR'
 export const SET_LOGGEDIN_USER = 'SET_LOGGEDIN_USER'
 export const ADD_AUTO_MSG = 'ADD_AUTO_MSG'
 export const REMOVE_MSG = 'REMOVE_MSG'
+export const EDIT_USER_PROFILE = 'EDIT_USER_PROFILE'
 
 const INITIAL_STATE = {
   loginError: '',
@@ -41,6 +42,16 @@ export function userReducer(state = INITIAL_STATE, action = {}) {
             (contact) => contact._id !== action.contactId
           ),
         },
+      }
+    case EDIT_USER_PROFILE:
+      return {
+        ...state,
+        users: state.users.map((user) =>
+          user._id === action.user._id ? action.user : user
+        ),
+        // userStations: state.userStations.map((station) =>
+        //   station._id === action.station._id ? action.station : station
+        // ),
       }
     case LOGIN_ERROR:
       return {

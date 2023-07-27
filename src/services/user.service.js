@@ -11,12 +11,16 @@ export const userService = {
   createNewMsg,
   addContact,
   removeContact,
+  editProfile,
 }
 
 const STORAGE_KEY = 'users'
 
 function query() {
   return httpService.get(`contact`)
+}
+async function editProfile(user) {
+  return httpService.put(`contact/${user._id}`, user)
 }
 async function addContact(loggedInUserId, contactName) {
   const contact = await httpService.post(
