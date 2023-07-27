@@ -13,8 +13,8 @@ export function ChatWindow() {
   const [msgContent, setMsgContent] = useState('')
   const [isHovered, setIsHovered] = useState(null)
   const [sentGifs, setSentGifs] = useState([])
-  const [isBlocked , setIsBlocked] = useState(false)
-
+  // const [blockedList , setBlockedList] = useState(blockedUserList)
+  
   const dispatch = useDispatch()
 
   const loggedInUser = useSelector((storeState) => {
@@ -25,7 +25,14 @@ export function ChatWindow() {
     return storeState.userModule.selectedUser
   })
 
-  const msgs = user
+  const blockedUserList = useSelector((storeState) => {
+    return storeState.userModule.blockedUsers
+  })
+  const isUserBlocked = blockedUserList.includes(user?._id)
+  const [isBlocked , setIsBlocked] = useState(isUserBlocked)
+
+
+  const msgs = user && !isUserBlocked
     ? user.msgs
         .filter(
           (msg) =>
@@ -105,12 +112,11 @@ export function ChatWindow() {
     return `${hours}:${minutes}`
   }
 
-  const blockContact = (prevState) => {
+  const blockContact = () => {
     setIsBlocked(prevState => !prevState)
     const action = isBlocked ? 'UNBLOCK_USER' : 'BLOCK_USER' 
     dispatch(blockUnblockContact(action,user._id))
   }
-
   const [animationParent] = useAutoAnimate()
   return (
     <div className='chat-window' ref={animationParent}>
@@ -119,10 +125,10 @@ export function ChatWindow() {
           <div className='header-area'>
             <img src={user?.img} alt={user?.username} />
             <h2>{user?.fullName}</h2>
-            <span onClick={blockContact}>{isBlocked ? 'unBlock contact' : 'Block contact' }</span>
+            <span onClick={blockContact}>{isUserBlocked ? 'unBlock contact' : 'Block contact' }</span>
           </div>
           <ul className='conversation-container flex' ref={animationParent}>
-            {msgs?.map((msg, index) => (
+            { msgs?.map((msg, index) => (
               <li
                 key={index}
                 className={`chat-msg ${

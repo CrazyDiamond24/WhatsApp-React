@@ -16,6 +16,8 @@ export const LOGIN_ERROR = 'LOGIN_ERROR'
 export const SET_LOGGEDIN_USER = 'SET_LOGGEDIN_USER'
 export const ADD_AUTO_MSG = 'ADD_AUTO_MSG'
 export const UPDATE_MSG_CONTENT = 'UPDATE_MSG_CONTENT'
+export const UNBLOCK_USER = 'UNBLOCK_USER'
+export const BLOCK_USER = 'BLOCK_USER'
 
 const INITIAL_STATE = {
   loginError: "",

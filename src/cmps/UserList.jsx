@@ -13,10 +13,6 @@ export function UserList({ filterBy, onRemoveUser, onSelectContact }) {
     return storeState.userModule.loggedInUser
   })
 
-  const blockedList = useSelector((storeState) => {
-    return storeState.userModule.blockedUsers
-  })
-
   const [filteredUsers, setFilteredUsers] = useState([])
 
 
