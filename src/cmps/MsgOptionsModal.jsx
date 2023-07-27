@@ -15,7 +15,6 @@ export function MsgOptionsModal({
     dispatch(updateMsg(message, user._id, loggedInUser._id))
     closeModal()
   }
-
   return (
     <>
       <div

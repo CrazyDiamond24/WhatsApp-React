@@ -10,6 +10,10 @@ import { getUser } from './store/actions/user.actions'
 import { useEffect } from 'react'
 function App() {
   const dispatch = useDispatch()
+  useEffect(() => {
+    dispatch(getUser())
+
+  }, [])
   return (
     <Router>
       <section className="main-app">

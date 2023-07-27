@@ -2,7 +2,7 @@ import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useEffect, useState, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { addMsg } from '../store/actions/user.actions'
+import { addMsg, blockUnblockContact } from '../store/actions/user.actions'
 import { Emojis } from '../cmps/Emojis'
 import { ReactComponent as TextingSVG } from '../assets/imgs/texting.svg'
 import { MsgOptions } from '../cmps/MsgOptions'
@@ -15,6 +15,7 @@ export function ChatWindow() {
   const messagesContainerRef = useRef(null)
   const [selectedGif, setSelectedGif] = useState("")
   const [sentGifs, setSentGifs] = useState([])
+  const [isBlocked , setIsBlocked] = useState(false)
 
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -27,7 +28,7 @@ export function ChatWindow() {
     return storeState.userModule.selectedUser
   })
 
-  const messages = user
+  const messages = user && !isBlocked
     ? user.msgs
         .filter(
           (msg) =>
@@ -66,13 +67,13 @@ export function ChatWindow() {
     //parameters: content, recipient, sender
     dispatch(addMsg(msgContent, user._id, loggedInUser._id))
 
-    //hardcoded - ready for real use
-    if (user.username) {
-      setTimeout(() => {
-        const autoMessage = getAutoResponse()
-        dispatch(addMsg(autoMessage, loggedInUser._id, user._id))
-      }, 1000)
-    }
+    // //hardcoded - ready for real use
+    // if (user.username) {
+    //   setTimeout(() => {
+    //     const autoMessage = getAutoResponse()
+    //     dispatch(addMsg(autoMessage, loggedInUser._id, user._id))
+    //   }, 1000)
+    // }
   }
 
   function handleInputChange(e) {
@@ -104,6 +105,12 @@ export function ChatWindow() {
     return `${hours}:${minutes}`
   }
 
+  const blockContact = (prevState) => {
+    setIsBlocked(prevState => !prevState)
+    const action = isBlocked ? 'UNBLOCK_USER' : 'BLOCK_USER' 
+    dispatch(blockUnblockContact(action,user._id))
+  }
+
   const [animationParent] = useAutoAnimate()
   return (
     <div className='chat-window' ref={animationParent}>
@@ -112,6 +119,7 @@ export function ChatWindow() {
           <div className="header-area">
             <img src={user?.img} alt={user?.username} />
             <h2>{user?.fullName}</h2>
+            <span onClick={blockContact}>{isBlocked ? 'unBlock contact' : 'Block contact' }</span>
           </div>
           <ul className='conversation-container flex' ref={animationParent}>
             {messages?.map((message, index) => (

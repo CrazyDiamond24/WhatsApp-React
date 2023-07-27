@@ -20,10 +20,8 @@ async function createNewMsg(msg, senderId, recipientId, type) {
     return newMsg
   }
   
-  async function updateMsg(msg, recipientId , senderId) {
-    console.log('msg', msg)
-    console.log('sender', senderId)
-    const msgId = msg._id
+  async function updateMsg(msg, senderId , recipientId) {
+    const msgId = msg.id
   await httpService.put(`contact/message/edit`, {msgId ,senderId})
   // await httpService.delete(`contact/${recipientId}/message/delete/${msg._id}`)
 }

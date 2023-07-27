@@ -204,6 +204,18 @@ export function updateMsg(messege, recipientId, senderId) {
   }
 }
 
+export function blockUnblockContact(actionType,contactId) {
+  console.log('contactId', contactId)
+  return (dispatch, getState) => {
+    try {
+      const action = { type: actionType, contactId }
+      dispatch(action)
+    } catch (error) {
+      console.log('error:', error)
+    }
+  }
+}
+
 // export function setFilterBy(filterBy) {
 //   return (dispatch) => {
 //     dispatch({ type: SET_FILTER_BY, filterBy })
