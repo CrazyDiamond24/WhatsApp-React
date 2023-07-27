@@ -4,6 +4,7 @@ import { utilService } from './util.service.js'
 export const msgService = {
     createNewMsg,
     updateMsg,
+    getUserMessages
 }
 
 async function createNewMsg(msg, senderId, recipientId, type) {
@@ -15,13 +16,29 @@ async function createNewMsg(msg, senderId, recipientId, type) {
       timestamp: Date.now(),
       type: type
     }
-    await httpService.post(`contact/${senderId}/message`, newMsg)
-    await httpService.post(`contact/${recipientId}/message`, newMsg)
+    await httpService.post(`contact/${senderId}/msg`, newMsg)
+    await httpService.post(`contact/${recipientId}/msg`, newMsg)
     return newMsg
   }
   
-  async function updateMsg(msg, senderId , recipientId) {
+  async function updateMsg(msg, senderId, recipientId) {
+    console.log('msg from service', msg)
+    console.log('sender from service', senderId)
     const msgId = msg.id
-  await httpService.put(`contact/message/edit`, {msgId ,senderId})
-  // await httpService.delete(`contact/${recipientId}/message/delete/${msg._id}`)
+  await httpService.put(`contact/msg/edit`, {msgId ,senderId , recipientId})
+  // await httpService.delete(`contact/${recipientId}/msg/delete/${msg._id}`)
 }
+
+
+// frontend service
+async function getUserMessages(userId, loggedInUserId) {
+  try {
+    const response = await httpService.get(`contact/${loggedInUserId}/user/${userId}/messages`);
+    return response.data;
+  } catch (error) {
+    console.log('Error fetching user messages:', error);
+    throw error;
+  }
+}
+
+// ... other service functions ...

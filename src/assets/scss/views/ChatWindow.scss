@@ -33,7 +33,7 @@
     padding: 25px;
     list-style: none;
     width: 100%;
-    .chat-message {
+    .chat-msg {
       margin-bottom: 10px;
       background-color: $secondaryClr;
       padding: 10px;
@@ -58,8 +58,12 @@
       }
     }
   }
+  .msg-deleted {
+    font-style: italic;
+    color: $clr11;
+  }
 
-  .message-input {
+  .msg-input {
     display: flex;
     background-color: $clr1;
     padding: 10px;

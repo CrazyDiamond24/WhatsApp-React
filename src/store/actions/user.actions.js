@@ -16,7 +16,7 @@ import {
   LOGIN_ERROR,
   ADD_CONTACT,
   ADD_AUTO_MSG,
-  UPDATE_MSG,
+  UPDATE_MSG_CONTENT,
   REMOVE_CONTACT,
 } from '../reducers/user.reducer'
 
@@ -171,15 +171,20 @@ export function removeUser(userId) {
   }
 }
 
-export function addMsg(msgContent, recipientId, senderId, messageType) {
-  console.log('message type', messageType)
+export function addMsg(
+  msgContent,
+  recipientId,
+  senderId,
+  msgType = 'text'
+) {
+  console.log('msg type', msgType)
   return async (dispatch, getState) => {
     try {
       const msg = await msgService.createNewMsg(
         msgContent,
         senderId,
         recipientId,
-        messageType
+        msgType
       )
 
       const loggedInUserId = getState().userModule.loggedInUser._id
@@ -192,14 +197,18 @@ export function addMsg(msgContent, recipientId, senderId, messageType) {
   }
 }
 
-export function updateMsg(messege, recipientId, senderId) {
+export function deleteMsg(msgId, senderId , recipientId) {
   return async (dispatch, getState) => {
     try {
-      await msgService.updateMsg(messege, senderId, recipientId)
-      const action = { type: UPDATE_MSG, messege }
-      dispatch(action)
+      const updatedMsg = {
+        id: msgId,
+        content: 'Message deleted',
+      }
+      await msgService.updateMsg(updatedMsg, senderId , recipientId)
+
+      dispatch({ type: UPDATE_MSG_CONTENT, msg: updatedMsg })
     } catch (error) {
-      console.log('error:', error)
+      console.log('Error:', error)
     }
   }
 }

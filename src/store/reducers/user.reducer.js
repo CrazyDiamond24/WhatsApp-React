@@ -6,18 +6,16 @@ export const ADD_USER = "ADD_USER"
 export const REMOVE_USER = "REMOVE_USER"
 export const UPDATE_USER = "UPDATE_USER"
 // export const SET_FILTER_BY = 'SET_FILTER_BY'
-export const SIGNUP = "SIGNUP"
-export const ADD_MSG = "ADD_MSG"
-export const ADD_CONTACT = "ADD_CONTACT"
-export const REMOVE_CONTACT = "REMOVE_CONTACT"
-export const LOGIN = "LOGIN"
-export const LOGOUT = "LOGOUT"
-export const LOGIN_ERROR = "LOGIN_ERROR"
-export const SET_LOGGEDIN_USER = "SET_LOGGEDIN_USER"
-export const ADD_AUTO_MSG = "ADD_AUTO_MSG"
-export const UPDATE_MSG = "UPDATE_MSG"
-export const BLOCK_USER = "BLOCK_USER"
-export const UNBLOCK_USER = "UNBLOCK_USER"
+export const SIGNUP = 'SIGNUP'
+export const ADD_MSG = 'ADD_MSG'
+export const ADD_CONTACT = 'ADD_CONTACT'
+export const REMOVE_CONTACT = 'REMOVE_CONTACT'
+export const LOGIN = 'LOGIN'
+export const LOGOUT = 'LOGOUT'
+export const LOGIN_ERROR = 'LOGIN_ERROR'
+export const SET_LOGGEDIN_USER = 'SET_LOGGEDIN_USER'
+export const ADD_AUTO_MSG = 'ADD_AUTO_MSG'
+export const UPDATE_MSG_CONTENT = 'UPDATE_MSG_CONTENT'
 
 const INITIAL_STATE = {
   loginError: "",
@@ -93,16 +91,25 @@ export function userReducer(state = INITIAL_STATE, action = {}) {
               }
             : state.selectedUser,
       }
-    case UPDATE_MSG:
-      console.log('state.loggedInUser.msgs', state.loggedInUser.msgs)
+    case UPDATE_MSG_CONTENT:
       return {
         ...state,
-        loggedInUser: state.loggedInUser.msgs.filter(
-          (m) => m.id !== action.msg.id
-        ),
-        selectedUser: state.selectedUser.msgs.filter(
-          (m) => m.id !== action.msg.id
-        ),
+        loggedInUser: {
+          ...state.loggedInUser,
+          msgs: state.loggedInUser.msgs.map((m) =>
+            m.id === action.msg.id
+              ? { ...m, content: action.msg.content }
+              : m
+          ),
+        },
+        selectedUser: {
+          ...state.selectedUser,
+          msgs: state.selectedUser.msgs.map((m) =>
+            m.id === action.msg.id
+              ? { ...m, content: action.msg.content }
+              : m
+          ),
+        },
       }
 
     case ADD_AUTO_MSG:

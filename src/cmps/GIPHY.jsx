@@ -31,6 +31,7 @@ export function Giphy({ onSelectGif }) {
     }
 
     if (isQueryNotEmpty) {
+    
       debounceTimeout = setTimeout(() => {
         fetchGifs(searchQuery)
       }, 500)
@@ -82,3 +83,5 @@ export function Giphy({ onSelectGif }) {
     </div>
   )
 }
+
+
