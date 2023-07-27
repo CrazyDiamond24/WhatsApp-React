@@ -16,7 +16,7 @@ import {
   LOGIN_ERROR,
   ADD_CONTACT,
   ADD_AUTO_MSG,
-  REMOVE_MSG,
+  UPDATE_MSG_CONTENT,
   REMOVE_CONTACT,
   EDIT_USER_PROFILE,
 } from '../reducers/user.reducer'
@@ -191,15 +191,20 @@ export function removeUser(userId) {
   }
 }
 
-export function addMsg(msgContent, recipientId, senderId, messageType) {
-  console.log('message type', messageType)
+export function addMsg(
+  msgContent,
+  recipientId,
+  senderId,
+  msgType = 'text'
+) {
+  console.log('msg type', msgType)
   return async (dispatch, getState) => {
     try {
       const msg = await msgService.createNewMsg(
         msgContent,
         senderId,
         recipientId,
-        messageType
+        msgType
       )
 
       const loggedInUserId = getState().userModule.loggedInUser._id
@@ -212,11 +217,27 @@ export function addMsg(msgContent, recipientId, senderId, messageType) {
   }
 }
 
-export function removeMsg(messege, recipientId, senderId) {
+export function deleteMsg(msgId, senderId , recipientId) {
   return async (dispatch, getState) => {
     try {
-      await msgService.deleteMsg(messege, senderId, recipientId)
-      const action = { type: REMOVE_MSG, messege }
+      const updatedMsg = {
+        id: msgId,
+        content: 'Message deleted',
+      }
+      await msgService.updateMsg(updatedMsg, senderId , recipientId)
+
+      dispatch({ type: UPDATE_MSG_CONTENT, msg: updatedMsg })
+    } catch (error) {
+      console.log('Error:', error)
+    }
+  }
+}
+
+export function blockUnblockContact(actionType,contactId) {
+  console.log('contactId', contactId)
+  return (dispatch, getState) => {
+    try {
+      const action = { type: actionType, contactId }
       dispatch(action)
     } catch (error) {
       console.log('error:', error)

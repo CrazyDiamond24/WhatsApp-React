@@ -83,7 +83,7 @@ export function LoginSignup() {
             />
           </div>
           {loginError && hasAccount && (
-            <div className="error-message">{loginError}</div>
+            <div className="error-msg">{loginError}</div>
           )}
           <div className="form-group">
             <button type="submit">{hasAccount ? 'Login' : 'Sign Up'}</button>

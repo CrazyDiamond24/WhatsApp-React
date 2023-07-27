@@ -12,13 +12,16 @@ export function UserPreview({ user }) {
     return storeState.userModule.loggedInUser
   })
 
-  const lastMsg = user.msgs.filter(
+  const lastMsg = user?.msgs?.filter(
     (msg) =>
       msg.senderId === loggedInUser._id || msg.recipientId === loggedInUser._id
   )
+
   const lastMsgContent =
-    lastMsg.length > 0
-      ? lastMsg[lastMsg.length - 1].content
+    lastMsg?.length > 0
+      ? lastMsg[lastMsg.length - 1].type !== 'image'
+        ? lastMsg[lastMsg.length - 1].content
+        : '🖼️ Shared an Image'
       : 'Start a new conversation'
 
   function handleClick(e) {
@@ -57,13 +60,15 @@ export function UserPreview({ user }) {
       onContextMenu={showContactModal}
     >
       <img
-        className="contact-preview-image"
+        className='contact-preview-image'
         src={user.img}
         alt={user.fullName}
       />
-      <div className="contact-preview-info">
+      <div className='contact-preview-info'>
         <h2>{user.fullName}</h2>
-        <h3>{lastMsgContent}</h3>
+        <h3 style={{ fontStyle: lastMsgContent === '🖼️ Shared an Image' ? 'italic' : 'normal' }}>
+          {lastMsgContent}
+        </h3>
       </div>
       {showModal && (
         <ContactOptionsModal

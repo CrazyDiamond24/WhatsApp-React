@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import { MsgOptionsModal } from "./MsgOptionsModal"
 
-export function MsgOptions({ message, loggedInUser, user }) {
+export function MsgOptions({ msg, loggedInUser, user }) {
   const [modalPosition, setModalPosition] = useState({ top: 0, left: 0 })
   const [showModal, setShowOptionsModal] = useState(false)
 
@@ -19,7 +19,7 @@ export function MsgOptions({ message, loggedInUser, user }) {
       {showModal && (
         <MsgOptionsModal
           user={user}
-          message={message}
+          msg={msg}
           loggedInUser={loggedInUser}
           position={modalPosition}
           closeModal={() => setShowOptionsModal(false)}

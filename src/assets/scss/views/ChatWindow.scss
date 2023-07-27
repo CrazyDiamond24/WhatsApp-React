@@ -9,6 +9,7 @@
   background-color: $clr1;
   border-radius: 1rem;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+
   .header-area {
     background-color: $clr3;
     width: 100%;
@@ -32,7 +33,7 @@
     padding: 25px;
     list-style: none;
     width: 100%;
-    .chat-message {
+    .chat-msg {
       margin-bottom: 10px;
       background-color: $secondaryClr;
       padding: 10px;
@@ -57,17 +58,26 @@
       }
     }
   }
+  .msg-deleted {
+    font-style: italic;
+    color: $clr11;
+  }
 
-  .message-input {
+  .msg-input {
     display: flex;
     background-color: $clr1;
     padding: 10px;
     border-top: 1px solid $clr8;
     width: 100%;
     border-radius: 1rem;
-    input[type='text'] {
+
+    .chat-msg-input {
+      text-indent: 80px;
       flex-grow: 1;
       margin-right: 10px;
+    }
+
+    input[type='text'] {
       padding: 10px;
       border-radius: 10px;
       border: 1px solid $clr8;
@@ -85,6 +95,10 @@
         background-color: darken($clr6, 10%);
       }
     }
+  }
+  .multimedia-container {
+    display: flex;
+    text-align: center;
   }
 }
 

@@ -1,27 +1,84 @@
-import { httpService } from './http.service.js'
-import { utilService } from './util.service.js'
+import { httpService } from "./http.service.js"
+import { utilService } from "./util.service.js"
 
 export const msgService = {
-    createNewMsg,
-    deleteMsg,
+  createNewMsg,
+  updateMsg,
+  getUserMessages,
+  filterMsgs,
+  getTimestamp,
 }
 
-async function createNewMsg(msg, senderId, recipientId) {
-    const newMsg = {
-      _id: utilService.makeId(12),
-      senderId: senderId,
-      recipientId: recipientId,
-      content: msg,
-      timestamp: Date.now(),
-    }
-    await httpService.post(`contact/${senderId}/message`, newMsg)
-    await httpService.post(`contact/${recipientId}/message`, newMsg)
-    return newMsg
+async function createNewMsg(msg, senderId, recipientId, type) {
+  const newMsg = {
+    id: utilService.makeId(12),
+    senderId: senderId,
+    recipientId: recipientId,
+    content: msg,
+    timestamp: Date.now(),
+    type: type,
   }
-  
-  async function deleteMsg(msg, recipientId , senderId) {
-    console.log('msg', msg)
-    const msgId = msg._id
-  await httpService.put(`contact/message/`, msgId ,senderId)
-  // await httpService.delete(`contact/${recipientId}/message/delete/${msg._id}`)
+  await httpService.post(`contact/${senderId}/msg`, newMsg)
+  await httpService.post(`contact/${recipientId}/msg`, newMsg)
+  return newMsg
+}
+
+async function updateMsg(msg, senderId, recipientId) {
+  console.log("msg from service", msg)
+  console.log("sender from service", senderId)
+  const msgId = msg.id
+  await httpService.put(`contact/msg/edit`, { msgId, senderId, recipientId })
+  // await httpService.delete(`contact/${recipientId}/msg/delete/${msg._id}`)
+}
+
+// frontend service
+async function getUserMessages(userId, loggedInUserId) {
+  try {
+    const response = await httpService.get(
+      `contact/${loggedInUserId}/user/${userId}/messages`
+    )
+    return response.data
+  } catch (error) {
+    console.log("Error fetching user messages:", error)
+    throw error
+  }
+}
+
+// ... other service functions ...
+
+function filterMsgs(user, loggedInUser) {
+  return user.msgs
+    .filter(
+      (msg) =>
+        (msg.senderId === loggedInUser?._id && msg.recipientId === user._id) ||
+        (msg.senderId === user._id && msg.recipientId === loggedInUser?._id)
+    )
+    .sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp))
+}
+
+
+function getTimestamp(timestamp) {
+  const date = new Date(timestamp)
+  const currentDate = new Date()
+  const hours = date.getHours().toString().padStart(2, "0")
+  const minutes = date.getMinutes().toString().padStart(2, "0")
+
+  // Check if the date is today
+  if (date.toDateString() === currentDate.toDateString()) {
+    return `${hours}:${minutes}`
+  }
+
+  // Check if the date is within the last 6 days (show day name)
+  const daysDifference = (currentDate - date) / (1000 * 60 * 60 * 24)
+  if (daysDifference < 6) {
+    const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+    const dayOfWeek = daysOfWeek[date.getDay()]
+    return `${dayOfWeek}, ${hours}:${minutes}`
+  }
+
+  // Otherwise, show the full date (e.g., "Jul 20, 2023, 12:34")
+  const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+  const month = months[date.getMonth()]
+  const day = date.getDate()
+  return `${month} ${day}, ${hours}:${minutes}`
 }

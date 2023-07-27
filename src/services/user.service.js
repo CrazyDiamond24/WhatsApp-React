@@ -12,6 +12,7 @@ export const userService = {
   addContact,
   removeContact,
   editProfile,
+  getFilteredUsers,
 }
 
 const STORAGE_KEY = 'users'
@@ -50,9 +51,9 @@ async function createNewMsg(msg, senderId, recipientId) {
     content: msg,
     timestamp: Date.now(),
   }
-  await httpService.post(`contact/${senderId}/message`, newMsg)
+  await httpService.post(`contact/${senderId}/msg`, newMsg)
 
-  await httpService.post(`contact/${recipientId}/message`, newMsg)
+  await httpService.post(`contact/${recipientId}/msg`, newMsg)
 
   return newMsg
 }
@@ -83,8 +84,35 @@ function getEmptyUser() {
   return {
     fullName: '',
     username: '',
+    blockedContcats: [],
     img: 'https://randomuser.me/api/portraits/men/1.jpg',
     contacts: [],
     msgs: [],
   }
+}
+
+function getFilteredUsers(users, filterBy, loggedInUser) {
+  const regexPattern = new RegExp(filterBy, 'i')
+  const filteredUsers = users?.filter((user) => {
+    const isUserInContacts =
+      loggedInUser?.contacts &&
+      loggedInUser.contacts.some((contact) => contact._id === user._id)
+
+    return (
+      loggedInUser &&
+      isUserInContacts &&
+      user._id !== loggedInUser._id &&
+      (regexPattern.test(user.fullName) ||
+        user.msgs.some((msg) => regexPattern.test(msg.content)))
+    )
+  })
+  return filteredUsers?.sort((a, b) => {
+    const aMsgs = a.msgs
+    const bMsgs = b.msgs
+
+    const aLastMsgTimestamp = aMsgs?.[aMsgs.length - 1]?.timestamp
+    const bLastMsgTimestamp = bMsgs?.[bMsgs.length - 1]?.timestamp
+
+    return bLastMsgTimestamp - aLastMsgTimestamp
+  })
 }
