@@ -1,7 +1,7 @@
-import { httpService } from './http.service.js'
-import { storageService } from './storage.service.js'
-import { utilService } from './util.service.js'
-import { authService } from './auth.service.js'
+import { httpService } from "./http.service.js"
+import { storageService } from "./storage.service.js"
+import { utilService } from "./util.service.js"
+import { authService } from "./auth.service.js"
 export const userService = {
   query,
   // save,
@@ -11,9 +11,10 @@ export const userService = {
   createNewMsg,
   addContact,
   removeContact,
+  getFilteredUsers,
 }
 
-const STORAGE_KEY = 'users'
+const STORAGE_KEY = "users"
 
 function query() {
   return httpService.get(`contact`)
@@ -32,11 +33,11 @@ async function removeContact(loggedInUserId, contactId) {
 }
 
 async function getById(id) {
-  console.log('id service front', id)
+  console.log("id service front", id)
   // const user = gUsers.find((user) => user._id === id)
   // return Promise.resolve({ ...user })
   const user = await httpService.get(`contact/${id}`)
-  console.log('user', user)
+  console.log("user", user)
   return user
 }
 async function createNewMsg(msg, senderId, recipientId) {
@@ -77,11 +78,37 @@ async function createNewMsg(msg, senderId, recipientId) {
 
 function getEmptyUser() {
   return {
-    fullName: '',
-    username: '',
-    blockedContcats : [],
-    img: 'https://randomuser.me/api/portraits/men/1.jpg',
+    fullName: "",
+    username: "",
+    blockedContcats: [],
+    img: "https://randomuser.me/api/portraits/men/1.jpg",
     contacts: [],
     msgs: [],
   }
+}
+
+function getFilteredUsers(users, filterBy, loggedInUser) {
+  const regexPattern = new RegExp(filterBy, "i")
+  const filteredUsers = users?.filter((user) => {
+    const isUserInContacts =
+      loggedInUser?.contacts &&
+      loggedInUser.contacts.some((contact) => contact._id === user._id)
+
+    return (
+      loggedInUser &&
+      isUserInContacts &&
+      user._id !== loggedInUser._id &&
+      (regexPattern.test(user.fullName) ||
+        user.msgs.some((msg) => regexPattern.test(msg.content)))
+    )
+  })
+  return filteredUsers?.sort((a, b) => {
+    const aMsgs = a.msgs
+    const bMsgs = b.msgs
+
+    const aLastMsgTimestamp = aMsgs?.[aMsgs.length - 1]?.timestamp
+    const bLastMsgTimestamp = bMsgs?.[bMsgs.length - 1]?.timestamp
+
+    return bLastMsgTimestamp - aLastMsgTimestamp
+  })
 }

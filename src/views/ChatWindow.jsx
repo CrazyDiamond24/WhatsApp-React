@@ -8,6 +8,7 @@ import { ReactComponent as TextingSVG } from "../assets/imgs/texting.svg"
 import { MsgOptions } from "../cmps/MsgOptions"
 import { Giphy } from "../cmps/Giphy"
 import { useAutoAnimate } from "@formkit/auto-animate/react"
+import { msgService } from "../services/msg.service"
 
 export function ChatWindow() {
   const [msgContent, setMsgContent] = useState("")
@@ -24,19 +25,11 @@ export function ChatWindow() {
     return storeState.userModule.selectedUser
   })  
 
-  const isUserBlocked = loggedInUser.blockedContcats?.includes(user?._id)
+  const isUserBlocked = loggedInUser?.blockedContcats?.includes(user?._id)
 
   const msgs =
     user && !isUserBlocked
-      ? user.msgs
-          .filter(
-            (msg) =>
-              (msg.senderId === loggedInUser?._id &&
-                msg.recipientId === user._id) ||
-              (msg.senderId === user._id &&
-                msg.recipientId === loggedInUser?._id)
-          )
-          .sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp))
+      ? msgService.filterMsgs(user,loggedInUser)
       : []
 
   useEffect(() => {
@@ -101,11 +94,8 @@ export function ChatWindow() {
     dispatch(addMsg(newGif, user._id, loggedInUser._id, "image"))
   }
 
-  const getTimestamp = (timestamp) => {
-    const date = new Date(timestamp)
-    const hours = date.getHours().toString().padStart(2, "0")
-    const minutes = date.getMinutes().toString().padStart(2, "0")
-    return `${hours}:${minutes}`
+  const showTimestamp = (timestamp) => {
+   return msgService.getTimestamp(timestamp)
   }
 
   const blockContact = () => {
@@ -153,7 +143,7 @@ export function ChatWindow() {
                     </span>
                   </div>
                 )}
-                <span className="timestamp">{getTimestamp(msg.timestamp)}</span>
+                <span className="timestamp">{showTimestamp(msg.timestamp)}</span>
                 {isHovered === index && (
                   <MsgOptions
                     user={user}

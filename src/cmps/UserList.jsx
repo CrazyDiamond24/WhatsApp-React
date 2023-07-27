@@ -4,6 +4,7 @@ import { UserPreview } from './UserPreview'
 import { useSelector } from 'react-redux'
 import { CSSTransition} from 'react-transition-group'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
+import { userService } from '../services/user.service'
 
 
 export function UserList({ filterBy, onRemoveUser, onSelectContact }) {
@@ -17,35 +18,11 @@ export function UserList({ filterBy, onRemoveUser, onSelectContact }) {
 
 
   const filterUsers = (users, filterBy, loggedInUser) => {
-    const regexPattern = new RegExp(filterBy, 'i')
-    return users?.filter((user) => {
-      const isUserInContacts =
-        loggedInUser?.contacts &&
-        loggedInUser.contacts.some((contact) => contact._id === user._id)
-  
-      return (
-        loggedInUser &&
-        isUserInContacts &&
-        user._id !== loggedInUser._id &&
-        (regexPattern.test(user.fullName) ||
-          user.msgs.some((msg) => regexPattern.test(msg.content)))
-      )
-    })
+     return userService.getFilteredUsers(users,filterBy,loggedInUser)
   }
 
   useEffect(() => {
     const filteredUsers = filterUsers(users, filterBy, loggedInUser)
-
-    filteredUsers?.sort((a, b) => {
-      const aMsgs = a.msgs
-      const bMsgs = b.msgs
-
-      const aLastMsgTimestamp = aMsgs?.[aMsgs.length - 1]?.timestamp
-      const bLastMsgTimestamp = bMsgs?.[bMsgs.length - 1]?.timestamp
-
-      return bLastMsgTimestamp - aLastMsgTimestamp
-    })
-
     setFilteredUsers(filteredUsers)
   }, [filterBy, users, loggedInUser])
 
