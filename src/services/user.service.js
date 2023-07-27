@@ -79,6 +79,7 @@ function getEmptyUser() {
   return {
     fullName: '',
     username: '',
+    blockedContcats : [],
     img: 'https://randomuser.me/api/portraits/men/1.jpg',
     contacts: [],
     msgs: [],

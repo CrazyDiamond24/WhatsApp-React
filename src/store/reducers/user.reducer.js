@@ -24,7 +24,7 @@ const INITIAL_STATE = {
   // filterBy: {},
   selectedUser: null,
   users: null,
-  blockedUsers: [],
+  // blockedUsers: [],
   loggedInUser: authService.getLoggedinUser(),
 }
 
@@ -154,14 +154,20 @@ export function userReducer(state = INITIAL_STATE, action = {}) {
     case BLOCK_USER:
       return {
         ...state,
-        blockedUsers: [...state.blockedUsers, action.contactId],
+        loggedInUser: {
+          ...state.loggedInUser,
+          blockedContcats: [...state.loggedInUser.blockedContcats, action.contactId],
+        } 
       }
     case UNBLOCK_USER:
       return {
         ...state,
-        blockedUsers: state.blockedUsers.filter(
-          (contactId) => contactId !== action.contactId
-        ),
+        loggedInUser: {
+          ...state.loggedInUser,
+          blockedContcats: state.loggedInUser.blockedContcats.filter(
+            (contactId) => contactId !== action.contactId
+          )
+        }
       }
     case SET_USER:
       return {
