@@ -1,0 +1,83 @@
+// <section className="user-profile-page">
+// <div className="first-section">
+//   <span>
+//     <LeftArrow />
+//   </span>
+//   <h1>Profile</h1>
+// </div>
+// <div className="second-section">
+//   <img src={emptyImg} />
+// </div>
+// <div className="thered-section">
+//   <div>
+//     <span>Your name</span>
+//   </div>
+//   <div>
+//     <span>
+//       <EditIcon />
+//     </span>
+//     <div>
+//       <span>{user?.username}</span>
+//     </div>
+//   </div>
+// </div>
+// <div className="four-section">
+//   <div>
+//     <span>Your status</span>
+//   </div>
+//   <div>
+//     <span>
+//       <EditIcon />
+//     </span>
+//     <div>
+//       <span>{user?.status}</span>
+//     </div>
+//   </div>
+// </div>
+// </section>
+.user-profile-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-items: center;
+  width: 0;
+  height: 549px;
+  z-index: 999;
+  &.open {
+    animation: pageExpand 0.2s forwards;
+  }
+
+  .first-section {
+    width: 100%;
+    height: 108px;
+    background-color: #008069;
+    padding: 0px 23px 0px 20px;
+  }
+  .second-section {
+    width: 100%;
+    height: 200px;
+    margin: 28px 0px;
+
+    align-self: center;
+  }
+  .thered-section,
+  .four-section {
+    width: 100%;
+    height: 89px;
+    background-color: #ffff;
+    margin: 0 0 10px;
+    padding: 14px 30px 10px;
+  }
+}
+
+@keyframes pageExpand {
+  0% {
+    width: 0;
+  }
+  50% {
+    width: rem(200px);
+  }
+  100% {
+    width: rem(400px);
+  }
+}

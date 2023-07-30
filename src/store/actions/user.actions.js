@@ -18,6 +18,7 @@ import {
   ADD_AUTO_MSG,
   UPDATE_MSG_CONTENT,
   REMOVE_CONTACT,
+  EDIT_USER_PROFILE,
 } from '../reducers/user.reducer'
 
 export function addContactToUser(name) {
@@ -142,6 +143,25 @@ export function removeContactFromUser(loggedInUserId, contactId) {
   }
 }
 
+export function editUserProfile(user) {
+  return async (dispatch) => {
+    try {
+      const updatedUser = await userService.editProfile(user)
+      console.log('updatedUser', updatedUser)
+      const action = { type: EDIT_USER_PROFILE, user: updatedUser }
+      dispatch(action)
+      const action2 = {
+        type: SET_LOGGEDIN_USER,
+        user,
+      }
+      dispatch(action2)
+      showSuccessMsg(`Playlist updated`)
+    } catch (error) {
+      showErrorMsg(`Cannot update station`)
+    }
+  }
+}
+
 export function setCurrUser(UserId) {
   console.log('UserId', UserId)
   return async (dispatch, getState) => {
@@ -211,6 +231,18 @@ export function deleteMsg(msgId, senderId , recipientId) {
       dispatch({ type: UPDATE_MSG_CONTENT, msg: updatedMsg })
     } catch (error) {
       console.log('Error:', error)
+    }
+  }
+}
+
+export function blockUnblockContact(actionType,contactId) {
+  console.log('contactId', contactId)
+  return (dispatch, getState) => {
+    try {
+      const action = { type: actionType, contactId }
+      dispatch(action)
+    } catch (error) {
+      console.log('error:', error)
     }
   }
 }

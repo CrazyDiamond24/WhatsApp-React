@@ -16,12 +16,16 @@ export const LOGIN_ERROR = 'LOGIN_ERROR'
 export const SET_LOGGEDIN_USER = 'SET_LOGGEDIN_USER'
 export const ADD_AUTO_MSG = 'ADD_AUTO_MSG'
 export const UPDATE_MSG_CONTENT = 'UPDATE_MSG_CONTENT'
+export const UNBLOCK_USER = 'UNBLOCK_USER'
+export const BLOCK_USER = 'BLOCK_USER'
+export const EDIT_USER_PROFILE = 'EDIT_USER_PROFILE'
 
 const INITIAL_STATE = {
   loginError: '',
   // filterBy: {},
   selectedUser: null,
   users: null,
+  // blockedUsers: [],
   loggedInUser: authService.getLoggedinUser(),
 }
 
@@ -41,6 +45,16 @@ export function userReducer(state = INITIAL_STATE, action = {}) {
             (contact) => contact._id !== action.contactId
           ),
         },
+      }
+    case EDIT_USER_PROFILE:
+      return {
+        ...state,
+        users: state.users.map((user) =>
+          user._id === action.user._id ? action.user : user
+        ),
+        // userStations: state.userStations.map((station) =>
+        //   station._id === action.station._id ? action.station : station
+        // ),
       }
     case LOGIN_ERROR:
       return {
@@ -149,13 +163,26 @@ export function userReducer(state = INITIAL_STATE, action = {}) {
         ...state,
         loggedInUser: null,
       }
-
-    case UPDATE_USER:
+    case BLOCK_USER:
       return {
         ...state,
-        users: state.users.map((user) =>
-          user._id === action.user._id ? action.user : user
-        ),
+        loggedInUser: {
+          ...state.loggedInUser,
+          blockedContcats: [
+            ...state.loggedInUser.blockedContcats,
+            action.contactId,
+          ],
+        },
+      }
+    case UNBLOCK_USER:
+      return {
+        ...state,
+        loggedInUser: {
+          ...state.loggedInUser,
+          blockedContcats: state.loggedInUser.blockedContcats.filter(
+            (contactId) => contactId !== action.contactId
+          ),
+        },
       }
     case SET_USER:
       return {
