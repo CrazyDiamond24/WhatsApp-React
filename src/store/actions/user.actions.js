@@ -177,7 +177,9 @@ export function addMsg(
   senderId,
   msgType = 'text'
 ) {
-  console.log('msg type', msgType)
+  console.log('msg content from actions', msgContent)
+  console.log('senderId actions', senderId)
+  console.log('recipientId actions', recipientId)
   return async (dispatch, getState) => {
     try {
       const msg = await msgService.createNewMsg(

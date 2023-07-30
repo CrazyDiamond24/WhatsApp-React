@@ -8,6 +8,7 @@ import { ReactComponent as TextingSVG } from '../assets/imgs/texting.svg'
 import { MsgOptions } from '../cmps/MsgOptions'
 import { Giphy } from '../cmps/Giphy'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
+import { socketService } from '../services/socket.service'
 
 export function ChatWindow() {
   const [msgContent, setMsgContent] = useState('')
@@ -56,22 +57,39 @@ export function ChatWindow() {
     return responses[randomIndex]
   }
 
+  useEffect(() => {
+    // Register the listener when the component mounts
+    socketService.on('chat-add-msg', (msgContent) => {
+      console.log(msgContent, 'this is msg data from cmp')
+      // Dispatch the action to add the new message to your Redux store
+      dispatch(
+        addMsg(msgContent, loggedInUser?._id, user?._id)
+      )
+    })
+
+    // Clean up the listener when the component unmounts
+    return () => {
+      socketService.off('chat-add-msg')
+    }
+  }, [dispatch])
+
   function handelSendMsg(e) {
-    console.log(loggedInUser, 'after everything')
-    console.log('user', user)
     e.preventDefault()
     if (!loggedInUser) return
     setMsgContent('')
+    
+    socketService.emit('chat-set-topic', 'myChatRoom')
     //parameters: content, recipient, sender
     dispatch(addMsg(msgContent, user._id, loggedInUser._id))
+    socketService.emit('chat-send-msg', msgContent)
 
     //hardcoded - ready for real use
-    if (user.username) {
-      setTimeout(() => {
-        const autoMsg = getAutoResponse()
-        dispatch(addMsg(autoMsg, loggedInUser._id, user._id))
-      }, 1000)
-    }
+    // if (user.username) {
+    //   setTimeout(() => {
+    //     const autoMsg = getAutoResponse()
+    //     dispatch(addMsg(autoMsg, loggedInUser._id, user._id))
+    //   }, 1000)
+    // }
   }
 
   function handleInputChange(e) {
@@ -131,7 +149,9 @@ export function ChatWindow() {
                   <div className='msg-container'>
                     <span
                       className={
-                        msg.content === 'Message deleted' ? 'msg-deleted' : 'msg-content'
+                        msg.content === 'Message deleted'
+                          ? 'msg-deleted'
+                          : 'msg-content'
                       }
                     >
                       {msg?.content}
