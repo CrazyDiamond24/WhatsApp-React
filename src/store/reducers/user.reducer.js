@@ -184,6 +184,16 @@ export function userReducer(state = INITIAL_STATE, action = {}) {
           ),
         },
       }
+      case EDIT_USER_PROFILE:
+        return {
+          ...state,
+          users: state.users.map((user) =>
+            user._id === action.user._id ? action.user : user
+          ),
+          // userStations: state.userStations.map((station) =>
+          //   station._id === action.station._id ? action.station : station
+          // ),
+        }
     case SET_USER:
       return {
         ...state,
