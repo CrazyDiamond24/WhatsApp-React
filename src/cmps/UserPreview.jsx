@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { setCurrUser } from '../store/actions/user.actions'
 import { ContactOptionsModal } from './ContactOptionsModal'
@@ -12,24 +12,24 @@ export function UserPreview({ user }) {
     return storeState.userModule.loggedInUser
   })
 
-  const lastMsg = user?.msgs?.filter(
-    (msg) =>
-      msg.senderId === loggedInUser._id || msg.recipientId === loggedInUser._id
-  )
+  const lastMsg = useMemo(() => {
+    return user?.msgs?.filter(
+      (msg) =>
+        msg.senderId === loggedInUser?._id || msg.recipientId === loggedInUser?._id
+    )
+  }, [user, loggedInUser])
 
-  const lastMsgContent =
-    lastMsg?.length > 0
+  const lastMsgContent = useMemo(() => {
+    return lastMsg?.length > 0
       ? lastMsg[lastMsg.length - 1].type !== 'image'
         ? lastMsg[lastMsg.length - 1].content
         : '🖼️ Shared an Image'
       : 'Start a new conversation'
+  }, [lastMsg])
 
   function handleClick(e) {
     if (e.button === 0) {
-      // console.log('left')
-      // // left click
-      // console.log('hi')
-      // console.log('user._id', user._id)
+
       dispatch(setCurrUser(user._id))
     }
   }

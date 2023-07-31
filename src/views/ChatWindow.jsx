@@ -12,7 +12,7 @@ import { socketService } from '../services/socket.service'
 import { msgService } from '../services/msg.service'
 
 export function ChatWindow() {
-  console.log('chat window rendered now')
+  // console.log('chat window rendered now')
   const [msgContent, setMsgContent] = useState('')
   const [isHovered, setIsHovered] = useState(null)
   const [sentGifs, setSentGifs] = useState([])
@@ -27,11 +27,25 @@ export function ChatWindow() {
     return storeState.userModule.selectedUser
   })
 
-  const allMsgs = useSelector((storeState) => storeState.userModule.loggedInUser.msgs); 
+  const setTopic = (senderId, recipientId) => {
+    console.log('setting the topic in chat')
+    if (!senderId || !recipientId) return
+    const ids = [senderId, recipientId].sort()
+    const topic = `${ids[0]}-${ids[1]}` // Concatenate the sorted IDs
+    console.log('Setting chat topic:', topic)
+    socketService.emit('chat-set-topic', topic)
+  }
+
+  const allMsgs = useSelector(
+    (storeState) => storeState.userModule.loggedInUser?.msgs
+  )
 
   const isUserBlocked = loggedInUser?.blockedContcats?.includes(user?._id)
-const msgs = loggedInUser && user ? msgService.filterMsgs(user, loggedInUser, allMsgs) : null;
-// console.log('Filtered Messages:', msgs);
+
+  const msgs =
+    loggedInUser && user
+      ? msgService.filterMsgs(user, loggedInUser, allMsgs)
+      : null
 
   useEffect(() => {
     const container = document.querySelector('.conversation-container')
@@ -41,49 +55,48 @@ const msgs = loggedInUser && user ? msgService.filterMsgs(user, loggedInUser, al
   }, [msgs])
 
   function handelSendMsg(e) {
-    e.preventDefault();
-    if (!loggedInUser || !user) return;
-  
-    // Sort the user IDs to ensure a consistent topic string
-    const ids = [loggedInUser._id, user._id].sort();
-    const topic = `${ids[0]}-${ids[1]}`; // Concatenate the sorted IDs
-  
-    socketService.emit('chat-set-topic', topic);
-    console.log('topic', topic);
-  
+    e.preventDefault()
+    if (!loggedInUser || !user || !msgContent.trim()) return
+
     const contentToSend = {
       content: msgContent,
       senderId: loggedInUser._id,
       recipientId: user._id,
-    };
-    setMsgContent('');
-    socketService.emit('chat-send-msg', contentToSend);
+    }
+    setMsgContent('')
+    socketService.emit('chat-send-msg', contentToSend)
   }
-  
-  
 
-useEffect(() => {
-  const handleReceivedMsg = (receivedMsg) => {
-    console.log('Received message', receivedMsg); // Check this log
+  useEffect(() => {
+    if (loggedInUser && user) {
+    }
+  }, [loggedInUser?.msgs?.length, user])
 
-    dispatch(
-      addMsg(
-        receivedMsg.content,
-        receivedMsg.recipientId,
-        receivedMsg.senderId
+  useEffect(() => {
+    const handleReceivedMsg = (receivedMsg) => {
+      console.log('Received message', receivedMsg)
+
+      if (receivedMsg.content && receivedMsg.content.includes('.gif')) {
+        receivedMsg.type = 'image'
+      }
+
+      dispatch(
+        addMsg(
+          receivedMsg.content,
+          receivedMsg.recipientId,
+          receivedMsg.senderId,
+          receivedMsg.type
+        )
       )
-    );
-    console.log('Message dispatched');
-  }
+      setTopic(loggedInUser?._id, user?._id)
+      console.log('Message dispatched')
+    }
 
-  socketService.on('chat-add-msg', handleReceivedMsg);
-
-  return () => {
-    socketService.off('chat-add-msg', handleReceivedMsg);
-  }
-}, [dispatch]);
-
-  
+    socketService.on('chat-add-msg', handleReceivedMsg)
+    return () => {
+      socketService.off('chat-add-msg', handleReceivedMsg)
+    }
+  }, [dispatch])
 
   function handleInputChange(e) {
     setMsgContent(e.target.value)
@@ -102,10 +115,13 @@ useEffect(() => {
   }
 
   function handleGifSelect(gifImgUrl) {
-    const newGif = gifImgUrl
-
-    setSentGifs((prevSentGifs) => [...prevSentGifs, newGif])
-    dispatch(addMsg(newGif, user._id, loggedInUser._id, 'image'))
+    const contentToSend = {
+      content: gifImgUrl,
+      senderId: loggedInUser._id,
+      recipientId: user._id,
+      type: 'image',
+    }
+    socketService.emit('chat-send-msg', contentToSend)
   }
 
   const showTimestamp = (timestamp) => {

@@ -7,10 +7,12 @@ import {
   loadUsers,
   removeUser,
   setFilterBy,
+  setCurrUser,
 } from '../store/actions/user.actions'
 import { ChatWindow } from './ChatWindow'
 import { AppHeader } from '../cmps/AppHeader'
 import { UserProfile } from '../cmps/UserProfile'
+
 
 export function UserIndex(props) {
   const users = useSelector((storeState) => storeState.userModule.users)
@@ -20,6 +22,11 @@ export function UserIndex(props) {
   const [isInputOpen, setIsInputOpen] = useState(false)
   const [selectedUserId, setSelectedUserId] = useState(null)
   const dispatch = useDispatch()
+
+  const loggedInUser = useSelector((storeState) => {
+    return storeState.userModule.loggedInUser
+  })
+
   const user = useSelector((storeState) => {
     return storeState.userModule.selectedUser
   })
@@ -45,14 +52,6 @@ export function UserIndex(props) {
     }
   }, [])
 
-  // const onChangeFilter = (filterBy) => {
-  //   // dispatch(setFilterBy(filterBy))
-  //   dispatch(loadUsers())
-  // }
-
-  const handleUserClick = (userId) => {
-    setSelectedUserId(userId)
-  }
 
   const handleInput = (e) => {
     setFilterBy(e.target.value)
@@ -64,13 +63,13 @@ export function UserIndex(props) {
   // if (!users) return <div>Loading...</div>
 
   return (
-    <section className="home-page">
+    <section className='home-page'>
       {!isShowProfile ? (
-        <section className="contact-list">
+        <section className='contact-list'>
           <AppHeader showProfile={handleShowProfile} />
-          <div className="svg-input-container">
+          <div className='svg-input-container'>
             <span
-              className="pointer search-svg"
+              className='pointer search-svg'
               onClick={() => handleOpenInput()}
             >
               🔎
@@ -78,22 +77,20 @@ export function UserIndex(props) {
             {isInputOpen && (
               <input
                 className={`search-input ${isInputOpen ? 'open' : 'close'}`}
-                type="text"
-                placeholder="Search"
+                type='text'
+                placeholder='Search'
                 value={filterBy}
                 onChange={(e) => handleInput(e)}
               />
             )}
             {/* <UserFilter filterBy={filterBy} onChangeFilter={onChangeFilter} /> */}
           </div>
-          <div className="add-contact">
-            {/* <Link to="/user/edit">Add contact</Link> */}
+          <div className='add-contact'>
+            <Link to='/user/edit'>Add contact</Link>
           </div>
           <UserList
             filterBy={filterBy}
-            // users={users}
             onRemoveUser={onRemoveUser}
-            onSelectContact={handleUserClick}
           />
         </section>
       ) : (
