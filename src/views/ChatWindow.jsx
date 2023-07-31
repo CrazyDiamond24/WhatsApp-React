@@ -50,13 +50,19 @@ export function ChatWindow() {
     e.preventDefault()
     if (!loggedInUser || !user) return
 
-    const contentToSend = {
-      content: msgContent,
-      senderId: loggedInUser._id,
-      recipientId: user._id,
+    // Trim the content to remove leading and trailing whitespace
+    const trimmedContent = msgContent.trim()
+
+    // Only send the message if the content is not empty
+    if (trimmedContent) {
+      const contentToSend = {
+        content: trimmedContent,
+        senderId: loggedInUser._id,
+        recipientId: user._id,
+      }
+      setMsgContent('')
+      socketService.emit('chat-send-msg', contentToSend)
     }
-    setMsgContent('')
-    socketService.emit('chat-send-msg', contentToSend)
   }
 
   useEffect(() => {
@@ -64,9 +70,7 @@ export function ChatWindow() {
     }
   }, [loggedInUser?.msgs?.length, user])
 
-
   useEffect(() => {
-
     const handleReceivedMsg = (receivedMsg) => {
       console.log('Received message ', receivedMsg)
 
@@ -118,6 +122,7 @@ export function ChatWindow() {
       type: 'image',
     }
     socketService.emit('chat-send-msg', contentToSend)
+    setMsgContent('')
   }
 
   const showTimestamp = (timestamp) => {
