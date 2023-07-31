@@ -56,7 +56,7 @@ export function ChatWindow() {
 
   function handelSendMsg(e) {
     e.preventDefault()
-    if (!loggedInUser || !user || !msgContent.trim()) return
+    if (!loggedInUser || !user) return
 
     const contentToSend = {
       content: msgContent,
@@ -88,10 +88,10 @@ export function ChatWindow() {
           receivedMsg.type
         )
       )
-      setTopic(loggedInUser?._id, user?._id)
       console.log('Message dispatched')
     }
 
+    setTopic(loggedInUser?._id, user?._id)
     socketService.on('chat-add-msg', handleReceivedMsg)
     return () => {
       socketService.off('chat-add-msg', handleReceivedMsg)
