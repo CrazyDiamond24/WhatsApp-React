@@ -27,36 +27,6 @@ export function UserList({ filterBy, onRemoveUser }) {
     setFilteredUsers(filteredUsers)
   }, [filterBy, users, loggedInUser])
 
-  const setTopic = (senderId, recipientId) => {
-    if (!senderId || !recipientId) return
-    const ids = [senderId, recipientId].sort()
-    const topic = `${ids[0]}-${ids[1]}` // Concatenate the sorted IDs
-    console.log('Setting from list topic:', topic)
-    socketService.emit('chat-set-topic', topic)
-  }
-
-// useEffect(() => {
-//     // Handle received message
-//     const handleReceivedMsg = (receivedMsg) => {
-//       console.log('Received message', receivedMsg);
-
-//       // Find the user in filteredUsers who sent this message
-//       const userWhoSentMsg = filteredUsers.find(
-//         (user) => user._id === receivedMsg.senderId && receivedMsg.recipientId === loggedInUser._id
-//       );
-
-//       if (userWhoSentMsg) {
-//         // Set the chat topic using the sender and recipient IDs
-//         setTopic(receivedMsg.senderId, receivedMsg.recipientId);
-//       }
-//     };
-
-//     socketService.on('chat-add-msg', handleReceivedMsg);
-
-//     return () => {
-//       socketService.off('chat-add-msg', handleReceivedMsg);
-//     };
-//   }, [filteredUsers, loggedInUser]);
 
   const [animationParent] = useAutoAnimate()
 

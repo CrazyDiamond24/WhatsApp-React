@@ -95,6 +95,7 @@ export function ChatWindow() {
     socketService.on('chat-add-msg', handleReceivedMsg)
     return () => {
       socketService.off('chat-add-msg', handleReceivedMsg)
+      setMsgContent('')
     }
   }, [dispatch])
 
