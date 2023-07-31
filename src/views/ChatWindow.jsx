@@ -27,15 +27,6 @@ export function ChatWindow() {
     return storeState.userModule.selectedUser
   })
 
-  const setTopic = (senderId, recipientId) => {
-    console.log('setting the topic in chat')
-    if (!senderId || !recipientId) return
-    const ids = [senderId, recipientId].sort()
-    const topic = `${ids[0]}-${ids[1]}` // Concatenate the sorted IDs
-    console.log('Setting chat topic:', topic)
-    socketService.emit('chat-set-topic', topic)
-  }
-
   const allMsgs = useSelector(
     (storeState) => storeState.userModule.loggedInUser?.msgs
   )
@@ -55,6 +46,7 @@ export function ChatWindow() {
   }, [msgs])
 
   function handelSendMsg(e) {
+    console.log('handelSendMsg called', msgContent)
     e.preventDefault()
     if (!loggedInUser || !user) return
 
@@ -72,9 +64,11 @@ export function ChatWindow() {
     }
   }, [loggedInUser?.msgs?.length, user])
 
+
   useEffect(() => {
+
     const handleReceivedMsg = (receivedMsg) => {
-      console.log('Received message', receivedMsg)
+      console.log('Received message ', receivedMsg)
 
       if (receivedMsg.content && receivedMsg.content.includes('.gif')) {
         receivedMsg.type = 'image'
@@ -85,17 +79,18 @@ export function ChatWindow() {
           receivedMsg.content,
           receivedMsg.recipientId,
           receivedMsg.senderId,
-          receivedMsg.type
+          receivedMsg.type || 'text'
         )
       )
       console.log('Message dispatched')
     }
 
-    // setTopic(loggedInUser?._id, user?._id)
+    // Subscribe to the event
     socketService.on('chat-add-msg', handleReceivedMsg)
+
+    // Clean up the event listener when the component unmounts
     return () => {
       socketService.off('chat-add-msg', handleReceivedMsg)
-      setMsgContent('')
     }
   }, [dispatch])
 
