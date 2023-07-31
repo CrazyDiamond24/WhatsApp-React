@@ -44,17 +44,21 @@ async function getUserMessages(userId, loggedInUserId) {
   }
 }
 
-// ... other service functions ...
 
 function filterMsgs(user, loggedInUser) {
-  return user.msgs
+  console.log('filterMsgs user:', user);
+  console.log('filterMsgs loggedInUser:', loggedInUser);
+  const filteredMsgs = user.msgs
     .filter(
       (msg) =>
-        (msg.senderId === loggedInUser?._id && msg.recipientId === user._id) ||
-        (msg.senderId === user._id && msg.recipientId === loggedInUser?._id)
+        (msg.senderId === loggedInUser._id && msg.recipientId === user._id) ||
+        (msg.senderId === user._id && msg.recipientId === loggedInUser._id)
     )
-    .sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp))
+    .sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+  console.log('filteredMsgs:', filteredMsgs);
+  return filteredMsgs;
 }
+
 
 
 function getTimestamp(timestamp) {
