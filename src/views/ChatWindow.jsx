@@ -91,7 +91,7 @@ export function ChatWindow() {
       console.log('Message dispatched')
     }
 
-    setTopic(loggedInUser?._id, user?._id)
+    // setTopic(loggedInUser?._id, user?._id)
     socketService.on('chat-add-msg', handleReceivedMsg)
     return () => {
       socketService.off('chat-add-msg', handleReceivedMsg)
