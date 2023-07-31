@@ -79,31 +79,29 @@ export function userReducer(state = INITIAL_STATE, action = {}) {
         loggedInUser: action.user,
       }
 
-    case ADD_MSG:
-      return {
-        ...state,
-        users: state.users.map((user) =>
-          user._id === action.msg.senderId ||
-          user._id === action.msg.recipientId
-            ? { ...user, msgs: [...user.msgs, action.msg] }
-            : user
-        ),
-        loggedInUser:
-          state.loggedInUser._id === action.msg.senderId
-            ? {
-                ...state.loggedInUser,
-                msgs: [...state.loggedInUser.msgs, action.msg],
-              }
-            : state.loggedInUser,
-        selectedUser:
-          state.selectedUser &&
-          state.selectedUser._id === action.msg.recipientId
-            ? {
-                ...state.selectedUser,
-                msgs: [...state.selectedUser.msgs, action.msg],
-              }
-            : state.selectedUser,
+case ADD_MSG:
+  console.log('Current state:', state);
+  console.log('Action:', action);
+  const newState = {
+    ...state,
+    users: state.users.map((user) => {
+      if (user._id === action.msg.senderId || user._id === action.msg.recipientId) {
+        console.log('Updating user with ID:', user._id, 'Old msgs:', user.msgs, 'New msg:', action.msg);
+        return { ...user, msgs: [...user.msgs, action.msg] };
       }
+      return user;
+    }),
+  };
+  
+  newState.loggedInUser = newState.users.find((user) => user._id === state.loggedInUser._id);
+  newState.selectedUser = newState.users.find((user) => user._id === state.selectedUser?._id);
+  
+  console.log('New state:', newState);
+  
+  return newState;
+  
+  
+
       
       case ADD_AUTO_MSG:
         const { msg } = action

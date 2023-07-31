@@ -8,6 +8,7 @@ import { userService } from '../services/user.service'
 
 
 export function UserList({ filterBy, onRemoveUser, onSelectContact }) {
+  
   const users = useSelector((storeState) => storeState.userModule.users)
 
   const loggedInUser = useSelector((storeState) => {

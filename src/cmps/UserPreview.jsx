@@ -26,10 +26,10 @@ export function UserPreview({ user }) {
 
   function handleClick(e) {
     if (e.button === 0) {
-      console.log('left')
-      // left click
-      console.log('hi')
-      console.log('user._id', user._id)
+      // console.log('left')
+      // // left click
+      // console.log('hi')
+      // console.log('user._id', user._id)
       dispatch(setCurrUser(user._id))
     }
   }
@@ -39,7 +39,7 @@ export function UserPreview({ user }) {
     if (e.button === 2) {
       // right click
       dispatch(setCurrUser(user._id))
-      console.log('right')
+      // console.log('right')
       const rect = e.target.getBoundingClientRect()
       setModalPosition({
         top: rect.top + window.scrollY,

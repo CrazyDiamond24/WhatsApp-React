@@ -12,10 +12,10 @@ import { socketService } from '../services/socket.service'
 import { msgService } from '../services/msg.service'
 
 export function ChatWindow() {
+  console.log('chat window rendered now')
   const [msgContent, setMsgContent] = useState('')
   const [isHovered, setIsHovered] = useState(null)
   const [sentGifs, setSentGifs] = useState([])
-  const [msgs, setMsgs] = useState([])
 
   const dispatch = useDispatch()
 
@@ -27,11 +27,11 @@ export function ChatWindow() {
     return storeState.userModule.selectedUser
   })
 
-  const isUserBlocked = loggedInUser?.blockedContcats?.includes(user?._id)
+  const allMsgs = useSelector((storeState) => storeState.userModule.loggedInUser.msgs); 
 
-  useEffect(() => {
-    setMsgs(msgService.filterMsgs(user, loggedInUser))
-  }, [user, loggedInUser])
+  const isUserBlocked = loggedInUser?.blockedContcats?.includes(user?._id)
+const msgs = loggedInUser && user ? msgService.filterMsgs(user, loggedInUser, allMsgs) : null;
+// console.log('Filtered Messages:', msgs);
 
   useEffect(() => {
     const container = document.querySelector('.conversation-container')
@@ -41,39 +41,49 @@ export function ChatWindow() {
   }, [msgs])
 
   function handelSendMsg(e) {
-    e.preventDefault()
-    if (!loggedInUser) return
-
+    e.preventDefault();
+    if (!loggedInUser || !user) return;
+  
+    // Sort the user IDs to ensure a consistent topic string
+    const ids = [loggedInUser._id, user._id].sort();
+    const topic = `${ids[0]}-${ids[1]}`; // Concatenate the sorted IDs
+  
+    socketService.emit('chat-set-topic', topic);
+    console.log('topic', topic);
+  
     const contentToSend = {
       content: msgContent,
       senderId: loggedInUser._id,
       recipientId: user._id,
-    }
-    setMsgContent('')
+    };
+    setMsgContent('');
+    socketService.emit('chat-send-msg', contentToSend);
+  }
+  
+  
 
-    socketService.emit('chat-send-msg', contentToSend)
+useEffect(() => {
+  const handleReceivedMsg = (receivedMsg) => {
+    console.log('Received message', receivedMsg); // Check this log
+
+    dispatch(
+      addMsg(
+        receivedMsg.content,
+        receivedMsg.recipientId,
+        receivedMsg.senderId
+      )
+    );
+    console.log('Message dispatched');
   }
 
-  useEffect(() => {
-    const handleReceivedMsg = (receivedMsg) => {
-      console.log('Received message', receivedMsg)
+  socketService.on('chat-add-msg', handleReceivedMsg);
 
-      dispatch(
-        addMsg(
-          receivedMsg.content,
-          receivedMsg.recipientId,
-          receivedMsg.senderId
-        )
-      )
-      console.log('Message dispatched')
-    }
+  return () => {
+    socketService.off('chat-add-msg', handleReceivedMsg);
+  }
+}, [dispatch]);
 
-    socketService.on('chat-add-msg', handleReceivedMsg)
-
-    return () => {
-      socketService.off('chat-add-msg', handleReceivedMsg)
-    }
-  }, [dispatch])
+  
 
   function handleInputChange(e) {
     setMsgContent(e.target.value)
@@ -127,8 +137,8 @@ export function ChatWindow() {
                 className={`chat-msg ${
                   msg.senderId === loggedInUser?._id ? 'sent' : 'received'
                 }`}
-                onMouseEnter={() => handelMouseEnter(index)}
-                onMouseLeave={handelMouseLeave}
+                // onMouseEnter={() => handelMouseEnter(index)}
+                // onMouseLeave={handelMouseLeave}
               >
                 {msg.type === 'image' ? (
                   <div className='msg-container'>
