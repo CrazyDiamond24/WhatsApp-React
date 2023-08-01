@@ -2,8 +2,14 @@ import React, { useState, useEffect } from 'react'
 import { emojisService } from '../services/emojis.service'
 import { uploadImg } from '../services/upload-img.service'
 import { uploadVideo } from '../services/upload-video.service'
+import { uploadFile } from '../services/upload-file.service'
 import { setServerUrl } from '@giphy/js-fetch-api'
-export function Emojis({ onSelectEmoji, onSelectImage, onSelectVideo }) {
+export function Emojis({
+  onSelectEmoji,
+  onSelectImage,
+  onSelectVideo,
+  onSelectFile,
+}) {
   const [isExpanded, setIsExpanded] = useState(false)
   const [emojisList, setEmojisList] = useState({})
   const [selectedCategory, setSelectedCategory] = useState('Smileys & Emotion')
@@ -103,6 +109,16 @@ export function Emojis({ onSelectEmoji, onSelectImage, onSelectVideo }) {
       console.log('err', err)
     }
   }
+  async function handleFile(ev) {
+    const file =
+      ev.type === 'change' ? ev.target.files[0] : ev.dataTransfer.files[0]
+    try {
+      const { url } = await uploadFile(file)
+      onSelectFile(url)
+    } catch (err) {
+      console.log('err', err)
+    }
+  }
 
   return (
     <div className="emojis-container">
@@ -121,6 +137,26 @@ export function Emojis({ onSelectEmoji, onSelectImage, onSelectVideo }) {
         </label>
         📷
       </div> */}
+      <div className="second-section">
+        <label
+          onDrop={(e) => {
+            e.preventDefault()
+            handleFile(e)
+          }}
+          onDragOver={(e) => {
+            e.preventDefault()
+          }}
+          className="cover-img"
+        >
+          <input
+            type="file"
+            onChange={handleFile}
+            accept="image/*,.pdf,.doc,.docx,.xls,.xlsx,.csv,.txt"
+            className="hidden"
+          />
+        </label>
+        📃
+      </div>
       {/* <div className="second-section">
         <label
           onDrop={(e) => {

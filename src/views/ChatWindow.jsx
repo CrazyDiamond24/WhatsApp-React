@@ -11,6 +11,11 @@ import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { socketService } from '../services/socket.service'
 import { msgService } from '../services/msg.service'
 import Transcript from '../cmps/Transcript'
+import { ImgMsg } from '../cmps/MsgTypies/ImgMsg'
+import { AudioMsg } from '../cmps/MsgTypies/AudioMsg'
+import { VideoMsg } from '../cmps/MsgTypies/VideoMsg'
+import { TextMsg } from '../cmps/MsgTypies/TextMsg'
+import { FileMsg } from '../cmps/MsgTypies/FileMsg'
 
 export function ChatWindow() {
   // console.log('chat window rendered now')
@@ -165,6 +170,17 @@ export function ChatWindow() {
     setMsgContent('')
     // }
   }
+  function handleonFileSelect(url) {
+    const contentToSend = {
+      content: url,
+      senderId: loggedInUser._id,
+      recipientId: user._id,
+      type: 'file',
+    }
+    socketService.emit('chat-send-msg', contentToSend)
+    setMsgContent('')
+    // }
+  }
 
   const showTimestamp = (timestamp) => {
     return msgService.getTimestamp(timestamp)
@@ -198,38 +214,12 @@ export function ChatWindow() {
                 // onMouseEnter={() => handelMouseEnter(index)}
                 // onMouseLeave={handelMouseLeave}
               >
-                {msg.type === 'image' && (
-                  <div className="msg-container">
-                    <img className="gif-msg" src={msg?.content} alt="GIF" />
-                  </div>
-                )}
-                {msg.type === 'video' && (
-                  <div className="msg-container">
-                    <video autoPlay loop muted controls>
-                      <source src={msg?.content} type="video/mp4"></source>
-                    </video>
-                  </div>
-                )}
-                {msg.type === 'audio' && (
-                  <div className="msg-container">
-                    <audio className="audio-display" controls>
-                      <source src={msg?.content} type="audio/ogg"></source>
-                    </audio>
-                  </div>
-                )}
-                {msg.type === 'text' && (
-                  <div className="msg-container">
-                    <span
-                      className={
-                        msg.content === 'Message deleted'
-                          ? 'msg-deleted'
-                          : 'msg-content'
-                      }
-                    >
-                      {msg?.content}
-                    </span>
-                  </div>
-                )}
+                {msg.type === 'image' && <ImgMsg msg={msg} />}
+                {msg.type === 'video' && <VideoMsg msg={msg} />}
+                {msg.type === 'audio' && <AudioMsg msg={msg} />}
+                {msg.type === 'text' && <TextMsg msg={msg} />}
+                {msg.type === 'file' && <FileMsg msg={msg} />}
+
                 <span className="timestamp">
                   {showTimestamp(msg.timestamp)}
                 </span>
@@ -249,6 +239,7 @@ export function ChatWindow() {
                 onSelectEmoji={handleEmojiSelect}
                 onSelectImage={handleGifSelect}
                 onSelectVideo={handleVideoSelect}
+                onSelectFile={handleonFileSelect}
               />
               <Giphy onSelectGif={handleGifSelect} />
               <Transcript onSelectAudio={handleAudioSelect} />
