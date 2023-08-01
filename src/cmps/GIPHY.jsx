@@ -31,7 +31,6 @@ export function Giphy({ onSelectGif }) {
     }
 
     if (isQueryNotEmpty) {
-    
       debounceTimeout = setTimeout(() => {
         fetchGifs(searchQuery)
       }, 500)
@@ -47,7 +46,7 @@ export function Giphy({ onSelectGif }) {
   }, [searchQuery, isQueryNotEmpty])
 
   return (
-    <div className='giphy-container'>
+    <div className="giphy-container">
       <div
         className={`giphy-icon ${isExpanded ? 'expanded' : ''}`}
         onClick={() => setIsExpanded((prevState) => !prevState)}
@@ -55,16 +54,16 @@ export function Giphy({ onSelectGif }) {
         🎬
       </div>
       {isExpanded && (
-        <div className='giphy-search-container'>
+        <div className="giphy-search-container">
           <input
-            type='text'
+            type="text"
             value={searchQuery}
             onChange={handleSearchInputChange}
-            className='giphy-search-input'
-            placeholder='Search for GIFs...'
+            className="giphy-search-input"
+            placeholder="Search for GIFs..."
           />
           {isQueryNotEmpty && searchedGifs.length > 0 && (
-            <div className='giphy-grid'>
+            <div className="giphy-grid">
               {searchedGifs.map((gif) => (
                 <img
                   key={gif.id}
@@ -83,5 +82,3 @@ export function Giphy({ onSelectGif }) {
     </div>
   )
 }
-
-
