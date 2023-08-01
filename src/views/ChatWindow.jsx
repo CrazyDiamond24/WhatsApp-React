@@ -137,17 +137,17 @@ export function ChatWindow() {
 
   const [animationParent] = useAutoAnimate()
   return (
-    <div className='chat-window' ref={animationParent}>
+    <div className="chat-window" ref={animationParent}>
       {user ? (
         <>
-          <div className='header-area'>
+          <div className="header-area">
             <img src={user?.img} alt={user?.username} />
             <h2>{user?.fullName}</h2>
             <span onClick={blockContact}>
               {isUserBlocked ? 'unBlock contact' : 'Block contact'}
             </span>
           </div>
-          <ul className='conversation-container flex' ref={animationParent}>
+          <ul className="conversation-container flex" ref={animationParent}>
             {msgs?.map((msg, index) => (
               <li
                 key={index}
@@ -158,11 +158,11 @@ export function ChatWindow() {
                 // onMouseLeave={handelMouseLeave}
               >
                 {msg.type === 'image' ? (
-                  <div className='msg-container'>
-                    <img className='gif-msg' src={msg?.content} alt='GIF' />
+                  <div className="msg-container">
+                    <img className="gif-msg" src={msg?.content} alt="GIF" />
                   </div>
                 ) : (
-                  <div className='msg-container'>
+                  <div className="msg-container">
                     <span
                       className={
                         msg.content === 'Message deleted'
@@ -174,7 +174,7 @@ export function ChatWindow() {
                     </span>
                   </div>
                 )}
-                <span className='timestamp'>
+                <span className="timestamp">
                   {showTimestamp(msg.timestamp)}
                 </span>
                 {isHovered === index && (
@@ -187,45 +187,45 @@ export function ChatWindow() {
               </li>
             ))}
           </ul>
-          <form className='msg-input' onSubmit={(e) => handelSendMsg(e)}>
-            <div className='multimedia-container'>
+          <form className="msg-input" onSubmit={(e) => handelSendMsg(e)}>
+            <div className="multimedia-container">
               <Emojis onSelectEmoji={handleEmojiSelect} />
               <Giphy onSelectGif={handleGifSelect} />
             </div>
             <input
-              className='chat-msg-input'
-              type='text'
-              placeholder='Type a message...'
+              className="chat-msg-input"
+              type="text"
+              placeholder="Type a message..."
               value={msgContent}
               onChange={handleInputChange}
             />
-            <input type='submit' value='Send' />
+            <input type="submit" value="Send" />
           </form>
         </>
       ) : (
-        <section className='welcome-chatroom'>
-          <div className='logo-without-word-container'>
+        <section className="welcome-chatroom">
+          <div className="logo-without-word-container">
             <img
               src={require('../assets/imgs/Logo-without-word.png')}
-              alt='logo'
-              className='logo-without-word'
+              alt="logo"
+              className="logo-without-word"
             ></img>
           </div>
 
-          <div className='welcome-content'>
-            <h1 className='welcome'>Welcome to WuZZapp</h1>
-            <p className='app-gist'>
+          <div className="welcome-content">
+            <h1 className="welcome">Welcome to WuZZapp</h1>
+            <p className="app-gist">
               Start chatting with your friends and family, or unlock a world of
               amusement by conversing with our creative AI bots!
             </p>
-            <TextingSVG className='text-welcome-svg' />
-            <p className='login-or-signup'>
+            <TextingSVG className="text-welcome-svg" />
+            <p className="login-or-signup">
               To get started, please{' '}
-              <Link to='/login' className='login-signup-link'>
+              <Link to="/login" className="login-signup-link">
                 log in
               </Link>{' '}
               or{' '}
-              <Link to='/login' className='login-signup-link'>
+              <Link to="/login" className="login-signup-link">
                 sign up
               </Link>{' '}
               if you don't have an account.
