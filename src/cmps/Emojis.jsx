@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react'
 import { emojisService } from '../services/emojis.service'
 import { uploadImg } from '../services/upload-img.service'
 import { uploadVideo } from '../services/upload-video.service'
-export function Emojis({ onSelectEmoji }) {
+import { setServerUrl } from '@giphy/js-fetch-api'
+export function Emojis({ onSelectEmoji, onSelectImage, onSelectVideo }) {
   const [isExpanded, setIsExpanded] = useState(false)
   const [emojisList, setEmojisList] = useState({})
   const [selectedCategory, setSelectedCategory] = useState('Smileys & Emotion')
@@ -21,39 +22,6 @@ export function Emojis({ onSelectEmoji }) {
 
   const handleCategoryClick = (category) => {
     setSelectedCategory(category)
-  }
-
-  async function handelImg(ev) {
-    console.log('hi')
-    const file =
-      ev.type === 'change' ? ev.target.files[0] : ev.dataTransfer.files[0]
-    try {
-      // setIsUploading(true)
-      const { url } = await uploadImg(file)
-      console.log('url', url)
-      // setEditedUser({ ...editedUser, img: url })
-      // setFileChanged(true)
-    } catch (err) {
-      console.log('err', err)
-    } finally {
-      // setIsUploading(false)
-    }
-  }
-  async function handleVideoFile(ev) {
-    console.log('hi')
-    const file =
-      ev.type === 'change' ? ev.target.files[0] : ev.dataTransfer.files[0]
-    try {
-      // setIsUploading(true)
-      const { url } = await uploadVideo(file)
-      console.log('url', url)
-      // setEditedUser({ ...editedUser, video: url })
-      // setFileChanged(true)
-    } catch (err) {
-      console.log('err', err)
-    } finally {
-      // setIsUploading(false)
-    }
   }
 
   const excludedCategories = ['Component', 'Flags']
@@ -106,24 +74,54 @@ export function Emojis({ onSelectEmoji }) {
     }
   }
 
+  async function handleImg(ev) {
+    console.log('hi')
+    const file =
+      ev.type === 'change' ? ev.target.files[0] : ev.dataTransfer.files[0]
+    try {
+      const { url } = await uploadImg(file)
+      onSelectImage(url)
+    } catch (err) {
+      console.log('err', err)
+    }
+  }
+  async function handleVideoFile(ev) {
+    console.log('hi')
+    const file =
+      ev.type === 'change' ? ev.target.files[0] : ev.dataTransfer.files[0]
+    try {
+      const { url } = await uploadVideo(file)
+      onSelectVideo(url)
+      // const contentToSend = {
+      //   content: url,
+      //   senderId: loggedInUser._id,
+      //   recipientId: user._id,
+      //   type: 'video',
+      // }
+      // socketService.emit('chat-send-msg', contentToSend)
+    } catch (err) {
+      console.log('err', err)
+    }
+  }
+
   return (
     <div className="emojis-container">
-      <div className="second-section">
+      {/* <div className="second-section">
         <label
           onDrop={(e) => {
             e.preventDefault()
-            handelImg(e)
+            handleImg(e)
           }}
           onDragOver={(e) => {
             e.preventDefault()
           }}
           className="cover-img"
         >
-          <input type="file" onChange={handelImg} className="hidden" />
+          <input type="file" onChange={handleImg} className="hidden" />
         </label>
         📷
-      </div>
-      <div className="second-section">
+      </div> */}
+      {/* <div className="second-section">
         <label
           onDrop={(e) => {
             e.preventDefault()
@@ -137,7 +135,7 @@ export function Emojis({ onSelectEmoji }) {
           <input type="file" onChange={handleVideoFile} className="hidden" />
         </label>
         🤖
-      </div>
+      </div> */}
       <div
         className={`smiley ${isExpanded ? 'expanded' : ''}`}
         onClick={() => setIsExpanded((prevState) => !prevState)}

@@ -10,10 +10,12 @@ import { Giphy } from '../cmps/Giphy'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { socketService } from '../services/socket.service'
 import { msgService } from '../services/msg.service'
+import Transcript from '../cmps/Transcript'
 
 export function ChatWindow() {
   // console.log('chat window rendered now')
   const [msgContent, setMsgContent] = useState('')
+  const [imageUrl, setImageUrl] = useState('')
   const [isHovered, setIsHovered] = useState(null)
   const [sentGifs, setSentGifs] = useState([])
 
@@ -44,6 +46,16 @@ export function ChatWindow() {
       container.scrollTop = container.scrollHeight
     }
   }, [msgs])
+
+  // useEffect(() => {
+  //   const contentToSend = {
+  //     content: imageUrl,
+  //     senderId: loggedInUser._id,
+  //     recipientId: user._id,
+  //     type: 'image',
+  //   }
+  //   socketService.emit('chat-send-msg', contentToSend)
+  // }, [imageUrl])
 
   function handelSendMsg(e) {
     console.log('handelSendMsg called', msgContent)
@@ -115,6 +127,8 @@ export function ChatWindow() {
   }
 
   function handleGifSelect(gifImgUrl) {
+    // if (!loggedInUser || !user) return
+    // if (loggedInUser && user) {
     const contentToSend = {
       content: gifImgUrl,
       senderId: loggedInUser._id,
@@ -123,6 +137,33 @@ export function ChatWindow() {
     }
     socketService.emit('chat-send-msg', contentToSend)
     setMsgContent('')
+    // }
+  }
+  function handleAudioSelect(audioUrl) {
+    // if (!loggedInUser || !user) return
+    // if (loggedInUser && user) {
+    const contentToSend = {
+      content: audioUrl,
+      senderId: loggedInUser._id,
+      recipientId: user._id,
+      type: 'audio',
+    }
+    socketService.emit('chat-send-msg', contentToSend)
+    setMsgContent('')
+    // }
+  }
+  function handleVideoSelect(url) {
+    // if (!loggedInUser || !user) return
+    // if (loggedInUser && user) {
+    const contentToSend = {
+      content: url,
+      senderId: loggedInUser._id,
+      recipientId: user._id,
+      type: 'video',
+    }
+    socketService.emit('chat-send-msg', contentToSend)
+    setMsgContent('')
+    // }
   }
 
   const showTimestamp = (timestamp) => {
@@ -157,11 +198,26 @@ export function ChatWindow() {
                 // onMouseEnter={() => handelMouseEnter(index)}
                 // onMouseLeave={handelMouseLeave}
               >
-                {msg.type === 'image' ? (
+                {msg.type === 'image' && (
                   <div className="msg-container">
                     <img className="gif-msg" src={msg?.content} alt="GIF" />
                   </div>
-                ) : (
+                )}
+                {msg.type === 'video' && (
+                  <div className="msg-container">
+                    <video autoPlay loop muted controls>
+                      <source src={msg?.content} type="video/mp4"></source>
+                    </video>
+                  </div>
+                )}
+                {msg.type === 'audio' && (
+                  <div className="msg-container">
+                    <audio className="audio-display" controls>
+                      <source src={msg?.content} type="audio/ogg"></source>
+                    </audio>
+                  </div>
+                )}
+                {msg.type === 'text' && (
                   <div className="msg-container">
                     <span
                       className={
@@ -189,8 +245,13 @@ export function ChatWindow() {
           </ul>
           <form className="msg-input" onSubmit={(e) => handelSendMsg(e)}>
             <div className="multimedia-container">
-              <Emojis onSelectEmoji={handleEmojiSelect} />
+              <Emojis
+                onSelectEmoji={handleEmojiSelect}
+                onSelectImage={handleGifSelect}
+                onSelectVideo={handleVideoSelect}
+              />
               <Giphy onSelectGif={handleGifSelect} />
+              <Transcript onSelectAudio={handleAudioSelect} />
             </div>
             <input
               className="chat-msg-input"

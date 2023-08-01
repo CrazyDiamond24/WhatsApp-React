@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux'
 import { getSpotifySvg } from '../services/SVG.service'
 // import { addAudioNote } from '../store/actions/note.actions'
 
-function Transcript() {
+function Transcript({ onSelectAudio }) {
   const [recording, setRecording] = useState(false)
   const [audioUrl, setAudioUrl] = useState(null)
   const mediaRecorderRef = useRef(null)
@@ -21,8 +21,9 @@ function Transcript() {
     mediaRecorderRef.current.addEventListener('stop', () => {
       const audioBlob = new Blob(audioChunksRef.current)
       const audioUrl = URL.createObjectURL(audioBlob)
-      setAudioUrl(audioUrl)
-      console.log('audioUrl', audioUrl)
+      onSelectAudio(audioUrl)
+      // setAudioUrl(audioUrl)
+      // console.log('audioUrl', audioUrl)
       // dispatch(addAudioNote(audioUrl))
       audioChunksRef.current = []
     })
