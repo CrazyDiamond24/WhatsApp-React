@@ -79,73 +79,71 @@ export function userReducer(state = INITIAL_STATE, action = {}) {
         loggedInUser: action.user,
       }
 
-    case ADD_MSG:
-      return {
-        ...state,
-        users: state.users.map((user) =>
-          user._id === action.msg.senderId ||
-          user._id === action.msg.recipientId
-            ? { ...user, msgs: [...user.msgs, action.msg] }
-            : user
-        ),
-        loggedInUser:
-          state.loggedInUser._id === action.msg.senderId
-            ? {
-                ...state.loggedInUser,
-                msgs: [...state.loggedInUser.msgs, action.msg],
-              }
-            : state.loggedInUser,
-        selectedUser:
-          state.selectedUser &&
-          state.selectedUser._id === action.msg.recipientId
-            ? {
-                ...state.selectedUser,
-                msgs: [...state.selectedUser.msgs, action.msg],
-              }
-            : state.selectedUser,
+case ADD_MSG:
+  const newState = {
+    ...state,
+    users: state.users.map((user) => {
+      if (user._id === action.msg.senderId || user._id === action.msg.recipientId) {
+        return { ...user, msgs: [...user.msgs, action.msg] };
       }
-    case UPDATE_MSG_CONTENT:
-      return {
-        ...state,
-        loggedInUser: {
-          ...state.loggedInUser,
-          msgs: state.loggedInUser.msgs.map((m) =>
-            m.id === action.msg.id ? { ...m, content: action.msg.content } : m
-          ),
-        },
-        selectedUser: {
-          ...state.selectedUser,
-          msgs: state.selectedUser.msgs.map((m) =>
-            m.id === action.msg.id ? { ...m, content: action.msg.content } : m
-          ),
-        },
-      }
+      return user;
+    }),
+  };
+  
+  newState.loggedInUser = newState.users.find((user) => user._id === state.loggedInUser._id);
+  newState.selectedUser = newState.users.find((user) => user._id === state.selectedUser?._id);
+  
+  return newState;
+  
+  
 
-    case ADD_AUTO_MSG:
-      const { msg } = action
-      const { loggedInUser } = state
-
-      return {
-        ...state,
+      
+      case ADD_AUTO_MSG:
+        const { msg } = action
+        const { loggedInUser } = state
+        
+        return {
+          ...state,
         users: state.users.map((user) =>
           user._id === msg.senderId
             ? { ...user, msgs: [...user.msgs, msg] }
             : user
-        ),
-        loggedInUser: {
-          ...loggedInUser,
-          msgs: [...loggedInUser.msgs, msg],
-        },
-        selectedUser:
+            ),
+            loggedInUser: {
+              ...loggedInUser,
+              msgs: [...loggedInUser.msgs, msg],
+            },
+            selectedUser:
           state.selectedUser && state.selectedUser._id === msg.senderId
-            ? {
-                ...state.selectedUser,
-                msgs: [...state.selectedUser.msgs, msg],
+          ? {
+            ...state.selectedUser,
+            msgs: [...state.selectedUser.msgs, msg],
               }
             : state.selectedUser,
       }
+      
+      case UPDATE_MSG_CONTENT:
+        return {
+          ...state,
+          loggedInUser: {
+            ...state.loggedInUser,
+            msgs: state.loggedInUser.msgs.map((m) =>
+              m.id === action.msg.id
+                ? { ...m, content: action.msg.content }
+                : m
+            ),
+          },
+          selectedUser: {
+            ...state.selectedUser,
+            msgs: state.selectedUser.msgs.map((m) =>
+              m.id === action.msg.id
+                ? { ...m, content: action.msg.content }
+                : m
+            ),
+          },
+        }
 
-    case ADD_CONTACT:
+      case ADD_CONTACT:
       return {
         ...state,
         loggedInUser: {
@@ -179,6 +177,16 @@ export function userReducer(state = INITIAL_STATE, action = {}) {
           ),
         },
       }
+      case EDIT_USER_PROFILE:
+        return {
+          ...state,
+          users: state.users.map((user) =>
+            user._id === action.user._id ? action.user : user
+          ),
+          // userStations: state.userStations.map((station) =>
+          //   station._id === action.station._id ? action.station : station
+          // ),
+        }
     case SET_USER:
       return {
         ...state,

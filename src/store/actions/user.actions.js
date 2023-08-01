@@ -143,25 +143,6 @@ export function removeContactFromUser(loggedInUserId, contactId) {
   }
 }
 
-export function editUserProfile(user) {
-  return async (dispatch) => {
-    try {
-      const updatedUser = await userService.editProfile(user)
-      console.log('updatedUser', updatedUser)
-      const action = { type: EDIT_USER_PROFILE, user: updatedUser }
-      dispatch(action)
-      const action2 = {
-        type: SET_LOGGEDIN_USER,
-        user,
-      }
-      dispatch(action2)
-      showSuccessMsg(`Playlist updated`)
-    } catch (error) {
-      showErrorMsg(`Cannot update station`)
-    }
-  }
-}
-
 export function setCurrUser(UserId) {
   console.log('UserId', UserId)
   return async (dispatch, getState) => {
@@ -191,13 +172,10 @@ export function removeUser(userId) {
   }
 }
 
-export function addMsg(
-  msgContent,
-  recipientId,
-  senderId,
-  msgType = 'text'
-) {
-  console.log('msg type', msgType)
+export function addMsg(msgContent, recipientId, senderId, msgType = 'text') {
+  console.log('msg content from actions', msgContent)
+  console.log('senderId actions', senderId)
+  console.log('recipientId actions', recipientId)
   return async (dispatch, getState) => {
     try {
       const msg = await msgService.createNewMsg(
@@ -207,8 +185,7 @@ export function addMsg(
         msgType
       )
 
-      const loggedInUserId = getState().userModule.loggedInUser._id
-      const type = recipientId !== loggedInUserId ? ADD_MSG : ADD_AUTO_MSG
+      const type = ADD_MSG
       const action = { type, msg }
       dispatch(action)
     } catch (error) {
@@ -217,14 +194,14 @@ export function addMsg(
   }
 }
 
-export function deleteMsg(msgId, senderId , recipientId) {
+export function deleteMsg(msgId, senderId, recipientId) {
   return async (dispatch, getState) => {
     try {
       const updatedMsg = {
         id: msgId,
         content: 'Message deleted',
       }
-      await msgService.updateMsg(updatedMsg, senderId , recipientId)
+      await msgService.updateMsg(updatedMsg, senderId, recipientId)
 
       dispatch({ type: UPDATE_MSG_CONTENT, msg: updatedMsg })
     } catch (error) {
@@ -233,7 +210,7 @@ export function deleteMsg(msgId, senderId , recipientId) {
   }
 }
 
-export function blockUnblockContact(actionType,contactId) {
+export function blockUnblockContact(actionType, contactId) {
   console.log('contactId', contactId)
   return (dispatch, getState) => {
     try {
@@ -245,6 +222,24 @@ export function blockUnblockContact(actionType,contactId) {
   }
 }
 
+export function editUserProfile(user) {
+  return async (dispatch) => {
+    try {
+      const updatedUser = await userService.editProfile(user)
+      console.log('updatedUser', updatedUser)
+      const action = { type: EDIT_USER_PROFILE, user: updatedUser }
+      dispatch(action)
+      const action2 = {
+        type: SET_LOGGEDIN_USER,
+        user,
+      }
+      dispatch(action2)
+      showSuccessMsg(`Playlist updated`)
+    } catch (error) {
+      showErrorMsg(`Cannot update station`)
+    }
+  }
+}
 // export function setFilterBy(filterBy) {
 //   return (dispatch) => {
 //     dispatch({ type: SET_FILTER_BY, filterBy })
