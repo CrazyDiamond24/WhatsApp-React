@@ -1,21 +1,15 @@
 import React from 'react'
-import { Link, useNavigate } from 'react-router-dom'
 import { useEffect, useState, useRef, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { addMsg, blockUnblockContact } from '../store/actions/user.actions'
 import { Emojis } from '../cmps/Emojis'
-import { ReactComponent as TextingSVG } from '../assets/imgs/texting.svg'
-import { MsgOptions } from '../cmps/MsgOptions'
 import { Giphy } from '../cmps/Giphy'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { socketService } from '../services/socket.service'
 import { msgService } from '../services/msg.service'
 import Transcript from '../cmps/Transcript'
-import { ImgMsg } from '../cmps/MsgTypies/ImgMsg'
-import { AudioMsg } from '../cmps/MsgTypies/AudioMsg'
-import { VideoMsg } from '../cmps/MsgTypies/VideoMsg'
-import { TextMsg } from '../cmps/MsgTypies/TextMsg'
-import { FileMsg } from '../cmps/MsgTypies/FileMsg'
+import { WelcomeChatRoom } from '../cmps/WelcomeChatRoom'
+import { ConverstationList } from '../cmps/ConverstationList'
 
 export function ChatWindow() {
   // console.log('chat window rendered now')
@@ -65,7 +59,7 @@ export function ChatWindow() {
   function handelSendMsg(e) {
     console.log('handelSendMsg called', msgContent)
     e.preventDefault()
-    if (!loggedInUser || !user) return
+    if (!loggedInUser || !user || !msgContent.length) return
 
     // Trim the content to remove leading and trailing whitespace
     const trimmedContent = msgContent.trim()
@@ -108,7 +102,7 @@ export function ChatWindow() {
 
     // Subscribe to the event
     socketService.on('chat-add-msg', handleReceivedMsg)
-
+    
     // Clean up the event listener when the component unmounts
     return () => {
       socketService.off('chat-add-msg', handleReceivedMsg)
@@ -182,10 +176,6 @@ export function ChatWindow() {
     // }
   }
 
-  const showTimestamp = (timestamp) => {
-    return msgService.getTimestamp(timestamp)
-  }
-
   const blockContact = () => {
     const action = isUserBlocked ? 'UNBLOCK_USER' : 'BLOCK_USER'
     dispatch(blockUnblockContact(action, user._id))
@@ -205,33 +195,7 @@ export function ChatWindow() {
             </span>
           </div>
           <ul className="conversation-container flex" ref={animationParent}>
-            {msgs?.map((msg, index) => (
-              <li
-                key={index}
-                className={`chat-msg ${
-                  msg.senderId === loggedInUser?._id ? 'sent' : 'received'
-                }`}
-                // onMouseEnter={() => handelMouseEnter(index)}
-                // onMouseLeave={handelMouseLeave}
-              >
-                {msg.type === 'image' && <ImgMsg msg={msg} />}
-                {msg.type === 'video' && <VideoMsg msg={msg} />}
-                {msg.type === 'audio' && <AudioMsg msg={msg} />}
-                {msg.type === 'text' && <TextMsg msg={msg} />}
-                {msg.type === 'file' && <FileMsg msg={msg} />}
-
-                <span className="timestamp">
-                  {showTimestamp(msg.timestamp)}
-                </span>
-                {isHovered === index && (
-                  <MsgOptions
-                    user={user}
-                    msg={msg}
-                    loggedInUser={loggedInUser}
-                  />
-                )}
-              </li>
-            ))}
+            <ConverstationList msgs={msgs} loggedInUser={loggedInUser} isHovered={isHovered} user={user} />
           </ul>
           <form className="msg-input" onSubmit={(e) => handelSendMsg(e)}>
             <div className="multimedia-container">
@@ -255,35 +219,7 @@ export function ChatWindow() {
           </form>
         </>
       ) : (
-        <section className="welcome-chatroom">
-          <div className="logo-without-word-container">
-            <img
-              src={require('../assets/imgs/Logo-without-word.png')}
-              alt="logo"
-              className="logo-without-word"
-            ></img>
-          </div>
-
-          <div className="welcome-content">
-            <h1 className="welcome">Welcome to WuZZapp</h1>
-            <p className="app-gist">
-              Start chatting with your friends and family, or unlock a world of
-              amusement by conversing with our creative AI bots!
-            </p>
-            <TextingSVG className="text-welcome-svg" />
-            <p className="login-or-signup">
-              To get started, please{' '}
-              <Link to="/login" className="login-signup-link">
-                log in
-              </Link>{' '}
-              or{' '}
-              <Link to="/login" className="login-signup-link">
-                sign up
-              </Link>{' '}
-              if you don't have an account.
-            </p>
-          </div>
-        </section>
+        <WelcomeChatRoom />
       )}
     </div>
   )
