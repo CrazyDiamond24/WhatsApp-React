@@ -1,6 +1,7 @@
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import LogoWithoutWord from '../assets/imgs/Logo-without-word.png'
+import Transcript from './Transcript'
 
 export function AppHeader({ showProfile }) {
   const user = useSelector((storeState) => storeState.userModule.loggedInUser)
@@ -10,7 +11,10 @@ export function AppHeader({ showProfile }) {
       <section className="user-header">
         <div className="user-info-header">
           {user && user.img ? (
-            <img src={user.img} alt={user.username} />
+            <>
+              <img src={user.img} alt={user.username} />
+              <Transcript />
+            </>
           ) : (
             <img
               src={LogoWithoutWord}
