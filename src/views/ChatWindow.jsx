@@ -1,23 +1,23 @@
-import React from "react"
-import { useEffect, useState, useRef, useMemo } from "react"
-import { useDispatch, useSelector } from "react-redux"
-import { addMsg, blockUnblockContact } from "../store/actions/user.actions"
-import { Emojis } from "../cmps/Emojis"
-import { Giphy } from "../cmps/Giphy"
-import { useAutoAnimate } from "@formkit/auto-animate/react"
-import { socketService } from "../services/socket.service"
-import { msgService } from "../services/msg.service"
-import Transcript from "../cmps/Transcript"
-import { WelcomeChatRoom } from "../cmps/WelcomeChatRoom"
-import { ConverstationList } from "../cmps/ConverstationList"
+import React from 'react'
+import { useEffect, useState, useRef, useMemo } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { addMsg, blockUnblockContact } from '../store/actions/user.actions'
+import { Emojis } from '../cmps/Emojis'
+import { Giphy } from '../cmps/Giphy'
+import { useAutoAnimate } from '@formkit/auto-animate/react'
+import { socketService } from '../services/socket.service'
+import { msgService } from '../services/msg.service'
+import Transcript from '../cmps/Transcript'
+import { WelcomeChatRoom } from '../cmps/WelcomeChatRoom'
+import { ConverstationList } from '../cmps/ConverstationList'
 
 export function ChatWindow() {
   // console.log('chat window rendered now')
-  const [msgContent, setMsgContent] = useState("")
+  const [msgContent, setMsgContent] = useState('')
   // const [imageUrl, setImageUrl] = useState("")
   const [isHovered, setIsHovered] = useState(null)
   // const [sentGifs, setSentGifs] = useState([])
-  const [recipientIsTyping, setRecipientIsTyping] = useState(false)
+  const [recipientIsTyping, setUserIsTyping] = useState(false)
 
   const dispatch = useDispatch()
 
@@ -41,7 +41,7 @@ export function ChatWindow() {
       : null
 
   useEffect(() => {
-    const container = document.querySelector(".conversation-container")
+    const container = document.querySelector('.conversation-container')
     if (container) {
       container.scrollTop = container.scrollHeight
     }
@@ -69,8 +69,8 @@ export function ChatWindow() {
         senderId: loggedInUser._id,
         recipientId: user._id,
       }
-      setMsgContent("")
-      socketService.emit("chat-send-msg", contentToSend)
+      setMsgContent('')
+      socketService.emit('chat-send-msg', contentToSend)
     }
   }
 
@@ -80,24 +80,9 @@ export function ChatWindow() {
   // }, [loggedInUser?.msgs?.length, user])
 
   useEffect(() => {
-    const handleTyping = (typingData) => {
-      console.log("typing", typingData)
-      const { userId, isTyping } = typingData
-      if (userId === user._id) {
-        console.log('isTyping', isTyping)
-        setRecipientIsTyping(isTyping)
-      }
-    }
-    socketService.on("user-typing", handleTyping)
-    return () => {
-      socketService.off("user-typing", handleTyping)
-    }
-  }, [user?._id])
-
-  useEffect(() => {
     const handleReceivedMsg = (receivedMsg) => {
-      if (receivedMsg.content && receivedMsg.content.includes(".gif")) {
-        receivedMsg.type = "image"
+      if (receivedMsg.content && receivedMsg.content.includes('.gif')) {
+        receivedMsg.type = 'image'
       }
 
       dispatch(
@@ -105,27 +90,44 @@ export function ChatWindow() {
           receivedMsg.content,
           receivedMsg.recipientId,
           receivedMsg.senderId,
-          receivedMsg.type || "text"
+          receivedMsg.type || 'text'
         )
       )
     }
 
-    // Subscribe to the event
-    socketService.on("chat-add-msg", handleReceivedMsg)
+    socketService.on('chat-add-msg', handleReceivedMsg)
 
-    // Clean up the event listener when the component unmounts
     return () => {
-      socketService.off("chat-add-msg", handleReceivedMsg)
+      socketService.off('chat-add-msg', handleReceivedMsg)
     }
   }, [dispatch])
+
+  useEffect(() => {
+    const handleTyping = (typingData) => {
+      const { userId, isTyping } = typingData
+      if (userId !== loggedInUser?._id) {
+        console.log('User is typing:', isTyping)
+        setUserIsTyping(isTyping)
+      }
+    }
+    socketService.on('user-typing', handleTyping)
+    return () => {
+      socketService.off('user-typing', handleTyping)
+    }
+  }, [user?._id])
 
   function handleInputChange(e) {
     setMsgContent(e.target.value)
     const trimmedContent = e.target.value.trim()
     const isTyping = trimmedContent !== ''
 
-    setRecipientIsTyping(isTyping)
-    socketService.emit("typing", { senderId: loggedInUser._id, recipientId: user._id, isTyping })  }
+    // Don't set recipient's typing state here; emit your typing status instead
+    socketService.emit('typing', {
+      senderId: loggedInUser._id,
+      recipientId: user._id,
+      isTyping,
+    })
+  }
 
   function handelMouseEnter(index) {
     setIsHovered(index)
@@ -146,10 +148,10 @@ export function ChatWindow() {
       content: gifImgUrl,
       senderId: loggedInUser._id,
       recipientId: user._id,
-      type: "image",
+      type: 'image',
     }
-    socketService.emit("chat-send-msg", contentToSend)
-    setMsgContent("")
+    socketService.emit('chat-send-msg', contentToSend)
+    setMsgContent('')
     // }
   }
   function handleAudioSelect(audioUrl) {
@@ -159,10 +161,10 @@ export function ChatWindow() {
       content: audioUrl,
       senderId: loggedInUser._id,
       recipientId: user._id,
-      type: "audio",
+      type: 'audio',
     }
-    socketService.emit("chat-send-msg", contentToSend)
-    setMsgContent("")
+    socketService.emit('chat-send-msg', contentToSend)
+    setMsgContent('')
     // }
   }
   function handleVideoSelect(url) {
@@ -172,10 +174,10 @@ export function ChatWindow() {
       content: url,
       senderId: loggedInUser._id,
       recipientId: user._id,
-      type: "video",
+      type: 'video',
     }
-    socketService.emit("chat-send-msg", contentToSend)
-    setMsgContent("")
+    socketService.emit('chat-send-msg', contentToSend)
+    setMsgContent('')
     // }
   }
   function handleonFileSelect(url) {
@@ -183,32 +185,37 @@ export function ChatWindow() {
       content: url,
       senderId: loggedInUser._id,
       recipientId: user._id,
-      type: "file",
+      type: 'file',
     }
-    socketService.emit("chat-send-msg", contentToSend)
-    setMsgContent("")
+    socketService.emit('chat-send-msg', contentToSend)
+    setMsgContent('')
     // }
   }
 
   const blockContact = () => {
-    const action = isUserBlocked ? "UNBLOCK_USER" : "BLOCK_USER"
+    const action = isUserBlocked ? 'UNBLOCK_USER' : 'BLOCK_USER'
     dispatch(blockUnblockContact(action, user._id))
   }
 
+  useEffect(() => {
+    console.log("Recipient is typing state:", recipientIsTyping);
+  }, [recipientIsTyping]);
+  
+
   const [animationParent] = useAutoAnimate()
   return (
-    <div className="chat-window" ref={animationParent}>
+    <div className='chat-window' ref={animationParent}>
       {user ? (
         <>
-          <div className="header-area">
+          <div className='header-area'>
             <img src={user?.img} alt={user?.username} />
             <h2>{user?.fullName}</h2>
             <span onClick={blockContact}>
-              {isUserBlocked ? "unBlock contact" : "Block contact"}
+              {isUserBlocked ? 'unBlock contact' : 'Block contact'}
             </span>
             {recipientIsTyping && <div> is typing...</div>}
           </div>
-          <ul className="conversation-container flex" ref={animationParent}>
+          <ul className='conversation-container flex' ref={animationParent}>
             <ConverstationList
               msgs={msgs}
               loggedInUser={loggedInUser}
@@ -216,8 +223,8 @@ export function ChatWindow() {
               user={user}
             />
           </ul>
-          <form className="msg-input" onSubmit={(e) => handelSendMsg(e)}>
-            <div className="multimedia-container">
+          <form className='msg-input' onSubmit={(e) => handelSendMsg(e)}>
+            <div className='multimedia-container'>
               <Emojis
                 onSelectEmoji={handleEmojiSelect}
                 onSelectImage={handleGifSelect}
@@ -228,13 +235,13 @@ export function ChatWindow() {
               <Transcript onSelectAudio={handleAudioSelect} />
             </div>
             <input
-              className="chat-msg-input"
-              type="text"
-              placeholder="Type a message..."
+              className='chat-msg-input'
+              type='text'
+              placeholder='Type a message...'
               value={msgContent}
               onChange={handleInputChange}
             />
-            <input type="submit" value="Send" />
+            <input type='submit' value='Send' />
           </form>
         </>
       ) : (
