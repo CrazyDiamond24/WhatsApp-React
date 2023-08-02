@@ -27,16 +27,15 @@ export function UserList({ filterBy, onRemoveUser }) {
     setFilteredUsers(filteredUsers)
   }, [filterBy, users, loggedInUser])
 
-
   const [animationParent] = useAutoAnimate()
 
   return (
-    <section className='user-list simple-cards-grid' ref={animationParent}>
+    <section className="user-list simple-cards-grid" ref={animationParent}>
       {filteredUsers?.map((user) => (
         <CSSTransition
-          key={user._id}
+          key={user?._id}
           timeout={300}
-          classNames='contact-preview'
+          classNames="contact-preview"
         >
           <UserPreview user={user} onRemoveUser={onRemoveUser} />
         </CSSTransition>

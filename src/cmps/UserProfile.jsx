@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { LeftArrow } from './svgs/LeftArrow'
 import { EditIcon } from './svgs/EditIcon'
 import emptyImg from '../../src/assets/imgs/empty-img.png'
-import { uploadImg } from '../services/upload.service'
+import { uploadImg } from '../services/upload-img.service'
 import { useDispatch, useSelector } from 'react-redux'
 import { editUserProfile } from '../store/actions/user.actions'
 export function UserProfile({ show, closeUserProfile }) {
