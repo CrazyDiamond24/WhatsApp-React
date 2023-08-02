@@ -14,9 +14,10 @@ import { ConverstationList } from "../cmps/ConverstationList"
 export function ChatWindow() {
   // console.log('chat window rendered now')
   const [msgContent, setMsgContent] = useState("")
-  const [imageUrl, setImageUrl] = useState("")
+  // const [imageUrl, setImageUrl] = useState("")
   const [isHovered, setIsHovered] = useState(null)
-  const [sentGifs, setSentGifs] = useState([])
+  // const [sentGifs, setSentGifs] = useState([])
+  const [recipientIsTyping, setRecipientIsTyping] = useState(false)
 
   const dispatch = useDispatch()
 
@@ -79,21 +80,22 @@ export function ChatWindow() {
   // }, [loggedInUser?.msgs?.length, user])
 
   useEffect(() => {
-    const handleTyping = (typing) => {
-      console.log("typing", typing)
-      const message = typing ? "is typing..." : ""
-      const userId = loggedInUser?._id
-      return { userId, message }
+    const handleTyping = (typingData) => {
+      console.log("typing", typingData)
+      const { userId, isTyping } = typingData
+      if (userId === user._id) {
+        console.log('isTyping', isTyping)
+        setRecipientIsTyping(isTyping)
+      }
     }
-    socketService.on("typing", handleTyping(msgContent))
+    socketService.on("user-typing", handleTyping)
     return () => {
-      socketService.off("typing", handleTyping(msgContent))
+      socketService.off("user-typing", handleTyping)
     }
-  }, [msgContent])
+  }, [user?._id])
 
   useEffect(() => {
     const handleReceivedMsg = (receivedMsg) => {
-
       if (receivedMsg.content && receivedMsg.content.includes(".gif")) {
         receivedMsg.type = "image"
       }
@@ -119,7 +121,11 @@ export function ChatWindow() {
 
   function handleInputChange(e) {
     setMsgContent(e.target.value)
-  }
+    const trimmedContent = e.target.value.trim()
+    const isTyping = trimmedContent !== ''
+
+    setRecipientIsTyping(isTyping)
+    socketService.emit("typing", { senderId: loggedInUser._id, recipientId: user._id, isTyping })  }
 
   function handelMouseEnter(index) {
     setIsHovered(index)
@@ -200,6 +206,7 @@ export function ChatWindow() {
             <span onClick={blockContact}>
               {isUserBlocked ? "unBlock contact" : "Block contact"}
             </span>
+            {recipientIsTyping && <div> is typing...</div>}
           </div>
           <ul className="conversation-container flex" ref={animationParent}>
             <ConverstationList
