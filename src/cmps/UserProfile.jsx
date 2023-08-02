@@ -23,7 +23,6 @@ export function UserProfile({ show, closeUserProfile }) {
   }
 
   function handleSaveUserName() {
-    console.log('hi')
     dispatch(editUserProfile(editedUser))
   }
 
@@ -44,7 +43,6 @@ export function UserProfile({ show, closeUserProfile }) {
 
   useEffect(() => {
     if (fileChanged) {
-      console.log('hi')
       dispatch(editUserProfile(editedUser))
       setFileChanged(false)
     }

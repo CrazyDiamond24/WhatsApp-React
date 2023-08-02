@@ -1,20 +1,20 @@
-import React from 'react'
-import { useEffect, useState, useRef, useMemo } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { addMsg, blockUnblockContact } from '../store/actions/user.actions'
-import { Emojis } from '../cmps/Emojis'
-import { Giphy } from '../cmps/Giphy'
-import { useAutoAnimate } from '@formkit/auto-animate/react'
-import { socketService } from '../services/socket.service'
-import { msgService } from '../services/msg.service'
-import Transcript from '../cmps/Transcript'
-import { WelcomeChatRoom } from '../cmps/WelcomeChatRoom'
-import { ConverstationList } from '../cmps/ConverstationList'
+import React from "react"
+import { useEffect, useState, useRef, useMemo } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { addMsg, blockUnblockContact } from "../store/actions/user.actions"
+import { Emojis } from "../cmps/Emojis"
+import { Giphy } from "../cmps/Giphy"
+import { useAutoAnimate } from "@formkit/auto-animate/react"
+import { socketService } from "../services/socket.service"
+import { msgService } from "../services/msg.service"
+import Transcript from "../cmps/Transcript"
+import { WelcomeChatRoom } from "../cmps/WelcomeChatRoom"
+import { ConverstationList } from "../cmps/ConverstationList"
 
 export function ChatWindow() {
   // console.log('chat window rendered now')
-  const [msgContent, setMsgContent] = useState('')
-  const [imageUrl, setImageUrl] = useState('')
+  const [msgContent, setMsgContent] = useState("")
+  const [imageUrl, setImageUrl] = useState("")
   const [isHovered, setIsHovered] = useState(null)
   const [sentGifs, setSentGifs] = useState([])
 
@@ -40,7 +40,7 @@ export function ChatWindow() {
       : null
 
   useEffect(() => {
-    const container = document.querySelector('.conversation-container')
+    const container = document.querySelector(".conversation-container")
     if (container) {
       container.scrollTop = container.scrollHeight
     }
@@ -57,7 +57,6 @@ export function ChatWindow() {
   // }, [imageUrl])
 
   function handelSendMsg(e) {
-    console.log('handelSendMsg called', msgContent)
     e.preventDefault()
     if (!loggedInUser || !user || !msgContent.length) return
 
@@ -69,22 +68,34 @@ export function ChatWindow() {
         senderId: loggedInUser._id,
         recipientId: user._id,
       }
-      setMsgContent('')
-      socketService.emit('chat-send-msg', contentToSend)
+      setMsgContent("")
+      socketService.emit("chat-send-msg", contentToSend)
     }
   }
 
+  // useEffect(() => {
+  //   if (loggedInUser && user) {
+  //   }
+  // }, [loggedInUser?.msgs?.length, user])
+
   useEffect(() => {
-    if (loggedInUser && user) {
+    const handleTyping = (typing) => {
+      console.log("typing", typing)
+      const message = typing ? "is typing..." : ""
+      const userId = loggedInUser._id
+      return { userId, message }
     }
-  }, [loggedInUser?.msgs?.length, user])
+    socketService.on("typing", handleTyping(msgContent))
+    return () => {
+      socketService.off("typing", handleTyping(msgContent))
+    }
+  }, [msgContent])
 
   useEffect(() => {
     const handleReceivedMsg = (receivedMsg) => {
-      console.log('Received message ', receivedMsg)
 
-      if (receivedMsg.content && receivedMsg.content.includes('.gif')) {
-        receivedMsg.type = 'image'
+      if (receivedMsg.content && receivedMsg.content.includes(".gif")) {
+        receivedMsg.type = "image"
       }
 
       dispatch(
@@ -92,18 +103,17 @@ export function ChatWindow() {
           receivedMsg.content,
           receivedMsg.recipientId,
           receivedMsg.senderId,
-          receivedMsg.type || 'text'
+          receivedMsg.type || "text"
         )
       )
-      console.log('Message dispatched')
     }
 
     // Subscribe to the event
-    socketService.on('chat-add-msg', handleReceivedMsg)
-    
+    socketService.on("chat-add-msg", handleReceivedMsg)
+
     // Clean up the event listener when the component unmounts
     return () => {
-      socketService.off('chat-add-msg', handleReceivedMsg)
+      socketService.off("chat-add-msg", handleReceivedMsg)
     }
   }, [dispatch])
 
@@ -130,10 +140,10 @@ export function ChatWindow() {
       content: gifImgUrl,
       senderId: loggedInUser._id,
       recipientId: user._id,
-      type: 'image',
+      type: "image",
     }
-    socketService.emit('chat-send-msg', contentToSend)
-    setMsgContent('')
+    socketService.emit("chat-send-msg", contentToSend)
+    setMsgContent("")
     // }
   }
   function handleAudioSelect(audioUrl) {
@@ -143,10 +153,10 @@ export function ChatWindow() {
       content: audioUrl,
       senderId: loggedInUser._id,
       recipientId: user._id,
-      type: 'audio',
+      type: "audio",
     }
-    socketService.emit('chat-send-msg', contentToSend)
-    setMsgContent('')
+    socketService.emit("chat-send-msg", contentToSend)
+    setMsgContent("")
     // }
   }
   function handleVideoSelect(url) {
@@ -156,10 +166,10 @@ export function ChatWindow() {
       content: url,
       senderId: loggedInUser._id,
       recipientId: user._id,
-      type: 'video',
+      type: "video",
     }
-    socketService.emit('chat-send-msg', contentToSend)
-    setMsgContent('')
+    socketService.emit("chat-send-msg", contentToSend)
+    setMsgContent("")
     // }
   }
   function handleonFileSelect(url) {
@@ -167,17 +177,16 @@ export function ChatWindow() {
       content: url,
       senderId: loggedInUser._id,
       recipientId: user._id,
-      type: 'file',
+      type: "file",
     }
-    socketService.emit('chat-send-msg', contentToSend)
-    setMsgContent('')
+    socketService.emit("chat-send-msg", contentToSend)
+    setMsgContent("")
     // }
   }
 
   const blockContact = () => {
-    const action = isUserBlocked ? 'UNBLOCK_USER' : 'BLOCK_USER'
+    const action = isUserBlocked ? "UNBLOCK_USER" : "BLOCK_USER"
     dispatch(blockUnblockContact(action, user._id))
-    console.log('block')
   }
 
   const [animationParent] = useAutoAnimate()
@@ -189,11 +198,16 @@ export function ChatWindow() {
             <img src={user?.img} alt={user?.username} />
             <h2>{user?.fullName}</h2>
             <span onClick={blockContact}>
-              {isUserBlocked ? 'unBlock contact' : 'Block contact'}
+              {isUserBlocked ? "unBlock contact" : "Block contact"}
             </span>
           </div>
           <ul className="conversation-container flex" ref={animationParent}>
-            <ConverstationList msgs={msgs} loggedInUser={loggedInUser} isHovered={isHovered} user={user} />
+            <ConverstationList
+              msgs={msgs}
+              loggedInUser={loggedInUser}
+              isHovered={isHovered}
+              user={user}
+            />
           </ul>
           <form className="msg-input" onSubmit={(e) => handelSendMsg(e)}>
             <div className="multimedia-container">

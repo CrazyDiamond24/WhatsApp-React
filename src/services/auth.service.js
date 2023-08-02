@@ -84,14 +84,11 @@ async function updateUser(url, user) {
 
 async function login(userCred) {
   const user = await httpService.post('auth/login', userCred)
-  console.log('userrerererererere', user)
   return saveLocalUser(user)
 }
 
 async function signup(userCred) {
-  console.log('userCred in front service', userCred)
   const user = await httpService.post('auth/signup', userCred)
-  console.log('userCred in front service after', user)
   return saveLocalUser(user)
 }
 
@@ -130,7 +127,6 @@ function saveLocalUser(user) {
 
 function getLoggedinUser() {
   const user = JSON.parse(sessionStorage.getItem(STORAGE_KEY_LOGGEDIN_USER))
-  console.log('user from auth service', user)
   if (user) {
     if (user.username === 'guest') {
       return JSON.parse(sessionStorage.getItem(STORAGE_KEY_LOGGEDIN_USER))
