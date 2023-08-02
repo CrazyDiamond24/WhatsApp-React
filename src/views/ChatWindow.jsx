@@ -82,7 +82,7 @@ export function ChatWindow() {
     const handleTyping = (typing) => {
       console.log("typing", typing)
       const message = typing ? "is typing..." : ""
-      const userId = loggedInUser._id
+      const userId = loggedInUser?._id
       return { userId, message }
     }
     socketService.on("typing", handleTyping(msgContent))

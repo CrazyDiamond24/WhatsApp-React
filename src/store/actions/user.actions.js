@@ -3,6 +3,7 @@ import { authService } from '../../services/auth.service'
 import { msgService } from '../../services/msg.service'
 import { showErrorMsg, showSuccessMsg } from '../../services/event-bus.service'
 import { useNavigate } from 'react-router-dom'
+import { socketService } from '../../services/socket.service'
 import {
   REMOVE_USER,
   // SET_FILTER_BY,
@@ -55,24 +56,20 @@ export function doSignup(userCred) {
 export function doLogin(userCred) {
   return async (dispatch, getState) => {
     try {
-      // const navigate = useNavigate()
       const user = await authService.login(userCred)
+      socketService.login(user._id) // Log in to the socket with the user's ID
       const action = {
         type: LOGIN,
         user,
       }
       dispatch(action)
-      // window.location.href = '/'
       showSuccessMsg('like')
+      // Add any additional logic here if needed before navigating
+      // For example, you could wait for some socket event to be received
+      // Only then navigate to the home page
+      // window.location.href = '/'
     } catch (err) {
-      // const errorMsg = 'username not found please signup'
-      // const ErrorAction = {
-      //   type: LOGIN_ERROR,
-      //   errorMsg,
-      // }
-      // window.location.href = '/login'
-      // dispatch(ErrorAction)
-      console.log('erorrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr', err)
+      console.log('error', err)
     }
   }
 }
