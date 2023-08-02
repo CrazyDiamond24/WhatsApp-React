@@ -41,7 +41,6 @@ export function doSignup(userCred) {
   return async (dispatch, getState) => {
     try {
       const user = await authService.signup(userCred)
-      console.log('user in actions after back', user)
       const action = {
         type: SIGNUP,
         user,
@@ -58,14 +57,11 @@ export function doLogin(userCred) {
     try {
       // const navigate = useNavigate()
       const user = await authService.login(userCred)
-      console.log('user', user)
       const action = {
         type: LOGIN,
         user,
       }
-      console.log('hi')
       dispatch(action)
-      console.log('hi')
       // window.location.href = '/'
       showSuccessMsg('like')
     } catch (err) {
@@ -144,7 +140,6 @@ export function removeContactFromUser(loggedInUserId, contactId) {
 }
 
 export function setCurrUser(UserId) {
-  console.log('UserId', UserId)
   return async (dispatch, getState) => {
     try {
       const user = await userService.getById(UserId)
@@ -173,9 +168,6 @@ export function removeUser(userId) {
 }
 
 export function addMsg(msgContent, recipientId, senderId, msgType = 'text') {
-  console.log('msg content from actions', msgContent)
-  console.log('senderId actions', senderId)
-  console.log('recipientId actions', recipientId)
   return async (dispatch, getState) => {
     try {
       const msg = await msgService.createNewMsg(
@@ -211,7 +203,6 @@ export function deleteMsg(msgId, senderId, recipientId) {
 }
 
 export function blockUnblockContact(actionType, contactId) {
-  console.log('contactId', contactId)
   return (dispatch, getState) => {
     try {
       const action = { type: actionType, contactId }
@@ -226,7 +217,6 @@ export function editUserProfile(user) {
   return async (dispatch) => {
     try {
       const updatedUser = await userService.editProfile(user)
-      console.log('updatedUser', updatedUser)
       const action = { type: EDIT_USER_PROFILE, user: updatedUser }
       dispatch(action)
       const action2 = {

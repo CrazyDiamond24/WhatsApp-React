@@ -81,7 +81,6 @@ export function Emojis({
   }
 
   async function handleImg(ev) {
-    console.log('hi')
     const file =
       ev.type === 'change' ? ev.target.files[0] : ev.dataTransfer.files[0]
     try {
@@ -92,7 +91,6 @@ export function Emojis({
     }
   }
   async function handleVideoFile(ev) {
-    console.log('hi')
     const file =
       ev.type === 'change' ? ev.target.files[0] : ev.dataTransfer.files[0]
     try {

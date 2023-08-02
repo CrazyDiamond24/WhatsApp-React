@@ -38,7 +38,6 @@ export function LoginSignup() {
       dispatch(doSignup(signupCred))
       navigate('/')
 
-      console.log('Signing up...', signupCred)
     }
   }
 

@@ -37,11 +37,9 @@ async function removeContact(loggedInUserId, contactId) {
 }
 
 async function getById(id) {
-  console.log('id service front', id)
   // const user = gUsers.find((user) => user._id === id)
   // return Promise.resolve({ ...user })
   const user = await httpService.get(`contact/${id}`)
-  console.log('user', user)
   return user
 }
 async function createNewMsg(msg, senderId, recipientId) {

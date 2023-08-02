@@ -36,7 +36,6 @@ export function UserIndex(props) {
   }, [])
 
   function handleShowProfile() {
-    console.log('hi')
     setIsShowProfile(true)
   }
 
