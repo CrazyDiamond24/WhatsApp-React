@@ -4,6 +4,7 @@ import { uploadImg } from '../services/upload-img.service'
 import { uploadVideo } from '../services/upload-video.service'
 import { uploadFile } from '../services/upload-file.service'
 import { setServerUrl } from '@giphy/js-fetch-api'
+import { TakePicture } from './TakePicture'
 export function Emojis({
   onSelectEmoji,
   onSelectImage,
@@ -120,6 +121,7 @@ export function Emojis({
 
   return (
     <div className="emojis-container">
+      {/* <TakePicture /> */}
       {/* <div className="second-section">
         <label
           onDrop={(e) => {
@@ -135,7 +137,7 @@ export function Emojis({
         </label>
         📷
       </div> */}
-      <div className="second-section">
+      {/* <div className="second-section">
         <label
           onDrop={(e) => {
             e.preventDefault()
@@ -154,7 +156,7 @@ export function Emojis({
           />
         </label>
         📃
-      </div>
+      </div> */}
       {/* <div className="second-section">
         <label
           onDrop={(e) => {
