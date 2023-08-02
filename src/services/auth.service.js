@@ -130,7 +130,7 @@ function saveLocalUser(user) {
 
 function getLoggedinUser() {
   const user = JSON.parse(sessionStorage.getItem(STORAGE_KEY_LOGGEDIN_USER))
-  console.log('user', user)
+  console.log('user from auth service', user)
   if (user) {
     if (user.username === 'guest') {
       return JSON.parse(sessionStorage.getItem(STORAGE_KEY_LOGGEDIN_USER))

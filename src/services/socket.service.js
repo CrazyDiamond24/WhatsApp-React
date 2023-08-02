@@ -30,9 +30,10 @@ function createSocketService() {
   const socketService = {
     setup() {
       socket = io(baseUrl)
-      setTimeout(() => {
-        const user = authService.getLoggedinUser()  
-        if (user) this.login(user._id)
+      setTimeout(async () => {
+        const user = await authService.getLoggedinUser()  
+        console.log('user in setup', user);
+        if (user && user._id) this.login(user._id)
       }, 500)
     },
     on(eventName, cb) {
@@ -65,6 +66,7 @@ function createSocketService() {
       socket.emit(eventName, data)
     },
     login(userId) {
+      console.log('Attempting to login with user ID:', userId); 
       socket.emit(SOCKET_EMIT_LOGIN, userId)
     },
     logout() {

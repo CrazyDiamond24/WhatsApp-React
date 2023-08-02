@@ -50,10 +50,8 @@ export function ChatWindow() {
     e.preventDefault()
     if (!loggedInUser || !user) return
 
-    // Trim the content to remove leading and trailing whitespace
     const trimmedContent = msgContent.trim()
 
-    // Only send the message if the content is not empty
     if (trimmedContent) {
       const contentToSend = {
         content: trimmedContent,
