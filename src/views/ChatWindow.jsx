@@ -10,14 +10,14 @@ import { msgService } from '../services/msg.service'
 import Transcript from '../cmps/Transcript'
 import { WelcomeChatRoom } from '../cmps/WelcomeChatRoom'
 import { ConverstationList } from '../cmps/ConverstationList'
-import { TakePicture } from '../cmps/TakePicture'
 
 export function ChatWindow() {
   // console.log('chat window rendered now')
   const [msgContent, setMsgContent] = useState('')
   const [imageUrl, setImageUrl] = useState('')
   const [isHovered, setIsHovered] = useState(null)
-  const [sentGifs, setSentGifs] = useState([])
+  // const [sentGifs, setSentGifs] = useState([])
+  const [recipientIsTyping, setUserIsTyping] = useState(false)
 
   const dispatch = useDispatch()
 
@@ -111,14 +111,36 @@ export function ChatWindow() {
     // Subscribe to the event
     socketService.on('chat-add-msg', handleReceivedMsg)
 
-    // Clean up the event listener when the component unmounts
     return () => {
       socketService.off('chat-add-msg', handleReceivedMsg)
     }
   }, [dispatch])
 
+  useEffect(() => {
+    const handleTyping = (typingData) => {
+      const { userId, isTyping } = typingData
+      if (userId !== loggedInUser?._id) {
+        console.log('User is typing:', isTyping)
+        setUserIsTyping(isTyping)
+      }
+    }
+    socketService.on('user-typing', handleTyping)
+    return () => {
+      socketService.off('user-typing', handleTyping)
+    }
+  }, [user?._id])
+
   function handleInputChange(e) {
     setMsgContent(e.target.value)
+    const trimmedContent = e.target.value.trim()
+    const isTyping = trimmedContent !== ''
+
+    // Don't set recipient's typing state here; emit your typing status instead
+    socketService.emit('typing', {
+      senderId: loggedInUser._id,
+      recipientId: user._id,
+      isTyping,
+    })
   }
 
   function handelMouseEnter(index) {
@@ -189,6 +211,10 @@ export function ChatWindow() {
     dispatch(blockUnblockContact(action, user._id))
   }
 
+  useEffect(() => {
+    console.log('Recipient is typing state:', recipientIsTyping)
+  }, [recipientIsTyping])
+
   const [animationParent] = useAutoAnimate()
   return (
     <div className="chat-window" ref={animationParent}>
@@ -200,6 +226,7 @@ export function ChatWindow() {
             <span onClick={blockContact}>
               {isUserBlocked ? 'unBlock contact' : 'Block contact'}
             </span>
+            {recipientIsTyping && <div> is typing...</div>}
           </div>
           <ul className="conversation-container flex" ref={animationParent}>
             <ConverstationList
