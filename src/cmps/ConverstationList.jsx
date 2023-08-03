@@ -20,8 +20,6 @@ export function ConverstationList({ msgs, loggedInUser, isHovered, user }) {
           className={`chat-msg ${
             msg.senderId === loggedInUser?._id ? 'sent' : 'received'
           }`}
-          // onMouseEnter={() => handelMouseEnter(index)}
-          // onMouseLeave={handelMouseLeave}
         >
           {msg.type === 'image' && <ImgMsg msg={msg} />}
           {msg.type === 'video' && <VideoMsg msg={msg} />}

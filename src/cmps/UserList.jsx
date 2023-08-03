@@ -5,11 +5,8 @@ import { useSelector } from 'react-redux'
 import { CSSTransition } from 'react-transition-group'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { userService } from '../services/user.service'
-import { socketService } from '../services/socket.service'
 
 export function UserList({ filterBy, onRemoveUser }) {
-  // console.log('user list rendered or rererenderedered')
-
   const users = useSelector((storeState) => storeState.userModule.users)
 
   const loggedInUser = useSelector((storeState) => {

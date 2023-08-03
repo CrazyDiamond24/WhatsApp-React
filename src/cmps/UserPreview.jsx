@@ -15,7 +15,8 @@ export function UserPreview({ user }) {
   const lastMsg = useMemo(() => {
     return user?.msgs?.filter(
       (msg) =>
-        msg.senderId === loggedInUser?._id || msg.recipientId === loggedInUser?._id
+        msg.senderId === loggedInUser?._id ||
+        msg.recipientId === loggedInUser?._id
     )
   }, [user, loggedInUser])
 
@@ -29,7 +30,6 @@ export function UserPreview({ user }) {
 
   function handleClick(e) {
     if (e.button === 0) {
-
       dispatch(setCurrUser(user._id))
     }
   }
@@ -37,9 +37,7 @@ export function UserPreview({ user }) {
   function showContactModal(e) {
     e.preventDefault()
     if (e.button === 2) {
-      // right click
       dispatch(setCurrUser(user._id))
-      // console.log('right')
       const rect = e.target.getBoundingClientRect()
       setModalPosition({
         top: rect.top + window.scrollY,
@@ -60,13 +58,18 @@ export function UserPreview({ user }) {
       onContextMenu={showContactModal}
     >
       <img
-        className='contact-preview-image'
+        className="contact-preview-image"
         src={user.img}
         alt={user.fullName}
       />
-      <div className='contact-preview-info'>
+      <div className="contact-preview-info">
         <h2>{user.fullName}</h2>
-        <h3 style={{ fontStyle: lastMsgContent === '🖼️ Shared an Image' ? 'italic' : 'normal' }}>
+        <h3
+          style={{
+            fontStyle:
+              lastMsgContent === '🖼️ Shared an Image' ? 'italic' : 'normal',
+          }}
+        >
           {lastMsgContent}
         </h3>
       </div>

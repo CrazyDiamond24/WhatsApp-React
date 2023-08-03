@@ -1,14 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { getSpotifySvg } from '../services/SVG.service'
-// import { addAudioNote } from '../store/actions/note.actions'
 
 function Transcript({ onSelectAudio }) {
   const [recording, setRecording] = useState(false)
-  const [audioUrl, setAudioUrl] = useState(null)
+
   const mediaRecorderRef = useRef(null)
   const audioChunksRef = useRef([])
-  const dispatch = useDispatch()
 
   const startRecording = async () => {
     const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
@@ -22,9 +20,6 @@ function Transcript({ onSelectAudio }) {
       const audioBlob = new Blob(audioChunksRef.current)
       const audioUrl = URL.createObjectURL(audioBlob)
       onSelectAudio(audioUrl)
-      // setAudioUrl(audioUrl)
-      // console.log('audioUrl', audioUrl)
-      // dispatch(addAudioNote(audioUrl))
       audioChunksRef.current = []
     })
 

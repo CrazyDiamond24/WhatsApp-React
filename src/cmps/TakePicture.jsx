@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useRef } from 'react'
 
 export function TakePicture({ onSelectSelfiePicture }) {
   const videoRef = useRef(null)
@@ -15,14 +15,12 @@ export function TakePicture({ onSelectSelfiePicture }) {
   function captureImage() {
     const video = videoRef.current
 
-    // Create a new canvas and draw the video frame
     const canvas = document.createElement('canvas')
     canvas.width = video.videoWidth
     canvas.height = video.videoHeight
     const context = canvas.getContext('2d')
     context.drawImage(video, 0, 0, video.videoWidth, video.videoHeight)
 
-    // Convert the canvas image to Data URL
     onSelectSelfiePicture(canvas.toDataURL('image/png'))
   }
 

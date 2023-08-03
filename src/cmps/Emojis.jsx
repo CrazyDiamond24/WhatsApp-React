@@ -56,7 +56,6 @@ export function Emojis({
     '❤️‍🩹',
   ]
 
-  // Function to map category names to their corresponding emojis
   function getCategoryEmoji(categoryName) {
     switch (categoryName) {
       case 'Animals & Nature':
@@ -97,13 +96,6 @@ export function Emojis({
     try {
       const { url } = await uploadVideo(file)
       onSelectVideo(url)
-      // const contentToSend = {
-      //   content: url,
-      //   senderId: loggedInUser._id,
-      //   recipientId: user._id,
-      //   type: 'video',
-      // }
-      // socketService.emit('chat-send-msg', contentToSend)
     } catch (err) {
       console.log('err', err)
     }

@@ -7,7 +7,6 @@ import { addContactToUser } from '../store/actions/user.actions'
 export function AddContact(props) {
   const [name, setName] = useState('')
 
-  const params = useParams()
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
