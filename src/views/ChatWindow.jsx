@@ -12,7 +12,6 @@ import Transcript from "../cmps/Transcript"
 import { WelcomeChatRoom } from "../cmps/WelcomeChatRoom"
 import { ConverstationList } from "../cmps/ConverstationList"
 import MsgModal from "../cmps/MsgModal"
-import { debounce } from "lodash"
 
 export function ChatWindow() {
   const [msgContent, setMsgContent] = useState("")
