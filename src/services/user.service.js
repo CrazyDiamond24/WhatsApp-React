@@ -94,14 +94,16 @@ function getFilteredUsers(users, filterBy, loggedInUser) {
   const filteredUsers = users?.filter((user) => {
     const isUserInContacts =
       loggedInUser?.contacts &&
-      loggedInUser.contacts.some((contact) => contact._id === user._id)
+      loggedInUser?.contacts?.some(
+        (contact) => contact && contact._id === user._id
+      )
 
     return (
       loggedInUser &&
       isUserInContacts &&
       user._id !== loggedInUser._id &&
       (regexPattern.test(user.fullName) ||
-        user.msgs.some((msg) => regexPattern.test(msg.content)))
+        user?.msgs?.some((msg) => regexPattern.test(msg.content)))
     )
   })
   return filteredUsers?.sort((a, b) => {
