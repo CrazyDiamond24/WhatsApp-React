@@ -8,12 +8,23 @@ import { editUserProfile } from '../store/actions/user.actions'
 export function UserProfile({ show, closeUserProfile }) {
   const [isUploading, setIsUploading] = useState(false)
   const [fileChanged, setFileChanged] = useState(false)
-  const user = useSelector((storeState) => storeState.userModule.loggedInUser)
   const [editedUser, setEditedUser] = useState({ ...user })
+
+  const user = useSelector((storeState) => storeState.userModule.loggedInUser)
+
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    if (fileChanged) {
+      dispatch(editUserProfile(editedUser))
+      setFileChanged(false)
+    }
+  }, [editedUser, fileChanged, dispatch])
+
   function onChangeUserStatus(e) {
     setEditedUser({ ...editedUser, status: e.target.value })
   }
-  const dispatch = useDispatch()
+
   function onChangeUserName(e) {
     setEditedUser({ ...editedUser, username: e.target.value })
   }
@@ -41,12 +52,6 @@ export function UserProfile({ show, closeUserProfile }) {
     }
   }
 
-  useEffect(() => {
-    if (fileChanged) {
-      dispatch(editUserProfile(editedUser))
-      setFileChanged(false)
-    }
-  }, [editedUser, fileChanged, dispatch])
   return (
     <section className={`user-profile-page ${show ? 'open' : ''}`}>
       <div className="first-section">

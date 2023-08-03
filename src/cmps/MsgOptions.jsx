@@ -13,6 +13,7 @@ export function MsgOptions({ msg, loggedInUser, user }) {
     })
     setShowOptionsModal((prevState) => !prevState)
   }
+
   return (
     <>
       <div onClick={(e) => showSongOptionsModal(e)}>🔽</div>

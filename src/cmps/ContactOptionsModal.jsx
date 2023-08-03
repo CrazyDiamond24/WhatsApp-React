@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 import { useDispatch } from 'react-redux'
 import { removeContactFromUser } from '../store/actions/user.actions'
+
 export function ContactOptionsModal({
   position,
   closeOptionsModal,

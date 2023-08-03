@@ -14,17 +14,11 @@ import { ConverstationList } from '../cmps/ConverstationList'
 import MsgModal from '../cmps/MsgModal'
 
 export function ChatWindow() {
-  // console.log('chat window rendered now')
-
   const [msgContent, setMsgContent] = useState('')
-  const [imageUrl, setImageUrl] = useState('')
   const [showModal, setShowModal] = useState(false)
   const [modalPosition, setModalPosition] = useState({ top: 0, left: 0 })
   const [isHovered, setIsHovered] = useState(null)
-  // const [sentGifs, setSentGifs] = useState([])
   const [recipientIsTyping, setUserIsTyping] = useState(false)
-
-  const dispatch = useDispatch()
 
   const loggedInUser = useSelector((storeState) => {
     return storeState.userModule.loggedInUser
@@ -45,44 +39,14 @@ export function ChatWindow() {
       ? msgService.filterMsgs(user, loggedInUser, allMsgs)
       : null
 
+  const dispatch = useDispatch()
+
   useEffect(() => {
     const container = document.querySelector('.conversation-container')
     if (container) {
       container.scrollTop = container.scrollHeight
     }
   }, [msgs])
-
-  // useEffect(() => {
-  //   const contentToSend = {
-  //     content: imageUrl,
-  //     senderId: loggedInUser._id,
-  //     recipientId: user._id,
-  //     type: 'image',
-  //   }
-  //   socketService.emit('chat-send-msg', contentToSend)
-  // }, [imageUrl])
-
-  function handelSendMsg(e) {
-    e.preventDefault()
-    if (!loggedInUser || !user || !msgContent.length) return
-
-    const trimmedContent = msgContent.trim()
-
-    if (trimmedContent) {
-      const contentToSend = {
-        content: trimmedContent,
-        senderId: loggedInUser._id,
-        recipientId: user._id,
-      }
-      setMsgContent('')
-      socketService.emit(SOCKET_EMIT_SEND_MSG, contentToSend)
-    }
-  }
-
-  // useEffect(() => {
-  //   if (loggedInUser && user) {
-  //   }
-  // }, [loggedInUser?.msgs?.length, user])
 
   useEffect(() => {
     const handleTyping = (typing) => {
@@ -133,6 +97,23 @@ export function ChatWindow() {
     }
   }, [user?._id])
 
+  function handelSendMsg(e) {
+    e.preventDefault()
+    if (!loggedInUser || !user || !msgContent.length) return
+
+    const trimmedContent = msgContent.trim()
+
+    if (trimmedContent) {
+      const contentToSend = {
+        content: trimmedContent,
+        senderId: loggedInUser._id,
+        recipientId: user._id,
+      }
+      setMsgContent('')
+      socketService.emit(SOCKET_EMIT_SEND_MSG, contentToSend)
+    }
+  }
+
   function handleInputChange(e) {
     setMsgContent(e.target.value)
     const trimmedContent = e.target.value.trim()
@@ -144,14 +125,6 @@ export function ChatWindow() {
       recipientId: user._id,
       isTyping,
     })
-  }
-
-  function handelMouseEnter(index) {
-    setIsHovered(index)
-  }
-
-  function handelMouseLeave() {
-    setIsHovered(null)
   }
 
   function handleEmojiSelect(emoji) {
@@ -171,6 +144,7 @@ export function ChatWindow() {
     setMsgContent('')
     // }
   }
+
   function handleAudioSelect(audioUrl) {
     // if (!loggedInUser || !user) return
     // if (loggedInUser && user) {
@@ -184,6 +158,7 @@ export function ChatWindow() {
     setMsgContent('')
     // }
   }
+
   function handleVideoSelect(url) {
     // if (!loggedInUser || !user) return
     // if (loggedInUser && user) {
@@ -227,6 +202,7 @@ export function ChatWindow() {
   }
 
   const [animationParent] = useAutoAnimate()
+
   return (
     <div className="chat-window" ref={animationParent}>
       {user ? (

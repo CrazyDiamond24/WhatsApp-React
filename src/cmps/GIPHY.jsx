@@ -6,16 +6,6 @@ export function Giphy({ onSelectGif }) {
   const [searchQuery, setSearchQuery] = useState('')
   const [searchedGifs, setSearchedGifs] = useState([])
 
-  function handleSearchInputChange(e) {
-    const { value } = e.target
-    setSearchQuery(value)
-  }
-
-  function handleCloseExpanded() {
-    setIsExpanded(false)
-    setSearchQuery('')
-  }
-
   const isQueryNotEmpty = searchQuery.trim() !== ''
 
   useEffect(() => {
@@ -44,6 +34,16 @@ export function Giphy({ onSelectGif }) {
       }
     }
   }, [searchQuery, isQueryNotEmpty])
+
+  function handleSearchInputChange(e) {
+    const { value } = e.target
+    setSearchQuery(value)
+  }
+
+  function handleCloseExpanded() {
+    setIsExpanded(false)
+    setSearchQuery('')
+  }
 
   return (
     <div className="giphy-container">

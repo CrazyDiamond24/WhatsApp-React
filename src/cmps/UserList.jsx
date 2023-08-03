@@ -7,24 +7,23 @@ import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { userService } from '../services/user.service'
 
 export function UserList({ filterBy, onRemoveUser }) {
-  const users = useSelector((storeState) => storeState.userModule.users)
-
-  const loggedInUser = useSelector((storeState) => {
-    return storeState.userModule.loggedInUser
-  })
-
   const [filteredUsers, setFilteredUsers] = useState([])
 
-  function filterUsers(users, filterBy, loggedInUser) {
-    return userService.getFilteredUsers(users, filterBy, loggedInUser)
-  }
+  const users = useSelector((storeState) => storeState.userModule.users)
+  const loggedInUser = useSelector(
+    (storeState) => storeState.userModule.loggedInUser
+  )
+
+  const [animationParent] = useAutoAnimate()
 
   useEffect(() => {
     const filteredUsers = filterUsers(users, filterBy, loggedInUser)
     setFilteredUsers(filteredUsers)
   }, [filterBy, users, loggedInUser])
 
-  const [animationParent] = useAutoAnimate()
+  function filterUsers(users, filterBy, loggedInUser) {
+    return userService.getFilteredUsers(users, filterBy, loggedInUser)
+  }
 
   return (
     <section className="user-list simple-cards-grid" ref={animationParent}>

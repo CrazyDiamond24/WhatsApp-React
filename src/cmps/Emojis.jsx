@@ -3,8 +3,7 @@ import { emojisService } from '../services/emojis.service'
 import { uploadImg } from '../services/upload-img.service'
 import { uploadVideo } from '../services/upload-video.service'
 import { uploadFile } from '../services/upload-file.service'
-import { setServerUrl } from '@giphy/js-fetch-api'
-import { TakePicture } from './TakePicture'
+
 export function Emojis({
   onSelectEmoji,
   onSelectImage,
@@ -90,6 +89,7 @@ export function Emojis({
       console.log('err', err)
     }
   }
+
   async function handleVideoFile(ev) {
     const file =
       ev.type === 'change' ? ev.target.files[0] : ev.dataTransfer.files[0]
@@ -100,6 +100,7 @@ export function Emojis({
       console.log('err', err)
     }
   }
+
   async function handleFile(ev) {
     const file =
       ev.type === 'change' ? ev.target.files[0] : ev.dataTransfer.files[0]

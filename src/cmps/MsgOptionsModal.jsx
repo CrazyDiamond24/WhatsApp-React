@@ -16,6 +16,7 @@ export function MsgOptionsModal({
     dispatch(deleteMsg(msg.id, loggedInUser._id, user._id))
     closeModal()
   }
+
   return (
     <>
       <div

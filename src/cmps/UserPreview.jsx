@@ -4,13 +4,14 @@ import { setCurrUser } from '../store/actions/user.actions'
 import { ContactOptionsModal } from './ContactOptionsModal'
 
 export function UserPreview({ user }) {
-  const dispatch = useDispatch()
   const [showModal, setShowModal] = useState(false)
   const [modalPosition, setModalPosition] = useState({ top: 0, left: 0 })
 
   const loggedInUser = useSelector((storeState) => {
     return storeState.userModule.loggedInUser
   })
+
+  const dispatch = useDispatch()
 
   const lastMsg = useMemo(() => {
     return user?.msgs?.filter(

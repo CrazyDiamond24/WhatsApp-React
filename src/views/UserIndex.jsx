@@ -14,24 +14,26 @@ import { AppHeader } from '../cmps/AppHeader'
 import { UserProfile } from '../cmps/UserProfile'
 
 export function UserIndex(props) {
-  const users = useSelector((storeState) => storeState.userModule.users)
-  // const filterBy = useSelector((storeState) => storeState.userModule.filterBy)
   const [filterBy, setFilterBy] = useState('')
   const [isShowProfile, setIsShowProfile] = useState(false)
   const [isInputOpen, setIsInputOpen] = useState(false)
-  const [selectedUserId, setSelectedUserId] = useState(null)
-  const dispatch = useDispatch()
-
-  const loggedInUser = useSelector((storeState) => {
-    return storeState.userModule.loggedInUser
-  })
 
   const user = useSelector((storeState) => {
     return storeState.userModule.selectedUser
   })
 
+  const dispatch = useDispatch()
+
   useEffect(() => {
     dispatch(loadUsers())
+  }, [])
+
+  const onRemoveUser = useCallback(async (userId) => {
+    try {
+      dispatch(removeUser(userId))
+    } catch (error) {
+      console.log('error:', error)
+    }
   }, [])
 
   function handleShowProfile() {
@@ -42,18 +44,11 @@ export function UserIndex(props) {
     setIsShowProfile(false)
   }
 
-  const onRemoveUser = useCallback(async (userId) => {
-    try {
-      dispatch(removeUser(userId))
-    } catch (error) {
-      console.log('error:', error)
-    }
-  }, [])
-
-  const handleInput = (e) => {
+  function handleInput(e) {
     setFilterBy(e.target.value)
   }
-  const handleOpenInput = () => {
+
+  function handleOpenInput() {
     setIsInputOpen((prevIsInputOpen) => !prevIsInputOpen)
   }
 

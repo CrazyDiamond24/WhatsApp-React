@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { addContactToUser } from '../store/actions/user.actions'
 
