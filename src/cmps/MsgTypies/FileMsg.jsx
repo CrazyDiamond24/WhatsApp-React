@@ -10,7 +10,7 @@ export function FileMsg({ msg }) {
       <iframe
         src={googleDocsViewer}
         style={{ width: '200px', height: '300px' }}
-        frameborder="0"
+        frameBorder="0"
       >
         Your browser does not support iframes.
       </iframe>

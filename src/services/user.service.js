@@ -101,7 +101,7 @@ function getFilteredUsers(users, filterBy, loggedInUser) {
       isUserInContacts &&
       user._id !== loggedInUser._id &&
       (regexPattern.test(user.fullName) ||
-        user.msgs.some((msg) => regexPattern.test(msg.content)))
+        user?.msgs?.some((msg) => regexPattern.test(msg.content)))
     )
   })
   return filteredUsers?.sort((a, b) => {

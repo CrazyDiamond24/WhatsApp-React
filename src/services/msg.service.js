@@ -7,6 +7,7 @@ export const msgService = {
   getUserMessages,
   filterMsgs,
   getTimestamp,
+  getMsgType,
 }
 
 async function createNewMsg(msg, senderId, recipientId, type) {
@@ -83,4 +84,13 @@ function getTimestamp(timestamp) {
   const month = months[date.getMonth()]
   const day = date.getDate()
   return `${month} ${day}, ${hours}:${minutes}`
+}
+
+function getMsgType(url, loggedInUser , user , type) {
+  return {
+    content: url,
+    senderId: loggedInUser._id,
+    recipientId: user._id,
+    type,
+}
 }
