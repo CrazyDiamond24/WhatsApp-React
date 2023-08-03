@@ -77,10 +77,19 @@ export function ChatWindow() {
   }, [dispatch])
 
   useEffect(() => {
+    let typingTimeout
+
     const handleTyping = (typingData) => {
       const { userId, isTyping } = typingData
       if (userId !== loggedInUser?._id) {
         setUserIsTyping(isTyping)
+        // if there was something in the timeout
+        clearTimeout(typingTimeout)
+        if (isTyping) {
+          typingTimeout = setTimeout(() => {
+            setUserIsTyping(false)
+          }, 1000)
+        }
       }
     }
     socketService.on('user-typing', handleTyping)
