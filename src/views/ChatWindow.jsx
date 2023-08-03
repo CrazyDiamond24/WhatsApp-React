@@ -1,20 +1,20 @@
-import React from 'react'
-import { useEffect, useState, useRef, useMemo } from 'react'
-import { getSpotifySvg } from '../services/SVG.service'
-import { useDispatch, useSelector } from 'react-redux'
-import { addMsg, blockUnblockContact } from '../store/actions/user.actions'
-import { Emojis } from '../cmps/Emojis'
-import { Giphy } from '../cmps/Giphy'
-import { useAutoAnimate } from '@formkit/auto-animate/react'
-import { socketService, SOCKET_EMIT_SEND_MSG } from '../services/socket.service'
-import { msgService } from '../services/msg.service'
-import Transcript from '../cmps/Transcript'
-import { WelcomeChatRoom } from '../cmps/WelcomeChatRoom'
-import { ConverstationList } from '../cmps/ConverstationList'
-import MsgModal from '../cmps/MsgModal'
+import React from "react"
+import { useEffect, useState, useRef, useMemo } from "react"
+import { getSpotifySvg } from "../services/SVG.service"
+import { useDispatch, useSelector } from "react-redux"
+import { addMsg, blockUnblockContact } from "../store/actions/user.actions"
+import { Emojis } from "../cmps/Emojis"
+import { Giphy } from "../cmps/Giphy"
+import { useAutoAnimate } from "@formkit/auto-animate/react"
+import { socketService, SOCKET_EMIT_SEND_MSG } from "../services/socket.service"
+import { msgService } from "../services/msg.service"
+import Transcript from "../cmps/Transcript"
+import { WelcomeChatRoom } from "../cmps/WelcomeChatRoom"
+import { ConverstationList } from "../cmps/ConverstationList"
+import MsgModal from "../cmps/MsgModal"
 
 export function ChatWindow() {
-  const [msgContent, setMsgContent] = useState('')
+  const [msgContent, setMsgContent] = useState("")
   const [showModal, setShowModal] = useState(false)
   const [modalPosition, setModalPosition] = useState({ top: 0, left: 0 })
   const [isHovered, setIsHovered] = useState(null)
@@ -23,64 +23,56 @@ export function ChatWindow() {
   const loggedInUser = useSelector((storeState) => {
     return storeState.userModule.loggedInUser
   })
-
   const user = useSelector((storeState) => {
     return storeState.userModule.selectedUser
   })
-
   const allMsgs = useSelector(
     (storeState) => storeState.userModule.loggedInUser?.msgs
   )
+  const dispatch = useDispatch()
+  const [animationParent] = useAutoAnimate()
 
   const isUserBlocked = loggedInUser?.blockedContcats?.includes(user?._id)
-
   const msgs =
     loggedInUser && user
       ? msgService.filterMsgs(user, loggedInUser, allMsgs)
       : null
 
-  const dispatch = useDispatch()
-
   useEffect(() => {
-    const container = document.querySelector('.conversation-container')
+    const container = document.querySelector(".conversation-container")
     if (container) {
       container.scrollTop = container.scrollHeight
     }
   }, [msgs])
 
-  useEffect(() => {
-    const handleTyping = (typing) => {
-      const message = typing ? 'is typing...' : ''
-      const userId = loggedInUser?._id
-      return { userId, message }
-    }
-    socketService.on('typing', handleTyping(msgContent))
-    return () => {
-      socketService.off('typing', handleTyping(msgContent))
-    }
-  }, [msgContent])
+  // useEffect(() => {
+  //   const handleTyping = (typing) => {
+  //     const message = typing ? 'is typing...' : ''
+  //     const userId = loggedInUser?._id
+  //     return { userId, message }
+  //   }
+  //   socketService.on('typing', handleTyping(msgContent))
+  //   return () => {
+  //     socketService.off('typing', handleTyping(msgContent))
+  //   }
+  // }, [msgContent])
 
   useEffect(() => {
     const handleReceivedMsg = (receivedMsg) => {
-      if (receivedMsg.content && receivedMsg.content.includes('.gif')) {
-        receivedMsg.type = 'image'
-      }
-
+      if (receivedMsg.content && receivedMsg.content.includes(".gif"))
+        receivedMsg.type = "image"
       dispatch(
         addMsg(
           receivedMsg.content,
           receivedMsg.recipientId,
           receivedMsg.senderId,
-          receivedMsg.type || 'text'
+          receivedMsg.type || "text"
         )
       )
     }
-
-    // Subscribe to the event
-    socketService.on('chat-add-msg', handleReceivedMsg)
-
+    socketService.on("chat-add-msg", handleReceivedMsg)
     return () => {
-      socketService.off('chat-add-msg', handleReceivedMsg)
+      socketService.off("chat-add-msg", handleReceivedMsg)
     }
   }, [dispatch])
 
@@ -91,9 +83,9 @@ export function ChatWindow() {
         setUserIsTyping(isTyping)
       }
     }
-    socketService.on('user-typing', handleTyping)
+    socketService.on("user-typing", handleTyping)
     return () => {
-      socketService.off('user-typing', handleTyping)
+      socketService.off("user-typing", handleTyping)
     }
   }, [user?._id])
 
@@ -109,7 +101,7 @@ export function ChatWindow() {
         senderId: loggedInUser._id,
         recipientId: user._id,
       }
-      setMsgContent('')
+      setMsgContent("")
       socketService.emit(SOCKET_EMIT_SEND_MSG, contentToSend)
     }
   }
@@ -117,10 +109,10 @@ export function ChatWindow() {
   function handleInputChange(e) {
     setMsgContent(e.target.value)
     const trimmedContent = e.target.value.trim()
-    const isTyping = trimmedContent !== ''
+    const isTyping = trimmedContent !== ""
 
     // Don't set recipient's typing state here; emit your typing status instead
-    socketService.emit('typing', {
+    socketService.emit("typing", {
       senderId: loggedInUser._id,
       recipientId: user._id,
       isTyping,
@@ -131,46 +123,10 @@ export function ChatWindow() {
     setMsgContent((prevMsg) => prevMsg + emoji)
   }
 
-  function handleGifSelect(gifImgUrl) {
-    // if (!loggedInUser || !user) return
-    // if (loggedInUser && user) {
-    const contentToSend = {
-      content: gifImgUrl,
-      senderId: loggedInUser._id,
-      recipientId: user._id,
-      type: 'image',
-    }
+  function handlefilesSelect(url, type) {
+    const contentToSend = msgService.getMsgType(url, loggedInUser, user, type)
     socketService.emit(SOCKET_EMIT_SEND_MSG, contentToSend)
-    setMsgContent('')
-    // }
-  }
-
-  function handleAudioSelect(audioUrl) {
-    // if (!loggedInUser || !user) return
-    // if (loggedInUser && user) {
-    const contentToSend = {
-      content: audioUrl,
-      senderId: loggedInUser._id,
-      recipientId: user._id,
-      type: 'audio',
-    }
-    socketService.emit(SOCKET_EMIT_SEND_MSG, contentToSend)
-    setMsgContent('')
-    // }
-  }
-
-  function handleVideoSelect(url) {
-    // if (!loggedInUser || !user) return
-    // if (loggedInUser && user) {
-    const contentToSend = {
-      content: url,
-      senderId: loggedInUser._id,
-      recipientId: user._id,
-      type: 'video',
-    }
-    socketService.emit(SOCKET_EMIT_SEND_MSG, contentToSend)
-    setMsgContent('')
-    // }
+    setMsgContent("")
   }
 
   function handleShowModal(e) {
@@ -184,24 +140,10 @@ export function ChatWindow() {
     setShowModal(!showModal)
   }
 
-  function handleonFileSelect(url) {
-    const contentToSend = {
-      content: url,
-      senderId: loggedInUser._id,
-      recipientId: user._id,
-      type: 'file',
-    }
-    socketService.emit(SOCKET_EMIT_SEND_MSG, contentToSend)
-    setMsgContent('')
-    // }
-  }
-
   function blockContact() {
-    const action = isUserBlocked ? 'UNBLOCK_USER' : 'BLOCK_USER'
+    const action = isUserBlocked ? "UNBLOCK_USER" : "BLOCK_USER"
     dispatch(blockUnblockContact(action, user._id))
   }
-
-  const [animationParent] = useAutoAnimate()
 
   return (
     <div className="chat-window" ref={animationParent}>
@@ -211,7 +153,7 @@ export function ChatWindow() {
             <img src={user?.img} alt={user?.username} />
             <h2>{user?.fullName}</h2>
             <span onClick={blockContact}>
-              {isUserBlocked ? 'unBlock contact' : 'Block contact'}
+              {isUserBlocked ? "unBlock contact" : "Block contact"}
             </span>
             {recipientIsTyping && <div> is typing...</div>}
           </div>
@@ -227,12 +169,22 @@ export function ChatWindow() {
             <div className="multimedia-container">
               <Emojis
                 onSelectEmoji={handleEmojiSelect}
-                onSelectImage={handleGifSelect}
-                onSelectVideo={handleVideoSelect}
-                onSelectFile={handleonFileSelect}
+                onSelectImage={(gifImgUrl) =>
+                  handlefilesSelect(gifImgUrl, "image")
+                }
+                onSelectVideo={(url) => handlefilesSelect(url, "video")}
+                onSelectFile={(url) => handlefilesSelect(url, "file")}
               />
-              <Giphy onSelectGif={handleGifSelect} />
-              <Transcript onSelectAudio={handleAudioSelect} />
+              <Giphy
+                onSelectGif={(gifImgUrl) =>
+                  handlefilesSelect(gifImgUrl, "image")
+                }
+              />
+              <Transcript
+                onSelectAudio={(audioUrl) =>
+                  handlefilesSelect(audioUrl, "audio")
+                }
+              />
               {/* <TakePicture onSelectSelfiePicture={handleGifSelect} /> */}
             </div>
             <input
@@ -246,7 +198,7 @@ export function ChatWindow() {
             <span
               onClick={(e) => handleShowModal(e)}
               dangerouslySetInnerHTML={{
-                __html: getSpotifySvg('plusWhatsapp'),
+                __html: getSpotifySvg("plusWhatsapp"),
               }}
             ></span>
           </form>
