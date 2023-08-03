@@ -1,6 +1,6 @@
 import React from 'react'
 
-export function CanvasColorPicker({ onColorSelect }) {
+export function CanvasColorPicker({ onColorSelect, onWidthSelect }) {
   const colors = [
     '#8d6e63',
     '#d500f9',
@@ -33,9 +33,16 @@ export function CanvasColorPicker({ onColorSelect }) {
   ]
 
   function handleColorClick(color) {
-    onColorSelect(color)
+    if (onColorSelect) {
+      onColorSelect(color)
+    }
   }
 
+  function handleWidthClick(width) {
+    if (onWidthSelect) {
+      onWidthSelect(width)
+    }
+  }
   return (
     <div className="color-picker-canvas-overlay">
       <div className="color-canvas-picker">
@@ -48,6 +55,19 @@ export function CanvasColorPicker({ onColorSelect }) {
           ></div>
         ))}
       </div>
+      <div className="line"></div>
+      <div className="line-size-container">
+        <div onClick={() => handleWidthClick(44)} className="one"></div>
+        <div onClick={() => handleWidthClick(32)} className="two"></div>
+        <div onClick={() => handleWidthClick(25)} className="three"></div>
+        <div onClick={() => handleWidthClick(20)} className="four"></div>
+        <div onClick={() => handleWidthClick(18)} className="five"></div>
+        <div onClick={() => handleWidthClick(15)} className="six"></div>
+        <div onClick={() => handleWidthClick(10)} className="seven"></div>
+        <div onClick={() => handleWidthClick(5)} className="eight"></div>
+      </div>
     </div>
   )
 }
+
+export default CanvasColorPicker

@@ -1,10 +1,10 @@
 .user-filter {
+  display: flex;
+  margin-block: 20px;
+  padding-inline-start: 10px;
+  gap: 20px;
+  > section {
     display: flex;
-    margin-block: 20px;
-    padding-inline-start:10px;
-    gap: 20px;
-    > section {
-        display: flex;
-        flex-direction: column;
-    }
+    flex-direction: column;
+  }
 }

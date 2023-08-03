@@ -4,10 +4,13 @@ import { getSpotifySvg } from '../services/SVG.service'
 import { CanvasColorPicker } from './CanvasColorPicker'
 import { useDispatch, useSelector } from 'react-redux'
 import { addStoryToUser } from '../store/actions/user.actions'
+import FontFamily from './FontFamily'
 export function CreateStory() {
   const [imageUrl, setImageUrl] = useState(null)
   const [text, setText] = useState('')
   const [textColor, setTextColor] = useState('black')
+  const [textWidth, setTextWidth] = useState('20')
+  const [textFontFamily, setTextFontFamily] = useState('Arial')
   const [textPos, setTextPos] = useState({ x: 50, y: 50 })
   const [showColorModal, setShowColorModal] = useState(false)
   const [dragging, setDragging] = useState(false)
@@ -26,17 +29,17 @@ export function CreateStory() {
       img.crossOrigin = 'Anonymous'
       img.onload = () => {
         ctx.drawImage(img, 0, 0, canvas.width, canvas.height)
-        ctx.font = '20px Arial'
+        ctx.font = `${textWidth}px ${textFontFamily}`
         ctx.fillStyle = textColor
         ctx.fillText(text, textPos.x, textPos.y)
       }
       img.src = imageUrl
     } else {
-      ctx.font = '20px Arial'
+      ctx.font = `${textWidth}px ${textFontFamily}`
       ctx.fillStyle = textColor
       ctx.fillText(text, textPos.x, textPos.y)
     }
-  }, [imageUrl, text, textPos, textColor])
+  }, [imageUrl, text, textPos, textColor, textWidth, textFontFamily])
 
   function handleMouseDown(e) {
     const rect = canvasRef.current.getBoundingClientRect()
@@ -89,6 +92,15 @@ export function CreateStory() {
     setTextColor(color)
   }
 
+  function handleWidthSelect(width) {
+    console.log('width', width)
+    setTextWidth(width)
+  }
+
+  function handleFontFamilySelect(font) {
+    setTextFontFamily(font)
+  }
+
   function addToStory() {
     if (!imageUrl || !text) {
       return
@@ -122,8 +134,17 @@ export function CreateStory() {
         onMouseMove={handleMouseMove}
       />
       {showColorModal && (
-        <CanvasColorPicker onColorSelect={handleColorSelect} />
+        <CanvasColorPicker
+          onColorSelect={handleColorSelect}
+          onWidthSelect={handleWidthSelect}
+        />
       )}
+      <FontFamily onSelectFontFamily={handleFontFamilySelect} />
+      <span
+        dangerouslySetInnerHTML={{
+          __html: getSpotifySvg('plusWhatsapp'),
+        }}
+      ></span>
       <button onClick={addToStory}>add to story</button>
     </div>
   )
