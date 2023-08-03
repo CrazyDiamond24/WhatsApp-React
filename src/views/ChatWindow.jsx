@@ -1,20 +1,25 @@
 import React from 'react'
 import { useEffect, useState, useRef, useMemo } from 'react'
+import { getSpotifySvg } from '../services/SVG.service'
 import { useDispatch, useSelector } from 'react-redux'
 import { addMsg, blockUnblockContact } from '../store/actions/user.actions'
 import { Emojis } from '../cmps/Emojis'
 import { Giphy } from '../cmps/Giphy'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
-import { socketService } from '../services/socket.service'
+import { socketService, SOCKET_EMIT_SEND_MSG } from '../services/socket.service'
 import { msgService } from '../services/msg.service'
 import Transcript from '../cmps/Transcript'
 import { WelcomeChatRoom } from '../cmps/WelcomeChatRoom'
 import { ConverstationList } from '../cmps/ConverstationList'
+import MsgModal from '../cmps/MsgModal'
 
 export function ChatWindow() {
   // console.log('chat window rendered now')
+
   const [msgContent, setMsgContent] = useState('')
   const [imageUrl, setImageUrl] = useState('')
+  const [showModal, setShowModal] = useState(false)
+  const [modalPosition, setModalPosition] = useState({ top: 0, left: 0 })
   const [isHovered, setIsHovered] = useState(null)
   // const [sentGifs, setSentGifs] = useState([])
   const [recipientIsTyping, setUserIsTyping] = useState(false)
@@ -70,7 +75,7 @@ export function ChatWindow() {
         recipientId: user._id,
       }
       setMsgContent('')
-      socketService.emit('chat-send-msg', contentToSend)
+      socketService.emit(SOCKET_EMIT_SEND_MSG, contentToSend)
     }
   }
 
@@ -164,7 +169,7 @@ export function ChatWindow() {
       recipientId: user._id,
       type: 'image',
     }
-    socketService.emit('chat-send-msg', contentToSend)
+    socketService.emit(SOCKET_EMIT_SEND_MSG, contentToSend)
     setMsgContent('')
     // }
   }
@@ -177,7 +182,7 @@ export function ChatWindow() {
       recipientId: user._id,
       type: 'audio',
     }
-    socketService.emit('chat-send-msg', contentToSend)
+    socketService.emit(SOCKET_EMIT_SEND_MSG, contentToSend)
     setMsgContent('')
     // }
   }
@@ -190,10 +195,22 @@ export function ChatWindow() {
       recipientId: user._id,
       type: 'video',
     }
-    socketService.emit('chat-send-msg', contentToSend)
+    socketService.emit(SOCKET_EMIT_SEND_MSG, contentToSend)
     setMsgContent('')
     // }
   }
+
+  function handleShowModal(e) {
+    e.stopPropagation()
+
+    const rect = e.target.getBoundingClientRect()
+    setModalPosition({
+      top: rect.top + window.scrollY,
+      left: rect.left + window.scrollX,
+    })
+    setShowModal(!showModal)
+  }
+
   function handleonFileSelect(url) {
     const contentToSend = {
       content: url,
@@ -201,7 +218,7 @@ export function ChatWindow() {
       recipientId: user._id,
       type: 'file',
     }
-    socketService.emit('chat-send-msg', contentToSend)
+    socketService.emit(SOCKET_EMIT_SEND_MSG, contentToSend)
     setMsgContent('')
     // }
   }
@@ -246,7 +263,7 @@ export function ChatWindow() {
               />
               <Giphy onSelectGif={handleGifSelect} />
               <Transcript onSelectAudio={handleAudioSelect} />
-              <TakePicture onSelectSelfiePicture={handleGifSelect} />
+              {/* <TakePicture onSelectSelfiePicture={handleGifSelect} /> */}
             </div>
             <input
               className="chat-msg-input"
@@ -256,11 +273,18 @@ export function ChatWindow() {
               onChange={handleInputChange}
             />
             <input type="submit" value="Send" />
+            <span
+              onClick={(e) => handleShowModal(e)}
+              dangerouslySetInnerHTML={{
+                __html: getSpotifySvg('plusWhatsapp'),
+              }}
+            ></span>
           </form>
         </>
       ) : (
         <WelcomeChatRoom />
       )}
+      {showModal && <MsgModal position={modalPosition} />}
     </div>
   )
 }
