@@ -42,7 +42,7 @@
   justify-items: center;
   width: 0;
   height: 549px;
-  z-index: 999;
+  // z-index: 999;
   &.open {
     animation: pageExpand 0.2s forwards;
   }

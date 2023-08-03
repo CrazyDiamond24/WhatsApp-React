@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from 'react'
-import { LeftArrow } from './svgs/LeftArrow'
-import { EditIcon } from './svgs/EditIcon'
+
+import { getSpotifySvg } from '../services/SVG.service'
 import emptyImg from '../../src/assets/imgs/empty-img.png'
 import { uploadImg } from '../services/upload-img.service'
 import { useDispatch, useSelector } from 'react-redux'
 import { editUserProfile } from '../store/actions/user.actions'
+import { CreateStory } from './createStory'
 export function UserProfile({ show, closeUserProfile }) {
   const [isUploading, setIsUploading] = useState(false)
   const [fileChanged, setFileChanged] = useState(false)
-  const [editedUser, setEditedUser] = useState({ ...user })
-
+  const [showModal, setShowModal] = useState(false)
   const user = useSelector((storeState) => storeState.userModule.loggedInUser)
+  const [editedUser, setEditedUser] = useState({ ...user })
 
   const dispatch = useDispatch()
 
@@ -37,6 +38,10 @@ export function UserProfile({ show, closeUserProfile }) {
     dispatch(editUserProfile(editedUser))
   }
 
+  function handleShowModal() {
+    setShowModal(!showModal)
+  }
+
   async function handelFile(ev) {
     const file =
       ev.type === 'change' ? ev.target.files[0] : ev.dataTransfer.files[0]
@@ -54,6 +59,12 @@ export function UserProfile({ show, closeUserProfile }) {
 
   return (
     <section className={`user-profile-page ${show ? 'open' : ''}`}>
+      <span
+        onClick={handleShowModal}
+        dangerouslySetInnerHTML={{
+          __html: getSpotifySvg('plusWhatsapp'),
+        }}
+      ></span>
       <div className="first-section">
         <span>{/* <LeftArrow /> */}</span>
         <h1 onClick={closeUserProfile}>Profile</h1>
@@ -115,6 +126,7 @@ export function UserProfile({ show, closeUserProfile }) {
           </div>
         </div>
       </div>
+      {showModal && <CreateStory />}
     </section>
   )
 }

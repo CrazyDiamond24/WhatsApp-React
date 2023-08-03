@@ -1,0 +1,21 @@
+.color-picker-canvas-overlay {
+  width: max-content;
+  z-index: 999;
+  background-color: white;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  position: absolute;
+  top: 60px;
+  right: 100px;
+  .color-canvas-picker {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 10px;
+  }
+
+  .color-canvas {
+    border-radius: 50%;
+    height: 20px;
+    width: 20px;
+  }
+}

@@ -7,6 +7,7 @@ export const userService = {
   // save,
   // remove,
   getById,
+  addStory,
   getEmptyUser,
   createNewMsg,
   addContact,
@@ -29,6 +30,9 @@ async function addContact(loggedInUserId, contactName) {
     { contactName }
   )
   return contact
+}
+async function addStory(loggedInUserId, url) {
+  httpService.post(`contact/${loggedInUserId}/add-story`, { url })
 }
 async function removeContact(loggedInUserId, contactId) {
   await httpService.delete(

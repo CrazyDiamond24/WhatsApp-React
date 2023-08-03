@@ -9,6 +9,7 @@ export const UPDATE_USER = 'UPDATE_USER'
 export const SIGNUP = 'SIGNUP'
 export const ADD_MSG = 'ADD_MSG'
 export const ADD_CONTACT = 'ADD_CONTACT'
+export const ADD_STORY = 'ADD_STORY'
 export const REMOVE_CONTACT = 'REMOVE_CONTACT'
 export const LOGIN = 'LOGIN'
 export const LOGOUT = 'LOGOUT'
@@ -79,76 +80,84 @@ export function userReducer(state = INITIAL_STATE, action = {}) {
         loggedInUser: action.user,
       }
 
-case ADD_MSG:
-  const newState = {
-    ...state,
-    users: state.users.map((user) => {
-      if (user._id === action.msg.senderId || user._id === action.msg.recipientId) {
-        return { ...user, msgs: [...user.msgs, action.msg] };
+    case ADD_MSG:
+      const newState = {
+        ...state,
+        users: state.users.map((user) => {
+          if (
+            user._id === action.msg.senderId ||
+            user._id === action.msg.recipientId
+          ) {
+            return { ...user, msgs: [...user.msgs, action.msg] }
+          }
+          return user
+        }),
       }
-      return user;
-    }),
-  };
-  
-  newState.loggedInUser = newState.users.find((user) => user._id === state.loggedInUser._id);
-  newState.selectedUser = newState.users.find((user) => user._id === state.selectedUser?._id);
-  
-  return newState;
-  
-  
 
-      
-      case ADD_AUTO_MSG:
-        const { msg } = action
-        const { loggedInUser } = state
-        
-        return {
-          ...state,
+      newState.loggedInUser = newState.users.find(
+        (user) => user._id === state.loggedInUser._id
+      )
+      newState.selectedUser = newState.users.find(
+        (user) => user._id === state.selectedUser?._id
+      )
+
+      return newState
+
+    case ADD_AUTO_MSG:
+      const { msg } = action
+      const { loggedInUser } = state
+
+      return {
+        ...state,
         users: state.users.map((user) =>
           user._id === msg.senderId
             ? { ...user, msgs: [...user.msgs, msg] }
             : user
-            ),
-            loggedInUser: {
-              ...loggedInUser,
-              msgs: [...loggedInUser.msgs, msg],
-            },
-            selectedUser:
+        ),
+        loggedInUser: {
+          ...loggedInUser,
+          msgs: [...loggedInUser.msgs, msg],
+        },
+        selectedUser:
           state.selectedUser && state.selectedUser._id === msg.senderId
-          ? {
-            ...state.selectedUser,
-            msgs: [...state.selectedUser.msgs, msg],
+            ? {
+                ...state.selectedUser,
+                msgs: [...state.selectedUser.msgs, msg],
               }
             : state.selectedUser,
       }
-      
-      case UPDATE_MSG_CONTENT:
-        return {
-          ...state,
-          loggedInUser: {
-            ...state.loggedInUser,
-            msgs: state.loggedInUser.msgs.map((m) =>
-              m.id === action.msg.id
-                ? { ...m, content: action.msg.content }
-                : m
-            ),
-          },
-          selectedUser: {
-            ...state.selectedUser,
-            msgs: state.selectedUser.msgs.map((m) =>
-              m.id === action.msg.id
-                ? { ...m, content: action.msg.content }
-                : m
-            ),
-          },
-        }
 
-      case ADD_CONTACT:
+    case UPDATE_MSG_CONTENT:
+      return {
+        ...state,
+        loggedInUser: {
+          ...state.loggedInUser,
+          msgs: state.loggedInUser.msgs.map((m) =>
+            m.id === action.msg.id ? { ...m, content: action.msg.content } : m
+          ),
+        },
+        selectedUser: {
+          ...state.selectedUser,
+          msgs: state.selectedUser.msgs.map((m) =>
+            m.id === action.msg.id ? { ...m, content: action.msg.content } : m
+          ),
+        },
+      }
+
+    case ADD_CONTACT:
       return {
         ...state,
         loggedInUser: {
           ...state.loggedInUser,
           contacts: [...state.loggedInUser.contacts, action.contact],
+        },
+      }
+    case ADD_STORY:
+      return {
+        ...state,
+        loggedInUser: {
+          ...state.loggedInUser,
+          story: [...state.loggedInUser.story, action.url],
         },
       }
     case LOGOUT:
@@ -177,16 +186,16 @@ case ADD_MSG:
           ),
         },
       }
-      case EDIT_USER_PROFILE:
-        return {
-          ...state,
-          users: state.users.map((user) =>
-            user._id === action.user._id ? action.user : user
-          ),
-          // userStations: state.userStations.map((station) =>
-          //   station._id === action.station._id ? action.station : station
-          // ),
-        }
+    case EDIT_USER_PROFILE:
+      return {
+        ...state,
+        users: state.users.map((user) =>
+          user._id === action.user._id ? action.user : user
+        ),
+        // userStations: state.userStations.map((station) =>
+        //   station._id === action.station._id ? action.station : station
+        // ),
+      }
     case SET_USER:
       return {
         ...state,

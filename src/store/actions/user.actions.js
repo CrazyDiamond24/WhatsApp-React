@@ -15,6 +15,7 @@ import {
   SET_LOGGEDIN_USER,
   ADD_MSG,
   LOGIN_ERROR,
+  ADD_STORY,
   ADD_CONTACT,
   ADD_AUTO_MSG,
   UPDATE_MSG_CONTENT,
@@ -30,6 +31,22 @@ export function addContactToUser(name) {
       const action = {
         type: ADD_CONTACT,
         contact,
+      }
+      dispatch(action)
+    } catch (error) {
+      console.log('error:', error)
+    }
+  }
+}
+
+export function addStoryToUser(url) {
+  return async (dispatch, getState) => {
+    try {
+      const loggedInUser = getState().userModule.loggedInUser
+      await userService.addStory(loggedInUser._id, url)
+      const action = {
+        type: ADD_STORY,
+        url,
       }
       dispatch(action)
     } catch (error) {
