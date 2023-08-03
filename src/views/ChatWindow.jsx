@@ -12,6 +12,7 @@ import Transcript from "../cmps/Transcript"
 import { WelcomeChatRoom } from "../cmps/WelcomeChatRoom"
 import { ConverstationList } from "../cmps/ConverstationList"
 import MsgModal from "../cmps/MsgModal"
+import { debounce } from "lodash"
 
 export function ChatWindow() {
   const [msgContent, setMsgContent] = useState("")
@@ -77,15 +78,26 @@ export function ChatWindow() {
   }, [dispatch])
 
   useEffect(() => {
+    let typingTimeout
+
     const handleTyping = (typingData) => {
       const { userId, isTyping } = typingData
       if (userId !== loggedInUser?._id) {
         setUserIsTyping(isTyping)
+        // if there was something in the timeout
+        clearTimeout(typingTimeout)
+        if (isTyping) {
+          typingTimeout = setTimeout(() => {
+            setUserIsTyping(false)
+          }, 1000)
+        }
       }
     }
     socketService.on("user-typing", handleTyping)
     return () => {
       socketService.off("user-typing", handleTyping)
+      // clear timeout anyway
+      clearTimeout(typingTimeout)
     }
   }, [user?._id])
 
