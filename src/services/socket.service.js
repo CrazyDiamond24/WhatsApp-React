@@ -12,7 +12,7 @@ export const SOCKET_EVENT_REVIEW_ABOUT_YOU = 'review-about-you'
 const SOCKET_EMIT_LOGIN = 'set-user-socket'
 const SOCKET_EMIT_LOGOUT = 'unset-user-socket'
 
-const baseUrl = (process.env.NODE_ENV === 'production') ? '' : '//localhost:3030'
+const baseUrl = process.env.NODE_ENV === 'production' ? '' : '//localhost:3030'
 export const socketService = createSocketService()
 // export const socketService = createDummySocketService()
 
@@ -20,7 +20,6 @@ export const socketService = createSocketService()
 window.socketService = socketService
 
 socketService.setup()
-
 
 function createSocketService() {
   var socket = null
@@ -30,8 +29,7 @@ function createSocketService() {
     setup() {
       socket = io(baseUrl)
       setTimeout(async () => {
-        const user = await authService.getLoggedinUser()  
-        console.log('user in setup', user);
+        const user = await authService.getLoggedinUser()
         if (user && user._id) this.login(user._id)
       }, 500)
     },
@@ -65,7 +63,6 @@ function createSocketService() {
       socket.emit(eventName, data)
     },
     login(userId) {
-      console.log('Attempting to login with user ID:', userId); 
       socket.emit(SOCKET_EMIT_LOGIN, userId)
     },
     logout() {
@@ -80,7 +77,6 @@ function createSocketService() {
   return socketService
 }
 
-
 // eslint-disable-next-line
 function createDummySocketService() {
   var listenersMap = {}
@@ -92,17 +88,18 @@ function createDummySocketService() {
     terminate() {
       this.setup()
     },
-    login() {   
-    },
-    logout() {   
-    },
+    login() {},
+    logout() {},
     on(eventName, cb) {
-      listenersMap[eventName] = [...(listenersMap[eventName]) || [], cb]
+      listenersMap[eventName] = [...(listenersMap[eventName] || []), cb]
     },
     off(eventName, cb) {
       if (!listenersMap[eventName]) return
       if (!cb) delete listenersMap[eventName]
-      else listenersMap[eventName] = listenersMap[eventName].filter(l => l !== cb)
+      else
+        listenersMap[eventName] = listenersMap[eventName].filter(
+          (l) => l !== cb
+        )
     },
     emit(eventName, data) {
       var listeners = listenersMap[eventName]
@@ -112,22 +109,27 @@ function createDummySocketService() {
 
       if (!listeners) return
 
-      listeners.forEach(listener => {
+      listeners.forEach((listener) => {
         listener(data)
       })
     },
     // Functions for easy testing of pushed data
     testChatMsg() {
-      this.emit(SOCKET_EVENT_ADD_MSG, { from: 'Someone', txt: 'Aha it worked!' })
+      this.emit(SOCKET_EVENT_ADD_MSG, {
+        from: 'Someone',
+        txt: 'Aha it worked!',
+      })
     },
     testUserUpdate() {
-      this.emit(SOCKET_EVENT_USER_UPDATED, {...authService.getLoggedinUser(), score: 555})
+      this.emit(SOCKET_EVENT_USER_UPDATED, {
+        ...authService.getLoggedinUser(),
+        score: 555,
+      })
     },
   }
   window.listenersMap = listenersMap
   return socketService
 }
-
 
 // Basic Tests
 // function cb(x) {console.log('Socket Test - Expected Puk, Actual:', x)}

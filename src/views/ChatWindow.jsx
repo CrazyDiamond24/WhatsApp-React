@@ -86,7 +86,6 @@ export function ChatWindow() {
 
   useEffect(() => {
     const handleTyping = (typing) => {
-      console.log('typing', typing)
       const message = typing ? 'is typing...' : ''
       const userId = loggedInUser?._id
       return { userId, message }
@@ -125,7 +124,6 @@ export function ChatWindow() {
     const handleTyping = (typingData) => {
       const { userId, isTyping } = typingData
       if (userId !== loggedInUser?._id) {
-        console.log('User is typing:', isTyping)
         setUserIsTyping(isTyping)
       }
     }
@@ -223,14 +221,10 @@ export function ChatWindow() {
     // }
   }
 
-  function blockContact(){
+  function blockContact() {
     const action = isUserBlocked ? 'UNBLOCK_USER' : 'BLOCK_USER'
     dispatch(blockUnblockContact(action, user._id))
   }
-
-  useEffect(() => {
-    console.log('Recipient is typing state:', recipientIsTyping)
-  }, [recipientIsTyping])
 
   const [animationParent] = useAutoAnimate()
   return (
