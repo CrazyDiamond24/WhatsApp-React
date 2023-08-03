@@ -6,12 +6,12 @@ export function Giphy({ onSelectGif }) {
   const [searchQuery, setSearchQuery] = useState('')
   const [searchedGifs, setSearchedGifs] = useState([])
 
-  const handleSearchInputChange = (e) => {
+  function handleSearchInputChange(e) {
     const { value } = e.target
     setSearchQuery(value)
   }
 
-  const handleCloseExpanded = () => {
+  function handleCloseExpanded() {
     setIsExpanded(false)
     setSearchQuery('')
   }
@@ -21,7 +21,7 @@ export function Giphy({ onSelectGif }) {
   useEffect(() => {
     let debounceTimeout
 
-    const fetchGifs = async (value) => {
+    async function fetchGifs(value) {
       if (value.trim() !== '') {
         const gifs = await emojisService.fetchGiphy(value)
         setSearchedGifs(gifs)

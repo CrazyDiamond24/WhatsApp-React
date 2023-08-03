@@ -1,11 +1,11 @@
-import React, { useState } from "react"
-import { MsgOptionsModal } from "./MsgOptionsModal"
+import React, { useState } from 'react'
+import { MsgOptionsModal } from './MsgOptionsModal'
 
 export function MsgOptions({ msg, loggedInUser, user }) {
   const [modalPosition, setModalPosition] = useState({ top: 0, left: 0 })
   const [showModal, setShowOptionsModal] = useState(false)
 
-  const showSongOptionsModal = (e) => {
+  function showSongOptionsModal(e) {
     const rect = e.target.getBoundingClientRect()
     setModalPosition({
       top: rect.top + window.scrollY,

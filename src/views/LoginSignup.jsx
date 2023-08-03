@@ -23,7 +23,7 @@ export function LoginSignup() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
-  const handleToggle = () => {
+  function handleToggle() {
     setHasAccount((prevHasAccount) => !prevHasAccount)
   }
 
@@ -37,7 +37,6 @@ export function LoginSignup() {
         return
       dispatch(doSignup(signupCred))
       navigate('/')
-
     }
   }
 

@@ -223,7 +223,7 @@ export function ChatWindow() {
     // }
   }
 
-  const blockContact = () => {
+  function blockContact(){
     const action = isUserBlocked ? 'UNBLOCK_USER' : 'BLOCK_USER'
     dispatch(blockUnblockContact(action, user._id))
   }

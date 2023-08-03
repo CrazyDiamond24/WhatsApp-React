@@ -18,7 +18,7 @@ export function UserList({ filterBy, onRemoveUser }) {
 
   const [filteredUsers, setFilteredUsers] = useState([])
 
-  const filterUsers = (users, filterBy, loggedInUser) => {
+  function filterUsers(users, filterBy, loggedInUser) {
     return userService.getFilteredUsers(users, filterBy, loggedInUser)
   }
 

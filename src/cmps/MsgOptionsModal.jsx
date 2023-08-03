@@ -12,7 +12,7 @@ export function MsgOptionsModal({
   const msgModalRef = useRef()
   const dispatch = useDispatch()
 
-  const deleteMsgHandler = () => {
+  function deleteMsgHandler() {
     dispatch(deleteMsg(msg.id, loggedInUser._id, user._id))
     closeModal()
   }
@@ -20,7 +20,7 @@ export function MsgOptionsModal({
     <>
       <div
         ref={msgModalRef}
-        className='msg-options-modal'
+        className="msg-options-modal"
         style={{
           top: position.top + 20,
           left: position.left - 170,

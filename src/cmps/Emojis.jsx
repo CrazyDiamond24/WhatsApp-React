@@ -23,11 +23,11 @@ export function Emojis({
     loadEmojis()
   }, [])
 
-  const handleEmojiClick = (emoji) => {
+  function handleEmojiClick(emoji) {
     onSelectEmoji(emoji)
   }
 
-  const handleCategoryClick = (category) => {
+  function handleCategoryClick(category) {
     setSelectedCategory(category)
   }
 
@@ -57,7 +57,7 @@ export function Emojis({
   ]
 
   // Function to map category names to their corresponding emojis
-  const getCategoryEmoji = (categoryName) => {
+  function getCategoryEmoji(categoryName) {
     switch (categoryName) {
       case 'Animals & Nature':
         return '🌷'
