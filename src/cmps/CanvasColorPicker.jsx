@@ -1,6 +1,11 @@
 import React from 'react'
 
-export function CanvasColorPicker({ onColorSelect, onWidthSelect }) {
+export function CanvasColorPicker({
+  onColorSelect,
+  onWidthSelect,
+  show,
+  important,
+}) {
   const colors = [
     '#8d6e63',
     '#d500f9',
@@ -44,7 +49,9 @@ export function CanvasColorPicker({ onColorSelect, onWidthSelect }) {
     }
   }
   return (
-    <div className="color-picker-canvas-overlay">
+    <div
+      className={`color-picker-canvas-overlay ${important ? 'important' : ''}`}
+    >
       <div className="color-canvas-picker">
         {colors.map((color, index) => (
           <div
@@ -55,17 +62,21 @@ export function CanvasColorPicker({ onColorSelect, onWidthSelect }) {
           ></div>
         ))}
       </div>
-      <div className="line"></div>
-      <div className="line-size-container">
-        <div onClick={() => handleWidthClick(44)} className="one"></div>
-        <div onClick={() => handleWidthClick(32)} className="two"></div>
-        <div onClick={() => handleWidthClick(25)} className="three"></div>
-        <div onClick={() => handleWidthClick(20)} className="four"></div>
-        <div onClick={() => handleWidthClick(18)} className="five"></div>
-        <div onClick={() => handleWidthClick(15)} className="six"></div>
-        <div onClick={() => handleWidthClick(10)} className="seven"></div>
-        <div onClick={() => handleWidthClick(5)} className="eight"></div>
-      </div>
+      {show && (
+        <>
+          <div className="line"></div>
+          <div className="line-size-container">
+            <div onClick={() => handleWidthClick(44)} className="one"></div>
+            <div onClick={() => handleWidthClick(32)} className="two"></div>
+            <div onClick={() => handleWidthClick(25)} className="three"></div>
+            <div onClick={() => handleWidthClick(20)} className="four"></div>
+            <div onClick={() => handleWidthClick(18)} className="five"></div>
+            <div onClick={() => handleWidthClick(15)} className="six"></div>
+            <div onClick={() => handleWidthClick(10)} className="seven"></div>
+            <div onClick={() => handleWidthClick(5)} className="eight"></div>
+          </div>
+        </>
+      )}
     </div>
   )
 }

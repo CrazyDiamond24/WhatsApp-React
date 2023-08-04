@@ -4,14 +4,14 @@ import { getSpotifySvg } from '../services/SVG.service'
 import { CanvasColorPicker } from './CanvasColorPicker'
 import { useDispatch, useSelector } from 'react-redux'
 import { addStoryToUser } from '../store/actions/user.actions'
-import FontFamily from './FontFamily'
+import { FontFamily } from './FontFamily'
 export function CreateStory() {
   const [imageUrl, setImageUrl] = useState(null)
   const [text, setText] = useState('')
   const [textColor, setTextColor] = useState('black')
   const [textWidth, setTextWidth] = useState('20')
   const [textFontFamily, setTextFontFamily] = useState('Arial')
-  const [textRotation, setTextRotation] = useState(0)
+
   const [textPos, setTextPos] = useState({ x: 50, y: 50 })
   const [showColorModal, setShowColorModal] = useState(false)
   const [dragging, setDragging] = useState(false)
@@ -70,10 +70,6 @@ export function CreateStory() {
     }
   }
 
-  function handleRotationChange(e) {
-    setTextRotation(e.target.value)
-  }
-
   async function handleImageUpload(ev) {
     const file =
       ev.type === 'change' ? ev.target.files[0] : ev.dataTransfer.files[0]
@@ -112,6 +108,7 @@ export function CreateStory() {
     }
     const canvasUrl = canvasRef.current.toDataURL('image/png')
     dispatch(addStoryToUser(canvasUrl))
+    console.log(user)
   }
 
   return (
@@ -142,6 +139,8 @@ export function CreateStory() {
         <CanvasColorPicker
           onColorSelect={handleColorSelect}
           onWidthSelect={handleWidthSelect}
+          show={true}
+          important={false}
         />
       )}
       <FontFamily onSelectFontFamily={handleFontFamilySelect} />
@@ -150,13 +149,7 @@ export function CreateStory() {
           __html: getSpotifySvg('plusWhatsapp'),
         }}
       ></span>
-      <input
-        type="range"
-        min="0"
-        max="360"
-        value={textRotation}
-        onChange={handleRotationChange}
-      />
+
       <button onClick={addToStory}>add to story</button>
     </div>
   )

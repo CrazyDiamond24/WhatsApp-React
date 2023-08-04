@@ -6,6 +6,7 @@ export const userService = {
   query,
   // save,
   // remove,
+  updatePref,
   getById,
   addStory,
   getEmptyUser,

@@ -118,8 +118,9 @@ function saveLocalUser(user) {
     groups: user.groups,
     story: user.story,
     img: user.img,
-    status: '',
-    blockedContcats: [],
+    status: user.status,
+    blockedContcats: user.blockedContcats,
+    userPref: user.userPref,
   }
   sessionStorage.setItem(STORAGE_KEY_LOGGEDIN_USER, JSON.stringify(user))
   return user

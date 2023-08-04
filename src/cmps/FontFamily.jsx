@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-export default function FontFamily({ onSelectFontFamily }) {
+export function FontFamily({ onSelectFontFamily }) {
   const [fontFamily, setFontFamily] = useState(
     'Impact, Haettenschweiler, Arial Narrow Bold, sans-serif'
   )
