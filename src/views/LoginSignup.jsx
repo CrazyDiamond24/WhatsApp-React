@@ -14,6 +14,13 @@ export function LoginSignup() {
     status: '',
     groups: [],
     story: [],
+    userPref: {
+      fontSize: 16,
+      fontColor: '#000000',
+      headerBgColor: '#ffffff',
+      fontFamily: 'Impact, Haettenschweiler, Arial Narrow Bold, sans-serif',
+      backgroundImage: '',
+    },
   })
 
   const loginError = useSelector(

@@ -19,6 +19,7 @@ export function ChatWindow() {
   const [showModal, setShowModal] = useState(false)
   const [modalPosition, setModalPosition] = useState({ top: 0, left: 0 })
   const [isHovered, setIsHovered] = useState(null)
+  const [recipientIsRecording, setUserIsRecording] = useState(false)
   const [recipientIsTyping, setUserIsTyping] = useState(false)
 
   const loggedInUser = useSelector((storeState) => {
@@ -97,6 +98,20 @@ export function ChatWindow() {
     }
   }, [user?._id])
 
+  useEffect(() => {
+    const handleRecording = (recordingData) => {
+      const { userId, isRecording } = recordingData
+      console.log(isRecording)
+      if (userId !== loggedInUser?._id) {
+        setUserIsRecording(isRecording)
+      }
+    }
+    socketService.on('user-recording', handleRecording)
+    return () => {
+      socketService.off('user-recording', handleRecording)
+    }
+  }, [user?._id])
+
   function handelSendMsg(e) {
     e.preventDefault()
     if (!loggedInUser || !user || !msgContent.length) return
@@ -163,6 +178,7 @@ export function ChatWindow() {
               {isUserBlocked ? 'unBlock contact' : 'Block contact'}
             </span> */}
             {recipientIsTyping && <div> is typing...</div>}
+            {recipientIsRecording && <div> is recording...</div>}
           </div>
           <ul className='conversation-container flex' ref={animationParent}>
             <ConverstationList

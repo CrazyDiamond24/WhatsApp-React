@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { getSpotifySvg } from '../services/SVG.service'
 import { TranscriptIcon } from './svgs/TranscriptIcon'
+import { socketService } from '../services/socket.service'
 
 function Transcript({ onSelectAudio }) {
   const [recording, setRecording] = useState(false)
@@ -9,7 +10,15 @@ function Transcript({ onSelectAudio }) {
   const mediaRecorderRef = useRef(null)
   const audioChunksRef = useRef([])
 
+  const loggedInUser = useSelector((storeState) => {
+    return storeState.userModule.loggedInUser
+  })
+  const user = useSelector((storeState) => {
+    return storeState.userModule.selectedUser
+  })
+
   const startRecording = async () => {
+    console.log('start')
     const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
     mediaRecorderRef.current = new MediaRecorder(stream)
 
@@ -26,13 +35,26 @@ function Transcript({ onSelectAudio }) {
 
     mediaRecorderRef.current.start()
     setRecording(true)
+
+    socketService.emit('recording', {
+      senderId: loggedInUser._id,
+      recipientId: user._id,
+      isRecording: true,
+    })
   }
 
   const stopRecording = () => {
+    console.log('stop')
     if (mediaRecorderRef.current) {
       mediaRecorderRef.current.stop()
       setRecording(false)
     }
+
+    socketService.emit('recording', {
+      senderId: loggedInUser._id,
+      recipientId: user._id,
+      isRecording: false,
+    })
   }
 
   useEffect(() => {

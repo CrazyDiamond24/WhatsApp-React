@@ -20,7 +20,7 @@ import {
   ADD_AUTO_MSG,
   UPDATE_MSG_CONTENT,
   REMOVE_CONTACT,
-  EDIT_USER_PROFILE,
+  EDIT_USER,
 } from '../reducers/user.reducer'
 
 export function addContactToUser(name) {
@@ -47,6 +47,21 @@ export function addStoryToUser(url) {
       const action = {
         type: ADD_STORY,
         url,
+      }
+      dispatch(action)
+    } catch (error) {
+      console.log('error:', error)
+    }
+  }
+}
+export function updateUserPref(userPref) {
+  return async (dispatch, getState) => {
+    try {
+      const loggedInUser = getState().userModule.loggedInUser
+      const user = await userService.updatePref(loggedInUser._id, userPref)
+      const action = {
+        type: EDIT_USER,
+        user,
       }
       dispatch(action)
     } catch (error) {
@@ -231,7 +246,7 @@ export function editUserProfile(user) {
   return async (dispatch) => {
     try {
       const updatedUser = await userService.editProfile(user)
-      const action = { type: EDIT_USER_PROFILE, user: updatedUser }
+      const action = { type: EDIT_USER, user: updatedUser }
       dispatch(action)
       const action2 = {
         type: SET_LOGGEDIN_USER,

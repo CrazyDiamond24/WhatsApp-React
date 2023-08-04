@@ -7,6 +7,10 @@
   position: absolute;
   top: 60px;
   right: 100px;
+  &.important {
+    top: 0;
+    right: 0;
+  }
   .color-canvas-picker {
     display: grid;
     grid-template-columns: repeat(7, 1fr);

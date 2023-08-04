@@ -28,7 +28,7 @@ export function UserIndex(props) {
 
   useEffect(() => {
     dispatch(loadUsers())
-  }, [])
+  }, [user])
 
   const onRemoveUser = useCallback(async (userId) => {
     try {

@@ -4,14 +4,14 @@ import { getSpotifySvg } from '../services/SVG.service'
 import { CanvasColorPicker } from './CanvasColorPicker'
 import { useDispatch, useSelector } from 'react-redux'
 import { addStoryToUser } from '../store/actions/user.actions'
-import FontFamily from './FontFamily'
+import { FontFamily } from './FontFamily'
 export function CreateStory() {
   const [imageUrl, setImageUrl] = useState(null)
   const [text, setText] = useState('')
   const [textColor, setTextColor] = useState('black')
   const [textWidth, setTextWidth] = useState('20')
   const [textFontFamily, setTextFontFamily] = useState('Arial')
-  const [textRotation, setTextRotation] = useState(0)
+
   const [textPos, setTextPos] = useState({ x: 50, y: 50 })
   const [showColorModal, setShowColorModal] = useState(false)
   const [dragging, setDragging] = useState(false)
@@ -30,33 +30,17 @@ export function CreateStory() {
       img.crossOrigin = 'Anonymous'
       img.onload = () => {
         ctx.drawImage(img, 0, 0, canvas.width, canvas.height)
-        ctx.save()
-        ctx.translate(textPos.x, textPos.y)
-        ctx.rotate((textRotation * Math.PI) / 180)
         ctx.font = `${textWidth}px ${textFontFamily}`
         ctx.fillStyle = textColor
-        ctx.fillText(text, 0, 0)
-        ctx.restore()
+        ctx.fillText(text, textPos.x, textPos.y)
       }
       img.src = imageUrl
     } else {
-      ctx.save()
-      ctx.translate(textPos.x, textPos.y)
-      ctx.rotate((textRotation * Math.PI) / 180)
       ctx.font = `${textWidth}px ${textFontFamily}`
       ctx.fillStyle = textColor
-      ctx.fillText(text, 0, 0)
-      ctx.restore()
+      ctx.fillText(text, textPos.x, textPos.y)
     }
-  }, [
-    imageUrl,
-    text,
-    textPos,
-    textColor,
-    textWidth,
-    textFontFamily,
-    textRotation,
-  ])
+  }, [imageUrl, text, textPos, textColor, textWidth, textFontFamily])
 
   function handleMouseDown(e) {
     const rect = canvasRef.current.getBoundingClientRect()
@@ -84,10 +68,6 @@ export function CreateStory() {
       const newY = e.clientY - rect.top + 20
       setTextPos({ x: newX, y: newY })
     }
-  }
-
-  function handleRotationChange(e) {
-    setTextRotation(e.target.value)
   }
 
   async function handleImageUpload(ev) {
@@ -128,6 +108,7 @@ export function CreateStory() {
     }
     const canvasUrl = canvasRef.current.toDataURL('image/png')
     dispatch(addStoryToUser(canvasUrl))
+    console.log(user)
   }
 
   return (
@@ -158,6 +139,8 @@ export function CreateStory() {
         <CanvasColorPicker
           onColorSelect={handleColorSelect}
           onWidthSelect={handleWidthSelect}
+          show={true}
+          important={false}
         />
       )}
       <FontFamily onSelectFontFamily={handleFontFamilySelect} />
@@ -166,13 +149,7 @@ export function CreateStory() {
           __html: getSpotifySvg('plusWhatsapp'),
         }}
       ></span>
-      <input
-        type="range"
-        min="0"
-        max="360"
-        value={textRotation}
-        onChange={handleRotationChange}
-      />
+
       <button onClick={addToStory}>add to story</button>
     </div>
   )
