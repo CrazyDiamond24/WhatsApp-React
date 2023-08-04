@@ -30,33 +30,17 @@ export function CreateStory() {
       img.crossOrigin = 'Anonymous'
       img.onload = () => {
         ctx.drawImage(img, 0, 0, canvas.width, canvas.height)
-        ctx.save()
-        ctx.translate(textPos.x, textPos.y)
-        ctx.rotate((textRotation * Math.PI) / 180)
         ctx.font = `${textWidth}px ${textFontFamily}`
         ctx.fillStyle = textColor
-        ctx.fillText(text, 0, 0)
-        ctx.restore()
+        ctx.fillText(text, textPos.x, textPos.y)
       }
       img.src = imageUrl
     } else {
-      ctx.save()
-      ctx.translate(textPos.x, textPos.y)
-      ctx.rotate((textRotation * Math.PI) / 180)
       ctx.font = `${textWidth}px ${textFontFamily}`
       ctx.fillStyle = textColor
-      ctx.fillText(text, 0, 0)
-      ctx.restore()
+      ctx.fillText(text, textPos.x, textPos.y)
     }
-  }, [
-    imageUrl,
-    text,
-    textPos,
-    textColor,
-    textWidth,
-    textFontFamily,
-    textRotation,
-  ])
+  }, [imageUrl, text, textPos, textColor, textWidth, textFontFamily])
 
   function handleMouseDown(e) {
     const rect = canvasRef.current.getBoundingClientRect()
