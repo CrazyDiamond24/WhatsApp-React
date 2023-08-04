@@ -1,33 +1,38 @@
 .app-header {
-  background: $clr3;
+  background: $test2;
   color: white;
-  height: 60px;
+  height: 70px;
   width: 100%;
   padding: 10px;
   display: flex;
-  border-radius: 10px;
-  margin: 5px 0 0 5px;
+  
   .user-header {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     img {
       height: 50px;
       border-radius: 50%;
       margin-left: 0;
+      cursor: pointer;
     }
     .user-info-header {
       display: flex;
-      gap: 10px;
+      gap: 275px;
       white-space: nowrap;
       align-items: center;
+  
     }
   }
   .header-login {
-    margin-left: 75%;
+    margin-left: 275px;
     &:hover {
       text-decoration: none;
       color: $secondaryClr;
       font-weight: bold;
     }
+  }
+  .user-profile-link {
+    cursor: pointer;
   }
 }

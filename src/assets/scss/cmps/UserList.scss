@@ -1,12 +1,14 @@
 // UserList.scss
 .user-list {
   display: grid;
-  grid-auto-rows: minmax(50px, auto);
-  padding: 10px;
-  gap: 10px;
-  .contact-preview {
-    &:hover {
-      background: rgba($secondaryClr, 0.4);
-    }
-  }
+  grid-auto-rows: minmax(70px, auto);
+  gap: 2px;
+}
+
+.accessory-list {
+  height: 50px;
+  width: 100%;
+  background-color: $test2;
+  position: absolute;
+  bottom: 0;
 }

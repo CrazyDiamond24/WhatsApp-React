@@ -1,22 +1,52 @@
 .contact-preview {
-  background: rgb($clr2, 0.9);
-  border-radius: 1rem;
-  box-shadow: 0 0 11px #0000002b;
+  background: $test;
+  border-radius: 0.2rem;
+  // box-shadow: 0 0 11px #0000002b;
   display: flex;
-  max-width: 350px;
+  width: inherit;
   cursor: pointer;
-  color: rgb($clr4, 0.9);
+  color: $clr2;
+  border-bottom: 1px solid rgba(204, 222, 219, 0.05);
 
+  &.active {
+    background: rgba($test2, 0.3);
+  }
+
+  &:hover {
+    background: rgba($test2, 0.3);
+  }
+  .mini-contant {
+    display: flex;
+    align-items: center;
+  }
+  
+  .unread-count {
+    position:absolute;
+    right: 20px;
+    background-color: $clr6;
+    padding: 10px;
+    height: 1.5rem;
+    width: 1.5rem;
+    border-radius: 50%;
+    text-align:center;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+  }
   .contact-preview-info {
     display: flex;
     flex-direction: column;
+    position:relative;
 
-    h3 {
+    .last-msg-content {
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
-      max-width: 220px;
-      color: rgba(0, 0, 0, 0.7);
+      max-width: 250px;
+      color: rgba($clr2, 0.7);
+      display: flex;
+      align-items: center;
+      gap: 4px;
     }
   }
   .contact-preview-image {

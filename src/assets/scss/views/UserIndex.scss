@@ -3,7 +3,10 @@
   background: linear-gradient($primaryClr 1%, $clr2 80%);
   width: 100vw;
   .contact-list {
-    width: 30%;
+    // padding: 0.5rem;
+    width:500px;
+    background: $test;
+    position: relative;
   }
   .svg-input-container {
     position: relative;
@@ -11,31 +14,41 @@
     .search-input {
       border: 1px solid black;
       border-radius: 4px;
-      height: rem(30px);
-      padding: rem(8px) rem(30px);
+      height: 30px;
+      padding: 8px 30px;
       text-overflow: ellipsis;
       position: absolute;
       transition: all 0.3s ease-in;
       width: 0;
+      opacity: 0;
       &.open {
-        animation: inputExpand 0.2s forwards;
+        animation: inputExpand 0.3s forwards;
+        opacity: 1;
       }
       &.close {
-        animation: inputCollapse 0.2s forwards;
+        animation: inputCollapse 0.3s forwards;
       }
       &:focus {
         outline: none;
       }
     }
+    .search-icon-svg.icon-open {
+      fill: black;
+    }
+    
+    .search-icon-svg.icon-close {
+      fill: rgb(192, 192, 192);
+    }
+    
     .search-svg {
-      margin-block-start: rem(3px);
-      margin-inline-start: rem(5px);
+      margin-block-start: 3px;
+      margin-inline-start: 5px;
       position: absolute;
       z-index: 1;
     }
   }
   .add-contact {
-    margin: rem(50px) 0 rem(10px) rem(10px);
+    margin: 50px 0 10px 10px;
   }
 }
 
@@ -43,20 +56,32 @@
   0% {
     width: 0;
   }
+  25% {
+    width: 100px;
+  }
   50% {
-    width: rem(100px);
+    width: 200px;
+  }
+  75% {
+    width: 250px;
   }
   100% {
-    width: rem(175px);
+    width: 300px;
   }
 }
 
 @keyframes inputCollapse {
   0% {
-    width: rem(175px);
+    width: 300px;
+  }
+  25% {
+    width: 250px; 
   }
   50% {
-    width: rem(100px);
+    width: 200px;
+  }
+  75% {
+    width: 100px; 
   }
   100% {
     width: 0;

@@ -44,30 +44,23 @@
 // </section>
 
 .msg-modal-section {
-  // position: absolute;
-  width: 202.39px;
-  height: 246px;
-  padding: 3px 0px;
-  z-index: 999;
-
+  position: absolute;
+  bottom: 60px;
+  background-color: $clr7;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 1rem;
   ul {
     display: flex;
     flex-direction: column;
+    padding-inline: 1.5rem;
 
     li {
       display: flex;
-      align-items: center;
-      justify-items: center;
-      gap: 20px;
-      width: 146.39px;
-      height: 40px;
-      margin: 0 8px 0 32px;
-      div {
-        margin: 0 0 0 12px;
-      }
-      span {
-        margin-block-end: 16px;
-      }
+      gap: 15px;
+      height: 35px;
+      padding-right: 10px;
+      padding-top: 2px;
+      cursor: pointer;
     }
   }
 }
