@@ -11,6 +11,7 @@ export function CreateStory() {
   const [textColor, setTextColor] = useState('black')
   const [textWidth, setTextWidth] = useState('20')
   const [textFontFamily, setTextFontFamily] = useState('Arial')
+  const [textRotation, setTextRotation] = useState(0)
   const [textPos, setTextPos] = useState({ x: 50, y: 50 })
   const [showColorModal, setShowColorModal] = useState(false)
   const [dragging, setDragging] = useState(false)
@@ -29,17 +30,33 @@ export function CreateStory() {
       img.crossOrigin = 'Anonymous'
       img.onload = () => {
         ctx.drawImage(img, 0, 0, canvas.width, canvas.height)
+        ctx.save()
+        ctx.translate(textPos.x, textPos.y)
+        ctx.rotate((textRotation * Math.PI) / 180)
         ctx.font = `${textWidth}px ${textFontFamily}`
         ctx.fillStyle = textColor
-        ctx.fillText(text, textPos.x, textPos.y)
+        ctx.fillText(text, 0, 0)
+        ctx.restore()
       }
       img.src = imageUrl
     } else {
+      ctx.save()
+      ctx.translate(textPos.x, textPos.y)
+      ctx.rotate((textRotation * Math.PI) / 180)
       ctx.font = `${textWidth}px ${textFontFamily}`
       ctx.fillStyle = textColor
-      ctx.fillText(text, textPos.x, textPos.y)
+      ctx.fillText(text, 0, 0)
+      ctx.restore()
     }
-  }, [imageUrl, text, textPos, textColor, textWidth, textFontFamily])
+  }, [
+    imageUrl,
+    text,
+    textPos,
+    textColor,
+    textWidth,
+    textFontFamily,
+    textRotation,
+  ])
 
   function handleMouseDown(e) {
     const rect = canvasRef.current.getBoundingClientRect()
@@ -67,6 +84,10 @@ export function CreateStory() {
       const newY = e.clientY - rect.top + 20
       setTextPos({ x: newX, y: newY })
     }
+  }
+
+  function handleRotationChange(e) {
+    setTextRotation(e.target.value)
   }
 
   async function handleImageUpload(ev) {
@@ -145,6 +166,13 @@ export function CreateStory() {
           __html: getSpotifySvg('plusWhatsapp'),
         }}
       ></span>
+      <input
+        type="range"
+        min="0"
+        max="360"
+        value={textRotation}
+        onChange={handleRotationChange}
+      />
       <button onClick={addToStory}>add to story</button>
     </div>
   )
