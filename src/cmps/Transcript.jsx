@@ -1,7 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getSpotifySvg } from '../services/SVG.service'
-import { socketService, SOCKET_EMIT_SEND_MSG } from '../services/socket.service'
+import { TranscriptIcon } from './svgs/TranscriptIcon'
+import { socketService } from '../services/socket.service'
+
 function Transcript({ onSelectAudio }) {
   const [recording, setRecording] = useState(false)
 
@@ -73,13 +75,16 @@ function Transcript({ onSelectAudio }) {
 
   return (
     <div>
-      <i title="record" onClick={toggleRecording}>
-        <span
+      <i title='record' onClick={toggleRecording}>
+
+        <TranscriptIcon className="transcript-icon-svg" />
+
+        {/* <span
           // className={`mic ${recording ? 'active' : ''}`}
           dangerouslySetInnerHTML={{
             __html: getSpotifySvg('mic'),
           }}
-        ></span>
+        ></span> */}
       </i>
     </div>
   )

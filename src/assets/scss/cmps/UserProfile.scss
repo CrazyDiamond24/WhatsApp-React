@@ -1,64 +1,40 @@
-// <section className="user-profile-page">
-// <div className="first-section">
-//   <span>
-//     <LeftArrow />
-//   </span>
-//   <h1>Profile</h1>
-// </div>
-// <div className="second-section">
-//   <img src={emptyImg} />
-// </div>
-// <div className="thered-section">
-//   <div>
-//     <span>Your name</span>
-//   </div>
-//   <div>
-//     <span>
-//       <EditIcon />
-//     </span>
-//     <div>
-//       <span>{user?.username}</span>
-//     </div>
-//   </div>
-// </div>
-// <div className="four-section">
-//   <div>
-//     <span>Your status</span>
-//   </div>
-//   <div>
-//     <span>
-//       <EditIcon />
-//     </span>
-//     <div>
-//       <span>{user?.status}</span>
-//     </div>
-//   </div>
-// </div>
-// </section>
 .user-profile-page {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-items: center;
-  width: 0;
-  height: 549px;
-  // z-index: 999;
   &.open {
     animation: pageExpand 0.2s forwards;
+    width: 500px;
   }
 
   .first-section {
     width: 100%;
-    height: 108px;
+    height: 100px;
     background-color: #008069;
     padding: 0px 23px 0px 20px;
   }
   .second-section {
-    width: 100%;
     height: 200px;
     margin: 28px 0px;
-
-    align-self: center;
+    .cover-img {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      position: relative;
+    }
+    .img-edit{
+      border-radius: 50%;
+      height: 200px;
+      width: 200px;
+      object-fit: cover;
+    }
+    .upload-ninja{
+      position: absolute;
+      width: 0;
+    }
   }
   .thered-section,
   .four-section {
@@ -75,9 +51,51 @@
     width: 0;
   }
   50% {
-    width: rem(200px);
+    width: 200px;
   }
   100% {
-    width: rem(400px);
+    width:500px;
+  }
+}
+
+
+
+.modal {
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0,0,0);
+  background-color: rgba(0,0,0,0.4);
+  
+  .modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    text-align: center;
+    
+    img {
+      max-width: 100%;
+      max-height: 100%;
+    }
+  }
+
+  .close-button {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    
+    &:hover,
+    &:focus {
+      color: black;
+      text-decoration: none;
+      cursor: pointer;
+    }
   }
 }

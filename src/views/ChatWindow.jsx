@@ -12,6 +12,7 @@ import Transcript from '../cmps/Transcript'
 import { WelcomeChatRoom } from '../cmps/WelcomeChatRoom'
 import { ConverstationList } from '../cmps/ConverstationList'
 import MsgModal from '../cmps/MsgModal'
+import { ReactComponent as PlusWhatsapp } from '../assets/imgs/plusWhatsapp.svg'
 
 export function ChatWindow() {
   const [msgContent, setMsgContent] = useState('')
@@ -20,6 +21,7 @@ export function ChatWindow() {
   const [isHovered, setIsHovered] = useState(null)
   const [recipientIsRecording, setUserIsRecording] = useState(false)
   const [recipientIsTyping, setUserIsTyping] = useState(false)
+  const [isIconRotated, setIsIconRotated] = useState(false)
 
   const loggedInUser = useSelector((storeState) => {
     return storeState.userModule.loggedInUser
@@ -46,17 +48,17 @@ export function ChatWindow() {
     }
   }, [msgs])
 
-  // useEffect(() => {
-  //   const handleTyping = (typing) => {
-  //     const message = typing ? 'is typing...' : ''
-  //     const userId = loggedInUser?._id
-  //     return { userId, message }
-  //   }
-  //   socketService.on('typing', handleTyping(msgContent))
-  //   return () => {
-  //     socketService.off('typing', handleTyping(msgContent))
-  //   }
-  // }, [msgContent])
+  useEffect(() => {
+    const handleTyping = (typing) => {
+      const message = typing ? 'is typing...' : ''
+      const userId = loggedInUser?._id
+      return { userId, message }
+    }
+    socketService.on('typing', handleTyping(msgContent))
+    return () => {
+      socketService.off('typing', handleTyping(msgContent))
+    }
+  }, [msgContent])
 
   useEffect(() => {
     const handleReceivedMsg = (receivedMsg) => {
@@ -79,12 +81,10 @@ export function ChatWindow() {
 
   useEffect(() => {
     let typingTimeout
-
     const handleTyping = (typingData) => {
       const { userId, isTyping } = typingData
       if (userId !== loggedInUser?._id) {
         setUserIsTyping(isTyping)
-        // if there was something in the timeout
         clearTimeout(typingTimeout)
         if (isTyping) {
           typingTimeout = setTimeout(() => {
@@ -135,7 +135,6 @@ export function ChatWindow() {
     const trimmedContent = e.target.value.trim()
     const isTyping = trimmedContent !== ''
 
-    // Don't set recipient's typing state here; emit your typing status instead
     socketService.emit('typing', {
       senderId: loggedInUser._id,
       recipientId: user._id,
@@ -162,6 +161,7 @@ export function ChatWindow() {
       left: rect.left + window.scrollX,
     })
     setShowModal(!showModal)
+    setIsIconRotated(!isIconRotated)
   }
 
   function blockContact() {
@@ -170,19 +170,19 @@ export function ChatWindow() {
   }
 
   return (
-    <div className="chat-window" ref={animationParent}>
+    <div className='chat-window' ref={animationParent}>
       {user ? (
         <>
-          <div className="header-area">
+          <div className='header-area'>
             <img src={user?.img} alt={user?.username} />
             <h2>{user?.fullName}</h2>
-            <span onClick={blockContact}>
+            {/* <span onClick={blockContact}>
               {isUserBlocked ? 'unBlock contact' : 'Block contact'}
-            </span>
+            </span> */}
             {recipientIsTyping && <div> is typing...</div>}
             {recipientIsRecording && <div> is recording...</div>}
           </div>
-          <ul className="conversation-container flex" ref={animationParent}>
+          <ul className='conversation-container flex' ref={animationParent}>
             <ConverstationList
               msgs={msgs}
               loggedInUser={loggedInUser}
@@ -190,8 +190,13 @@ export function ChatWindow() {
               user={user}
             />
           </ul>
-          <form className="msg-input" onSubmit={(e) => handelSendMsg(e)}>
-            <div className="multimedia-container">
+          <form className='msg-input' onSubmit={(e) => handelSendMsg(e)}>
+            <div className='multimedia-container'>
+              <Giphy
+                onSelectGif={(gifImgUrl) =>
+                  handlefilesSelect(gifImgUrl, 'image')
+                }
+              />
               <Emojis
                 onSelectEmoji={handleEmojiSelect}
                 onSelectImage={(gifImgUrl) =>
@@ -200,38 +205,38 @@ export function ChatWindow() {
                 onSelectVideo={(url) => handlefilesSelect(url, 'video')}
                 onSelectFile={(url) => handlefilesSelect(url, 'file')}
               />
-              <Giphy
-                onSelectGif={(gifImgUrl) =>
-                  handlefilesSelect(gifImgUrl, 'image')
-                }
+
+              {/* <TakePicture onSelectSelfiePicture={handleGifSelect} /> */}
+            </div>
+            <div className='chat-input-container'>
+              {showModal && <MsgModal position={modalPosition} />}
+              <PlusWhatsapp
+                title='Attach'
+                className={`plus-icon-svg ${isIconRotated ? 'rotate' : ''}`}
+                onClick={(e) => handleShowModal(e)}
               />
+
+              <input
+                className='chat-msg-input'
+                type='text'
+                placeholder='Type a message...'
+                value={msgContent}
+                onChange={handleInputChange}
+              />
+
               <Transcript
+                title='Record'
                 onSelectAudio={(audioUrl) =>
                   handlefilesSelect(audioUrl, 'audio')
                 }
+                className='transcript-container'
               />
-              {/* <TakePicture onSelectSelfiePicture={handleGifSelect} /> */}
             </div>
-            <input
-              className="chat-msg-input"
-              type="text"
-              placeholder="Type a message..."
-              value={msgContent}
-              onChange={handleInputChange}
-            />
-            <input type="submit" value="Send" />
-            <span
-              onClick={(e) => handleShowModal(e)}
-              dangerouslySetInnerHTML={{
-                __html: getSpotifySvg('plusWhatsapp'),
-              }}
-            ></span>
           </form>
         </>
       ) : (
         <WelcomeChatRoom />
       )}
-      {showModal && <MsgModal position={modalPosition} />}
     </div>
   )
 }

@@ -3,6 +3,7 @@ import { emojisService } from '../services/emojis.service'
 import { uploadImg } from '../services/upload-img.service'
 import { uploadVideo } from '../services/upload-video.service'
 import { uploadFile } from '../services/upload-file.service'
+import { ReactComponent as EmojiIcon } from '../assets/imgs/emojiIcon.svg'
 
 export function Emojis({
   onSelectEmoji,
@@ -168,9 +169,9 @@ export function Emojis({
       <div
         className={`smiley ${isExpanded ? 'expanded' : ''}`}
         onClick={() => setIsExpanded((prevState) => !prevState)}
-        title="Emo"
+        title="Emojis"
       >
-        😀
+        <EmojiIcon className="emoji-icon-svg"/>
       </div>
       {isExpanded && (
         <div className="emojis-window">

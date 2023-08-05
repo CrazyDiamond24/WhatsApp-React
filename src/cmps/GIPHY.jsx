@@ -1,12 +1,25 @@
 import React, { useState, useEffect } from 'react'
 import { emojisService } from '../services/emojis.service'
+import { ReactComponent as GifIcon } from '../assets/imgs/gifIcon.svg'
 
 export function Giphy({ onSelectGif }) {
   const [isExpanded, setIsExpanded] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
   const [searchedGifs, setSearchedGifs] = useState([])
+  const [trendingGifs, setTrendingGifs] = useState([])
 
   const isQueryNotEmpty = searchQuery.trim() !== ''
+
+  const loadTrendingGifs = async () => {
+    const gifs = await emojisService.fetchTrendingGiphy()
+    setTrendingGifs(gifs)
+  }
+
+  useEffect(() => {
+    if (isExpanded) {
+      loadTrendingGifs()
+    }
+  }, [isExpanded])
 
   useEffect(() => {
     let debounceTimeout
@@ -46,24 +59,39 @@ export function Giphy({ onSelectGif }) {
   }
 
   return (
-    <div className="giphy-container">
+    <div className='giphy-container'>
       <div
         className={`giphy-icon ${isExpanded ? 'expanded' : ''}`}
         onClick={() => setIsExpanded((prevState) => !prevState)}
       >
-        🎬
+        <GifIcon className='gif-icon-svg' title='GIF' />
       </div>
       {isExpanded && (
-        <div className="giphy-search-container">
+        <div className='giphy-search-container'>
           <input
-            type="text"
+            type='text'
             value={searchQuery}
             onChange={handleSearchInputChange}
-            className="giphy-search-input"
-            placeholder="Search for GIFs..."
+            className='giphy-search-input'
+            placeholder='Search for GIFs...'
           />
+          {!isQueryNotEmpty && trendingGifs.length > 0 && (
+            <div className='giphy-grid'>
+              {trendingGifs.map((gif) => (
+                <img
+                  key={gif.id}
+                  src={gif.images.fixed_height.url}
+                  alt={gif.title}
+                  onClick={() => {
+                    onSelectGif(gif.images.downsized.url)
+                    handleCloseExpanded()
+                  }}
+                />
+              ))}
+            </div>
+          )}
           {isQueryNotEmpty && searchedGifs.length > 0 && (
-            <div className="giphy-grid">
+            <div className='giphy-grid'>
               {searchedGifs.map((gif) => (
                 <img
                   key={gif.id}
