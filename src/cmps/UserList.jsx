@@ -34,7 +34,7 @@ export function UserList({ filterBy, onRemoveUser }) {
   useEffect(() => {
     const newState = computeNewState(users, filterBy, loggedInUser, state)
     setState(newState)
-  }, [filterBy, users, loggedInUser, state])
+  }, [filterBy, users, loggedInUser])
 
   function computeNewState(users, filterBy, loggedInUser, state) {
     const filteredUsers = filterUsers(users, filterBy, loggedInUser)
