@@ -22,6 +22,8 @@ export function ChatWindow() {
   const [isHovered, setIsHovered] = useState(null)
   const [recipientIsRecording, setUserIsRecording] = useState(false)
   const [recipientIsTyping, setUserIsTyping] = useState(false)
+  const [lastSeen, setLastSeen] = useState('')
+  const [onlineStatus, setOnlineStatus] = useState('')
   const [isIconRotated, setIsIconRotated] = useState(false)
 
   const loggedInUser = useSelector((storeState) => {
@@ -80,6 +82,20 @@ export function ChatWindow() {
     }
   }, [dispatch])
 
+  // need to make a function at the socket.service
+  // useEffect(() => {
+  //   socketService.on("online-users", (onlineUsersData) => {
+  //     const userStatus = onlineUsersData.find((user) => user.id === user._id)
+  //     if (userStatus) {
+  //       setOnlineStatus(userStatus.isOnline ? "Online" : "Offline")
+  //       setLastSeen(userStatus.lastSeen)
+  //     }
+  //   })
+  //   return () => {
+  //     socketService.off("online-users")
+  //   }
+  // }, [user?._id])
+
   useEffect(() => {
     let typingTimeout
     const handleTyping = (typingData) => {
@@ -136,6 +152,7 @@ export function ChatWindow() {
     const trimmedContent = e.target.value.trim()
     const isTyping = trimmedContent !== ''
 
+    // Don't set recipient's typing state here emit your typing status instead
     socketService.emit('typing', {
       senderId: loggedInUser._id,
       recipientId: user._id,
@@ -164,7 +181,9 @@ export function ChatWindow() {
     setShowModal(!showModal)
     setIsIconRotated(!isIconRotated)
   }
-
+  const timestamp = (time) => {
+    return msgService.getTimestamp(time)
+  }
   function blockContact() {
     const action = isUserBlocked ? 'UNBLOCK_USER' : 'BLOCK_USER'
     dispatch(blockUnblockContact(action, user._id))
@@ -178,8 +197,13 @@ export function ChatWindow() {
             <img src={user?.img} alt={user?.username} />
             <h2>{user?.fullName}</h2>
             {/* <span onClick={blockContact}>
-              {isUserBlocked ? 'unBlock contact' : 'Block contact'}
+              {isUserBlocked ? "unBlock contact" : "Block contact"}
             </span> */}
+            {onlineStatus === 'Online' ? (
+              <div>Online</div>
+            ) : (
+              <div>Last Seen: {timestamp(lastSeen)}</div>
+            )}
             {recipientIsTyping && <div> is typing...</div>}
             {recipientIsRecording && <div> is recording...</div>}
           </div>
@@ -198,21 +222,19 @@ export function ChatWindow() {
                   handlefilesSelect(gifImgUrl, 'image')
                 }
               />
-              <Emojis onSelectEmoji={handleEmojiSelect} />
+              <Emojis
+                onSelectEmoji={handleEmojiSelect}
+                onSelectImage={(gifImgUrl) =>
+                  handlefilesSelect(gifImgUrl, 'image')
+                }
+                onSelectVideo={(url) => handlefilesSelect(url, 'video')}
+                onSelectFile={(url) => handlefilesSelect(url, 'file')}
+              />
 
               {/* <TakePicture onSelectSelfiePicture={handleGifSelect} /> */}
             </div>
             <div className="chat-input-container">
-              {showModal && (
-                <MsgModal
-                  position={modalPosition}
-                  onSelectImage={(gifImgUrl) =>
-                    handlefilesSelect(gifImgUrl, 'image')
-                  }
-                  onSelectVideo={(url) => handlefilesSelect(url, 'video')}
-                  onSelectFile={(url) => handlefilesSelect(url, 'file')}
-                />
-              )}
+              {showModal && <MsgModal position={modalPosition} />}
               <PlusWhatsapp
                 title="Attach"
                 className={`plus-icon-svg ${isIconRotated ? 'rotate' : ''}`}
