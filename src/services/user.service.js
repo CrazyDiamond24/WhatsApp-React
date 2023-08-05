@@ -6,7 +6,7 @@ export const userService = {
   query,
   // save,
   // remove,
-  updatePref,
+
   getById,
   addStory,
   getEmptyUser,
@@ -25,6 +25,7 @@ function query() {
 async function editProfile(user) {
   return httpService.put(`contact/${user._id}`, user)
 }
+
 async function addContact(loggedInUserId, contactName) {
   const contact = await httpService.post(
     `contact/${loggedInUserId}/add-contact`,
