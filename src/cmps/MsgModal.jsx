@@ -6,10 +6,6 @@ export default function MsgModal({ position }) {
   return (
     <section
       className="msg-modal-section"
-      style={{
-        top: position.top + 200,
-        left: position.left + 200,
-      }}
     >
       <ul>
         <li>

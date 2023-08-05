@@ -4,7 +4,7 @@ export const SET_USERS = 'SET_USERS'
 export const SET_USER = 'SET_USER'
 export const ADD_USER = 'ADD_USER'
 export const REMOVE_USER = 'REMOVE_USER'
-export const UPDATE_USER = 'UPDATE_USER'
+
 // export const SET_FILTER_BY = 'SET_FILTER_BY'
 export const SIGNUP = 'SIGNUP'
 export const ADD_MSG = 'ADD_MSG'
@@ -19,7 +19,7 @@ export const ADD_AUTO_MSG = 'ADD_AUTO_MSG'
 export const UPDATE_MSG_CONTENT = 'UPDATE_MSG_CONTENT'
 export const UNBLOCK_USER = 'UNBLOCK_USER'
 export const BLOCK_USER = 'BLOCK_USER'
-export const EDIT_USER_PROFILE = 'EDIT_USER_PROFILE'
+export const EDIT_USER = 'EDIT_USER'
 
 const INITIAL_STATE = {
   loginError: '',
@@ -47,15 +47,12 @@ export function userReducer(state = INITIAL_STATE, action = {}) {
           ),
         },
       }
-    case EDIT_USER_PROFILE:
+    case EDIT_USER:
       return {
         ...state,
         users: state.users.map((user) =>
           user._id === action.user._id ? action.user : user
         ),
-        // userStations: state.userStations.map((station) =>
-        //   station._id === action.station._id ? action.station : station
-        // ),
       }
     case LOGIN_ERROR:
       return {
@@ -186,16 +183,6 @@ export function userReducer(state = INITIAL_STATE, action = {}) {
           ),
         },
       }
-    case EDIT_USER_PROFILE:
-      return {
-        ...state,
-        users: state.users.map((user) =>
-          user._id === action.user._id ? action.user : user
-        ),
-        // userStations: state.userStations.map((station) =>
-        //   station._id === action.station._id ? action.station : station
-        // ),
-      }
     case SET_USER:
       return {
         ...state,
@@ -211,13 +198,7 @@ export function userReducer(state = INITIAL_STATE, action = {}) {
         ...state,
         users: state.users.filter((user) => user._id !== action.userId),
       }
-    case UPDATE_USER:
-      return {
-        ...state,
-        users: state.users.map((user) =>
-          user._id === action.user._id ? action.user : user
-        ),
-      }
+
     // case SET_FILTER_BY:
     //   return {
     //     ...state,

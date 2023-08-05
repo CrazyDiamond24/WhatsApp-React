@@ -89,7 +89,7 @@ export function UserProfile({ show, closeUserProfile }) {
               alt="user station img"
             />
           )}
-          <input type="file" onChange={handelFile} className="hidden" />
+          <input type="file" onChange={handelFile} className=" upload-ninja" />
         </label>
       </div>
       <div className="thered-section">

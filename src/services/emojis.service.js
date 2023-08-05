@@ -36,7 +36,28 @@ async function fetchGiphy(query, limit = 20) {
   }
 }
 
+
+async function fetchTrendingGiphy(limit = 20) {
+  try {
+    const cacheKey = 'giphy_trending'
+    const cachedResult = utilService.loadFromStorage(cacheKey)
+
+    if (cachedResult) {
+      return cachedResult
+    } else {
+      const gifs = await giphyFetch.trending({ limit })
+      utilService.saveToStorage(cacheKey, gifs.data)
+      return gifs.data
+    }
+  } catch (error) {
+    console.error('Error fetching trending GIFs:', error)
+    return []
+  }
+}
+
+
 export const emojisService = {
   fetchEmojis,
   fetchGiphy,
+  fetchTrendingGiphy
 }

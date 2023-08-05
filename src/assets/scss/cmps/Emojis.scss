@@ -1,13 +1,14 @@
 .emojis-container {
   position: absolute;
-  margin-inline-start: 10px;
-  .smiley {
-    font-size: 1.5rem;
+  left: 90px;
+
+  .emoji-icon-svg {
+    font-size: 1.4rem;
     cursor: pointer;
-    transform: translateY(1.5px);
+    transform: translateY(2.9px);
 
     &.expanded {
-      transform: rotate(180deg);
+      transform: rotate(150deg);
     }
   }
 
@@ -28,9 +29,6 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     margin: 0;
 
-    .category-wrapper {
-      height: 1100px;
-    }
     .emoji-category {
       margin-bottom: 10px;
       font-size: 1.4rem;
@@ -90,9 +88,10 @@
 .giphy-container {
   position: absolute;
   left: 55px;
+  transform: translateY(3px);
 
-  .giphy-icon {
-    font-size: 1.5rem;
+  .gif-icon-svg {
+    fill: black;
     cursor: pointer;
   }
   .giphy-grid {
