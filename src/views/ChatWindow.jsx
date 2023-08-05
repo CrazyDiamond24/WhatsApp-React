@@ -7,6 +7,7 @@ import { Emojis } from '../cmps/Emojis'
 import { Giphy } from '../cmps/Giphy'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { socketService, SOCKET_EMIT_SEND_MSG } from '../services/socket.service'
+
 import { msgService } from '../services/msg.service'
 import Transcript from '../cmps/Transcript'
 import { WelcomeChatRoom } from '../cmps/WelcomeChatRoom'
@@ -170,10 +171,10 @@ export function ChatWindow() {
   }
 
   return (
-    <div className='chat-window' ref={animationParent}>
+    <div className="chat-window" ref={animationParent}>
       {user ? (
         <>
-          <div className='header-area'>
+          <div className="header-area">
             <img src={user?.img} alt={user?.username} />
             <h2>{user?.fullName}</h2>
             {/* <span onClick={blockContact}>
@@ -182,7 +183,7 @@ export function ChatWindow() {
             {recipientIsTyping && <div> is typing...</div>}
             {recipientIsRecording && <div> is recording...</div>}
           </div>
-          <ul className='conversation-container flex' ref={animationParent}>
+          <ul className="conversation-container flex" ref={animationParent}>
             <ConverstationList
               msgs={msgs}
               loggedInUser={loggedInUser}
@@ -190,46 +191,48 @@ export function ChatWindow() {
               user={user}
             />
           </ul>
-          <form className='msg-input' onSubmit={(e) => handelSendMsg(e)}>
-            <div className='multimedia-container'>
+          <form className="msg-input" onSubmit={(e) => handelSendMsg(e)}>
+            <div className="multimedia-container">
               <Giphy
                 onSelectGif={(gifImgUrl) =>
                   handlefilesSelect(gifImgUrl, 'image')
                 }
               />
-              <Emojis
-                onSelectEmoji={handleEmojiSelect}
-                onSelectImage={(gifImgUrl) =>
-                  handlefilesSelect(gifImgUrl, 'image')
-                }
-                onSelectVideo={(url) => handlefilesSelect(url, 'video')}
-                onSelectFile={(url) => handlefilesSelect(url, 'file')}
-              />
+              <Emojis onSelectEmoji={handleEmojiSelect} />
 
               {/* <TakePicture onSelectSelfiePicture={handleGifSelect} /> */}
             </div>
-            <div className='chat-input-container'>
-              {showModal && <MsgModal position={modalPosition} />}
+            <div className="chat-input-container">
+              {showModal && (
+                <MsgModal
+                  position={modalPosition}
+                  onSelectImage={(gifImgUrl) =>
+                    handlefilesSelect(gifImgUrl, 'image')
+                  }
+                  onSelectVideo={(url) => handlefilesSelect(url, 'video')}
+                  onSelectFile={(url) => handlefilesSelect(url, 'file')}
+                />
+              )}
               <PlusWhatsapp
-                title='Attach'
+                title="Attach"
                 className={`plus-icon-svg ${isIconRotated ? 'rotate' : ''}`}
                 onClick={(e) => handleShowModal(e)}
               />
 
               <input
-                className='chat-msg-input'
-                type='text'
-                placeholder='Type a message...'
+                className="chat-msg-input"
+                type="text"
+                placeholder="Type a message..."
                 value={msgContent}
                 onChange={handleInputChange}
               />
 
               <Transcript
-                title='Record'
+                title="Record"
                 onSelectAudio={(audioUrl) =>
                   handlefilesSelect(audioUrl, 'audio')
                 }
-                className='transcript-container'
+                className="transcript-container"
               />
             </div>
           </form>
