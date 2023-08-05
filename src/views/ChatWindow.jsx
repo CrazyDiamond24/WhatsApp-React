@@ -21,6 +21,7 @@ export function ChatWindow() {
   const [isHovered, setIsHovered] = useState(null)
   const [recipientIsRecording, setUserIsRecording] = useState(false)
   const [recipientIsTyping, setUserIsTyping] = useState(false)
+  const [isIconRotated, setIsIconRotated] = useState(false)
 
   const loggedInUser = useSelector((storeState) => {
     return storeState.userModule.loggedInUser
@@ -160,6 +161,7 @@ export function ChatWindow() {
       left: rect.left + window.scrollX,
     })
     setShowModal(!showModal)
+    setIsIconRotated(!isIconRotated)
   }
 
   function blockContact() {
@@ -210,7 +212,7 @@ export function ChatWindow() {
               {showModal && <MsgModal position={modalPosition} />}
               <PlusWhatsapp
                 title='Attach'
-                className='plus-icon-svg'
+                className={`plus-icon-svg ${isIconRotated ? 'rotate' : ''}`}
                 onClick={(e) => handleShowModal(e)}
               />
 

@@ -114,7 +114,16 @@
   .plus-icon-svg{
     margin-inline-end: 0.5rem;
     cursor: pointer;
+    transition: transform 0.3s ease-in-out;
   }
+  
+  .plus-icon-svg.rotate{
+    transform: rotate(405deg) scale(1.4);
+    background-color: rgba($clr5 , 0.5);
+    padding:4px;
+    border-radius: 50%;
+  }
+  
 }
 
 .welcome-chatroom {

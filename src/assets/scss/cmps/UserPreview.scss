@@ -44,9 +44,13 @@
       white-space: nowrap;
       max-width: 250px;
       color: rgba($clr2, 0.7);
+    }
+    .last-msg-content-image {
       display: flex;
       align-items: center;
       gap: 4px;
+      max-width: 250px;
+      color: rgba($clr2, 0.7);
     }
   }
   .contact-preview-image {

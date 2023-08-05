@@ -4,7 +4,12 @@ import { setCurrUser } from '../store/actions/user.actions'
 import { ContactOptionsModal } from './ContactOptionsModal'
 import { PhotoIcon } from './svgs/PhotoIcon'
 
-export function UserPreview({ user, activeContactId, onContactClick, unreadCount }) {
+export function UserPreview({
+  user,
+  activeContactId,
+  onContactClick,
+  unreadCount,
+}) {
   const [showModal, setShowModal] = useState(false)
   const [modalPosition, setModalPosition] = useState({ top: 0, left: 0 })
   const isActiveContact = user._id === activeContactId
@@ -32,13 +37,17 @@ export function UserPreview({ user, activeContactId, onContactClick, unreadCount
         return (
           <>
             <PhotoIcon />
-             Photo
+            Photo
           </>
         )
       }
     } else {
       return 'Start a new conversation'
     }
+  }, [lastMsg])
+
+  const isLastMsgImage = useMemo(() => {
+    return lastMsg?.length > 0 && lastMsg[lastMsg.length - 1].type === 'image'
   }, [lastMsg])
 
   function handleClick(e) {
@@ -78,10 +87,18 @@ export function UserPreview({ user, activeContactId, onContactClick, unreadCount
       />
       <div className='mini-contant'>
         <div className='contact-preview-info'>
-        <h2>{user.fullName}</h2>
-        <h3 className="last-msg-content">{lastMsgContent}</h3>
+          <h2>{user.fullName}</h2>
+          <h3
+            className={`last-msg-content ${
+              isLastMsgImage
+                ? 'last-msg-content-image'
+                : 'last-msg-content-text'
+            }`}
+          >
+            {lastMsgContent}
+          </h3>
         </div>
-        {unreadCount > 0 && <span className="unread-count">{unreadCount}</span>}
+        {unreadCount > 0 && <span className='unread-count'>{unreadCount}</span>}
       </div>
       {showModal && (
         <ContactOptionsModal

@@ -5,12 +5,20 @@ import { useSelector } from 'react-redux'
 import { CSSTransition } from 'react-transition-group'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { userService } from '../services/user.service'
+import { storageService } from '../services/storage.service'
+
+const getInitialState = () => ({
+  lastClickedTimestamps: storageService.load('lastClickedTimestamps') || {},
+  unreadCounts: storageService.load('unreadCounts') || {},
+  sessionStartTime: storageService.load('sessionStartTime') || Date.now(),
+})
 
 export function UserList({ filterBy, onRemoveUser }) {
   const [filteredUsers, setFilteredUsers] = useState([])
   const [activeContactId, setActiveContactId] = useState(null)
-  const [lastClickedTimestamps, setLastClickedTimestamps] = useState({})
-  const [sessionStartTime] = useState(Date.now())
+  const [state, setState] = useState(getInitialState)
+
+  const { unreadCounts, sessionStartTime } = state
 
   const users = useSelector((storeState) => storeState.userModule.users)
   const loggedInUser = useSelector(
@@ -20,34 +28,70 @@ export function UserList({ filterBy, onRemoveUser }) {
   const [animationParent] = useAutoAnimate()
 
   useEffect(() => {
+    storageService.store('sessionStartTime', sessionStartTime)
+  }, [sessionStartTime])
+
+  useEffect(() => {
+    const newState = computeNewState(users, filterBy, loggedInUser, state)
+    setState(newState)
+  }, [filterBy, users, loggedInUser, state])
+
+  function computeNewState(users, filterBy, loggedInUser, state) {
     const filteredUsers = filterUsers(users, filterBy, loggedInUser)
     setFilteredUsers(filteredUsers)
-  }, [filterBy, users, loggedInUser])
+
+    const newUnreadCounts = { ...unreadCounts }
+
+    filteredUsers?.forEach((user) => {
+      const lastClickedTimestamp =
+        state.lastClickedTimestamps[user._id] || state.sessionStartTime
+
+      let unreadCount = user.msgs?.filter(
+        (msg) =>
+          msg.senderId !== loggedInUser._id &&
+          msg.timestamp > lastClickedTimestamp
+      ).length
+
+      newUnreadCounts[user._id] = unreadCount
+    })
+
+    storageService.store('unreadCounts', newUnreadCounts)
+
+    return {
+      ...state,
+      lastClickedTimestamps: state.lastClickedTimestamps,
+      unreadCounts: newUnreadCounts,
+    }
+  }
+
+  function handleContactClick(contactId) {
+    const updatedState = {
+      ...state,
+      lastClickedTimestamps: {
+        ...state.lastClickedTimestamps,
+        [contactId]: Date.now(),
+      },
+      unreadCounts: {
+        ...state.unreadCounts,
+        [contactId]: 0,
+      },
+    }
+
+    storageService.store(
+      'lastClickedTimestamps',
+      updatedState.lastClickedTimestamps
+    )
+    setState(updatedState)
+    setActiveContactId(contactId)
+  }
 
   function filterUsers(users, filterBy, loggedInUser) {
     return userService.getFilteredUsers(users, filterBy, loggedInUser)
   }
-
-  function handleContactClick(contactId) {
-    setActiveContactId(contactId)
-
-    // Set the last clicked timestamp for this contact to now
-    setLastClickedTimestamps({
-      ...lastClickedTimestamps,
-      [contactId]: Date.now(),
-    })
-  }
   return (
     <section className='user-list simple-cards-grid' ref={animationParent}>
       {filteredUsers?.map((user) => {
-        // Use the last clicked timestamp or session start time for counting unread messages
-        const lastClickedTimestamp =
-          lastClickedTimestamps[user._id] || sessionStartTime
-        const unreadCount = user.msgs?.filter(
-          (msg) =>
-            msg.senderId !== loggedInUser._id &&
-            msg.timestamp > lastClickedTimestamp
-        ).length
+        const unreadCount = unreadCounts[user._id] || 0
 
         return (
           <CSSTransition
