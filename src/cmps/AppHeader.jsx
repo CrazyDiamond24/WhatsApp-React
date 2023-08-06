@@ -14,36 +14,51 @@ export function AppHeader({ showProfile }) {
 
   return (
     <header className="app-header">
-      {/* <span
+      <span
         onClick={showPrefsModal}
         dangerouslySetInnerHTML={{
           __html: getSpotifySvg('plusWhatsapp'),
         }}
-      ></span> */}
+      ></span>
       <section className="user-header">
-        {user ? ( 
+        {user ? (
           <div className="user-info-header">
             {user.img ? (
               <>
-              <img  onClick={showProfile} src={user.img} alt={user.username} title="Profile"/>
-              <img src={LogoWithoutWord} alt="logo" className="logo-without-word" />
+                <img
+                  onClick={showProfile}
+                  src={user.img}
+                  alt={user.username}
+                  title="Profile"
+                />
+                <img
+                  src={LogoWithoutWord}
+                  alt="logo"
+                  className="logo-without-word"
+                />
               </>
-
             ) : (
-              <img src={LogoWithoutWord} alt="logo" className="logo-without-word" />
+              <img
+                src={LogoWithoutWord}
+                alt="logo"
+                className="logo-without-word"
+              />
             )}
-            
           </div>
         ) : (
           <>
-          <img src={LogoWithoutWord} alt="logo" className="logo-without-word" />
-          <Link className="header-login" to="/login">
-            Login
-          </Link>
+            <img
+              src={LogoWithoutWord}
+              alt="logo"
+              className="logo-without-word"
+            />
+            <Link className="header-login" to="/login">
+              Login
+            </Link>
           </>
         )}
       </section>
       {showModal && <UserPref />}
     </header>
-  );
+  )
 }
