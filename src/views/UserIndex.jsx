@@ -13,12 +13,14 @@ import { ChatWindow } from './ChatWindow'
 import { AppHeader } from '../cmps/AppHeader'
 import { UserProfile } from '../cmps/UserProfile'
 import { ReactComponent as SearchIcon } from '../assets/imgs/searchIcon.svg'
-import LogoWithoutWord from '../assets/imgs/Logo-without-word.png';
+import LogoWithoutWord from '../assets/imgs/Logo-without-word.png'
+import { TakePicture } from '../cmps/TakePicture'
 
 export function UserIndex(props) {
   const [filterBy, setFilterBy] = useState('')
   const [isShowProfile, setIsShowProfile] = useState(false)
   const [isInputOpen, setIsInputOpen] = useState(false)
+  const [showCamera, setShowCamera] = useState(true)
 
   const user = useSelector((storeState) => {
     return storeState.userModule.selectedUser
@@ -54,6 +56,10 @@ export function UserIndex(props) {
     setIsInputOpen((prevIsInputOpen) => !prevIsInputOpen)
   }
 
+  function handleCloseModal() {
+    setShowCamera(false)
+  }
+
   // if (!users) return <div>Loading...</div>
 
   return (
@@ -66,23 +72,26 @@ export function UserIndex(props) {
               className="pointer search-svg"
               onClick={() => handleOpenInput()}
             >
-              <SearchIcon className={`search-icon-svg ${isInputOpen ? 'icon-open' : 'icon-close'}`}/>
-            </span>
-              <input
-                className={`search-input ${isInputOpen ? 'open' : 'close'}`}
-                type="text"
-                placeholder="Search contacts or conversations..."
-                value={filterBy}
-                onChange={(e) => handleInput(e)}
+              <SearchIcon
+                className={`search-icon-svg ${
+                  isInputOpen ? 'icon-open' : 'icon-close'
+                }`}
               />
+            </span>
+            <input
+              className={`search-input ${isInputOpen ? 'open' : 'close'}`}
+              type="text"
+              placeholder="Search contacts or conversations..."
+              value={filterBy}
+              onChange={(e) => handleInput(e)}
+            />
             {/* <UserFilter filterBy={filterBy} onChangeFilter={onChangeFilter} /> */}
           </div>
           <div className="add-contact">
-            {/* <Link to="/user/edit">Add contact</Link> */}
+            <Link to="/user/edit">Add contact</Link>
           </div>
           <UserList filterBy={filterBy} onRemoveUser={onRemoveUser} />
-          <div className='accessory-list'>
-          </div>
+          <div className="accessory-list"></div>
         </section>
       ) : (
         <UserProfile
@@ -90,7 +99,12 @@ export function UserIndex(props) {
           closeUserProfile={handleCloseUserProfile}
         />
       )}
-      <ChatWindow key={user?._id} />
+
+      {!showCamera ? (
+        <ChatWindow key={user?._id} />
+      ) : (
+        <TakePicture closeModal={handleCloseModal} />
+      )}
     </section>
   )
 }
