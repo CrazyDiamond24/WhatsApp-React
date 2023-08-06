@@ -100,11 +100,11 @@ export function UserIndex(props) {
         />
       )}
 
-      {!showCamera ? (
-        <ChatWindow key={user?._id} />
-      ) : (
-        <TakePicture closeModal={handleCloseModal} />
-      )}
+      {/* {!showCamera ? ( */}
+      <ChatWindow key={user?._id} />
+      {/* ) : ( */}
+      {/* <TakePicture closeModal={handleCloseModal} /> */}
+      {/* )} */}
     </section>
   )
 }
