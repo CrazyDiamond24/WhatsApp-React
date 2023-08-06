@@ -1,19 +1,18 @@
-import React from 'react'
-import { useEffect, useState, useRef, useMemo } from 'react'
-import { getSpotifySvg } from '../services/SVG.service'
-import { useDispatch, useSelector } from 'react-redux'
-import { addMsg, blockUnblockContact } from '../store/actions/user.actions'
-import { Emojis } from '../cmps/Emojis'
-import { Giphy } from '../cmps/Giphy'
-import { useAutoAnimate } from '@formkit/auto-animate/react'
-import { socketService, SOCKET_EMIT_SEND_MSG } from '../services/socket.service'
-
-import { msgService } from '../services/msg.service'
-import Transcript from '../cmps/Transcript'
-import { WelcomeChatRoom } from '../cmps/WelcomeChatRoom'
-import { ConverstationList } from '../cmps/ConverstationList'
-import MsgModal from '../cmps/MsgModal'
-import { ReactComponent as PlusWhatsapp } from '../assets/imgs/plusWhatsapp.svg'
+import React from "react"
+import { useEffect, useState, useRef, useMemo } from "react"
+import { getSpotifySvg } from "../services/SVG.service"
+import { useDispatch, useSelector } from "react-redux"
+import { addMsg, blockUnblockContact } from "../store/actions/user.actions"
+import { Emojis } from "../cmps/Emojis"
+import { Giphy } from "../cmps/Giphy"
+import { useAutoAnimate } from "@formkit/auto-animate/react"
+import { socketService, SOCKET_EMIT_SEND_MSG } from "../services/socket.service"
+import { msgService } from "../services/msg.service"
+import Transcript from "../cmps/Transcript"
+import { WelcomeChatRoom } from "../cmps/WelcomeChatRoom"
+import { ConverstationList } from "../cmps/ConverstationList"
+import MsgModal from "../cmps/MsgModal"
+import { ReactComponent as PlusWhatsapp } from "../assets/imgs/plusWhatsapp.svg"
 
 export function ChatWindow() {
   const [msgContent, setMsgContent] = useState('')
@@ -25,7 +24,6 @@ export function ChatWindow() {
   const [lastSeen, setLastSeen] = useState('')
   const [onlineStatus, setOnlineStatus] = useState('')
   const [isIconRotated, setIsIconRotated] = useState(false)
-
   const loggedInUser = useSelector((storeState) => {
     return storeState.userModule.loggedInUser
   })
@@ -53,13 +51,13 @@ export function ChatWindow() {
 
   useEffect(() => {
     const handleTyping = (typing) => {
-      const message = typing ? 'is typing...' : ''
+      const message = typing ? "is typing..." : ""
       const userId = loggedInUser?._id
       return { userId, message }
     }
-    socketService.on('typing', handleTyping(msgContent))
+    socketService.on("typing", handleTyping(msgContent))
     return () => {
-      socketService.off('typing', handleTyping(msgContent))
+      socketService.off("typing", handleTyping(msgContent))
     }
   }, [msgContent])
 
@@ -83,19 +81,21 @@ export function ChatWindow() {
   }, [dispatch])
 
   // need to make a function at the socket.service
-  // useEffect(() => {
-  //   socketService.on("online-users", (onlineUsersData) => {
-  //     const userStatus = onlineUsersData.find((user) => user.id === user._id)
-  //     if (userStatus) {
-  //       setOnlineStatus(userStatus.isOnline ? "Online" : "Offline")
-  //       setLastSeen(userStatus.lastSeen)
-  //     }
-  //   })
-  //   return () => {
-  //     socketService.off("online-users")
-  //   }
-  // }, [user?._id])
-
+  useEffect(() => {
+    socketService.on("online-users", (userStatus) => {
+      // const userStatus = onlineUsersData.find((user) => user.id === user._id)
+      console.log("userStatus", userStatus)
+      if (userStatus) {
+        console.log("there is userStatus")
+        setOnlineStatus(userStatus[0].isOnline ? "Online" : "")
+        setLastSeen(userStatus[0].lastSeen)
+      }
+    })
+    return () => {
+      socketService.off("online-users")
+    }
+  }, [user?._id])
+  console.log('loggedInUser', loggedInUser)
   useEffect(() => {
     let typingTimeout
     const handleTyping = (typingData) => {
@@ -188,7 +188,7 @@ export function ChatWindow() {
     const action = isUserBlocked ? 'UNBLOCK_USER' : 'BLOCK_USER'
     dispatch(blockUnblockContact(action, user._id))
   }
-
+  console.log('user.lastSeen', user)
   return (
     <div className="chat-window" ref={animationParent}>
       {user ? (
@@ -202,7 +202,7 @@ export function ChatWindow() {
             {onlineStatus === 'Online' ? (
               <div>Online</div>
             ) : (
-              <div>Last Seen: {timestamp(lastSeen)}</div>
+             <div>Last Seen: {timestamp(user.lastSeen)}</div>
             )}
             {recipientIsTyping && <div> is typing...</div>}
             {recipientIsRecording && <div> is recording...</div>}
@@ -219,7 +219,7 @@ export function ChatWindow() {
             <div className="multimedia-container">
               <Giphy
                 onSelectGif={(gifImgUrl) =>
-                  handlefilesSelect(gifImgUrl, 'image')
+                  handlefilesSelect(gifImgUrl, "image")
                 }
               />
               <Emojis
@@ -237,7 +237,7 @@ export function ChatWindow() {
               {showModal && <MsgModal position={modalPosition} />}
               <PlusWhatsapp
                 title="Attach"
-                className={`plus-icon-svg ${isIconRotated ? 'rotate' : ''}`}
+                className={`plus-icon-svg ${isIconRotated ? "rotate" : ""}`}
                 onClick={(e) => handleShowModal(e)}
               />
 
