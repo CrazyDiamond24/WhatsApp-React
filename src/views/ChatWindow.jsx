@@ -21,7 +21,6 @@ export function ChatWindow() {
   const [isHovered, setIsHovered] = useState(null)
   const [recipientIsRecording, setUserIsRecording] = useState(false)
   const [recipientIsTyping, setUserIsTyping] = useState(false)
-  const [lastSeen, setLastSeen] = useState('')
   const [onlineStatus, setOnlineStatus] = useState('')
   const [isIconRotated, setIsIconRotated] = useState(false)
   const loggedInUser = useSelector((storeState) => {
@@ -82,20 +81,24 @@ export function ChatWindow() {
 
   // need to make a function at the socket.service
   useEffect(() => {
-    socketService.on("online-users", (userStatus) => {
-      // const userStatus = onlineUsersData.find((user) => user.id === user._id)
+    console.log('ma ze')
+    const handelOnline = (userStatus) => {
+      console.log('hi');
       console.log("userStatus", userStatus)
       if (userStatus) {
         console.log("there is userStatus")
-        setOnlineStatus(userStatus[0].isOnline ? "Online" : "")
-        setLastSeen(userStatus[0].lastSeen)
+        const userLog = userStatus.filter(u => u.id === user?._id)
+        console.log('userLog', userLog)
+        setOnlineStatus(userStatus.isOnline ? "Online" : "")
       }
-    })
+    }
+    socketService.on("online-users", handelOnline)
+    console.log('hoi')
     return () => {
-      socketService.off("online-users")
+      socketService.off("online-users" , handelOnline)
     }
   }, [user?._id])
-  console.log('loggedInUser', loggedInUser)
+
   useEffect(() => {
     let typingTimeout
     const handleTyping = (typingData) => {
@@ -188,7 +191,7 @@ export function ChatWindow() {
     const action = isUserBlocked ? 'UNBLOCK_USER' : 'BLOCK_USER'
     dispatch(blockUnblockContact(action, user._id))
   }
-  console.log('user.lastSeen', user)
+
   return (
     <div className="chat-window" ref={animationParent}>
       {user ? (

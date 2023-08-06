@@ -22,7 +22,9 @@ function query() {
   return httpService.get(`contact`)
 }
 async function editProfile(user) {
-  return httpService.put(`contact/${user._id}`, user)
+  const updatedUser = await httpService.put(`contact/${user._id}`, user)
+  console.log('user userService', updatedUser)
+  return updatedUser
 }
 
 async function addContact(loggedInUserId, contactName) {
