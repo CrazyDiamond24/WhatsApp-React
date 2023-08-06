@@ -28,6 +28,14 @@ async function editProfile(user) {
   console.log('user userService', updatedUser)
   return updatedUser
 }
+async function editLastSeen(user) {
+  const updatedUser = await httpService.put(
+    `contact/${user._id}/last-seen`,
+    user
+  )
+  console.log('user userService', updatedUser)
+  return updatedUser
+}
 async function updatePref(user) {
   const updatedUser = await httpService.put(`contact/${user._id}/pref`, user)
   console.log('user after update pref', updatedUser)
@@ -107,9 +115,4 @@ function getFilteredUsers(users, filterBy, loggedInUser) {
 
     return bLastMsgTimestamp - aLastMsgTimestamp
   })
-}
- async function editLastSeen(user) {
-  const updatedUser = await httpService.put(`contact/${user._id}`, user)
-  console.log('user userService', updatedUser)
-  return updatedUser
 }

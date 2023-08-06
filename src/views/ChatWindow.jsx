@@ -1,18 +1,18 @@
-import React from "react"
-import { useEffect, useState, useRef, useMemo } from "react"
-import { getSpotifySvg } from "../services/SVG.service"
-import { useDispatch, useSelector } from "react-redux"
-import { addMsg, blockUnblockContact } from "../store/actions/user.actions"
-import { Emojis } from "../cmps/Emojis"
-import { Giphy } from "../cmps/Giphy"
-import { useAutoAnimate } from "@formkit/auto-animate/react"
-import { socketService, SOCKET_EMIT_SEND_MSG } from "../services/socket.service"
-import { msgService } from "../services/msg.service"
-import Transcript from "../cmps/Transcript"
-import { WelcomeChatRoom } from "../cmps/WelcomeChatRoom"
-import { ConverstationList } from "../cmps/ConverstationList"
-import MsgModal from "../cmps/MsgModal"
-import { ReactComponent as PlusWhatsapp } from "../assets/imgs/plusWhatsapp.svg"
+import React from 'react'
+import { useEffect, useState, useRef, useMemo } from 'react'
+import { getSpotifySvg } from '../services/SVG.service'
+import { useDispatch, useSelector } from 'react-redux'
+import { addMsg, blockUnblockContact } from '../store/actions/user.actions'
+import { Emojis } from '../cmps/Emojis'
+import { Giphy } from '../cmps/Giphy'
+import { useAutoAnimate } from '@formkit/auto-animate/react'
+import { socketService, SOCKET_EMIT_SEND_MSG } from '../services/socket.service'
+import { msgService } from '../services/msg.service'
+import Transcript from '../cmps/Transcript'
+import { WelcomeChatRoom } from '../cmps/WelcomeChatRoom'
+import { ConverstationList } from '../cmps/ConverstationList'
+import MsgModal from '../cmps/MsgModal'
+import { ReactComponent as PlusWhatsapp } from '../assets/imgs/plusWhatsapp.svg'
 
 export function ChatWindow() {
   const [msgContent, setMsgContent] = useState('')
@@ -50,13 +50,13 @@ export function ChatWindow() {
 
   useEffect(() => {
     const handleTyping = (typing) => {
-      const message = typing ? "is typing..." : ""
+      const message = typing ? 'is typing...' : ''
       const userId = loggedInUser?._id
       return { userId, message }
     }
-    socketService.on("typing", handleTyping(msgContent))
+    socketService.on('typing', handleTyping(msgContent))
     return () => {
-      socketService.off("typing", handleTyping(msgContent))
+      socketService.off('typing', handleTyping(msgContent))
     }
   }, [msgContent])
 
@@ -83,19 +83,19 @@ export function ChatWindow() {
   useEffect(() => {
     console.log('ma ze')
     const handelOnline = (userStatus) => {
-      console.log('hi');
-      console.log("userStatus", userStatus)
+      console.log('hi')
+      console.log('userStatus', userStatus)
       if (userStatus) {
-        console.log("there is userStatus")
-        const userLog = userStatus.filter(u => u.id === user?._id)
+        console.log('there is userStatus')
+        const userLog = userStatus.filter((u) => u.id === user?._id)
         console.log('userLog', userLog)
-        setOnlineStatus(userStatus.isOnline ? "Online" : "")
+        setOnlineStatus(userStatus.isOnline ? 'Online' : '')
       }
     }
-    socketService.on("online-users", handelOnline)
+    socketService.on('online-users', handelOnline)
     console.log('hoi')
     return () => {
-      socketService.off("online-users" , handelOnline)
+      socketService.off('online-users', handelOnline)
     }
   }, [user?._id])
 
@@ -205,7 +205,7 @@ export function ChatWindow() {
             {onlineStatus === 'Online' ? (
               <div>Online</div>
             ) : (
-             <div>Last Seen: {timestamp(user.lastSeen)}</div>
+              <div>Last Seen: {timestamp(user.lastSeen)}</div>
             )}
             {recipientIsTyping && <div> is typing...</div>}
             {recipientIsRecording && <div> is recording...</div>}
@@ -222,7 +222,7 @@ export function ChatWindow() {
             <div className="multimedia-container">
               <Giphy
                 onSelectGif={(gifImgUrl) =>
-                  handlefilesSelect(gifImgUrl, "image")
+                  handlefilesSelect(gifImgUrl, 'image')
                 }
               />
               <Emojis
@@ -240,7 +240,7 @@ export function ChatWindow() {
               {showModal && <MsgModal position={modalPosition} />}
               <PlusWhatsapp
                 title="Attach"
-                className={`plus-icon-svg ${isIconRotated ? "rotate" : ""}`}
+                className={`plus-icon-svg ${isIconRotated ? 'rotate' : ''}`}
                 onClick={(e) => handleShowModal(e)}
               />
 

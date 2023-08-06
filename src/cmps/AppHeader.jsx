@@ -1,15 +1,15 @@
-import { useDispatch, useSelector } from "react-redux"
-import { Link, useNavigate } from "react-router-dom"
-import LogoWithoutWord from "../assets/imgs/Logo-without-word.png"
-import { getSpotifySvg } from "../services/SVG.service"
-import { useState } from "react"
-import { UserPref } from "./UserPref"
-import { doLogout, updateLastSeen } from "../store/actions/user.actions"
+import { useDispatch, useSelector } from 'react-redux'
+import { Link, useNavigate } from 'react-router-dom'
+import LogoWithoutWord from '../assets/imgs/Logo-without-word.png'
+import { getSpotifySvg } from '../services/SVG.service'
+import { useEffect, useState } from 'react'
+import { UserPref } from './UserPref'
+import { doLogout, updateLastSeen } from '../store/actions/user.actions'
 
 export function AppHeader({ showProfile }) {
   const [showModal, setShowModal] = useState(false)
   const user = useSelector((storeState) => storeState.userModule.loggedInUser)
-  const [editedUser, setEditedUser] = useState({ ...user })
+  const [editedUser, setEditedUser] = useState(user)
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
@@ -17,11 +17,17 @@ export function AppHeader({ showProfile }) {
     setShowModal(!showModal)
   }
 
+  useEffect(() => {
+    if (editedUser) {
+      dispatch(updateLastSeen(editedUser))
+    }
+  }, [editedUser, dispatch])
+
   function handelLogout() {
-    editedUser.lastSeen = Date.now()
-    dispatch(updateLastSeen(editedUser))
-    // dispatch(doLogout())
-    // navigate("/")
+    setEditedUser((prevUser) => ({
+      ...prevUser,
+      lastSeen: Date.now(),
+    }))
   }
 
   return (
@@ -30,7 +36,7 @@ export function AppHeader({ showProfile }) {
       <span
         onClick={showPrefsModal}
         dangerouslySetInnerHTML={{
-          __html: getSpotifySvg("plusWhatsapp"),
+          __html: getSpotifySvg('plusWhatsapp'),
         }}
       ></span>
       <section className="user-header">
