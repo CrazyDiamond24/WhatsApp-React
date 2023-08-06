@@ -1,25 +1,27 @@
-import React, { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
-import { doSignup, doLogin } from '../store/actions/user.actions'
+import React, { useState } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { useNavigate } from "react-router-dom"
+import { doSignup, doLogin } from "../store/actions/user.actions"
 export function LoginSignup() {
   const [hasAccount, setHasAccount] = useState(true)
   const [signupCred, setSignupCred] = useState({
-    username: '',
-    password: '',
-    fullName: '',
-    img: 'https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg',
+    username: "",
+    password: "",
+    fullName: "",
+    img: "https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg",
     msgs: [],
     contacts: [],
-    status: '',
+    status: "",
+    isOnline: false,
+    lastSeen: null,
     groups: [],
     story: [],
     userPref: {
       fontSize: 16,
-      fontColor: '#000000',
-      headerBgColor: '#ffffff',
-      fontFamily: 'Impact, Haettenschweiler, Arial Narrow Bold, sans-serif',
-      backgroundImage: '',
+      fontColor: "#000000",
+      headerBgColor: "#ffffff",
+      fontFamily: "Impact, Haettenschweiler, Arial Narrow Bold, sans-serif",
+      backgroundImage: "",
     },
   })
 
@@ -38,19 +40,19 @@ export function LoginSignup() {
     e.preventDefault()
     if (hasAccount) {
       dispatch(doLogin(signupCred))
-      navigate('/')
+      navigate("/")
     } else {
       if (!signupCred.fullName || !signupCred.password || !signupCred.username)
         return
       dispatch(doSignup(signupCred))
-      navigate('/')
+      navigate("/")
     }
   }
 
   return (
     <div className="login-signup-container">
       <div className="form-container">
-        <h2>{hasAccount ? 'Login' : 'Sign Up'}</h2>
+        <h2>{hasAccount ? "Login" : "Sign Up"}</h2>
         <form onSubmit={handleSubmit}>
           {!hasAccount && (
             <div className="form-group">
@@ -91,13 +93,13 @@ export function LoginSignup() {
             <div className="error-msg">{loginError}</div>
           )}
           <div className="form-group">
-            <button type="submit">{hasAccount ? 'Login' : 'Sign Up'}</button>
+            <button type="submit">{hasAccount ? "Login" : "Sign Up"}</button>
           </div>
         </form>
         <p onClick={handleToggle}>
           {hasAccount
             ? "Don't have an account? Sign Up"
-            : 'Already have an account? Login'}
+            : "Already have an account? Login"}
         </p>
       </div>
     </div>

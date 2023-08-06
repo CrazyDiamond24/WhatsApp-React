@@ -89,6 +89,7 @@ export function doLogin(userCred) {
   return async (dispatch, getState) => {
     try {
       const user = await authService.login(userCred)
+      user.isOnline = true
       socketService.login(user._id) // Log in to the socket with the user's ID
       const action = {
         type: LOGIN,
