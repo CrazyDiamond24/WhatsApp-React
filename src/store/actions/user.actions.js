@@ -256,3 +256,16 @@ export function updateUserPref(user) {
     }
   }
 }
+
+export function updateLastSeen(user) {
+  return async (dispatch) => {
+    try {
+      const updatedUser = await userService.editLastSeen(user)
+      const action = { type: EDIT_USER, user: updatedUser }
+      dispatch(action)
+      showSuccessMsg(`Playlist updated`)
+    } catch (error) {
+      showErrorMsg(`Cannot update station`)
+    }
+  }
+}

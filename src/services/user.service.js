@@ -15,6 +15,7 @@ export const userService = {
   removeContact,
   editProfile,
   getFilteredUsers,
+  editLastSeen,
 }
 
 const STORAGE_KEY = 'users'
@@ -106,4 +107,9 @@ function getFilteredUsers(users, filterBy, loggedInUser) {
 
     return bLastMsgTimestamp - aLastMsgTimestamp
   })
+}
+ async function editLastSeen(user) {
+  const updatedUser = await httpService.put(`contact/${user._id}`, user)
+  console.log('user userService', updatedUser)
+  return updatedUser
 }

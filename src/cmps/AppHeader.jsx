@@ -4,7 +4,7 @@ import LogoWithoutWord from "../assets/imgs/Logo-without-word.png"
 import { getSpotifySvg } from "../services/SVG.service"
 import { useState } from "react"
 import { UserPref } from "./UserPref"
-import { doLogout, editUserProfile } from "../store/actions/user.actions"
+import { doLogout, updateLastSeen } from "../store/actions/user.actions"
 
 export function AppHeader({ showProfile }) {
   const [showModal, setShowModal] = useState(false)
@@ -19,9 +19,9 @@ export function AppHeader({ showProfile }) {
 
   function handelLogout() {
     editedUser.lastSeen = Date.now()
-    dispatch(editUserProfile(editedUser))
-    dispatch(doLogout())
-    navigate("/")
+    dispatch(updateLastSeen(editedUser))
+    // dispatch(doLogout())
+    // navigate("/")
   }
 
   return (
