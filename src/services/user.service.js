@@ -6,6 +6,7 @@ export const userService = {
   query,
   // save,
   // remove,
+  updatePref,
   getById,
   addStory,
   getEmptyUser,
@@ -24,6 +25,11 @@ function query() {
 async function editProfile(user) {
   const updatedUser = await httpService.put(`contact/${user._id}`, user)
   console.log('user userService', updatedUser)
+  return updatedUser
+}
+async function updatePref(user) {
+  const updatedUser = await httpService.put(`contact/${user._id}/pref`, user)
+  console.log('user after update pref', updatedUser)
   return updatedUser
 }
 
@@ -62,28 +68,6 @@ async function createNewMsg(msg, senderId, recipientId) {
 
   return newMsg
 }
-
-// function remove(id) {
-//   const idx = gUsers.findIndex((user) => user._id === id)
-//   gUsers.splice(idx, 1)
-//   if (!gUsers.length) gUsers = gDefaultUsers.slice()
-//   storageService.store(STORAGE_KEY, gUsers)
-//   return Promise.resolve()
-//   // return httpService.delete(`/${id}`)
-// }
-
-// function save(userToSave) {
-//   if (userToSave._id) {
-//     const idx = gUsers.findIndex((user) => user._id === userToSave._id)
-//     gUsers.splice(idx, 1, userToSave)
-//   } else {
-//     userToSave._id = utilService.makeId()
-//     gUsers.push(userToSave)
-//   }
-//   storageService.store(STORAGE_KEY, gUsers)
-//   return Promise.resolve(userToSave)
-//   // return httpService.get(`/${id}`)
-// }
 
 function getEmptyUser() {
   return {
