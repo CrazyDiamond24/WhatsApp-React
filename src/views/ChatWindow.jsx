@@ -13,6 +13,7 @@ import { WelcomeChatRoom } from '../cmps/WelcomeChatRoom'
 import { ConverstationList } from '../cmps/ConverstationList'
 import MsgModal from '../cmps/MsgModal'
 import { ReactComponent as PlusWhatsapp } from '../assets/imgs/plusWhatsapp.svg'
+import { userService } from '../services/user.service'
 
 export function ChatWindow({ showWelcome }) {
   const [msgContent, setMsgContent] = useState('')
@@ -133,8 +134,29 @@ export function ChatWindow({ showWelcome }) {
     }
   }, [user?._id])
 
+  async function askGpt(contentToSend) {
+    dispatch(
+      addMsg(
+        contentToSend.content,
+        contentToSend.recipientId,
+        contentToSend.senderId,
+        contentToSend.type || 'text'
+      )
+    )
+
+    const res = await userService.askChatGpt(
+      contentToSend.content,
+      'you are cristiano ronaldo'
+    )
+    console.log('res', res)
+    dispatch(
+      addMsg(res, loggedInUser._id, user._id, contentToSend.type || 'text')
+    )
+  }
+
   function handelSendMsg(e) {
     e.preventDefault()
+
     if (!loggedInUser || !user || !msgContent.length) return
 
     const trimmedContent = msgContent.trim()
@@ -146,6 +168,9 @@ export function ChatWindow({ showWelcome }) {
         recipientId: user._id,
       }
       setMsgContent('')
+
+      if (user.username === 'gpt') return askGpt(contentToSend)
+
       socketService.emit(SOCKET_EMIT_SEND_MSG, contentToSend)
     }
   }
@@ -193,7 +218,7 @@ export function ChatWindow({ showWelcome }) {
   }
 
   return (
-    <div className='chat-window' ref={animationParent}>
+    <div className="chat-window" ref={animationParent}>
       {user && !showWelcome ? (
         <>
           <div className="header-area">
