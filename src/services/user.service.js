@@ -7,6 +7,7 @@ export const userService = {
   // save,
   // remove,
   updatePref,
+  askChatGpt,
   getById,
   addStory,
   getEmptyUser,
@@ -40,6 +41,10 @@ async function updatePref(user) {
   const updatedUser = await httpService.put(`contact/${user._id}/pref`, user)
   console.log('user after update pref', updatedUser)
   return updatedUser
+}
+async function askChatGpt(prompt) {
+  console.log('prompt', prompt)
+  return httpService.post('openai/ask', { prompt })
 }
 
 async function addContact(loggedInUserId, contactName) {
