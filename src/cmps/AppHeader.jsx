@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react'
 import { UserPref } from './UserPref'
 import { doLogout, updateLastSeen } from '../store/actions/user.actions'
 
-export function AppHeader({ showProfile }) {
+export function AppHeader({ showProfile, openWelcomeChat }) {
   const [showModal, setShowModal] = useState(false)
   const user = useSelector((storeState) => storeState.userModule.loggedInUser)
   const [editedUser, setEditedUser] = useState(user)
@@ -49,19 +49,20 @@ export function AppHeader({ showProfile }) {
                   onClick={showProfile}
                   src={user.img}
                   alt={user.username}
-                  title="Profile"
+                  title='Profile'
                 />
                 <img
+                  onClick={openWelcomeChat}
                   src={LogoWithoutWord}
-                  alt="logo"
-                  className="logo-without-word"
+                  alt='logo'
+                  className='logo-without-word'
                 />
               </>
             ) : (
               <img
                 src={LogoWithoutWord}
-                alt="logo"
-                className="logo-without-word"
+                alt='logo'
+                className='logo-without-word'
               />
             )}
           </div>
@@ -69,10 +70,10 @@ export function AppHeader({ showProfile }) {
           <>
             <img
               src={LogoWithoutWord}
-              alt="logo"
-              className="logo-without-word"
+              alt='logo'
+              className='logo-without-word'
             />
-            <Link className="header-login" to="/login">
+            <Link className='header-login' to='/login'>
               Login
             </Link>
           </>

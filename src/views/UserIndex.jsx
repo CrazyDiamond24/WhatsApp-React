@@ -20,6 +20,8 @@ export function UserIndex(props) {
   const [filterBy, setFilterBy] = useState('')
   const [isShowProfile, setIsShowProfile] = useState(false)
   const [isInputOpen, setIsInputOpen] = useState(false)
+  const [showWelcome, setShowWelcome] = useState(true)
+  const [activeUserChat, setActiveUserChat] = useState(false)
   const [showCamera, setShowCamera] = useState(true)
 
   const user = useSelector((storeState) => {
@@ -27,6 +29,17 @@ export function UserIndex(props) {
   })
 
   const dispatch = useDispatch()
+
+  const openWelcomeChat = () => {
+    setShowWelcome(true)
+    setActiveUserChat(false)
+  }
+
+  const openUserChat = (userId) => {
+    // set the active user here...
+    setShowWelcome(false)
+    setActiveUserChat(true)
+  }
 
   useEffect(() => {
     dispatch(loadUsers())
@@ -63,13 +76,16 @@ export function UserIndex(props) {
   // if (!users) return <div>Loading...</div>
 
   return (
-    <section className="home-page">
+    <section className='home-page'>
       {!isShowProfile ? (
-        <section className="contact-list">
-          <AppHeader showProfile={handleShowProfile} />
-          <div className="svg-input-container">
+        <section className='contact-list'>
+          <AppHeader
+            openWelcomeChat={openWelcomeChat}
+            showProfile={handleShowProfile}
+          />
+          <div className='svg-input-container'>
             <span
-              className="pointer search-svg"
+              className='pointer search-svg'
               onClick={() => handleOpenInput()}
             >
               <SearchIcon
@@ -80,18 +96,22 @@ export function UserIndex(props) {
             </span>
             <input
               className={`search-input ${isInputOpen ? 'open' : 'close'}`}
-              type="text"
-              placeholder="Search contacts or conversations..."
+              type='text'
+              placeholder='Search contacts or conversations...'
               value={filterBy}
               onChange={(e) => handleInput(e)}
             />
             {/* <UserFilter filterBy={filterBy} onChangeFilter={onChangeFilter} /> */}
           </div>
-          <div className="add-contact">
-            <Link to="/user/edit">Add contact</Link>
+          <div className='add-contact'>
+            {/* <Link to="/user/edit">Add contact</Link> */}
           </div>
-          <UserList filterBy={filterBy} onRemoveUser={onRemoveUser} />
-          <div className="accessory-list"></div>
+          <UserList
+            openUserChat={openUserChat}
+            filterBy={filterBy}
+            onRemoveUser={onRemoveUser}
+          />
+          <div className='accessory-list'></div>
         </section>
       ) : (
         <UserProfile
@@ -101,7 +121,11 @@ export function UserIndex(props) {
       )}
 
       {/* {!showCamera ? ( */}
-      <ChatWindow key={user?._id} />
+      <ChatWindow
+        showWelcome={showWelcome}
+        openUserChat={openUserChat}
+        key={user?._id}
+      />
       {/* ) : ( */}
       {/* <TakePicture closeModal={handleCloseModal} /> */}
       {/* )} */}

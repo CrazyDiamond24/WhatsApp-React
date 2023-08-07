@@ -13,7 +13,7 @@ const getInitialState = () => ({
   sessionStartTime: storageService.load('sessionStartTime') || Date.now(),
 })
 
-export function UserList({ filterBy, onRemoveUser }) {
+export function UserList({ filterBy, onRemoveUser, openUserChat }) {
   const [filteredUsers, setFilteredUsers] = useState([])
   const [activeContactId, setActiveContactId] = useState(null)
   const [state, setState] = useState(getInitialState)
@@ -83,6 +83,7 @@ export function UserList({ filterBy, onRemoveUser }) {
     )
     setState(updatedState)
     setActiveContactId(contactId)
+    openUserChat(contactId)
   }
 
   function filterUsers(users, filterBy, loggedInUser) {

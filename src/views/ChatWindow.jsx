@@ -14,7 +14,7 @@ import { ConverstationList } from '../cmps/ConverstationList'
 import MsgModal from '../cmps/MsgModal'
 import { ReactComponent as PlusWhatsapp } from '../assets/imgs/plusWhatsapp.svg'
 
-export function ChatWindow() {
+export function ChatWindow({ showWelcome }) {
   const [msgContent, setMsgContent] = useState('')
   const [showModal, setShowModal] = useState(false)
   const [modalPosition, setModalPosition] = useState({ top: 0, left: 0 })
@@ -193,8 +193,8 @@ export function ChatWindow() {
   }
 
   return (
-    <div className="chat-window" ref={animationParent}>
-      {user ? (
+    <div className='chat-window' ref={animationParent}>
+      {user && !showWelcome ? (
         <>
           <div className="header-area">
             <img src={user?.img} alt={user?.username} />
