@@ -28,6 +28,7 @@ export function AppHeader({ showProfile }) {
       ...prevUser,
       lastSeen: Date.now(),
     }))
+    navigate("/")
   }
 
   return (
