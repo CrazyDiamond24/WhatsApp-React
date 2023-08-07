@@ -263,9 +263,9 @@ export function updateLastSeen(user) {
       const updatedUser = await userService.editLastSeen(user)
       const action = { type: EDIT_USER, user: updatedUser }
       dispatch(action)
-      showSuccessMsg(`Playlist updated`)
+      showSuccessMsg(`last seen updated`)
     } catch (error) {
-      showErrorMsg(`Cannot update station`)
+      showErrorMsg(`Cannot update last seen `)
     }
   }
 }
