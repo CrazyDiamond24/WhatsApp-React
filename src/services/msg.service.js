@@ -61,6 +61,7 @@ function filterMsgs(user, loggedInUser) {
 
 
 function getTimestamp(timestamp) {
+  if(!timestamp) return ''
   const date = new Date(timestamp)
   const currentDate = new Date()
   const hours = date.getHours().toString().padStart(2, "0")

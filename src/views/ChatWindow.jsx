@@ -21,8 +21,8 @@ export function ChatWindow({ showWelcome }) {
   const [isHovered, setIsHovered] = useState(null)
   const [recipientIsRecording, setUserIsRecording] = useState(false)
   const [recipientIsTyping, setUserIsTyping] = useState(false)
+  const [onlineStatus, setOnlineStatus] = useState('')
   const [isIconRotated, setIsIconRotated] = useState(false)
-
   const loggedInUser = useSelector((storeState) => {
     return storeState.userModule.loggedInUser
   })
@@ -78,6 +78,26 @@ export function ChatWindow({ showWelcome }) {
       socketService.off('chat-add-msg', handleReceivedMsg)
     }
   }, [dispatch])
+
+  // need to make a function at the socket.service
+  useEffect(() => {
+    console.log('ma ze')
+    const handelOnline = (userStatus) => {
+      console.log('hi')
+      console.log('userStatus', userStatus)
+      if (userStatus) {
+        console.log('there is userStatus')
+        const userLog = userStatus.filter((u) => u.id === user?._id)
+        console.log('userLog', userLog)
+        setOnlineStatus(userStatus.isOnline ? 'Online' : '')
+      }
+    }
+    socketService.on('online-users', handelOnline)
+    console.log('hoi')
+    return () => {
+      socketService.off('online-users', handelOnline)
+    }
+  }, [user?._id])
 
   useEffect(() => {
     let typingTimeout
@@ -135,6 +155,7 @@ export function ChatWindow({ showWelcome }) {
     const trimmedContent = e.target.value.trim()
     const isTyping = trimmedContent !== ''
 
+    // Don't set recipient's typing state here emit your typing status instead
     socketService.emit('typing', {
       senderId: loggedInUser._id,
       recipientId: user._id,
@@ -163,7 +184,9 @@ export function ChatWindow({ showWelcome }) {
     setShowModal(!showModal)
     setIsIconRotated(!isIconRotated)
   }
-
+  const timestamp = (time) => {
+    return msgService.getTimestamp(time)
+  }
   function blockContact() {
     const action = isUserBlocked ? 'UNBLOCK_USER' : 'BLOCK_USER'
     dispatch(blockUnblockContact(action, user._id))
@@ -173,16 +196,21 @@ export function ChatWindow({ showWelcome }) {
     <div className='chat-window' ref={animationParent}>
       {user && !showWelcome ? (
         <>
-          <div className='header-area'>
+          <div className="header-area">
             <img src={user?.img} alt={user?.username} />
             <h2>{user?.fullName}</h2>
             {/* <span onClick={blockContact}>
-              {isUserBlocked ? 'unBlock contact' : 'Block contact'}
+              {isUserBlocked ? "unBlock contact" : "Block contact"}
             </span> */}
+            {onlineStatus === 'Online' ? (
+              <div>Online</div>
+            ) : (
+              <div>Last Seen: {timestamp(user.lastSeen)}</div>
+            )}
             {recipientIsTyping && <div> is typing...</div>}
             {recipientIsRecording && <div> is recording...</div>}
           </div>
-          <ul className='conversation-container flex' ref={animationParent}>
+          <ul className="conversation-container flex" ref={animationParent}>
             <ConverstationList
               msgs={msgs}
               loggedInUser={loggedInUser}
@@ -190,8 +218,8 @@ export function ChatWindow({ showWelcome }) {
               user={user}
             />
           </ul>
-          <form className='msg-input' onSubmit={(e) => handelSendMsg(e)}>
-            <div className='multimedia-container'>
+          <form className="msg-input" onSubmit={(e) => handelSendMsg(e)}>
+            <div className="multimedia-container">
               <Giphy
                 onSelectGif={(gifImgUrl) =>
                   handlefilesSelect(gifImgUrl, 'image')
@@ -208,28 +236,28 @@ export function ChatWindow({ showWelcome }) {
 
               {/* <TakePicture onSelectSelfiePicture={handleGifSelect} /> */}
             </div>
-            <div className='chat-input-container'>
+            <div className="chat-input-container">
               {showModal && <MsgModal position={modalPosition} />}
               <PlusWhatsapp
-                title='Attach'
+                title="Attach"
                 className={`plus-icon-svg ${isIconRotated ? 'rotate' : ''}`}
                 onClick={(e) => handleShowModal(e)}
               />
 
               <input
-                className='chat-msg-input'
-                type='text'
-                placeholder='Type a message...'
+                className="chat-msg-input"
+                type="text"
+                placeholder="Type a message..."
                 value={msgContent}
                 onChange={handleInputChange}
               />
 
               <Transcript
-                title='Record'
+                title="Record"
                 onSelectAudio={(audioUrl) =>
                   handlefilesSelect(audioUrl, 'audio')
                 }
-                className='transcript-container'
+                className="transcript-container"
               />
             </div>
           </form>

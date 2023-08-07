@@ -2,11 +2,9 @@ import { userService } from '../../services/user.service'
 import { authService } from '../../services/auth.service'
 import { msgService } from '../../services/msg.service'
 import { showErrorMsg, showSuccessMsg } from '../../services/event-bus.service'
-import { useNavigate } from 'react-router-dom'
 import { socketService } from '../../services/socket.service'
 import {
   REMOVE_USER,
-  // SET_FILTER_BY,
   SET_USERS,
   SET_USER,
   SIGNUP,
@@ -14,10 +12,8 @@ import {
   LOGOUT,
   SET_LOGGEDIN_USER,
   ADD_MSG,
-  LOGIN_ERROR,
   ADD_STORY,
   ADD_CONTACT,
-  ADD_AUTO_MSG,
   UPDATE_MSG_CONTENT,
   REMOVE_CONTACT,
   EDIT_USER,
@@ -54,21 +50,6 @@ export function addStoryToUser(url) {
     }
   }
 }
-export function updateUserPref(userPref) {
-  return async (dispatch, getState) => {
-    try {
-      const loggedInUser = getState().userModule.loggedInUser
-      const user = await userService.updatePref(loggedInUser._id, userPref)
-      const action = {
-        type: EDIT_USER,
-        user,
-      }
-      dispatch(action)
-    } catch (error) {
-      console.log('error:', error)
-    }
-  }
-}
 
 export function doSignup(userCred) {
   return async (dispatch, getState) => {
@@ -89,6 +70,7 @@ export function doLogin(userCred) {
   return async (dispatch, getState) => {
     try {
       const user = await authService.login(userCred)
+      user.isOnline = true
       socketService.login(user._id) // Log in to the socket with the user's ID
       const action = {
         type: LOGIN,
@@ -259,8 +241,31 @@ export function editUserProfile(user) {
     }
   }
 }
-// export function setFilterBy(filterBy) {
-//   return (dispatch) => {
-//     dispatch({ type: SET_FILTER_BY, filterBy })
-//   }
-// }
+
+export function updateUserPref(user) {
+  return async (dispatch, getState) => {
+    try {
+      const updatedUser = await userService.updatePref(user)
+      const action = {
+        type: EDIT_USER,
+        user: updatedUser,
+      }
+      dispatch(action)
+    } catch (error) {
+      console.log('error:', error)
+    }
+  }
+}
+
+export function updateLastSeen(user) {
+  return async (dispatch) => {
+    try {
+      const updatedUser = await userService.editLastSeen(user)
+      const action = { type: EDIT_USER, user: updatedUser }
+      dispatch(action)
+      showSuccessMsg(`Playlist updated`)
+    } catch (error) {
+      showErrorMsg(`Cannot update station`)
+    }
+  }
+}

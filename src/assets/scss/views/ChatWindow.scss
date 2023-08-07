@@ -41,8 +41,10 @@
       padding: 10px;
       border-radius: 10px;
       color: $clr4;
-      max-width: max-content;
-
+      max-width: 600px;
+      overflow-wrap: break-word;  
+      word-wrap: break-word; 
+      text-align: left;
       .gif-msg {
         height: 200px;
       }

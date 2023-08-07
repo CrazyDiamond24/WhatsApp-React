@@ -1,16 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { emojisService } from '../services/emojis.service'
-import { uploadImg } from '../services/upload-img.service'
-import { uploadVideo } from '../services/upload-video.service'
-import { uploadFile } from '../services/upload-file.service'
 import { ReactComponent as EmojiIcon } from '../assets/imgs/emojiIcon.svg'
 
-export function Emojis({
-  onSelectEmoji,
-  onSelectImage,
-  onSelectVideo,
-  onSelectFile,
-}) {
+export function Emojis({ onSelectEmoji }) {
   const [isExpanded, setIsExpanded] = useState(false)
   const [emojisList, setEmojisList] = useState({})
   const [selectedCategory, setSelectedCategory] = useState('Smileys & Emotion')
@@ -80,98 +72,14 @@ export function Emojis({
     }
   }
 
-  async function handleImg(ev) {
-    const file =
-      ev.type === 'change' ? ev.target.files[0] : ev.dataTransfer.files[0]
-    try {
-      const { url } = await uploadImg(file)
-      onSelectImage(url)
-    } catch (err) {
-      console.log('err', err)
-    }
-  }
-
-  async function handleVideoFile(ev) {
-    const file =
-      ev.type === 'change' ? ev.target.files[0] : ev.dataTransfer.files[0]
-    try {
-      const { url } = await uploadVideo(file)
-      onSelectVideo(url)
-    } catch (err) {
-      console.log('err', err)
-    }
-  }
-
-  async function handleFile(ev) {
-    const file =
-      ev.type === 'change' ? ev.target.files[0] : ev.dataTransfer.files[0]
-    try {
-      const { url } = await uploadFile(file)
-      onSelectFile(url)
-    } catch (err) {
-      console.log('err', err)
-    }
-  }
-
   return (
     <div className="emojis-container">
-      {/* <TakePicture /> */}
-      {/* <div className="second-section">
-        <label
-          onDrop={(e) => {
-            e.preventDefault()
-            handleImg(e)
-          }}
-          onDragOver={(e) => {
-            e.preventDefault()
-          }}
-          className="cover-img"
-        >
-          <input type="file" onChange={handleImg} className="hidden" />
-        </label>
-        📷
-      </div> */}
-      {/* <div className="second-section">
-        <label
-          onDrop={(e) => {
-            e.preventDefault()
-            handleFile(e)
-          }}
-          onDragOver={(e) => {
-            e.preventDefault()
-          }}
-          className="cover-img"
-        >
-          <input
-            type="file"
-            onChange={handleFile}
-            accept="image/*,.pdf,.doc,.docx,.xls,.xlsx,.csv,.txt"
-            className="hidden"
-          />
-        </label>
-        📃
-      </div> */}
-      {/* <div className="second-section">
-        <label
-          onDrop={(e) => {
-            e.preventDefault()
-            handleVideoFile(e)
-          }}
-          onDragOver={(e) => {
-            e.preventDefault()
-          }}
-          className="cover-video"
-        >
-          <input type="file" onChange={handleVideoFile} className="hidden" />
-        </label>
-        🤖
-      </div> */}
       <div
         className={`smiley ${isExpanded ? 'expanded' : ''}`}
         onClick={() => setIsExpanded((prevState) => !prevState)}
         title="Emojis"
       >
-        <EmojiIcon className="emoji-icon-svg"/>
+        <EmojiIcon className="emoji-icon-svg" />
       </div>
       {isExpanded && (
         <div className="emojis-window">

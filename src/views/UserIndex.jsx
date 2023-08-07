@@ -14,6 +14,7 @@ import { AppHeader } from '../cmps/AppHeader'
 import { UserProfile } from '../cmps/UserProfile'
 import { ReactComponent as SearchIcon } from '../assets/imgs/searchIcon.svg'
 import LogoWithoutWord from '../assets/imgs/Logo-without-word.png'
+import { TakePicture } from '../cmps/TakePicture'
 
 export function UserIndex(props) {
   const [filterBy, setFilterBy] = useState('')
@@ -21,6 +22,7 @@ export function UserIndex(props) {
   const [isInputOpen, setIsInputOpen] = useState(false)
   const [showWelcome, setShowWelcome] = useState(true)
   const [activeUserChat, setActiveUserChat] = useState(false)
+  const [showCamera, setShowCamera] = useState(true)
 
   const user = useSelector((storeState) => {
     return storeState.userModule.selectedUser
@@ -65,6 +67,10 @@ export function UserIndex(props) {
 
   function handleOpenInput() {
     setIsInputOpen((prevIsInputOpen) => !prevIsInputOpen)
+  }
+
+  function handleCloseModal() {
+    setShowCamera(false)
   }
 
   // if (!users) return <div>Loading...</div>
@@ -113,11 +119,16 @@ export function UserIndex(props) {
           closeUserProfile={handleCloseUserProfile}
         />
       )}
+
+      {/* {!showCamera ? ( */}
       <ChatWindow
         showWelcome={showWelcome}
         openUserChat={openUserChat}
         key={user?._id}
       />
+      {/* ) : ( */}
+      {/* <TakePicture closeModal={handleCloseModal} /> */}
+      {/* )} */}
     </section>
   )
 }

@@ -1,8 +1,17 @@
-import React, { useRef } from 'react'
-
-export function TakePicture({ onSelectSelfiePicture }) {
+import React, { useRef, useEffect } from 'react'
+import { getSpotifySvg } from '../services/SVG.service'
+import { socketService, SOCKET_EMIT_SEND_MSG } from '../services/socket.service'
+import { useSelector } from 'react-redux'
+import { msgService } from '../services/msg.service'
+export function TakePicture({ closeModal }) {
   const videoRef = useRef(null)
 
+  const loggedInUser = useSelector((storeState) => {
+    return storeState.userModule.loggedInUser
+  })
+  const user = useSelector((storeState) => {
+    return storeState.userModule.selectedUser
+  })
   async function startVideo() {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ video: true })
@@ -12,21 +21,38 @@ export function TakePicture({ onSelectSelfiePicture }) {
     }
   }
 
+  useEffect(() => {
+    startVideo()
+  }, [])
+
   function captureImage() {
     const video = videoRef.current
-
     const canvas = document.createElement('canvas')
     canvas.width = video.videoWidth
     canvas.height = video.videoHeight
     const context = canvas.getContext('2d')
     context.drawImage(video, 0, 0, video.videoWidth, video.videoHeight)
-
-    onSelectSelfiePicture(canvas.toDataURL('image/png'))
+    const url = canvas.toDataURL('image/png')
+    const contentToSend = msgService.getMsgType(
+      url,
+      loggedInUser,
+      user,
+      'image'
+    )
+    socketService.emit(SOCKET_EMIT_SEND_MSG, contentToSend)
+    closeModal()
   }
 
   return (
-    <div onClick={startVideo}>
-      a<video ref={videoRef} autoPlay onClick={captureImage}></video>
+    <div className="full">
+      <video ref={videoRef} autoPlay></video>
+
+      <span
+        onClick={captureImage}
+        dangerouslySetInnerHTML={{
+          __html: getSpotifySvg('camera'),
+        }}
+      ></span>
     </div>
   )
 }

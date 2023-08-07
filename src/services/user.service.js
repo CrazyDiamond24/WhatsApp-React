@@ -6,7 +6,8 @@ export const userService = {
   query,
   // save,
   // remove,
-  // updatePref,
+  updatePref,
+  askChatGpt,
   getById,
   addStory,
   getEmptyUser,
@@ -15,6 +16,7 @@ export const userService = {
   removeContact,
   editProfile,
   getFilteredUsers,
+  editLastSeen,
 }
 
 const STORAGE_KEY = 'users'
@@ -23,8 +25,28 @@ function query() {
   return httpService.get(`contact`)
 }
 async function editProfile(user) {
-  return httpService.put(`contact/${user._id}`, user)
+  const updatedUser = await httpService.put(`contact/${user._id}`, user)
+  console.log('user userService', updatedUser)
+  return updatedUser
 }
+async function editLastSeen(user) {
+  const updatedUser = await httpService.put(
+    `contact/${user._id}/last-seen`,
+    user
+  )
+  console.log('user userService', updatedUser)
+  return updatedUser
+}
+async function updatePref(user) {
+  const updatedUser = await httpService.put(`contact/${user._id}/pref`, user)
+  console.log('user after update pref', updatedUser)
+  return updatedUser
+}
+async function askChatGpt(prompt) {
+  console.log('prompt', prompt)
+  return httpService.post('openai/ask', { prompt })
+}
+
 async function addContact(loggedInUserId, contactName) {
   const contact = await httpService.post(
     `contact/${loggedInUserId}/add-contact`,
@@ -60,28 +82,6 @@ async function createNewMsg(msg, senderId, recipientId) {
 
   return newMsg
 }
-
-// function remove(id) {
-//   const idx = gUsers.findIndex((user) => user._id === id)
-//   gUsers.splice(idx, 1)
-//   if (!gUsers.length) gUsers = gDefaultUsers.slice()
-//   storageService.store(STORAGE_KEY, gUsers)
-//   return Promise.resolve()
-//   // return httpService.delete(`/${id}`)
-// }
-
-// function save(userToSave) {
-//   if (userToSave._id) {
-//     const idx = gUsers.findIndex((user) => user._id === userToSave._id)
-//     gUsers.splice(idx, 1, userToSave)
-//   } else {
-//     userToSave._id = utilService.makeId()
-//     gUsers.push(userToSave)
-//   }
-//   storageService.store(STORAGE_KEY, gUsers)
-//   return Promise.resolve(userToSave)
-//   // return httpService.get(`/${id}`)
-// }
 
 function getEmptyUser() {
   return {
