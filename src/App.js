@@ -9,7 +9,7 @@ import { useDispatch } from 'react-redux'
 import { getUser } from './store/actions/user.actions'
 import { useEffect } from 'react'
 import { TakePicture } from './cmps/TakePicture'
-import { Gpt } from './cmps/Gpt'
+
 function App() {
   const dispatch = useDispatch()
   useEffect(() => {
@@ -23,7 +23,6 @@ function App() {
             <Route path="/" element={<UserIndex />} />
             <Route path="/user/edit/:id?" element={<AddContact />} />
             <Route path="/user/take/picture" element={<TakePicture />} />
-            <Route path="/gpt" element={<Gpt />} />
             <Route path="/about" element={<About />} />
             <Route path="/login" element={<LoginSignup />} />
           </Routes>
