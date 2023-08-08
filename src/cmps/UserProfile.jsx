@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 
 import { getSpotifySvg } from '../services/SVG.service'
 import emptyImg from '../../src/assets/imgs/empty-img.png'
@@ -6,12 +6,24 @@ import { uploadImg } from '../services/upload-img.service'
 import { useDispatch, useSelector } from 'react-redux'
 import { editUserProfile } from '../store/actions/user.actions'
 import { CreateStory } from './createStory'
+import { StoryIcon } from './svgs/StoryIcon'
+import { ImageBorder } from './svgs/ImageBorder'
+import { EditPenIcon } from './svgs/EditPenIcon'
+import { TickIcon } from './svgs/TickIcon'
+
 export function UserProfile({ show, closeUserProfile }) {
   const [isUploading, setIsUploading] = useState(false)
   const [fileChanged, setFileChanged] = useState(false)
   const [showModal, setShowModal] = useState(false)
   const user = useSelector((storeState) => storeState.userModule.loggedInUser)
   const [editedUser, setEditedUser] = useState({ ...user })
+  const [isNameEditable, setIsNameEditable] = useState(false)
+  const [isStatusEditable, setIsStatusEditable] = useState(false)
+  const nameRef = useRef(null)
+  const statusRef = useRef(null)
+  const nameTempRef = useRef(null)
+  const statusTempRef = useRef(null)
+  console.log('profile rendered')
 
   const dispatch = useDispatch()
 
@@ -22,23 +34,38 @@ export function UserProfile({ show, closeUserProfile }) {
     }
   }, [editedUser, fileChanged, dispatch])
 
-  function onChangeUserStatus(e) {
-    setEditedUser({ ...editedUser, status: e.target.value })
-  }
-
-  function onChangeUserName(e) {
-    setEditedUser({ ...editedUser, username: e.target.value })
+  function handleSaveFullName() {
+    if (nameTempRef.current !== null) {
+      setEditedUser((prevUser) => ({
+        ...prevUser,
+        fullName: nameTempRef.current,
+      }))
+      dispatch(
+        editUserProfile({
+          ...editedUser,
+          fullName: nameTempRef.current,
+        })
+      )
+    }
   }
 
   function handleSaveUserStatus() {
-    dispatch(editUserProfile(editedUser))
+    if (statusTempRef.current !== null) {
+      setEditedUser((prevUser) => ({
+        ...prevUser,
+        status: statusTempRef.current,
+      }))
+      dispatch(
+        editUserProfile({
+          ...editedUser,
+          status: statusTempRef.current,
+        })
+      )
+    }
   }
 
-  function handleSaveUserName() {
-    dispatch(editUserProfile(editedUser))
-  }
-
-  function handleShowModal() {
+  function handleShowModal(e) {
+    e.stopPropagation()
     setShowModal(!showModal)
   }
 
@@ -57,75 +84,150 @@ export function UserProfile({ show, closeUserProfile }) {
     }
   }
 
+  function toggleNameEdit() {
+    setIsNameEditable((prev) => !prev)
+    if (!isNameEditable) {
+      setTimeout(() => {
+        setCursorToEnd(nameRef.current)
+      })
+    }
+  }
+
+  function toggleStatusEdit() {
+    setIsStatusEditable((prev) => !prev)
+    if (!isStatusEditable) {
+      setTimeout(() => {
+        setCursorToEnd(statusRef.current)
+      })
+    }
+  }
+
+  function handleNameChange(e) {
+    nameTempRef.current = e.target.innerText
+  }
+
+  function handleStatusChange(e) {
+    statusTempRef.current = e.target.innerText
+  }
+
+  function setCursorToEnd(contentEditableElement) {
+    const range = document.createRange()
+    const sel = window.getSelection()
+    range.selectNodeContents(contentEditableElement)
+    range.collapse(false)
+    sel.removeAllRanges()
+    sel.addRange(range)
+  }
+
   return (
     <section className={`user-profile-page ${show ? 'open' : ''}`}>
-      <span
-        onClick={handleShowModal}
-        dangerouslySetInnerHTML={{
-          __html: getSpotifySvg('plusWhatsapp'),
-        }}
-      ></span>
-      <div className="first-section">
+      <div className='first-section'>
         <span>{/* <LeftArrow /> */}</span>
         <h1 onClick={closeUserProfile}>Profile</h1>
       </div>
-      <div className="second-section">
+      <div className='second-section'>
+    <div className='image-container'>
         <label
-          onDrop={(e) => {
-            e.preventDefault()
-            handelFile(e)
-          }}
-          onDragOver={(e) => {
-            e.preventDefault()
-          }}
-          className="cover-img"
+            onDrop={(e) => {
+                e.preventDefault();
+                handelFile(e);
+            }}
+            onDragOver={(e) => {
+                e.preventDefault();
+            }}
+            className='cover-img'
         >
-          {isUploading ? (
-            <span className="loader"></span>
-          ) : (
-            <img
-              className="img-edit"
-              src={editedUser.img ? editedUser.img : emptyImg}
-              alt="user station img"
-            />
-          )}
-          <input type="file" onChange={handelFile} className=" upload-ninja" />
+            {isUploading ? (
+                <span className='loader'></span>
+            ) : (
+                <>
+                    <ImageBorder />
+                    <img
+                        className='img-edit'
+                        src={editedUser.img ? editedUser.img : emptyImg}
+                        alt='user station img'
+                        title='Upload Porofile Photo'
+                    />
+                </>
+            )}
+            <input type='file' onChange={handelFile} className='upload-ninja' />
         </label>
-      </div>
-      <div className="thered-section">
+        <StoryIcon className='story-icon-svg' onClick={handleShowModal} />
+    </div>
+</div>
+
+
+      <div className='third-section'>
         <div>
-          <span>Your name</span>
-          <input
-            type="text"
-            placeholder="Add a name"
-            onChange={(e) => onChangeUserName(e)}
-          />
-          <button onClick={handleSaveUserName}>Save</button>
+          <span className='name-profile'>Your name</span>
         </div>
         <div>
-          <span>{/* <EditIcon /> */}</span>
-          <div>
-            <span>{user?.username}</span>
+          <div className={`details-edit ${isNameEditable ? 'editing' : ''}`}>
+            {isNameEditable ? (
+              <div
+                ref={nameRef}
+                contentEditable
+                onBlur={toggleNameEdit}
+                onInput={handleNameChange}
+                suppressContentEditableWarning={true}
+              >
+                {editedUser.fullName}
+              </div>
+            ) : (
+              <span className='name-to-change'>{editedUser.fullName}</span>
+            )}
+            <div className='icons-container'>
+              <TickIcon
+                className={isNameEditable ? 'confirm-name' : 'hide-confirm'}
+                onClick={handleSaveFullName}
+              />
+              <EditPenIcon
+                className={isNameEditable ? 'is-editing-name' : ''}
+                onClick={toggleNameEdit}
+              />
+            </div>
+          </div>
+          <p className='name-description'>
+            This is not your username or pin. This name will be visible to your
+            WhatsApp contacts.
+          </p>
+        </div>
+      </div>
+
+      <div className='fourth-section'>
+        <div>
+          <span className='about-profile'>About</span>
+        </div>
+        <div>
+          <div className={`details-edit ${isStatusEditable ? 'editing' : ''}`}>
+            {isStatusEditable ? (
+              <div
+                ref={statusRef}
+                contentEditable
+                onBlur={toggleStatusEdit}
+                onInput={handleStatusChange}
+                suppressContentEditableWarning={true}
+              >
+                {editedUser.status}
+              </div>
+            ) : (
+              <span>{editedUser.status}</span>
+            )}
+            <div className='icons-container'>
+              <TickIcon
+                className={isStatusEditable ? 'confirm-status' : 'hide-confirm'}
+                onClick={handleSaveUserStatus}
+              />
+
+              <EditPenIcon
+                className={isStatusEditable ? 'is-editing-status' : ''}
+                onClick={toggleStatusEdit}
+              />
+            </div>
           </div>
         </div>
       </div>
-      <div className="four-section">
-        <div>
-          <span>Your status</span>
-        </div>
-        <div>
-          <span>{/* <EditIcon /> */}</span>
-          <div>
-            <span>{user?.status}</span>
-            <input
-              type="text"
-              placeholder="Add a status"
-              onChange={(e) => onChangeUserStatus(e)}
-            />
-            <button onClick={handleSaveUserStatus}>Save</button>
-          </div>
-        </div>
-      </div>
+
       {showModal && <CreateStory />}
     </section>
   )
