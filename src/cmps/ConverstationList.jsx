@@ -26,9 +26,9 @@ export function ConverstationList({ msgs, loggedInUser, user }) {
   useEffect(() => {
     chatMsgRefs.current.forEach((msgRef, index) => {
       if (msgRef && msgRef.offsetWidth > 200) {
-        msgRef.classList.add("wide-msg")
+        msgRef?.classList.add("wide-msg")
       } else {
-        msgRef.classList.remove("wide-msg")
+        msgRef?.classList.remove("wide-msg")
       }
     })
   }, [msgs])

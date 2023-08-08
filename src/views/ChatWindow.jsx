@@ -2,7 +2,7 @@ import React from "react"
 import { useEffect, useState, useRef, useMemo } from "react"
 import { getSpotifySvg } from "../services/SVG.service"
 import { useDispatch, useSelector } from "react-redux"
-import { addMsg, blockUnblockContact } from "../store/actions/user.actions"
+import { addMsg } from "../store/actions/user.actions"
 import { Emojis } from "../cmps/Emojis"
 import { Giphy } from "../cmps/Giphy"
 import { useAutoAnimate } from "@formkit/auto-animate/react"
@@ -35,7 +35,6 @@ export function ChatWindow({ showWelcome }) {
   const dispatch = useDispatch()
   const [animationParent] = useAutoAnimate()
 
-  const isUserBlocked = loggedInUser?.blockedContcats?.includes(user?._id)
   const msgs =
     loggedInUser && user
       ? msgService.filterMsgs(user, loggedInUser, allMsgs)
@@ -143,20 +142,25 @@ export function ChatWindow({ showWelcome }) {
       )
     )
 
-    const characterName = 'a comedian. You can answer everything with your current knowledge, but make it funny'
-    
-    const res = await userService.askChatGpt(contentToSend.content, characterName);
-    
-    console.log('res', res)
+    const characterName =
+      "a comedian. You can answer everything with your current knowledge, but make it funny"
+
+    const res = await userService.askChatGpt(
+      contentToSend.content,
+      characterName
+    )
+
+    console.log("res", res)
     dispatch(
       addMsg(res, loggedInUser._id, user._id, contentToSend.type || "text")
     )
-}
+  }
 
   function handelSendMsg(e) {
     e.preventDefault()
-
-    if (!loggedInUser || !user || !msgContent.length) return
+    const isUserBlocked = loggedInUser?.blockedContcats.includes(user?._id)
+    console.log('loggedInUser?.blockedContacts', loggedInUser.blockedContcats)
+    if (!loggedInUser || !user || !msgContent.length || isUserBlocked) return
 
     const trimmedContent = msgContent.trim()
 
@@ -208,12 +212,8 @@ export function ChatWindow({ showWelcome }) {
     setShowModal(!showModal)
     setIsIconRotated(!isIconRotated)
   }
-  const timestamp = (time) => {
+  function timestamp(time) {
     return msgService.getTimestamp(time)
-  }
-  function blockContact() {
-    const action = isUserBlocked ? "UNBLOCK_USER" : "BLOCK_USER"
-    dispatch(blockUnblockContact(action, user._id))
   }
 
   return (
@@ -223,9 +223,6 @@ export function ChatWindow({ showWelcome }) {
           <div className="header-area">
             <img src={user?.img} alt={user?.username} />
             <h2>{user?.fullName}</h2>
-            {/* <span onClick={blockContact}>
-              {isUserBlocked ? "unBlock contact" : "Block contact"}
-            </span> */}
             {onlineStatus === "Online" ? (
               <div>Online</div>
             ) : (
@@ -234,10 +231,7 @@ export function ChatWindow({ showWelcome }) {
             {recipientIsTyping && <div> is typing...</div>}
             {recipientIsRecording && <div> is recording...</div>}
           </div>
-          <ul
-            className="conversation-container flex"
-            ref={animationParent}
-          >
+          <ul className="conversation-container flex" ref={animationParent}>
             <ConverstationList
               msgs={msgs}
               loggedInUser={loggedInUser}
