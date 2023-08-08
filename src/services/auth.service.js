@@ -83,8 +83,12 @@ async function updateUser(url, user) {
 }
 
 async function login(userCred) {
-  const user = await httpService.post('auth/login', userCred)
-  return saveLocalUser(user)
+  try {
+    const user = await httpService.post('auth/login', userCred)
+    return saveLocalUser(user)
+  } catch (err) {
+    console.log('service', err)
+  }
 }
 
 async function signup(userCred) {

@@ -33,13 +33,13 @@ export function AppHeader({ showProfile, openWelcomeChat }) {
 
   return (
     <header className="app-header">
-      <button onClick={handelLogout}>Logout</button>
+      {/* <button onClick={handelLogout}>Logout</button>
       <span
         onClick={showPrefsModal}
         dangerouslySetInnerHTML={{
           __html: getSpotifySvg('plusWhatsapp'),
         }}
-      ></span>
+      ></span> */}
       <section className="user-header">
         {user ? (
           <div className="user-info-header">

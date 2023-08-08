@@ -30,6 +30,9 @@ export function ChatWindow({ showWelcome }) {
   const user = useSelector((storeState) => {
     return storeState.userModule.selectedUser
   })
+
+  const log = useSelector((storeState) => storeState.userModule.loggedInUser)
+  console.log('log', log)
   const allMsgs = useSelector(
     (storeState) => storeState.userModule.loggedInUser?.msgs
   )

@@ -71,18 +71,23 @@ export function doLogin(userCred) {
     try {
       const user = await authService.login(userCred)
       user.isOnline = true
+      console.log('user', user)
       socketService.login(user._id) // Log in to the socket with the user's ID
       const action = {
         type: LOGIN,
         user,
       }
       dispatch(action)
+      console.log('user in actions', user)
       showSuccessMsg('like')
+
       // Add any additional logic here if needed before navigating
       // For example, you could wait for some socket event to be received
       // Only then navigate to the home page
       // window.location.href = '/'
+      return user
     } catch (err) {
+      console.log('cant login')
       console.log('error', err)
     }
   }
