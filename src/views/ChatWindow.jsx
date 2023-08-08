@@ -19,7 +19,6 @@ export function ChatWindow({ showWelcome }) {
   const [msgContent, setMsgContent] = useState('')
   const [showModal, setShowModal] = useState(false)
   const [modalPosition, setModalPosition] = useState({ top: 0, left: 0 })
-  const [isHovered, setIsHovered] = useState(null)
   const [recipientIsRecording, setUserIsRecording] = useState(false)
   const [recipientIsTyping, setUserIsTyping] = useState(false)
   const [onlineStatus, setOnlineStatus] = useState('')
@@ -30,6 +29,9 @@ export function ChatWindow({ showWelcome }) {
   const user = useSelector((storeState) => {
     return storeState.userModule.selectedUser
   })
+
+  const log = useSelector((storeState) => storeState.userModule.loggedInUser)
+  console.log('log', log)
   const allMsgs = useSelector(
     (storeState) => storeState.userModule.loggedInUser?.msgs
   )
@@ -62,6 +64,7 @@ export function ChatWindow({ showWelcome }) {
   }, [msgContent])
 
   useEffect(() => {
+    console.log('h')
     const handleReceivedMsg = (receivedMsg) => {
       if (receivedMsg.content && receivedMsg.content.includes('.gif'))
         receivedMsg.type = 'image'
@@ -79,7 +82,7 @@ export function ChatWindow({ showWelcome }) {
       socketService.off('chat-add-msg', handleReceivedMsg)
     }
   }, [dispatch])
-
+  console.log('user', user)
   // need to make a function at the socket.service
   useEffect(() => {
     console.log('ma ze')
@@ -144,15 +147,26 @@ export function ChatWindow({ showWelcome }) {
       )
     )
 
+<<<<<<< HEAD
     const character = user?.character
     
     const res = await userService.askChatGpt(contentToSend.content, character);
     
+=======
+    const characterName =
+      'a comedian. You can answer everything with your current knowledge, but make it funny'
+
+    const res = await userService.askChatGpt(
+      contentToSend.content,
+      characterName
+    )
+
+>>>>>>> 677cbd0b8f63997d6fd3cd0bc6d4b5bd963f2fd5
     console.log('res', res)
     dispatch(
       addMsg(res, loggedInUser._id, user._id, contentToSend.type || 'text')
     )
-}
+  }
 
   function handelSendMsg(e) {
     e.preventDefault()
@@ -239,7 +253,6 @@ export function ChatWindow({ showWelcome }) {
             <ConverstationList
               msgs={msgs}
               loggedInUser={loggedInUser}
-              isHovered={isHovered}
               user={user}
             />
           </ul>
@@ -250,19 +263,21 @@ export function ChatWindow({ showWelcome }) {
                   handlefilesSelect(gifImgUrl, 'image')
                 }
               />
-              <Emojis
-                onSelectEmoji={handleEmojiSelect}
-                onSelectImage={(gifImgUrl) =>
-                  handlefilesSelect(gifImgUrl, 'image')
-                }
-                onSelectVideo={(url) => handlefilesSelect(url, 'video')}
-                onSelectFile={(url) => handlefilesSelect(url, 'file')}
-              />
+              <Emojis onSelectEmoji={handleEmojiSelect} />
 
               {/* <TakePicture onSelectSelfiePicture={handleGifSelect} /> */}
             </div>
             <div className="chat-input-container">
-              {showModal && <MsgModal position={modalPosition} />}
+              {showModal && (
+                <MsgModal
+                  position={modalPosition}
+                  onSelectImage={(gifImgUrl) =>
+                    handlefilesSelect(gifImgUrl, 'image')
+                  }
+                  onSelectVideo={(url) => handlefilesSelect(url, 'video')}
+                  onSelectFile={(url) => handlefilesSelect(url, 'file')}
+                />
+              )}
               <PlusWhatsapp
                 title="Attach"
                 className={`plus-icon-svg ${isIconRotated ? 'rotate' : ''}`}
