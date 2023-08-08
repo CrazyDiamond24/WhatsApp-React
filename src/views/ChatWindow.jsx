@@ -144,9 +144,9 @@ export function ChatWindow({ showWelcome }) {
       )
     )
 
-    const characterName = 'a comedian. You can answer everything with your current knowledge, but make it funny'
+    const character = user?.character
     
-    const res = await userService.askChatGpt(contentToSend.content, characterName);
+    const res = await userService.askChatGpt(contentToSend.content, character);
     
     console.log('res', res)
     dispatch(
