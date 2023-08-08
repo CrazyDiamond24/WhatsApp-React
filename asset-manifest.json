@@ -1,19 +1,21 @@
 {
   "files": {
-    "main.css": "/WhatsApp-React/static/css/main.08392eef.css",
-    "main.js": "/WhatsApp-React/static/js/main.07734455.js",
+    "main.css": "/WhatsApp-React/static/css/main.a65cbbfe.css",
+    "main.js": "/WhatsApp-React/static/js/main.41198d80.js",
     "static/js/787.2a82ac87.chunk.js": "/WhatsApp-React/static/js/787.2a82ac87.chunk.js",
-    "static/media/Rubik-Regular.ttf": "/WhatsApp-React/static/media/Rubik-Regular.55fa11cdc8b9a3ee842f.ttf",
-    "static/media/Nunito-Regular.ttf": "/WhatsApp-React/static/media/Nunito-Regular.99a3b019e7727ac19479.ttf",
     "static/media/texting.svg": "/WhatsApp-React/static/media/texting.2179e7bb33eb664573378776507cf730.svg",
     "static/media/Logo-without-word.png": "/WhatsApp-React/static/media/Logo-without-word.2b6c946d2bde3c017274.png",
+    "static/media/gifIcon.svg": "/WhatsApp-React/static/media/gifIcon.9692646721ad3891b1c6810d7793d95d.svg",
+    "static/media/emojiIcon.svg": "/WhatsApp-React/static/media/emojiIcon.87d7b5fee37fa9b04d31eb50d012173e.svg",
     "index.html": "/WhatsApp-React/index.html",
-    "main.08392eef.css.map": "/WhatsApp-React/static/css/main.08392eef.css.map",
-    "main.07734455.js.map": "/WhatsApp-React/static/js/main.07734455.js.map",
+    "static/media/searchIcon.svg": "/WhatsApp-React/static/media/searchIcon.9e3f6c70f267886d7df83bd287c5bc1b.svg",
+    "static/media/plusWhatsapp.svg": "/WhatsApp-React/static/media/plusWhatsapp.461c9286e81c27cb9503caaa4050580e.svg",
+    "main.a65cbbfe.css.map": "/WhatsApp-React/static/css/main.a65cbbfe.css.map",
+    "main.41198d80.js.map": "/WhatsApp-React/static/js/main.41198d80.js.map",
     "787.2a82ac87.chunk.js.map": "/WhatsApp-React/static/js/787.2a82ac87.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.08392eef.css",
-    "static/js/main.07734455.js"
+    "static/css/main.a65cbbfe.css",
+    "static/js/main.41198d80.js"
   ]
 }
