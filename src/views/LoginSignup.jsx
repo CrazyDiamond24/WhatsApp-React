@@ -1,33 +1,36 @@
-import React, { useState } from "react"
-import { useDispatch, useSelector } from "react-redux"
-import { useNavigate } from "react-router-dom"
-import { doSignup, doLogin } from "../store/actions/user.actions"
+import React, { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import { doSignup, doLogin } from '../store/actions/user.actions'
 export function LoginSignup() {
   const [hasAccount, setHasAccount] = useState(true)
   const [signupCred, setSignupCred] = useState({
-    username: "",
-    password: "",
-    fullName: "",
-    img: "https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg",
+    username: '',
+    password: '',
+    fullName: '',
+    img: 'https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg',
     msgs: [],
     contacts: [],
-    status: "",
+    status: '',
     isOnline: false,
     lastSeen: null,
     groups: [],
     story: [],
     userPref: {
       fontSize: 16,
-      fontColor: "#000000",
-      headerBgColor: "#ffffff",
-      fontFamily: "Impact, Haettenschweiler, Arial Narrow Bold, sans-serif",
-      backgroundImage: "",
+      fontColor: '#000000',
+      headerBgColor: '#ffffff',
+      fontFamily: 'Impact, Haettenschweiler, Arial Narrow Bold, sans-serif',
+      backgroundImage: '',
     },
   })
 
-  const loginError = useSelector(
-    (storeState) => storeState.userModule.loginError
-  )
+  // const loginError = useSelector(
+  //   (storeState) => storeState.userModule.loginError
+  // )
+
+  const user = useSelector((storeState) => storeState.userModule.loggedInUser)
+  console.log('user', user)
 
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -40,19 +43,25 @@ export function LoginSignup() {
     e.preventDefault()
     if (hasAccount) {
       dispatch(doLogin(signupCred))
-      navigate("/")
+      // if (user === undefined) {
+      // console.log('there is')
+      navigate('/')
+      // } else {
+      // console.log('theresino')
+      // }
     } else {
       if (!signupCred.fullName || !signupCred.password || !signupCred.username)
         return
-      dispatch(doSignup(signupCred))
-      navigate("/")
+      // dispatch(doSignup(signupCred))
+      console.log('what the fuck')
+      // navigate('/')
     }
   }
 
   return (
     <div className="login-signup-container">
       <div className="form-container">
-        <h2>{hasAccount ? "Login" : "Sign Up"}</h2>
+        <h2>{hasAccount ? 'Login' : 'Sign Up'}</h2>
         <form onSubmit={handleSubmit}>
           {!hasAccount && (
             <div className="form-group">
@@ -89,17 +98,17 @@ export function LoginSignup() {
               required
             />
           </div>
-          {loginError && hasAccount && (
+          {/* {loginError && hasAccount && (
             <div className="error-msg">{loginError}</div>
-          )}
+          )} */}
           <div className="form-group">
-            <button type="submit">{hasAccount ? "Login" : "Sign Up"}</button>
+            <button type="submit">{hasAccount ? 'Login' : 'Sign Up'}</button>
           </div>
         </form>
         <p onClick={handleToggle}>
           {hasAccount
             ? "Don't have an account? Sign Up"
-            : "Already have an account? Login"}
+            : 'Already have an account? Login'}
         </p>
       </div>
     </div>

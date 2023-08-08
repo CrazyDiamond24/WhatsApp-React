@@ -47,10 +47,7 @@
       z-index: 1;
     }
 
-    .upload-ninja {
-      position: absolute;
-      width: 0;
-    }
+
   }
 
   .third-section,
@@ -192,4 +189,8 @@
 .confirm-status {
   z-index: 10;
   opacity: 1;
+}
+.upload-ninja {
+  position: absolute;
+  width: 0;
 }

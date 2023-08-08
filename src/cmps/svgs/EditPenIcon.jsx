@@ -20,4 +20,3 @@ export function EditPenIcon({ onClick, className }) {
     </svg>
   )
 }
-
