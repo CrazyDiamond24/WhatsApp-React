@@ -28,6 +28,7 @@ export function AppHeader({ showProfile, openWelcomeChat }) {
       ...prevUser,
       lastSeen: Date.now(),
     }))
+    navigate('/')
   }
 
   return (
@@ -48,31 +49,33 @@ export function AppHeader({ showProfile, openWelcomeChat }) {
                   onClick={showProfile}
                   src={user.img}
                   alt={user.username}
-                  title='Profile'
+                  title="Profile"
                 />
                 <img
                   onClick={openWelcomeChat}
-                  src={LogoWithoutWord}
-                  alt='logo'
-                  className='logo-without-word'
+                  src="https://res.cloudinary.com/dmox9pnnx/image/upload/v1691422190/Logo-without-word_hoknvz.png"
+                  // src={LogoWithoutWord}
+                  alt="logo"
+                  className="logo-without-word"
                 />
               </>
             ) : (
               <img
-                src={LogoWithoutWord}
-                alt='logo'
-                className='logo-without-word'
+                src="https://res.cloudinary.com/dmox9pnnx/image/upload/v1691422190/Logo-without-word_hoknvz.png"
+                // src={LogoWithoutWord}
+                alt="logo"
+                className="logo-without-word"
               />
             )}
           </div>
         ) : (
           <>
             <img
-              src={LogoWithoutWord}
-              alt='logo'
-              className='logo-without-word'
+              src="https://res.cloudinary.com/dmox9pnnx/image/upload/v1691422190/Logo-without-word_hoknvz.png"
+              alt="logo"
+              className="logo-without-word"
             />
-            <Link className='header-login' to='/login'>
+            <Link className="header-login" to="/login">
               Login
             </Link>
           </>
