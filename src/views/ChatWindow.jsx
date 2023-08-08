@@ -19,7 +19,6 @@ export function ChatWindow({ showWelcome }) {
   const [msgContent, setMsgContent] = useState('')
   const [showModal, setShowModal] = useState(false)
   const [modalPosition, setModalPosition] = useState({ top: 0, left: 0 })
-  const [isHovered, setIsHovered] = useState(null)
   const [recipientIsRecording, setUserIsRecording] = useState(false)
   const [recipientIsTyping, setUserIsTyping] = useState(false)
   const [onlineStatus, setOnlineStatus] = useState('')
@@ -83,7 +82,7 @@ export function ChatWindow({ showWelcome }) {
       socketService.off('chat-add-msg', handleReceivedMsg)
     }
   }, [dispatch])
-
+  console.log('user', user)
   // need to make a function at the socket.service
   useEffect(() => {
     console.log('ma ze')
@@ -247,7 +246,6 @@ export function ChatWindow({ showWelcome }) {
             <ConverstationList
               msgs={msgs}
               loggedInUser={loggedInUser}
-              isHovered={isHovered}
               user={user}
             />
           </ul>
