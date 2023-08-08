@@ -147,21 +147,10 @@ export function ChatWindow({ showWelcome }) {
       )
     )
 
-<<<<<<< HEAD
     const character = user?.character
     
     const res = await userService.askChatGpt(contentToSend.content, character);
     
-=======
-    const characterName =
-      'a comedian. You can answer everything with your current knowledge, but make it funny'
-
-    const res = await userService.askChatGpt(
-      contentToSend.content,
-      characterName
-    )
-
->>>>>>> 677cbd0b8f63997d6fd3cd0bc6d4b5bd963f2fd5
     console.log('res', res)
     dispatch(
       addMsg(res, loggedInUser._id, user._id, contentToSend.type || 'text')
