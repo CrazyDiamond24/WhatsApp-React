@@ -65,6 +65,7 @@ export function ChatWindow({ showWelcome }) {
   }, [msgContent])
 
   useEffect(() => {
+    console.log('h')
     const handleReceivedMsg = (receivedMsg) => {
       if (receivedMsg.content && receivedMsg.content.includes('.gif'))
         receivedMsg.type = 'image'
@@ -147,15 +148,19 @@ export function ChatWindow({ showWelcome }) {
       )
     )
 
-    const characterName = 'a comedian. You can answer everything with your current knowledge, but make it funny'
-    
-    const res = await userService.askChatGpt(contentToSend.content, characterName);
-    
+    const characterName =
+      'a comedian. You can answer everything with your current knowledge, but make it funny'
+
+    const res = await userService.askChatGpt(
+      contentToSend.content,
+      characterName
+    )
+
     console.log('res', res)
     dispatch(
       addMsg(res, loggedInUser._id, user._id, contentToSend.type || 'text')
     )
-}
+  }
 
   function handelSendMsg(e) {
     e.preventDefault()
@@ -253,19 +258,21 @@ export function ChatWindow({ showWelcome }) {
                   handlefilesSelect(gifImgUrl, 'image')
                 }
               />
-              <Emojis
-                onSelectEmoji={handleEmojiSelect}
-                onSelectImage={(gifImgUrl) =>
-                  handlefilesSelect(gifImgUrl, 'image')
-                }
-                onSelectVideo={(url) => handlefilesSelect(url, 'video')}
-                onSelectFile={(url) => handlefilesSelect(url, 'file')}
-              />
+              <Emojis onSelectEmoji={handleEmojiSelect} />
 
               {/* <TakePicture onSelectSelfiePicture={handleGifSelect} /> */}
             </div>
             <div className="chat-input-container">
-              {showModal && <MsgModal position={modalPosition} />}
+              {showModal && (
+                <MsgModal
+                  position={modalPosition}
+                  onSelectImage={(gifImgUrl) =>
+                    handlefilesSelect(gifImgUrl, 'image')
+                  }
+                  onSelectVideo={(url) => handlefilesSelect(url, 'video')}
+                  onSelectFile={(url) => handlefilesSelect(url, 'file')}
+                />
+              )}
               <PlusWhatsapp
                 title="Attach"
                 className={`plus-icon-svg ${isIconRotated ? 'rotate' : ''}`}
