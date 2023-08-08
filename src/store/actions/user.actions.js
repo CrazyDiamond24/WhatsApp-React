@@ -240,9 +240,9 @@ export function editUserProfile(user) {
         user,
       }
       dispatch(action2)
-      showSuccessMsg(`Playlist updated`)
+      showSuccessMsg(`User updated`)
     } catch (error) {
-      showErrorMsg(`Cannot update station`)
+      showErrorMsg(`Cannot update user`)
     }
   }
 }
