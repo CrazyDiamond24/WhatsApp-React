@@ -144,15 +144,15 @@ export function ChatWindow({ showWelcome }) {
       )
     )
 
-    const res = await userService.askChatGpt(
-      contentToSend.content,
-      'you are cristiano ronaldo'
-    )
+    const characterName = 'a comedian. You can answer everything with your current knowledge, but make it funny'
+    
+    const res = await userService.askChatGpt(contentToSend.content, characterName);
+    
     console.log('res', res)
     dispatch(
       addMsg(res, loggedInUser._id, user._id, contentToSend.type || 'text')
     )
-  }
+}
 
   function handelSendMsg(e) {
     e.preventDefault()
