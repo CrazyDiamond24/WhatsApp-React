@@ -13,7 +13,8 @@ import { WelcomeChatRoom } from '../cmps/WelcomeChatRoom'
 import { ConverstationList } from '../cmps/ConverstationList'
 import MsgModal from '../cmps/MsgModal'
 import { ReactComponent as PlusWhatsapp } from '../assets/imgs/plusWhatsapp.svg'
-import { userService } from '../services/user.service'
+
+import { aiService } from '../services/ai.service'
 
 export function ChatWindow({ showWelcome }) {
   const [msgContent, setMsgContent] = useState('')
@@ -68,6 +69,7 @@ export function ChatWindow({ showWelcome }) {
     const handleReceivedMsg = (receivedMsg) => {
       if (receivedMsg.content && receivedMsg.content.includes('.gif'))
         receivedMsg.type = 'image'
+
       dispatch(
         addMsg(
           receivedMsg.content,
@@ -143,25 +145,15 @@ export function ChatWindow({ showWelcome }) {
         contentToSend.content,
         contentToSend.recipientId,
         contentToSend.senderId,
-        contentToSend.type || 'text'
+        'text'
       )
     )
 
-<<<<<<< HEAD
-    const character = user?.character
-    
-    const res = await userService.askChatGpt(contentToSend.content, character);
-    
-=======
     const characterName =
       'a comedian. You can answer everything with your current knowledge, but make it funny'
 
-    const res = await userService.askChatGpt(
-      contentToSend.content,
-      characterName
-    )
+    const res = await aiService.askChatGpt(contentToSend.content, characterName)
 
->>>>>>> 677cbd0b8f63997d6fd3cd0bc6d4b5bd963f2fd5
     console.log('res', res)
     dispatch(
       addMsg(res, loggedInUser._id, user._id, contentToSend.type || 'text')
