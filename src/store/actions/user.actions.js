@@ -218,14 +218,21 @@ export function deleteMsg(msgId, senderId, recipientId) {
   }
 }
 
-export function blockUnblockContact(actionType, contactId , loggedInUserId) {
+export function blockUnblockContact(actionType, contactId, loggedInUserId) {
   return async (dispatch, getState) => {
     try {
-      const {updatedUser, updatedLoggedInUser} = await userService.blockUnblockUser(actionType, contactId , loggedInUserId)
-      const LoggedInUserAction = { type: EDIT_USER, user: updatedLoggedInUser}
+      const { updatedUser, updatedLoggedInUser } =
+        await userService.blockUnblockUser(
+          actionType,
+          contactId,
+          loggedInUserId
+        )
+      const LoggedInUserAction = { type: EDIT_USER, user: updatedLoggedInUser }
       dispatch(LoggedInUserAction)
-      const userAction = { type: EDIT_USER, user: updatedUser}
+      const userAction = { type: EDIT_USER, user: updatedUser }
       dispatch(userAction)
+      console.log('updatedLoggedInUser', updatedLoggedInUser)
+      console.log('updatedUser', updatedUser)
     } catch (error) {
       console.log('error:', error)
     }
