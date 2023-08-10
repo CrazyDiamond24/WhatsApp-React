@@ -13,7 +13,8 @@ import { WelcomeChatRoom } from '../cmps/WelcomeChatRoom'
 import { ConverstationList } from '../cmps/ConverstationList'
 import MsgModal from '../cmps/MsgModal'
 import { ReactComponent as PlusWhatsapp } from '../assets/imgs/plusWhatsapp.svg'
-import { userService } from '../services/user.service'
+
+import { aiService } from '../services/ai.service'
 
 export function ChatWindow({ showWelcome }) {
   const [msgContent, setMsgContent] = useState('')
@@ -65,17 +66,18 @@ export function ChatWindow({ showWelcome }) {
   useEffect(() => {
     console.log('h')
     const handleReceivedMsg = (receivedMsg) => {
-      if (receivedMsg.content && receivedMsg.content.includes('.gif'))
-        receivedMsg.type = 'image'
+      if (receivedMsg.content) {
+        const type = msgService.getReceivedMsgType(receivedMsg)
 
-      dispatch(
-        addMsg(
-          receivedMsg.content,
-          receivedMsg.recipientId,
-          receivedMsg.senderId,
-          receivedMsg.type || 'text'
+        dispatch(
+          addMsg(
+            receivedMsg.content,
+            receivedMsg.recipientId,
+            receivedMsg.senderId,
+            type
+          )
         )
-      )
+      }
     }
     socketService.on('chat-add-msg', handleReceivedMsg)
     return () => {
@@ -152,10 +154,7 @@ export function ChatWindow({ showWelcome }) {
 
     const res = await aiService.askChatGpt(contentToSend.content, characterName)
 
-    console.log('res', res)
-    dispatch(
-      addMsg(res, loggedInUser._id, user._id, contentToSend.type || 'text')
-    )
+    dispatch(addMsg(res, loggedInUser._id, user._id, 'text'))
   }
 
   function handelSendMsg(e) {
