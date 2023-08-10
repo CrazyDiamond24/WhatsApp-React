@@ -1,5 +1,5 @@
-import { httpService } from "./http.service.js"
-import { utilService } from "./util.service.js"
+import { httpService } from './http.service.js'
+import { utilService } from './util.service.js'
 
 export const msgService = {
   createNewMsg,
@@ -8,6 +8,7 @@ export const msgService = {
   filterMsgs,
   getTimestamp,
   getMsgType,
+  getReceivedMsgType,
 }
 
 async function createNewMsg(msg, senderId, recipientId, type) {
@@ -38,11 +39,10 @@ async function getUserMessages(userId, loggedInUserId) {
     )
     return response.data
   } catch (error) {
-    console.log("Error fetching user messages:", error)
+    console.log('Error fetching user messages:', error)
     throw error
   }
 }
-
 
 function filterMsgs(user, loggedInUser) {
   // console.log('filterMsgs user:', user);
@@ -53,19 +53,17 @@ function filterMsgs(user, loggedInUser) {
         (msg.senderId === loggedInUser._id && msg.recipientId === user._id) ||
         (msg.senderId === user._id && msg.recipientId === loggedInUser._id)
     )
-    .sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+    .sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp))
   // console.log('filteredMsgs:', filteredMsgs);
-  return filteredMsgs;
+  return filteredMsgs
 }
 
-
-
 function getTimestamp(timestamp) {
-  if(!timestamp) return ''
+  if (!timestamp) return ''
   const date = new Date(timestamp)
   const currentDate = new Date()
-  const hours = date.getHours().toString().padStart(2, "0")
-  const minutes = date.getMinutes().toString().padStart(2, "0")
+  const hours = date.getHours().toString().padStart(2, '0')
+  const minutes = date.getMinutes().toString().padStart(2, '0')
 
   // Check if the date is today
   if (date.toDateString() === currentDate.toDateString()) {
@@ -75,23 +73,52 @@ function getTimestamp(timestamp) {
   // Check if the date is within the last 6 days (show day name)
   const daysDifference = (currentDate - date) / (1000 * 60 * 60 * 24)
   if (daysDifference < 6) {
-    const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+    const daysOfWeek = [
+      'Sunday',
+      'Monday',
+      'Tuesday',
+      'Wednesday',
+      'Thursday',
+      'Friday',
+      'Saturday',
+    ]
     const dayOfWeek = daysOfWeek[date.getDay()]
     return `${dayOfWeek}, ${hours}:${minutes}`
   }
 
   // Otherwise, show the full date (e.g., "Jul 20, 2023, 12:34")
-  const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+  const months = [
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec',
+  ]
   const month = months[date.getMonth()]
   const day = date.getDate()
   return `${month} ${day}, ${hours}:${minutes}`
 }
 
-function getMsgType(url, loggedInUser , user , type) {
+function getMsgType(url, loggedInUser, user, type) {
   return {
     content: url,
     senderId: loggedInUser._id,
     recipientId: user._id,
     type,
+  }
 }
+
+function getReceivedMsgType(msg) {
+  if (msg.content.includes('image')) return 'image'
+  if (msg.content.includes('video')) return 'video'
+  if (msg.content.includes('blob')) return 'audio'
+  if (msg.content.includes('raw')) return 'file'
+  else return 'text'
 }

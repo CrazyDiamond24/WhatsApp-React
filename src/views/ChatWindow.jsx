@@ -1,19 +1,20 @@
-import React from "react"
-import { useEffect, useState, useRef, useMemo } from "react"
-import { getSpotifySvg } from "../services/SVG.service"
-import { useDispatch, useSelector } from "react-redux"
-import { addMsg } from "../store/actions/user.actions"
-import { Emojis } from "../cmps/Emojis"
-import { Giphy } from "../cmps/Giphy"
-import { useAutoAnimate } from "@formkit/auto-animate/react"
-import { socketService, SOCKET_EMIT_SEND_MSG } from "../services/socket.service"
-import { msgService } from "../services/msg.service"
-import Transcript from "../cmps/Transcript"
-import { WelcomeChatRoom } from "../cmps/WelcomeChatRoom"
-import { ConverstationList } from "../cmps/ConverstationList"
-import MsgModal from "../cmps/MsgModal"
-import { ReactComponent as PlusWhatsapp } from "../assets/imgs/plusWhatsapp.svg"
-import { userService } from "../services/user.service"
+import React from 'react'
+import { useEffect, useState, useRef, useMemo } from 'react'
+import { getSpotifySvg } from '../services/SVG.service'
+import { useDispatch, useSelector } from 'react-redux'
+import { addMsg, blockUnblockContact } from '../store/actions/user.actions'
+import { Emojis } from '../cmps/Emojis'
+import { Giphy } from '../cmps/Giphy'
+import { useAutoAnimate } from '@formkit/auto-animate/react'
+import { socketService, SOCKET_EMIT_SEND_MSG } from '../services/socket.service'
+import { msgService } from '../services/msg.service'
+import Transcript from '../cmps/Transcript'
+import { WelcomeChatRoom } from '../cmps/WelcomeChatRoom'
+import { ConverstationList } from '../cmps/ConverstationList'
+import MsgModal from '../cmps/MsgModal'
+import { ReactComponent as PlusWhatsapp } from '../assets/imgs/plusWhatsapp.svg'
+
+import { aiService } from '../services/ai.service'
 
 export function ChatWindow({ showWelcome }) {
   const [msgContent, setMsgContent] = useState("")
@@ -69,16 +70,18 @@ export function ChatWindow({ showWelcome }) {
   useEffect(() => {
     console.log("h")
     const handleReceivedMsg = (receivedMsg) => {
-      if (receivedMsg.content && receivedMsg.content.includes(".gif"))
-        receivedMsg.type = "image"
-      dispatch(
-        addMsg(
-          receivedMsg.content,
-          receivedMsg.recipientId,
-          receivedMsg.senderId,
-          receivedMsg.type || "text"
+      if (receivedMsg.content) {
+        const type = msgService.getReceivedMsgType(receivedMsg)
+
+        dispatch(
+          addMsg(
+            receivedMsg.content,
+            receivedMsg.recipientId,
+            receivedMsg.senderId,
+            type
+          )
         )
-      )
+      }
     }
     socketService.on("chat-add-msg", handleReceivedMsg)
     return () => {
@@ -146,18 +149,16 @@ export function ChatWindow({ showWelcome }) {
         contentToSend.content,
         contentToSend.recipientId,
         contentToSend.senderId,
-        contentToSend.type || "text"
+        'text'
       )
     )
 
-    const character = user?.character
+    const characterName =
+      'a comedian. You can answer everything with your current knowledge, but make it funny'
 
-    const res = await userService.askChatGpt(contentToSend.content, character)
+    const res = await aiService.askChatGpt(contentToSend.content, characterName)
 
-    console.log("res", res)
-    dispatch(
-      addMsg(res, loggedInUser._id, user._id, contentToSend.type || "text")
-    )
+    dispatch(addMsg(res, loggedInUser._id, user._id, 'text'))
   }
 
   function handelSendMsg(e) {
@@ -225,7 +226,7 @@ export function ChatWindow({ showWelcome }) {
           <div className="header-area">
             <img src={user?.img} alt={user?.username} />
             <h2>{user?.fullName}</h2>
-            {onlineStatus === "Online" ? (
+            {onlineStatus === 'Online' ? (
               <div>Online</div>
             ) : (
               <div>Last Seen: {timestamp(user.lastSeen)}</div>
