@@ -1,6 +1,6 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { removeContactFromUser } from '../store/actions/user.actions'
+import { removeContactFromUser , blockUnblockContact} from '../store/actions/user.actions'
 
 export function ContactOptionsModal({
   position,
@@ -10,7 +10,9 @@ export function ContactOptionsModal({
 }) {
   const modalRef = useRef()
   const dispatch = useDispatch()
-
+  const isUserBlocked = loggedInUser?.blockedContcats?.includes(user?._id)
+  const [isBlocked , setIsBlocked] = useState(isUserBlocked)
+// to do use state block/unblock and send the action type to the block function and it works.
   useEffect(() => {
     function handleClickOutside(event) {
       if (modalRef.current && !modalRef.current.contains(event.target)) {
@@ -27,7 +29,13 @@ export function ContactOptionsModal({
     dispatch(removeContactFromUser(loggedInUser._id, user._id))
     closeOptionsModal()
   }
-
+  function blockContact() { 
+    setIsBlocked(isUserBlocked)
+    const actionType = isUserBlocked ? "UNBLOCK_USER" : "BLOCK_USER"
+    dispatch(blockUnblockContact(actionType , user._id))
+    closeOptionsModal()
+  }
+  
   return (
     <>
       <section
@@ -40,7 +48,10 @@ export function ContactOptionsModal({
       >
         <ul>
           <li onClick={DeleteContact}>
-            <button>Block contact</button>
+            <button>Delete contact</button>
+          </li>
+          <li onClick={blockContact}>
+            <button>{isBlocked ? 'Unblock contact' : 'Block contact'}</button>
           </li>
           <li>
             <button>clear chat</button>

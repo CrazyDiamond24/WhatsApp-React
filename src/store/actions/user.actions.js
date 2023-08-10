@@ -221,6 +221,7 @@ export function deleteMsg(msgId, senderId, recipientId) {
 export function blockUnblockContact(actionType, contactId) {
   return (dispatch, getState) => {
     try {
+      console.log('dispatched')
       const action = { type: actionType, contactId }
       dispatch(action)
     } catch (error) {

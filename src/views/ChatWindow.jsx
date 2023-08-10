@@ -13,8 +13,7 @@ import { WelcomeChatRoom } from '../cmps/WelcomeChatRoom'
 import { ConverstationList } from '../cmps/ConverstationList'
 import MsgModal from '../cmps/MsgModal'
 import { ReactComponent as PlusWhatsapp } from '../assets/imgs/plusWhatsapp.svg'
-
-import { aiService } from '../services/ai.service'
+import { userService } from '../services/user.service'
 
 export function ChatWindow({ showWelcome }) {
   const [msgContent, setMsgContent] = useState('')
@@ -39,7 +38,6 @@ export function ChatWindow({ showWelcome }) {
   const dispatch = useDispatch()
   const [animationParent] = useAutoAnimate()
 
-  const isUserBlocked = loggedInUser?.blockedContcats?.includes(user?._id)
   const msgs =
     loggedInUser && user
       ? msgService.filterMsgs(user, loggedInUser, allMsgs)
@@ -162,8 +160,9 @@ export function ChatWindow({ showWelcome }) {
 
   function handelSendMsg(e) {
     e.preventDefault()
-
-    if (!loggedInUser || !user || !msgContent.length) return
+    const isUserBlocked = loggedInUser?.blockedContcats.includes(user?._id)
+    console.log('loggedInUser?.blockedContacts', loggedInUser.blockedContcats)
+    if (!loggedInUser || !user || !msgContent.length || isUserBlocked) return
 
     const trimmedContent = msgContent.trim()
 
@@ -215,12 +214,8 @@ export function ChatWindow({ showWelcome }) {
     setShowModal(!showModal)
     setIsIconRotated(!isIconRotated)
   }
-  const timestamp = (time) => {
+  function timestamp(time) {
     return msgService.getTimestamp(time)
-  }
-  function blockContact() {
-    const action = isUserBlocked ? 'UNBLOCK_USER' : 'BLOCK_USER'
-    dispatch(blockUnblockContact(action, user._id))
   }
 
   return (
@@ -230,9 +225,6 @@ export function ChatWindow({ showWelcome }) {
           <div className="header-area">
             <img src={user?.img} alt={user?.username} />
             <h2>{user?.fullName}</h2>
-            {/* <span onClick={blockContact}>
-              {isUserBlocked ? "unBlock contact" : "Block contact"}
-            </span> */}
             {onlineStatus === 'Online' ? (
               <div>Online</div>
             ) : (
