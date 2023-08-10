@@ -7,7 +7,8 @@ import { FileMsg } from "./MsgTypies/FileMsg"
 import { MsgOptions } from "./MsgOptions"
 import { msgService } from "../services/msg.service"
 
-export function ConverstationList({ msgs, loggedInUser, user }) {
+export function ConverstationList({ isUserBlocked, msgs, loggedInUser, user }) {
+  
   const chatMsgRefs = useRef([])
   const [hoveredIndex, setHoveredIndex] = useState(null) // Track the hovered message index
 
@@ -57,6 +58,7 @@ export function ConverstationList({ msgs, loggedInUser, user }) {
           )}
         </li>
       ))}
+      {isUserBlocked && <li className="chat-msg system">this user is blocked. you cannot recive/send msgs to him</li>}
     </>
   )
 }
