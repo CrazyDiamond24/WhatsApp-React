@@ -32,12 +32,7 @@ export function LoginSignup() {
     },
   })
 
-  // const loginError = useSelector(
-  //   (storeState) => storeState.userModule.loginError
-  // )
-
   const user = useSelector((storeState) => storeState.userModule.loggedInUser)
-  console.log('user', user)
 
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -50,17 +45,13 @@ export function LoginSignup() {
     e.preventDefault()
     if (hasAccount) {
       dispatch(doLogin(signupCred))
-      // if (user === undefined) {
-      // console.log('there is')
+
       navigate('/')
-      // } else {
-      // console.log('theresino')
-      // }
     } else {
       if (!signupCred.fullName || !signupCred.password || !signupCred.username)
         return
       dispatch(doSignup(signupCred))
-      console.log('what the fuck')
+
       navigate('/')
     }
   }

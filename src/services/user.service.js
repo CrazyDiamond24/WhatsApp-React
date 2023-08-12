@@ -27,7 +27,7 @@ function query() {
 }
 async function editProfile(user) {
   const updatedUser = await httpService.put(`contact/${user._id}`, user)
-  console.log('user userService', updatedUser)
+
   return updatedUser
 }
 async function editLastSeen(user) {
@@ -35,22 +35,22 @@ async function editLastSeen(user) {
     `contact/${user._id}/last-seen`,
     user
   )
-  console.log('user userService', updatedUser)
+
   return updatedUser
 }
 
 async function blockUnblockUser(actionType, userId, loggedInUserId) {
-  const data = {actionType, loggedInUserId}
+  const data = { actionType, loggedInUserId }
   const updatedUser = await httpService.put(
     `contact/${userId}/block-un-block`,
     data
   )
-  console.log('user userService', updatedUser)
+
   return updatedUser
 }
 async function updatePref(user) {
   const updatedUser = await httpService.put(`contact/${user._id}/pref`, user)
-  console.log('user after update pref', updatedUser)
+
   return updatedUser
 }
 

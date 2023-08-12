@@ -16,7 +16,6 @@ export function CreateStory() {
   const [showColorModal, setShowColorModal] = useState(false)
   const [dragging, setDragging] = useState(false)
   const user = useSelector((storeState) => storeState.userModule.loggedInUser)
-  console.log(user)
   const canvasRef = useRef(null)
   const dispatch = useDispatch()
   useEffect(() => {
@@ -94,7 +93,6 @@ export function CreateStory() {
   }
 
   function handleWidthSelect(width) {
-    console.log('width', width)
     setTextWidth(width)
   }
 
@@ -108,7 +106,6 @@ export function CreateStory() {
     }
     const canvasUrl = canvasRef.current.toDataURL('image/png')
     dispatch(addStoryToUser(canvasUrl))
-    console.log(user)
   }
 
   return (

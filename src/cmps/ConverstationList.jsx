@@ -8,14 +8,12 @@ import { MsgOptions } from './MsgOptions'
 import { msgService } from '../services/msg.service'
 
 export function ConverstationList({ isUserBlocked, msgs, loggedInUser, user }) {
-  console.log('render please')
   const chatMsgRefs = useRef([])
   const [hoveredIndex, setHoveredIndex] = useState(null)
 
   function showTimestamp(timestamp) {
     return msgService.getTimestamp(timestamp)
   }
-  console.log('isUserBlocked', isUserBlocked)
 
   function handleMouseEnter(index) {
     setHoveredIndex(index)

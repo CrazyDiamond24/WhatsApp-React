@@ -45,8 +45,6 @@ async function getUserMessages(userId, loggedInUserId) {
 }
 
 function filterMsgs(user, loggedInUser) {
-  // console.log('filterMsgs user:', user);
-  // console.log('filterMsgs loggedInUser:', loggedInUser);
   const filteredMsgs = user.msgs
     .filter(
       (msg) =>
@@ -54,7 +52,7 @@ function filterMsgs(user, loggedInUser) {
         (msg.senderId === user._id && msg.recipientId === loggedInUser._id)
     )
     .sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp))
-  // console.log('filteredMsgs:', filteredMsgs);
+
   return filteredMsgs
 }
 

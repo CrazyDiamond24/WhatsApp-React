@@ -40,7 +40,6 @@ export default function MsgModal({
       ev.type === 'change' ? ev.target.files[0] : ev.dataTransfer.files[0]
     try {
       const { url } = await uploadFile(file)
-      console.log('url', url)
       onSelectFile(url)
     } catch (err) {
       console.log('err', err)

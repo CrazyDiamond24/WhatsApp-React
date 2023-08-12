@@ -22,7 +22,6 @@ export function UserProfile({ show, closeUserProfile }) {
   const statusRef = useRef(null)
   const nameTempRef = useRef(null)
   const statusTempRef = useRef(null)
-  console.log('profile rendered')
 
   const dispatch = useDispatch()
 

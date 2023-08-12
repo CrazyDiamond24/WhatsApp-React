@@ -71,14 +71,14 @@ export function doLogin(userCred) {
     try {
       const user = await authService.login(userCred)
       user.isOnline = true
-      console.log('user', user)
+
       socketService.login(user._id) // Log in to the socket with the user's ID
       const action = {
         type: LOGIN,
         user,
       }
       dispatch(action)
-      console.log('user in actions', user)
+
       showSuccessMsg('like')
 
       // Add any additional logic here if needed before navigating
@@ -87,7 +87,6 @@ export function doLogin(userCred) {
       // window.location.href = '/'
       return user
     } catch (err) {
-      console.log('cant login')
       console.log('error', err)
     }
   }
@@ -231,8 +230,6 @@ export function blockUnblockContact(actionType, contactId, loggedInUserId) {
       dispatch(LoggedInUserAction)
       const userAction = { type: EDIT_USER, user: updatedUser }
       dispatch(userAction)
-      console.log('updatedLoggedInUser', updatedLoggedInUser)
-      console.log('updatedUser', updatedUser)
     } catch (error) {
       console.log('error:', error)
     }

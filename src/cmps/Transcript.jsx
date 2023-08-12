@@ -18,7 +18,6 @@ function Transcript({ onSelectAudio }) {
   })
 
   const startRecording = async () => {
-    console.log('start')
     const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
     mediaRecorderRef.current = new MediaRecorder(stream)
 
@@ -29,7 +28,6 @@ function Transcript({ onSelectAudio }) {
     mediaRecorderRef.current.addEventListener('stop', () => {
       const audioBlob = new Blob(audioChunksRef.current)
       const audioUrl = URL.createObjectURL(audioBlob)
-      console.log('audioUrl', audioUrl)
       onSelectAudio(audioUrl)
       audioChunksRef.current = []
     })
@@ -45,7 +43,6 @@ function Transcript({ onSelectAudio }) {
   }
 
   const stopRecording = () => {
-    console.log('stop')
     if (mediaRecorderRef.current) {
       mediaRecorderRef.current.stop()
       setRecording(false)

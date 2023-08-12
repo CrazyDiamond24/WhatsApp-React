@@ -15,7 +15,7 @@ export const authService = {
   remove,
   update,
   getLoggedinUserDetails,
-  signupGuest,
+  // signupGuest,
   prepareData,
   // updateLatestStations,
   updateUser,
@@ -24,7 +24,7 @@ export const authService = {
 }
 
 window.authService = authService
-
+signupGuest()
 function getUsers() {
   return httpService.get(`user`)
 }
@@ -96,10 +96,6 @@ async function signup(userCred) {
   return saveLocalUser(user)
 }
 
-async function signupGuest(userCred) {
-  sessionStorage.setItem(STORAGE_KEY_LOGGEDIN_USER, JSON.stringify(userCred))
-}
-
 async function logout() {
   return await httpService.post('auth/logout')
 }
@@ -153,9 +149,25 @@ function prepareData(userCred) {
   }
 }
 
-// async function updateLatestStations(stationId, user) {
-//   const station = await stationService.getById(stationId)
-//   const userCopy = { ...user }
-//   userCopy.latestStations = [...userCopy.latestStations, station]
-//   return httpService.put(`user/latest/${userCopy._id}`, userCopy)
-// }
+async function signupGuest() {
+  const guestUser = {
+    _id: '64d788b6e9633df901bed7ed',
+    username: 'guest',
+    password: '3256dsaht8eh4e433$%4#$3$',
+    fullName: 'guest',
+    img: 'https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg',
+    status: 'guest mode',
+    story: [],
+    groups: [],
+    contacts: [],
+    msgs: [],
+    userPref: {
+      fontSize: 16,
+      fontColor: '#000000',
+      headerBgColor: '#ffffff',
+      fontFamily: 'Impact, Haettenschweiler, Arial Narrow Bold, sans-serif',
+      backgroundImage: '',
+    },
+  }
+  sessionStorage.setItem(STORAGE_KEY_LOGGEDIN_USER, JSON.stringify(guestUser))
+}

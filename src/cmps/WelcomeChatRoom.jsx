@@ -24,7 +24,7 @@ export function WelcomeChatRoom() {
           amusement by conversing with our creative AI bots!
         </p>
         <TextingSVG className="text-welcome-svg" />
-        {loggedInUser ? (
+        {loggedInUser._id !== '64d788b6e9633df901bed7ed' ? (
           <p>Welcome back!</p>
         ) : (
           <p className="login-or-signup">

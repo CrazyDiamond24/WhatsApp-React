@@ -31,8 +31,6 @@ export function ChatWindow({ showWelcome }) {
     return storeState.userModule.selectedUser
   })
 
-  const log = useSelector((storeState) => storeState.userModule.loggedInUser)
-  console.log('log', log)
   const allMsgs = useSelector(
     (storeState) => storeState.userModule.loggedInUser?.msgs
   )
@@ -46,7 +44,6 @@ export function ChatWindow({ showWelcome }) {
 
   const [isUserBlocked, setIsUserBlocked] = useState(false)
   const amIblocked = user?.blockedContcats?.includes(loggedInUser?._id)
-  console.log('bye')
 
   useEffect(() => {
     const container = document.querySelector('.conversation-container')
@@ -68,7 +65,6 @@ export function ChatWindow({ showWelcome }) {
   }, [msgContent])
 
   useEffect(() => {
-    console.log('h')
     const handleReceivedMsg = (receivedMsg) => {
       if (receivedMsg.content) {
         const type = msgService.getReceivedMsgType(receivedMsg)
@@ -88,22 +84,18 @@ export function ChatWindow({ showWelcome }) {
       socketService.off('chat-add-msg', handleReceivedMsg)
     }
   }, [dispatch])
-  console.log('user', user)
+
   // need to make a function at the socket.service
   useEffect(() => {
-    console.log('ma ze')
     const handelOnline = (userStatus) => {
-      console.log('hi')
-      console.log('userStatus', userStatus)
       if (userStatus) {
-        console.log('there is userStatus')
         const userLog = userStatus.filter((u) => u.id === user?._id)
-        console.log('userLog', userLog)
+
         setOnlineStatus(userStatus.isOnline ? 'Online' : '')
       }
     }
     socketService.on('online-users', handelOnline)
-    console.log('hoi')
+
     return () => {
       socketService.off('online-users', handelOnline)
     }
@@ -132,7 +124,7 @@ export function ChatWindow({ showWelcome }) {
   useEffect(() => {
     const handleRecording = (recordingData) => {
       const { userId, isRecording } = recordingData
-      console.log(isRecording)
+
       if (userId !== loggedInUser?._id) {
         setUserIsRecording(isRecording)
       }

@@ -63,7 +63,6 @@ export function UserPref() {
   function handleSubmit(event) {
     event.preventDefault()
     dispatch(updateUserPref(editedUser))
-    console.log(editedUser)
   }
 
   return (
