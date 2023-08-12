@@ -1,5 +1,4 @@
-import React from 'react'
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { UserPreview } from './UserPreview'
 import { useSelector } from 'react-redux'
 import { CSSTransition } from 'react-transition-group'
@@ -90,7 +89,7 @@ export function UserList({ filterBy, onRemoveUser, openUserChat }) {
     return userService.getFilteredUsers(users, filterBy, loggedInUser)
   }
   return (
-    <section className='user-list simple-cards-grid' ref={animationParent}>
+    <section className="user-list simple-cards-grid" ref={animationParent}>
       {filteredUsers?.map((user) => {
         const unreadCount = unreadCounts[user._id] || 0
 
@@ -98,7 +97,7 @@ export function UserList({ filterBy, onRemoveUser, openUserChat }) {
           <CSSTransition
             key={user?._id}
             timeout={300}
-            classNames='contact-preview'
+            classNames="contact-preview"
           >
             <UserPreview
               user={user}

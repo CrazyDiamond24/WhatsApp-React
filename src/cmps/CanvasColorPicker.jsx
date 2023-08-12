@@ -80,5 +80,3 @@ export function CanvasColorPicker({
     </div>
   )
 }
-
-export default CanvasColorPicker

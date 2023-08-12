@@ -10,22 +10,6 @@ export function AddContact(props) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
-  // useEffect(() => {
-  //   loadUser()
-  // }, [])
-
-  // async function loadUser() {
-  //   const userId = params.id
-  //   if (userId) {
-  //     try {
-  //       const user = await userService.getById(userId)
-  //       setUser(user)
-  //     } catch (error) {
-  //       console.log('error:', error)
-  //     }
-  //   }
-  // }
-
   function handleChange(e) {
     setName(e.target.value)
   }

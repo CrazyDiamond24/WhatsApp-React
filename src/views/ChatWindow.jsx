@@ -1,8 +1,8 @@
 import React from 'react'
-import { useEffect, useState, useRef, useMemo } from 'react'
-import { getSpotifySvg } from '../services/SVG.service'
+import { useEffect, useState } from 'react'
+
 import { useDispatch, useSelector } from 'react-redux'
-import { addMsg, blockUnblockContact } from '../store/actions/user.actions'
+import { addMsg } from '../store/actions/user.actions'
 import { Emojis } from '../cmps/Emojis'
 import { Giphy } from '../cmps/Giphy'
 import { useAutoAnimate } from '@formkit/auto-animate/react'

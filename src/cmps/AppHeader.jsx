@@ -1,10 +1,9 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
-import LogoWithoutWord from '../assets/imgs/Logo-without-word.png'
-import { getSpotifySvg } from '../services/SVG.service'
+
 import { useEffect, useState } from 'react'
 import { UserPref } from './UserPref'
-import { doLogout, updateLastSeen } from '../store/actions/user.actions'
+import { updateLastSeen } from '../store/actions/user.actions'
 
 export function AppHeader({ showProfile, openWelcomeChat }) {
   const [showModal, setShowModal] = useState(false)
@@ -54,7 +53,6 @@ export function AppHeader({ showProfile, openWelcomeChat }) {
                 <img
                   onClick={openWelcomeChat}
                   src="https://res.cloudinary.com/dmox9pnnx/image/upload/v1691422190/Logo-without-word_hoknvz.png"
-                  // src={LogoWithoutWord}
                   alt="logo"
                   className="logo-without-word"
                 />
@@ -62,7 +60,6 @@ export function AppHeader({ showProfile, openWelcomeChat }) {
             ) : (
               <img
                 src="https://res.cloudinary.com/dmox9pnnx/image/upload/v1691422190/Logo-without-word_hoknvz.png"
-                // src={LogoWithoutWord}
                 alt="logo"
                 className="logo-without-word"
               />

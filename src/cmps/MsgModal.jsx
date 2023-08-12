@@ -1,10 +1,10 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { uploadImg } from '../services/upload-img.service'
 import { uploadVideo } from '../services/upload-video.service'
 import { uploadFile } from '../services/upload-file.service'
 import { getSpotifySvg } from '../services/SVG.service'
-import { TakePicture } from './TakePicture'
-import { Navigate, useNavigate } from 'react-router-dom'
+
+import { useNavigate } from 'react-router-dom'
 
 export default function MsgModal({
   position,

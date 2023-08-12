@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { getSpotifySvg } from '../services/SVG.service'
+import { useSelector } from 'react-redux'
+
 import { TranscriptIcon } from './svgs/TranscriptIcon'
 import { socketService } from '../services/socket.service'
 

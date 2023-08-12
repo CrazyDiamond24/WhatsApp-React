@@ -10,7 +10,7 @@ import { msgService } from '../services/msg.service'
 export function ConverstationList({ isUserBlocked, msgs, loggedInUser, user }) {
   console.log('render please')
   const chatMsgRefs = useRef([])
-  const [hoveredIndex, setHoveredIndex] = useState(null) // Track the hovered message index
+  const [hoveredIndex, setHoveredIndex] = useState(null)
 
   function showTimestamp(timestamp) {
     return msgService.getTimestamp(timestamp)
@@ -54,7 +54,7 @@ export function ConverstationList({ isUserBlocked, msgs, loggedInUser, user }) {
           {msg.type === 'file' && <FileMsg msg={msg} />}
 
           <span className="timestamp">{showTimestamp(msg.timestamp)}</span>
-          {hoveredIndex === index && ( // Show the modal only for the hovered message
+          {hoveredIndex === index && (
             <MsgOptions user={user} msg={msg} loggedInUser={loggedInUser} />
           )}
         </li>

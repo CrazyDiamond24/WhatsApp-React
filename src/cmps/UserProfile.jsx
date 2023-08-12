@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react'
 
-import { getSpotifySvg } from '../services/SVG.service'
 import emptyImg from '../../src/assets/imgs/empty-img.png'
 import { uploadImg } from '../services/upload-img.service'
 import { useDispatch, useSelector } from 'react-redux'
@@ -121,45 +120,44 @@ export function UserProfile({ show, closeUserProfile }) {
 
   return (
     <section className={`user-profile-page ${show ? 'open' : ''}`}>
-      <div className='first-section'>
+      <div className="first-section">
         <span>{/* <LeftArrow /> */}</span>
         <h1 onClick={closeUserProfile}>Profile</h1>
       </div>
-      <div className='second-section'>
-    <div className='image-container'>
-        <label
+      <div className="second-section">
+        <div className="image-container">
+          <label
             onDrop={(e) => {
-                e.preventDefault();
-                handelFile(e);
+              e.preventDefault()
+              handelFile(e)
             }}
             onDragOver={(e) => {
-                e.preventDefault();
+              e.preventDefault()
             }}
-            className='cover-img'
-        >
+            className="cover-img"
+          >
             {isUploading ? (
-                <span className='loader'></span>
+              <span className="loader"></span>
             ) : (
-                <>
-                    <ImageBorder />
-                    <img
-                        className='img-edit'
-                        src={editedUser.img ? editedUser.img : emptyImg}
-                        alt='user station img'
-                        title='Upload Porofile Photo'
-                    />
-                </>
+              <>
+                <ImageBorder />
+                <img
+                  className="img-edit"
+                  src={editedUser.img ? editedUser.img : emptyImg}
+                  alt="user station img"
+                  title="Upload Porofile Photo"
+                />
+              </>
             )}
-            <input type='file' onChange={handelFile} className='upload-ninja' />
-        </label>
-        <StoryIcon className='story-icon-svg' onClick={handleShowModal} />
-    </div>
-</div>
+            <input type="file" onChange={handelFile} className="upload-ninja" />
+          </label>
+          <StoryIcon className="story-icon-svg" onClick={handleShowModal} />
+        </div>
+      </div>
 
-
-      <div className='third-section'>
+      <div className="third-section">
         <div>
-          <span className='name-profile'>Your name</span>
+          <span className="name-profile">Your name</span>
         </div>
         <div>
           <div className={`details-edit ${isNameEditable ? 'editing' : ''}`}>
@@ -174,9 +172,9 @@ export function UserProfile({ show, closeUserProfile }) {
                 {editedUser.fullName}
               </div>
             ) : (
-              <span className='name-to-change'>{editedUser.fullName}</span>
+              <span className="name-to-change">{editedUser.fullName}</span>
             )}
-            <div className='icons-container'>
+            <div className="icons-container">
               <TickIcon
                 className={isNameEditable ? 'confirm-name' : 'hide-confirm'}
                 onClick={handleSaveFullName}
@@ -187,16 +185,16 @@ export function UserProfile({ show, closeUserProfile }) {
               />
             </div>
           </div>
-          <p className='name-description'>
+          <p className="name-description">
             This is not your username or pin. This name will be visible to your
             WhatsApp contacts.
           </p>
         </div>
       </div>
 
-      <div className='fourth-section'>
+      <div className="fourth-section">
         <div>
-          <span className='about-profile'>About</span>
+          <span className="about-profile">About</span>
         </div>
         <div>
           <div className={`details-edit ${isStatusEditable ? 'editing' : ''}`}>
@@ -213,7 +211,7 @@ export function UserProfile({ show, closeUserProfile }) {
             ) : (
               <span>{editedUser.status}</span>
             )}
-            <div className='icons-container'>
+            <div className="icons-container">
               <TickIcon
                 className={isStatusEditable ? 'confirm-status' : 'hide-confirm'}
                 onClick={handleSaveUserStatus}
