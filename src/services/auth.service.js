@@ -13,14 +13,8 @@ export const authService = {
   getUsers,
   getById,
   remove,
-  update,
+
   getLoggedinUserDetails,
-  // signupGuest,
-  prepareData,
-  // updateLatestStations,
-  updateUser,
-  updateStations,
-  removeSong,
 }
 
 window.authService = authService
@@ -37,49 +31,6 @@ async function getById(userId) {
 
 function remove(userId) {
   return httpService.delete(`user/${userId}`)
-}
-
-async function removeSong(songId, user) {
-  const updatedUser = await httpService.put(`user/removeSong/${user._id}`, {
-    songId,
-  })
-  return updatedUser
-}
-
-async function update(selectedSong, user) {
-  const userCopy = { ...user }
-
-  userCopy.LikedSongs = [...userCopy.LikedSongs, selectedSong]
-
-  const savedUser = await httpService.put(`user/${userCopy._id}`, userCopy)
-
-  if (getLoggedinUser()._id === savedUser._id) saveLocalUser(savedUser)
-  return savedUser
-}
-
-async function updateStations(station, user) {
-  const userCopy = { ...user }
-
-  userCopy.stations = [...userCopy.stations, station]
-
-  const savedUser = await httpService.put(
-    `user/station/${userCopy._id}`,
-    userCopy
-  )
-
-  if (getLoggedinUser()._id === savedUser._id) saveLocalUser(savedUser)
-  return savedUser
-}
-
-async function updateUser(url, user) {
-  const userCopy = { ...user }
-
-  userCopy.imgUrl = url
-
-  const savedUser = await httpService.put(`user/img/${userCopy._id}`, userCopy)
-
-  if (getLoggedinUser()._id === savedUser._id) saveLocalUser(savedUser)
-  return savedUser
 }
 
 async function login(userCred) {
@@ -134,18 +85,6 @@ function getLoggedinUser() {
     } else {
       return httpService.get(`contact/${user._id}`)
     }
-  }
-}
-
-function prepareData(userCred) {
-  return {
-    email: userCred.email,
-    username: userCred.name,
-    imgUrl: userCred.picture,
-    password: utilService.makeId(),
-    stations: [],
-    likedSongs: [],
-    latestStations: [],
   }
 }
 
