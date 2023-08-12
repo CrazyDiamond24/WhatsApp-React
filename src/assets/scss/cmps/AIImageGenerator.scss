@@ -1,0 +1,102 @@
+.ai-modal-back-drop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.ai-modal {
+  background-image: url('https://www.dignited.com/wp-content/uploads/2023/04/AIART-1024x683.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 30px;
+  width: 550px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  position: relative;
+
+  .close-ai-modal {
+    position: absolute;
+    right: 15px;
+    top: 15px;
+    background: transparent;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    span {
+      svg {
+        fill: white;
+      }
+    }
+  }
+
+  h1 {
+    font-size: 2rem;
+    color: #f8f4f4;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+
+    input[type='text'] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+
+      &:focus {
+        outline: none;
+      }
+    }
+
+    .btn-generate {
+      margin: auto;
+      cursor: pointer;
+      width: 140px;
+      height: 40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #b198f1, #a32efc);
+      border-radius: 20px;
+      -webkit-box-shadow: 0px 0px 16px 7px rgba(139, 91, 255, 1);
+      -moz-box-shadow: 0px 0px 16px 7px rgba(139, 91, 255, 1);
+      box-shadow: 0px 0px 16px 7px rgba(139, 91, 255, 1);
+      transition: ease 0.3s;
+    }
+
+    .btn-generate:hover {
+      background: #e92197;
+      border: 10px solid #d11d87;
+      -webkit-box-shadow: 0px 0px 16px 7px rgba(233, 33, 150, 1);
+      -moz-box-shadow: 0px 0px 16px 7px rgba(233, 33, 150, 1);
+      box-shadow: 0px 0px 16px 7px rgba(233, 33, 150, 1);
+    }
+
+    .btn-generate:hover > span {
+      color: #fff;
+    }
+
+    .btn-generate span {
+      font-size: 15px;
+      color: #222;
+      text-align: center;
+      line-height: 40px;
+      font-family: 'Open Sans', sans-serif;
+      font-weight: 300;
+
+      transition: ease 0.3s;
+    }
+  }
+}

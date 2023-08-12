@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { uploadImg } from '../services/upload-img.service'
 import { uploadVideo } from '../services/upload-video.service'
 import { uploadFile } from '../services/upload-file.service'
@@ -11,8 +11,10 @@ export default function MsgModal({
   onSelectImage,
   onSelectFile,
   onSelectVideo,
+  openAiModal,
 }) {
   const navigate = useNavigate()
+
   async function handleImg(ev) {
     const file =
       ev.type === 'change' ? ev.target.files[0] : ev.dataTransfer.files[0]
@@ -65,6 +67,16 @@ export default function MsgModal({
           <label>
             <input type="file" onChange={handleImg} className="hidden" />
           </label>
+        </li>
+        <li onClick={openAiModal}>
+          <div>
+            <span
+              dangerouslySetInnerHTML={{
+                __html: getSpotifySvg('imageWhatsapp'),
+              }}
+            ></span>
+          </div>
+          <p>Ai image</p>
         </li>
         <li>
           <div>

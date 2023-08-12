@@ -15,6 +15,7 @@ import MsgModal from '../cmps/MsgModal'
 import { ReactComponent as PlusWhatsapp } from '../assets/imgs/plusWhatsapp.svg'
 
 import { aiService } from '../services/ai.service'
+import AIImageGenerator from '../cmps/AIImageGenerator'
 
 export function ChatWindow({ showWelcome }) {
   const [msgContent, setMsgContent] = useState('')
@@ -24,6 +25,7 @@ export function ChatWindow({ showWelcome }) {
   const [recipientIsTyping, setUserIsTyping] = useState(false)
   const [onlineStatus, setOnlineStatus] = useState('')
   const [isIconRotated, setIsIconRotated] = useState(false)
+  const [showAiModal, setShowAiModal] = useState(false)
   const loggedInUser = useSelector((storeState) => {
     return storeState.userModule.loggedInUser
   })
@@ -218,6 +220,13 @@ export function ChatWindow({ showWelcome }) {
     return msgService.getTimestamp(time)
   }
 
+  function handleOpenAiModal() {
+    setShowAiModal(true)
+  }
+  function handleCloseAiModal() {
+    setShowAiModal(false)
+  }
+
   return (
     <div className="chat-window" ref={animationParent}>
       {user && !showWelcome ? (
@@ -261,8 +270,10 @@ export function ChatWindow({ showWelcome }) {
                   }
                   onSelectVideo={(url) => handlefilesSelect(url, 'video')}
                   onSelectFile={(url) => handlefilesSelect(url, 'file')}
+                  openAiModal={handleOpenAiModal}
                 />
               )}
+
               <PlusWhatsapp
                 title="Attach"
                 className={`plus-icon-svg ${isIconRotated ? 'rotate' : ''}`}
@@ -286,6 +297,15 @@ export function ChatWindow({ showWelcome }) {
               />
             </div>
           </form>
+          {showAiModal && (
+            <AIImageGenerator
+              closeAiModal={handleCloseAiModal}
+              onImageGenerated={(gifImgUrl) =>
+                // console.log('gifImgUrl', gifImgUrl)
+                handlefilesSelect(gifImgUrl, 'image')
+              }
+            />
+          )}
         </>
       ) : (
         <WelcomeChatRoom />

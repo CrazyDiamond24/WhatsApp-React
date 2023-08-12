@@ -1,6 +1,4 @@
 import { httpService } from './http.service'
-// import { stationService } from './station.service'
-import { utilService } from './util.service'
 
 const STORAGE_KEY_LOGGEDIN_USER = 'loggedinUser'
 
@@ -13,8 +11,6 @@ export const authService = {
   getUsers,
   getById,
   remove,
-
-  getLoggedinUserDetails,
 }
 
 window.authService = authService
@@ -49,14 +45,6 @@ async function signup(userCred) {
 
 async function logout() {
   return await httpService.post('auth/logout')
-}
-
-async function getLoggedinUserDetails() {
-  const user = getLoggedinUser()
-
-  if (!user) return null
-  const userDetails = await httpService.get(`user/${user._id}`)
-  return userDetails
 }
 
 function saveLocalUser(user) {
