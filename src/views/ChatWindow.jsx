@@ -201,6 +201,7 @@ export function ChatWindow({ showWelcome }) {
 
   function handlefilesSelect(url, type) {
     const contentToSend = msgService.getMsgType(url, loggedInUser, user, type)
+    console.log('contentToSend', contentToSend)
     socketService.emit(SOCKET_EMIT_SEND_MSG, contentToSend)
     setMsgContent('')
   }
