@@ -1,0 +1,14 @@
+// UserList.scss
+.user-list {
+  display: grid;
+  grid-auto-rows: minmax(70px, auto);
+  gap: 2px;
+}
+
+.accessory-list {
+  height: 50px;
+  width: 100%;
+  background-color: $lighterGreen;
+  position: absolute;
+  bottom: 0;
+}

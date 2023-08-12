@@ -1,0 +1,66 @@
+// <section>
+// <ul>
+//   <li>
+//     <p>images</p>
+//     <div>
+//       <span
+//         dangerouslySetInnerHTML={{
+//           __html: getSpotifySvg('imageWhatsapp'),
+//         }}
+//       ></span>
+//     </div>
+//   </li>
+//   <li>
+//     <p>videos</p>
+//     <div>
+//       <span
+//         dangerouslySetInnerHTML={{
+//           __html: getSpotifySvg('imageWhatsapp'),
+//         }}
+//       ></span>
+//     </div>
+//   </li>
+//   <li>
+//     <p>camera</p>
+//     <div>
+//       <span
+//         dangerouslySetInnerHTML={{
+//           __html: getSpotifySvg('cameraWhatsapp'),
+//         }}
+//       ></span>
+//     </div>
+//   </li>
+//   <li>
+//     <p>files</p>
+//     <div>
+//       <span
+//         dangerouslySetInnerHTML={{
+//           __html: getSpotifySvg('fileWhatsapp'),
+//         }}
+//       ></span>
+//     </div>
+//   </li>
+// </ul>
+// </section>
+
+.msg-modal-section {
+  position: absolute;
+  bottom: 60px;
+  background-color: $clr7;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 1rem;
+  ul {
+    display: flex;
+    flex-direction: column;
+    padding-inline: 1.5rem;
+
+    li {
+      display: flex;
+      gap: 15px;
+      height: 35px;
+      padding-right: 10px;
+      padding-top: 2px;
+      cursor: pointer;
+    }
+  }
+}

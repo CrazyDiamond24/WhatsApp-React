@@ -1,0 +1,40 @@
+.app-header {
+  background: $darkerGreen;
+  color: white;
+  height: 70px;
+  width: 100%;
+  padding: 10px;
+  display: flex;
+  
+  .user-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    img {
+      height: 50px;
+      width: 50px;
+      border-radius: 50%;
+      margin-left: 0;
+      cursor: pointer;
+      object-fit: cover;
+    }
+    .user-info-header {
+      display: flex;
+      gap: 275px;
+      white-space: nowrap;
+      align-items: center;
+  
+    }
+  }
+  .header-login {
+    margin-left: 275px;
+    &:hover {
+      text-decoration: none;
+      color: $secondaryClr;
+      font-weight: bold;
+    }
+  }
+  .user-profile-link {
+    cursor: pointer;
+  }
+}

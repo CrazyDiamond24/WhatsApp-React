@@ -1,0 +1,125 @@
+.emojis-container {
+  position: absolute;
+  left: 90px;
+
+  .emoji-icon-svg {
+    font-size: 1.4rem;
+    cursor: pointer;
+    transform: translateY(2.9px);
+
+    &.expanded {
+      transform: rotate(150deg);
+    }
+  }
+
+  .emojis-window {
+    position: absolute;
+    bottom: 40px;
+    left: 10px;
+    height: 250px;
+    overflow: scroll;
+    width: 400px;
+    background-color: #f1f1f1;
+    border-radius: 1rem;
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    padding: 10px;
+    padding-inline: 40px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    margin: 0;
+
+    .emoji-category {
+      margin-bottom: 10px;
+      font-size: 1.4rem;
+      cursor: pointer;
+      padding: 3px;
+      padding-inline: 7px;
+      border-radius: 5px;
+      position: absolute;
+      z-index: 999;
+      transform: translate(25px);
+      border-bottom: 1px solid rgba($clr5, 0.2);
+
+      &.selected {
+        background: linear-gradient(to bottom, rgba($primaryClr, 0.6), #fff);
+        border-radius: 5px;
+      }
+
+      position: sticky;
+      top: 0;
+      z-index: 1;
+      background-color: #f1f1f1;
+    }
+    .emoji-grid {
+      display: none;
+      gap: 10px;
+      position: absolute;
+      top: 50px;
+      left: 20px;
+
+      &.visible {
+        display: grid;
+      }
+
+      &.six-columns {
+        grid-template-columns: repeat(6, 1fr);
+      }
+
+      &.seven-columns {
+        grid-template-columns: repeat(7, 1fr);
+      }
+    }
+  }
+
+  .emoji {
+    font-size: 24px;
+    cursor: pointer;
+    padding: 5px;
+
+    &:hover {
+      background-color: #e0e0e0;
+    }
+  }
+}
+
+//GIF
+
+.giphy-container {
+  position: absolute;
+  left: 55px;
+  transform: translateY(3px);
+
+  .gif-icon-svg {
+    fill: black;
+    cursor: pointer;
+  }
+  .giphy-grid {
+    position: absolute;
+    padding: 15px;
+    bottom: 90px;
+    width: 400px;
+    max-height: 300px;
+    overflow-y: scroll;
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+    background-color: rgba($clr6, 0.2);
+    border-radius: 1rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  }
+
+  .giphy-grid img {
+    max-height: 100px;
+    flex-grow: 1;
+    object-fit: cover;
+  }
+
+  .giphy-search-input {
+    position: absolute;
+    bottom: 100%;
+    transform: translate(-10px, -5px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: left;
+  }
+}
