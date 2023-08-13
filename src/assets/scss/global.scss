@@ -7,6 +7,27 @@
   font-family: nunito-regular;
   src: url('https://res.cloudinary.com/dmox9pnnx/raw/upload/v1691421904/Nunito-Regular_ckhywa.ttf');
 }
+
+@font-face {
+  font-family: caveat;
+  src: url('../fonts/Caveat.ttf');
+}
+
+@font-face {
+  font-family: gloria-hallelujah;
+  src: url('../fonts/GloriaHallelujah-Regular.ttf');
+}
+
+@font-face {
+  font-family: marrieweather;
+  src: url('../fonts/Merriweather-Bold.ttf');
+}
+
+@font-face {
+  font-family: tangerine;
+  src: url('../fonts/Tangerine-Bold.ttf');
+}
+
 // Setup
 @import 'setup/variables';
 @import 'setup/functions';
@@ -35,8 +56,9 @@
 @import 'cmps/AppHeader';
 @import 'cmps/nice-button';
 @import 'cmps/Emojis';
-@import 'cmps/UserProfile.scss';
-@import 'cmps/ContactOptionsModal.scss';
+@import 'cmps/UserProfile';
+@import 'cmps/ContactOptionsModal';
+@import 'cmps/StoryLoader';
 
 @import 'cmps/Transcript.scss';
 @import 'cmps/MsgModal.scss';

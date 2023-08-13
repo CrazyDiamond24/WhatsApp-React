@@ -172,9 +172,10 @@
   .login-or-signup {
     font-size: 1.1rem;
   }
-  .login-signup-link {
+  .login-signup-link, .guest-link {
     text-decoration: underline;
     color: $primaryClr;
+    cursor: pointer;
   }
 }
 

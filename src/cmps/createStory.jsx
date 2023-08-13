@@ -6,8 +6,10 @@ import { useDispatch, useSelector } from 'react-redux'
 import { addStoryToUser } from '../store/actions/user.actions'
 import { FontFamily } from './FontFamily'
 import { ColorPick } from './svgs/ColorPick'
+import placeholderImg from '../assets/imgs/story-placeholder.png'
+import {StoryLoader} from '../cmps/StoryLoader'
 
-export function CreateStory() {
+export function CreateStory(props) {
   const [imageUrl, setImageUrl] = useState(null)
   const [text, setText] = useState('')
   const [textColor, setTextColor] = useState('black')
@@ -20,43 +22,50 @@ export function CreateStory() {
   const user = useSelector((storeState) => storeState.userModule.loggedInUser)
   const canvasRef = useRef(null)
   const colorModalRef = useRef(null)
-
   const dispatch = useDispatch()
+  const [isLoading, setIsLoading] = useState(false)
+
   useEffect(() => {
-    const canvas = canvasRef.current
-    const ctx = canvas.getContext('2d')
-
-    ctx.clearRect(0, 0, canvas.width, canvas.height)
-
-    if (imageUrl) {
-      const img = new Image()
-      img.crossOrigin = 'Anonymous'
-      img.onload = () => {
-        let aspectRatio = img.width / img.height
-        let newWidth = canvas.width
-        let newHeight = newWidth / aspectRatio
-    
-        if (newHeight > canvas.height) {
-          newHeight = canvas.height
-          newWidth = newHeight * aspectRatio
-        }
-    
-        let xOffset = (canvas.width - newWidth) / 2
-        let yOffset = (canvas.height - newHeight) / 2
-    
-        ctx.drawImage(img, xOffset, yOffset, newWidth, newHeight)
-        ctx.font = `${textWidth}px ${textFontFamily}`
-        ctx.fillStyle = textColor
-        ctx.fillText(text, textPos.x, textPos.y)
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext("2d");
+  
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  
+    let img = new Image();
+    img.crossOrigin = "Anonymous";
+    img.onload = () => {
+      const canvasAspectRatio = canvas.width / canvas.height;
+      const imageAspectRatio = img.width / img.height;
+  
+      let newWidth, newHeight;
+  
+      if (canvasAspectRatio > imageAspectRatio) {
+        newWidth = canvas.width;
+        newHeight = newWidth / imageAspectRatio;
+      } else {
+        newHeight = canvas.height;
+        newWidth = newHeight * imageAspectRatio;
       }
-      img.src = imageUrl
-    
+  
+      let xOffset = (canvas.width - newWidth) / 2;
+      let yOffset = (canvas.height - newHeight) / 2;
+  
+      ctx.drawImage(img, xOffset, yOffset, newWidth, newHeight);
+      ctx.font = `${textWidth}px ${textFontFamily}`;
+      ctx.fillStyle = textColor;
+      ctx.fillText(text, textPos.x, textPos.y);
+    };
+  
+    if (imageUrl) {
+      img.src = imageUrl;
     } else {
-      ctx.font = `${textWidth}px ${textFontFamily}`
-      ctx.fillStyle = textColor
-      ctx.fillText(text, textPos.x, textPos.y)
+      img.src = placeholderImg;
+      ctx.font = `${textWidth}px ${textFontFamily}`;
+      ctx.fillStyle = textColor;
+      ctx.fillText(text, textPos.x, textPos.y);
     }
-  }, [imageUrl, text, textPos, textColor, textWidth, textFontFamily])
+  }, [imageUrl, text, textPos, textColor, textWidth, textFontFamily]);
+  
 
   function handleMouseDown(e) {
     const rect = canvasRef.current.getBoundingClientRect()
@@ -87,6 +96,7 @@ export function CreateStory() {
   }
 
   async function handleImageUpload(ev) {
+    setIsLoading(true) // Start loading
     const file =
       ev.type === 'change' ? ev.target.files[0] : ev.dataTransfer.files[0]
     try {
@@ -95,6 +105,7 @@ export function CreateStory() {
     } catch (err) {
       console.log('err', err)
     }
+    setIsLoading(false) // End loading
   }
 
   function handleTextChange(e) {
@@ -119,11 +130,20 @@ export function CreateStory() {
   }
 
   function addToStory() {
-    if (!imageUrl || !text) {
-      return
+    console.log("addToStory called - Start");
+    console.log("imageUrl:", imageUrl);
+    console.log("text:", text);
+  
+    if (!imageUrl && !text) {
+      console.log("addToStory - No Image or Text");
+      return;
     }
-    const canvasUrl = canvasRef.current.toDataURL('image/png')
-    dispatch(addStoryToUser(canvasUrl))
+    const canvasUrl = canvasRef.current.toDataURL('image/png');
+    console.log("addToStory - Canvas URL:", canvasUrl);
+    dispatch(addStoryToUser(canvasUrl));
+    console.log("addToStory - Dispatched action");
+    handleClose(); // Call the handleClose function here
+    console.log("addToStory - End");
   }
 
   useEffect(() => {
@@ -142,47 +162,69 @@ export function CreateStory() {
       document.removeEventListener('mousedown', handleClickOutside)
     }
   }, [])
-
+  function handleClose() {
+    console.log("handleClose called - Start");
+    console.log("props.onClose:", props.onClose);
+    props.onClose();
+    console.log("handleClose called - End");
+  }
   return (
-    <div className='create-story'>
-      <h1>Create Story</h1>
-      <input
-        placeholder='choose file'
-        type='file'
-        onChange={handleImageUpload}
-        className='hidden'
-      />
-      <input type='text' value={text} onChange={handleTextChange} />
-      <div className='edit-controls-container'>
-        <span
-          onClick={handleShowColorModal}
-          role='img'
-          aria-label='color-picker'
-        >
-          <ColorPick className='color-pick-icon' />
-        </span>
-        <FontFamily onSelectFontFamily={handleFontFamilySelect} />
-      </div>
-      <canvas
-        ref={canvasRef}
-        width={270} 
-        height={480} 
-        onMouseDown={handleMouseDown}
-        onMouseUp={handleMouseUp}
-        onMouseMove={handleMouseMove}
-      />
-      {showColorModal && (
-        <div ref={colorModalRef}>
-          <CanvasColorPicker
-            onColorSelect={handleColorSelect}
-            onWidthSelect={handleWidthSelect}
-            show={true}
-            important={false}
-          />
-        </div>
-      )}
+    <>
+      <div className='overlay'></div>
+      <div className='create-story'>
+      {isLoading && <StoryLoader />}
+        <button title='Close' className='close-button' onClick={handleClose}>
+          X
+        </button>
+        <input
+          placeholder='choose file'
+          type='file'
+          title='Upload image'
+          onChange={handleImageUpload}
+          className={imageUrl ? 'hidden' : 'story-file-upload'}
+        />
 
-      <button onClick={addToStory}>Add to Story</button>
-    </div>
+        <input
+          placeholder='Add text'
+          type='text'
+          value={text}
+          onChange={handleTextChange}
+        />
+
+<div className='edit-controls-container' style={{ pointerEvents: imageUrl ? 'auto' : 'none' }}>
+  <span
+    onClick={imageUrl ? handleShowColorModal : null}
+    role='img'
+    aria-label='color-picker'
+  >
+    <ColorPick className='color-pick-icon' />
+  </span>
+  <FontFamily onSelectFontFamily={imageUrl ? handleFontFamilySelect : null} />
+</div>
+
+        <canvas
+          ref={canvasRef}
+          width={270}
+          height={480}
+          onMouseDown={handleMouseDown}
+          onMouseUp={handleMouseUp}
+          onMouseMove={handleMouseMove}
+        />
+        {showColorModal && (
+          <div ref={colorModalRef}>
+            <CanvasColorPicker
+              onColorSelect={handleColorSelect}
+              onWidthSelect={handleWidthSelect}
+              show={true}
+              important={false}
+            />
+          </div>
+        )}
+
+        <button className='add-story-button' onClick={addToStory}>
+          Add to Story
+        </button>
+      </div>
+    </>
   )
 }

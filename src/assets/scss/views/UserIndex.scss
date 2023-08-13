@@ -8,12 +8,11 @@
     background: $lighterGreen;
     position: relative;
   }
+
   .svg-input-container {
     position: relative;
     margin: rem(10px) 0 0 rem(10px);
     .search-input {
-      border: 1px solid black;
-      border-radius: 4px;
       height: 30px;
       padding: 8px 30px;
       text-overflow: ellipsis;
@@ -21,6 +20,10 @@
       transition: all 0.3s ease-in;
       width: 0;
       opacity: 0;
+      margin-block-start:5px;
+      border: 2px solid transparent;
+      border-radius: 15px; 
+      background-color: #f5f5f5; 
       &.open {
         animation: inputExpand 0.3s forwards;
         opacity: 1;
@@ -33,7 +36,7 @@
       }
     }
     .search-icon-svg.icon-open {
-      fill: black;
+      fill: #fff;
     }
     
     .search-icon-svg.icon-close {
@@ -41,14 +44,30 @@
     }
     
     .search-svg {
-      margin-block-start: 3px;
-      margin-inline-start: 5px;
+      margin-block-start: -17px;
+      margin-inline-start: -5px;
       position: absolute;
       z-index: 1;
     }
   }
   .add-contact {
-    margin: 50px 0 10px 10px;
+   margin-block-start: 5px;
+   margin-inline-end: 5px;
+   button {
+    background: transparent;
+    outline: none;
+    border: none;
+    color: $primaryClr;
+
+    &:hover {
+      color: darken($primaryClr, 10%);
+    }
+   }
+  }
+  .action-container {
+    display: flex;
+    justify-content: space-between; 
+    align-items: center;
   }
 }
 
@@ -85,5 +104,48 @@
   }
   100% {
     width: 0;
+  }
+}
+
+
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; // to make sure it's on top of other elements
+}
+
+.modal-container {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  width: 100%;
+  position: relative;
+
+  .close-btn-modal {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: transparent;
+    border: none;
+    color: $primaryClr;
+    font-weight: bolder;
+    font-size: 16px;
+    cursor: pointer;
+    outline: none;
+
+    &:hover {
+      color: darken($primaryClr, 10%);
+      transform: scale(1.1);
+    }
   }
 }

@@ -1,16 +1,16 @@
 .color-picker-canvas-overlay {
   width: max-content;
-  z-index: 9999;
   background-color: white;
   padding: 20px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
   position: absolute;
-  top: 148px;
-  left: -50px;
-  &.important {
-    top: 0;
-    right: 0;
-  }
+  top: 135px;
+  left: -120px;
+  border-radius: 1rem;
+  // &.important {
+  //   top: 0;
+  //   right: 0;
+  // }
   .color-canvas-picker {
     display: grid;
     grid-template-columns: repeat(7, 1fr);

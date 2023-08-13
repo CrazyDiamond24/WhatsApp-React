@@ -66,6 +66,9 @@ export function UserProfile({ show, closeUserProfile }) {
     e.stopPropagation()
     setShowModal(!showModal)
   }
+  function handleCloseModal() {
+    setShowModal(false);
+  }
 
   async function handelFile(ev) {
     const file =
@@ -225,7 +228,8 @@ export function UserProfile({ show, closeUserProfile }) {
         </div>
       </div>
 
-      {showModal && <CreateStory />}
+      {showModal && <CreateStory onClose={handleCloseModal} />}
+
     </section>
   )
 }

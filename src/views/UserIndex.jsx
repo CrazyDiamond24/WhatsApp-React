@@ -8,6 +8,9 @@ import { ChatWindow } from './ChatWindow'
 import { AppHeader } from '../cmps/AppHeader'
 import { UserProfile } from '../cmps/UserProfile'
 import { ReactComponent as SearchIcon } from '../assets/imgs/searchIcon.svg'
+import { AddContactIcon } from '../cmps/svgs/AddContactIcon'
+import { ReusableModal } from '../cmps/ReusableModal'
+import { AddContact } from './AddContact'
 
 export function UserIndex(props) {
   const [filterBy, setFilterBy] = useState('')
@@ -16,6 +19,7 @@ export function UserIndex(props) {
   const [showWelcome, setShowWelcome] = useState(true)
   const [activeUserChat, setActiveUserChat] = useState(false)
   const [showCamera, setShowCamera] = useState(true)
+  const [isAddContactModalOpen, setIsAddContactModalOpen] = useState(false)
 
   const user = useSelector((storeState) => {
     return storeState.userModule.selectedUser
@@ -32,6 +36,13 @@ export function UserIndex(props) {
     // set the active user here...
     setShowWelcome(false)
     setActiveUserChat(true)
+  }
+  function openAddContactModal() {
+    setIsAddContactModalOpen(true)
+  }
+
+  function closeAddContactModal() {
+    setIsAddContactModalOpen(false)
   }
 
   useEffect(() => {
@@ -69,42 +80,54 @@ export function UserIndex(props) {
   // if (!users) return <div>Loading...</div>
 
   return (
-    <section className="home-page">
+    <section className='home-page'>
       {!isShowProfile ? (
-        <section className="contact-list">
+        <section className='contact-list'>
           <AppHeader
             openWelcomeChat={openWelcomeChat}
             showProfile={handleShowProfile}
           />
-          <div className="svg-input-container">
-            <span
-              className="pointer search-svg"
-              onClick={() => handleOpenInput()}
-            >
-              <SearchIcon
-                className={`search-icon-svg ${
-                  isInputOpen ? 'icon-open' : 'icon-close'
-                }`}
+
+          <div className='action-container'>
+            <div className='svg-input-container'>
+              <span
+                className='pointer search-svg'
+                onClick={() => handleOpenInput()}
+              >
+                <SearchIcon
+                  className={`search-icon-svg ${
+                    isInputOpen ? 'icon-open' : 'icon-close'
+                  }`}
+                />
+              </span>
+              <input
+                className={`search-input ${isInputOpen ? 'open' : 'close'}`}
+                type='text'
+                placeholder='Search contacts or conversations...'
+                value={filterBy}
+                onChange={(e) => handleInput(e)}
               />
-            </span>
-            <input
-              className={`search-input ${isInputOpen ? 'open' : 'close'}`}
-              type="text"
-              placeholder="Search contacts or conversations..."
-              value={filterBy}
-              onChange={(e) => handleInput(e)}
-            />
-            {/* <UserFilter filterBy={filterBy} onChangeFilter={onChangeFilter} /> */}
+            </div>
+            
+            <div className='add-contact'>
+              <button onClick={openAddContactModal}>
+                <AddContactIcon />
+              </button>
+            </div>
+            <ReusableModal
+              isOpen={isAddContactModalOpen}
+              onClose={closeAddContactModal}
+            >
+              <AddContact onAdded={closeAddContactModal} />
+            </ReusableModal>
           </div>
-          <div className="add-contact">
-            <Link to="/user/edit">Add contact</Link>
-          </div>
+
           <UserList
             openUserChat={openUserChat}
             filterBy={filterBy}
             onRemoveUser={onRemoveUser}
           />
-          <div className="accessory-list"></div>
+          <div className='accessory-list'></div>
         </section>
       ) : (
         <UserProfile

@@ -36,6 +36,7 @@ export function addContactToUser(name) {
 }
 
 export function addStoryToUser(url) {
+  console.log('story action' , url  )
   return async (dispatch, getState) => {
     try {
       const loggedInUser = getState().userModule.loggedInUser
