@@ -11,10 +11,11 @@ export const authService = {
   getUsers,
   getById,
   remove,
+  signupGuest,
 }
 
 window.authService = authService
-signupGuest()
+// signupGuest()
 function getUsers() {
   return httpService.get(`user`)
 }

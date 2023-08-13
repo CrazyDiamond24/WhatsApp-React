@@ -1,12 +1,12 @@
 .color-picker-canvas-overlay {
   width: max-content;
-  z-index: 999;
+  z-index: 9999;
   background-color: white;
   padding: 20px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
   position: absolute;
-  top: 60px;
-  right: 100px;
+  top: 148px;
+  left: -50px;
   &.important {
     top: 0;
     right: 0;

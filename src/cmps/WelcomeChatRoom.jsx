@@ -1,12 +1,39 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { ReactComponent as TextingSVG } from '../assets/imgs/texting.svg'
 import { Link } from 'react-router-dom'
-
+import { authService } from '../services/auth.service'
+import { doLogin } from '../store/actions/user.actions'
 export function WelcomeChatRoom() {
   const loggedInUser = useSelector((storeState) => {
     return storeState.userModule.loggedInUser
   })
+
+  const dispatch = useDispatch()
+
+  function continueAsGuest() {
+    dispatch(
+      doLogin({
+        username: 'guest',
+        password: '3256dsaht8eh4e433$%4#$3$',
+        fullName: 'guest',
+        img: 'https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg',
+        status: 'guest mode',
+        story: [],
+        groups: [],
+        contacts: [],
+        msgs: [],
+        userPref: {
+          fontSize: 16,
+          fontColor: '#000000',
+          headerBgColor: '#ffffff',
+          fontFamily: 'Impact, Haettenschweiler, Arial Narrow Bold, sans-serif',
+          backgroundImage: '',
+        },
+      })
+    )
+  }
+
   return (
     <section className="welcome-chatroom">
       <div className="logo-without-word-container">
@@ -24,7 +51,7 @@ export function WelcomeChatRoom() {
           amusement by conversing with our creative AI bots!
         </p>
         <TextingSVG className="text-welcome-svg" />
-        {loggedInUser._id !== '64d788b6e9633df901bed7ed' ? (
+        {loggedInUser ? (
           <p>Welcome back!</p>
         ) : (
           <p className="login-or-signup">
@@ -36,6 +63,9 @@ export function WelcomeChatRoom() {
             <Link to="/signup" className="login-signup-link">
               sign up
             </Link>{' '}
+            <span>
+              or continue as <a onClick={continueAsGuest}>guest</a>
+            </span>
             if you don't have an account.
           </p>
         )}
