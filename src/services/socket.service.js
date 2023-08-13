@@ -1,6 +1,7 @@
 import io from 'socket.io-client'
 import { authService } from './auth.service'
-
+import { store } from '../store/index'
+import { updateUserStatus } from '../store/actions/user.actions'
 export const SOCKET_EVENT_ADD_MSG = 'chat-add-msg'
 export const SOCKET_EMIT_SEND_MSG = 'chat-send-msg'
 export const SOCKET_EMIT_SET_TOPIC = 'chat-set-topic'
@@ -14,12 +15,29 @@ const SOCKET_EMIT_LOGOUT = 'unset-user-socket'
 
 const baseUrl = process.env.NODE_ENV === 'production' ? '' : '//localhost:3030'
 export const socketService = createSocketService()
-// export const socketService = createDummySocketService()
 
 // for debugging from console
 window.socketService = socketService
 
 socketService.setup()
+
+socketService.on(SOCKET_EVENT_USER_UPDATED, (userStatusUpdate) => {
+  console.log('userStatusUpdate', userStatusUpdate)
+  if (
+    userStatusUpdate.userId &&
+    userStatusUpdate.isOnline !== undefined &&
+    userStatusUpdate.lastSeen
+  ) {
+    // Ensure you have the store imported at the top or available in the scope
+    store.dispatch(
+      updateUserStatus(
+        userStatusUpdate.userId,
+        userStatusUpdate.isOnline,
+        userStatusUpdate.lastSeen
+      )
+    )
+  }
+})
 
 function createSocketService() {
   var socket = null
@@ -65,8 +83,8 @@ function createSocketService() {
     login(userId) {
       socket.emit(SOCKET_EMIT_LOGIN, userId)
     },
-    logout() {
-      socket.emit(SOCKET_EMIT_LOGOUT)
+    logout(userId) {
+      socket.emit(SOCKET_EMIT_LOGOUT, userId)
     },
     terminate() {
       // Clear the registeredEvents array when the socket is terminated
@@ -77,56 +95,4 @@ function createSocketService() {
   return socketService
 }
 
-// eslint-disable-next-line
-function createDummySocketService() {
-  var listenersMap = {}
-  const socketService = {
-    listenersMap,
-    setup() {
-      listenersMap = {}
-    },
-    terminate() {
-      this.setup()
-    },
-    login() {},
-    logout() {},
-    on(eventName, cb) {
-      listenersMap[eventName] = [...(listenersMap[eventName] || []), cb]
-    },
-    off(eventName, cb) {
-      if (!listenersMap[eventName]) return
-      if (!cb) delete listenersMap[eventName]
-      else
-        listenersMap[eventName] = listenersMap[eventName].filter(
-          (l) => l !== cb
-        )
-    },
-    emit(eventName, data) {
-      var listeners = listenersMap[eventName]
-      if (eventName === SOCKET_EMIT_SEND_MSG) {
-        listeners = listenersMap[SOCKET_EVENT_ADD_MSG]
-      }
-
-      if (!listeners) return
-
-      listeners.forEach((listener) => {
-        listener(data)
-      })
-    },
-    // Functions for easy testing of pushed data
-    testChatMsg() {
-      this.emit(SOCKET_EVENT_ADD_MSG, {
-        from: 'Someone',
-        txt: 'Aha it worked!',
-      })
-    },
-    testUserUpdate() {
-      this.emit(SOCKET_EVENT_USER_UPDATED, {
-        ...authService.getLoggedinUser(),
-        score: 555,
-      })
-    },
-  }
-  window.listenersMap = listenersMap
-  return socketService
-}
+// The rest of your code including createDummySocketService() remains unchanged

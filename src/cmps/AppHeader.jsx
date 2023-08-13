@@ -3,12 +3,12 @@ import { Link, useNavigate } from 'react-router-dom'
 
 import { useEffect, useState } from 'react'
 import { UserPref } from './UserPref'
-import { updateLastSeen } from '../store/actions/user.actions'
+import { doLogout, updateLastSeen } from '../store/actions/user.actions'
 
 export function AppHeader({ showProfile, openWelcomeChat }) {
   const [showModal, setShowModal] = useState(false)
   const user = useSelector((storeState) => storeState.userModule.loggedInUser)
-  const [editedUser, setEditedUser] = useState(user)
+
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
@@ -16,24 +16,14 @@ export function AppHeader({ showProfile, openWelcomeChat }) {
     setShowModal(!showModal)
   }
 
-  useEffect(() => {
-    if (editedUser) {
-      dispatch(updateLastSeen(editedUser))
-    }
-  }, [editedUser, dispatch])
-
   function handelLogout() {
-    setEditedUser((prevUser) => ({
-      ...prevUser,
-      lastSeen: Date.now(),
-    }))
-    navigate('/')
+    dispatch(doLogout(user._id))
   }
 
   return (
     <header className="app-header">
-      {/* <button onClick={handelLogout}>Logout</button>
-      <span
+      <button onClick={handelLogout}>Logout</button>
+      {/* <span
         onClick={showPrefsModal}
         dangerouslySetInnerHTML={{
           __html: getSpotifySvg('plusWhatsapp'),
