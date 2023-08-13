@@ -26,6 +26,26 @@
       background-color: rgb($secondaryClr, 0.4);
       object-fit: cover;
     }
+    .user-details {
+      display: flex;
+      flex-direction: column;
+      .user-fullname{
+        transform: translateY(10px);
+      }
+    }
+  
+    .status-info {
+      font-size: 11px; 
+      color: $clr8; 
+      transform: translate(-2px);
+    }
+  
+
+    .online-status {
+      color: green;
+      font-size: 12px;
+      font-weight: bold;
+    }
   }
 
   .conversation-container {

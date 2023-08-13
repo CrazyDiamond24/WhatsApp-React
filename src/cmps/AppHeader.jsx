@@ -22,7 +22,6 @@ export function AppHeader({ showProfile, openWelcomeChat }) {
 
   return (
     <header className="app-header">
-      <button onClick={handelLogout}>Logout</button>
       {/* <span
         onClick={showPrefsModal}
         dangerouslySetInnerHTML={{
@@ -34,18 +33,22 @@ export function AppHeader({ showProfile, openWelcomeChat }) {
           <div className="user-info-header">
             {user.img ? (
               <>
+              <div className='user-actions-header'>
                 <img
                   onClick={showProfile}
                   src={user.img}
                   alt={user.username}
                   title="Profile"
                 />
+                <button onClick={handelLogout}>Logout</button>
+                </div>
                 <img
                   onClick={openWelcomeChat}
                   src="https://res.cloudinary.com/dmox9pnnx/image/upload/v1691422190/Logo-without-word_hoknvz.png"
                   alt="logo"
                   className="logo-without-word"
                 />
+                
               </>
             ) : (
               <img
@@ -62,6 +65,7 @@ export function AppHeader({ showProfile, openWelcomeChat }) {
               alt="logo"
               className="logo-without-word"
             />
+            
             <Link className="header-login" to="/login">
               Login
             </Link>

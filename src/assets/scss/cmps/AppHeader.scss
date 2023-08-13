@@ -23,15 +23,46 @@
       gap: 275px;
       white-space: nowrap;
       align-items: center;
-  
     }
+    .user-actions-header button {
+      position: absolute;
+      top: 15px;
+      left: 250px;
+      background: linear-gradient(to right, $primaryClr, darken($primaryClr, 10%));
+      border: none;
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background 0.3s, transform 0.3s;
+    
+      &:hover {
+        background: linear-gradient(to right, darken($primaryClr, 10%), $primaryClr);
+        transform: scale(1.05);
+      }
+    
+      &:focus {
+        outline: none;
+      }
+    }
+    
   }
   .header-login {
-    margin-left: 275px;
+    margin-left: 260px;
+    background: linear-gradient(to right, $primaryClr, darken($primaryClr, 10%));
+    padding: 10px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    text-decoration: none;
+    color: #fff;
+    font-weight: bold;
+    transition: background 0.3s, transform 0.3s;
+    font-size: 0.9rem;
+  
     &:hover {
-      text-decoration: none;
-      color: $secondaryClr;
-      font-weight: bold;
+      background: linear-gradient(to right, darken($primaryClr, 10%), $primaryClr);
+      transform: scale(1.05);
     }
   }
   .user-profile-link {
