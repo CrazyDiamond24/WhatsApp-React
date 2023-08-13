@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { setCurrUser } from '../store/actions/user.actions'
 import { ContactOptionsModal } from './ContactOptionsModal'
 import { PhotoIcon } from './svgs/PhotoIcon'
+import { msgService } from '../services/msg.service'
 
 export function UserPreview({
   user,
@@ -74,6 +75,10 @@ export function UserPreview({
     setShowModal(false)
   }
 
+  function timestamp(time) {
+    return msgService.getTimestamp(time)
+  }
+
   return (
     <article
       className={`contact-preview ${isActiveContact ? 'active' : ''}`}
@@ -81,12 +86,12 @@ export function UserPreview({
       onContextMenu={showContactModal}
     >
       <img
-        className='contact-preview-image'
+        className="contact-preview-image"
         src={user.img}
         alt={user.fullName}
       />
-      <div className='mini-contant'>
-        <div className='contact-preview-info'>
+      <div className="mini-contant">
+        <div className="contact-preview-info">
           <h2>{user.fullName}</h2>
           <h3
             className={`last-msg-content ${
@@ -98,7 +103,12 @@ export function UserPreview({
             {lastMsgContent}
           </h3>
         </div>
-        {unreadCount > 0 && <span className='unread-count'>{unreadCount}</span>}
+        {user.isOnline ? (
+          <h1>onLine</h1>
+        ) : (
+          <div>Last Seen: {timestamp(user.lastSeen)}</div>
+        )}
+        {unreadCount > 0 && <span className="unread-count">{unreadCount}</span>}
       </div>
       {showModal && (
         <ContactOptionsModal

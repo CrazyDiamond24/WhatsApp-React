@@ -23,12 +23,13 @@ export function ChatWindow({ showWelcome }) {
   const [modalPosition, setModalPosition] = useState({ top: 0, left: 0 })
   const [recipientIsRecording, setUserIsRecording] = useState(false)
   const [recipientIsTyping, setUserIsTyping] = useState(false)
-  const [onlineStatus, setOnlineStatus] = useState('')
   const [isIconRotated, setIsIconRotated] = useState(false)
+  const [onlineStatus, setOnlineStatus] = useState(false)
   const [showAiModal, setShowAiModal] = useState(false)
   const loggedInUser = useSelector((storeState) => {
     return storeState.userModule.loggedInUser
   })
+
   const user = useSelector((storeState) => {
     return storeState.userModule.selectedUser
   })
@@ -190,6 +191,7 @@ export function ChatWindow({ showWelcome }) {
     socketService.emit(SOCKET_EMIT_SEND_MSG, contentToSend)
     setMsgContent('')
   }
+  console.log('onlineStatus hadash', onlineStatus)
 
   function handleShowModal(e) {
     e.stopPropagation()
@@ -220,8 +222,8 @@ export function ChatWindow({ showWelcome }) {
           <div className="header-area">
             <img src={user?.img} alt={user?.username} />
             <h2>{user?.fullName}</h2>
-            {onlineStatus === 'Online' ? (
-              <div>Online</div>
+            {user.isOnline ? (
+              <h1>onLine</h1>
             ) : (
               <div>Last Seen: {timestamp(user.lastSeen)}</div>
             )}

@@ -18,6 +18,7 @@ import {
   REMOVE_CONTACT,
   EDIT_USER,
   EDIT_LOGGEDIN_USER,
+  UPDATE_USER_STATUS,
 } from '../reducers/user.reducer'
 
 export function addContactToUser(name) {
@@ -71,9 +72,9 @@ export function doLogin(userCred) {
   return async (dispatch, getState) => {
     try {
       const user = await authService.login(userCred)
-      user.isOnline = true
-
-      socketService.login(user._id) // Log in to the socket with the user's ID
+      // user.isOnline = true
+      // console.log('user', user)
+      socketService.login(user._id)
       const action = {
         type: LOGIN,
         user,
@@ -110,10 +111,11 @@ export function getUser() {
   }
 }
 
-export function doLogout() {
+export function doLogout(userId) {
   return async (dispatch, getState) => {
     try {
       await authService.logout()
+      socketService.logout(userId)
       const action = {
         type: LOGOUT,
       }
@@ -280,5 +282,14 @@ export function updateLastSeen(user) {
     } catch (error) {
       showErrorMsg(`Cannot update last seen `)
     }
+  }
+}
+
+export function updateUserStatus(userId, isOnline, lastSeen) {
+  return async (dispatch) => {
+    try {
+      const action = { type: UPDATE_USER_STATUS, userId, isOnline, lastSeen }
+      dispatch(action)
+    } catch (error) {}
   }
 }
