@@ -29,15 +29,19 @@
     .user-details {
       display: flex;
       flex-direction: column;
+      position: relative;
       .user-fullname{
-        transform: translateY(10px);
+        position:absolute;
+        width: max-content;
+        top: -15px;
+        left: 0.5px;
       }
     }
   
     .status-info {
       font-size: 11px; 
       color: $clr8; 
-      transform: translate(-2px);
+      transform: translate(2px,15px);
     }
   
 
