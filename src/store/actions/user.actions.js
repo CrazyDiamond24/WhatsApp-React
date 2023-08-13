@@ -17,6 +17,7 @@ import {
   UPDATE_MSG_CONTENT,
   REMOVE_CONTACT,
   EDIT_USER,
+  EDIT_LOGGEDIN_USER,
 } from '../reducers/user.reducer'
 
 export function addContactToUser(name) {
@@ -226,7 +227,7 @@ export function blockUnblockContact(actionType, contactId, loggedInUserId) {
           contactId,
           loggedInUserId
         )
-      const LoggedInUserAction = { type: EDIT_USER, user: updatedLoggedInUser }
+      const LoggedInUserAction = { type: EDIT_LOGGEDIN_USER, user: updatedLoggedInUser }
       dispatch(LoggedInUserAction)
       const userAction = { type: EDIT_USER, user: updatedUser }
       dispatch(userAction)

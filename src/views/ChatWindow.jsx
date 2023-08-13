@@ -44,8 +44,8 @@ export function ChatWindow({ showWelcome }) {
       ? msgService.filterMsgs(user, loggedInUser, allMsgs)
       : null
 
-  const [isUserBlocked, setIsUserBlocked] = useState(false)
   const amIblocked = user?.blockedContcats?.includes(loggedInUser?._id)
+  const isUserBlocked = loggedInUser?.blockedContcats?.includes(user?._id)
 
   useEffect(() => {
     const container = document.querySelector('.conversation-container')
@@ -86,22 +86,6 @@ export function ChatWindow({ showWelcome }) {
       socketService.off('chat-add-msg', handleReceivedMsg)
     }
   }, [dispatch])
-
-  // need to make a function at the socket.service
-  useEffect(() => {
-    const handelOnline = (userStatus) => {
-      if (userStatus) {
-        const userLog = userStatus.filter((u) => u.id === user?._id)
-
-        setOnlineStatus(userStatus.isOnline ? 'Online' : '')
-      }
-    }
-    socketService.on('online-users', handelOnline)
-
-    return () => {
-      socketService.off('online-users', handelOnline)
-    }
-  }, [user?._id])
 
   useEffect(() => {
     let typingTimeout
@@ -157,6 +141,7 @@ export function ChatWindow({ showWelcome }) {
 
   function handelSendMsg(e) {
     e.preventDefault()
+
     if (
       !loggedInUser ||
       !user ||

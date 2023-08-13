@@ -20,6 +20,7 @@ export const UPDATE_MSG_CONTENT = 'UPDATE_MSG_CONTENT'
 export const UNBLOCK_USER = 'UNBLOCK_USER'
 export const BLOCK_USER = 'BLOCK_USER'
 export const EDIT_USER = 'EDIT_USER'
+export const EDIT_LOGGEDIN_USER = 'EDIT__LOGGEDINUSER'
 
 const INITIAL_STATE = {
   loginError: '',
@@ -53,6 +54,11 @@ export function userReducer(state = INITIAL_STATE, action = {}) {
         users: state.users.map((user) =>
           user._id === action.user._id ? action.user : user
         ),
+      }
+    case EDIT_LOGGEDIN_USER:
+      return {
+        ...state,
+        loggedInUser: action.user
       }
     case LOGIN_ERROR:
       return {
