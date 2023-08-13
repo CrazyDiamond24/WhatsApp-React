@@ -23,12 +23,13 @@ export function ChatWindow({ showWelcome }) {
   const [modalPosition, setModalPosition] = useState({ top: 0, left: 0 })
   const [recipientIsRecording, setUserIsRecording] = useState(false)
   const [recipientIsTyping, setUserIsTyping] = useState(false)
-  const [onlineStatus, setOnlineStatus] = useState('')
   const [isIconRotated, setIsIconRotated] = useState(false)
+  const [onlineStatus, setOnlineStatus] = useState(false)
   const [showAiModal, setShowAiModal] = useState(false)
   const loggedInUser = useSelector((storeState) => {
     return storeState.userModule.loggedInUser
   })
+
   const user = useSelector((storeState) => {
     return storeState.userModule.selectedUser
   })
@@ -44,8 +45,8 @@ export function ChatWindow({ showWelcome }) {
       ? msgService.filterMsgs(user, loggedInUser, allMsgs)
       : null
 
-  const [isUserBlocked, setIsUserBlocked] = useState(false)
   const amIblocked = user?.blockedContcats?.includes(loggedInUser?._id)
+  const isUserBlocked = loggedInUser?.blockedContcats?.includes(user?._id)
 
   useEffect(() => {
     const container = document.querySelector('.conversation-container')
@@ -86,22 +87,6 @@ export function ChatWindow({ showWelcome }) {
       socketService.off('chat-add-msg', handleReceivedMsg)
     }
   }, [dispatch])
-
-  // need to make a function at the socket.service
-  useEffect(() => {
-    const handelOnline = (userStatus) => {
-      if (userStatus) {
-        const userLog = userStatus.filter((u) => u.id === user?._id)
-
-        setOnlineStatus(userStatus.isOnline ? 'Online' : '')
-      }
-    }
-    socketService.on('online-users', handelOnline)
-
-    return () => {
-      socketService.off('online-users', handelOnline)
-    }
-  }, [user?._id])
 
   useEffect(() => {
     let typingTimeout
@@ -157,6 +142,7 @@ export function ChatWindow({ showWelcome }) {
 
   function handelSendMsg(e) {
     e.preventDefault()
+
     if (
       !loggedInUser ||
       !user ||
@@ -205,6 +191,7 @@ export function ChatWindow({ showWelcome }) {
     socketService.emit(SOCKET_EMIT_SEND_MSG, contentToSend)
     setMsgContent('')
   }
+  console.log('onlineStatus hadash', onlineStatus)
 
   function handleShowModal(e) {
     e.stopPropagation()
@@ -235,8 +222,8 @@ export function ChatWindow({ showWelcome }) {
           <div className="header-area">
             <img src={user?.img} alt={user?.username} />
             <h2>{user?.fullName}</h2>
-            {onlineStatus === 'Online' ? (
-              <div>Online</div>
+            {user.isOnline ? (
+              <h1>onLine</h1>
             ) : (
               <div>Last Seen: {timestamp(user.lastSeen)}</div>
             )}

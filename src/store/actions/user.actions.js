@@ -17,6 +17,8 @@ import {
   UPDATE_MSG_CONTENT,
   REMOVE_CONTACT,
   EDIT_USER,
+  EDIT_LOGGEDIN_USER,
+  UPDATE_USER_STATUS,
 } from '../reducers/user.reducer'
 
 export function addContactToUser(name) {
@@ -71,9 +73,9 @@ export function doLogin(userCred) {
   return async (dispatch, getState) => {
     try {
       const user = await authService.login(userCred)
-      user.isOnline = true
-
-      socketService.login(user._id) // Log in to the socket with the user's ID
+      // user.isOnline = true
+      // console.log('user', user)
+      socketService.login(user._id)
       const action = {
         type: LOGIN,
         user,
@@ -110,10 +112,11 @@ export function getUser() {
   }
 }
 
-export function doLogout() {
+export function doLogout(userId) {
   return async (dispatch, getState) => {
     try {
       await authService.logout()
+      socketService.logout(userId)
       const action = {
         type: LOGOUT,
       }
@@ -227,7 +230,7 @@ export function blockUnblockContact(actionType, contactId, loggedInUserId) {
           contactId,
           loggedInUserId
         )
-      const LoggedInUserAction = { type: EDIT_USER, user: updatedLoggedInUser }
+      const LoggedInUserAction = { type: EDIT_LOGGEDIN_USER, user: updatedLoggedInUser }
       dispatch(LoggedInUserAction)
       const userAction = { type: EDIT_USER, user: updatedUser }
       dispatch(userAction)
@@ -280,5 +283,14 @@ export function updateLastSeen(user) {
     } catch (error) {
       showErrorMsg(`Cannot update last seen `)
     }
+  }
+}
+
+export function updateUserStatus(userId, isOnline, lastSeen) {
+  return async (dispatch) => {
+    try {
+      const action = { type: UPDATE_USER_STATUS, userId, isOnline, lastSeen }
+      dispatch(action)
+    } catch (error) {}
   }
 }
