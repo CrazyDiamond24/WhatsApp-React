@@ -44,6 +44,7 @@ export function ChatWindow({ showWelcome }) {
     loggedInUser && user
       ? msgService.filterMsgs(user, loggedInUser, allMsgs)
       : null
+  console.log('please render after clear')
 
   const amIblocked = user?.blockedContcats?.includes(loggedInUser?._id)
   const isUserBlocked = loggedInUser?.blockedContcats?.includes(user?._id)
@@ -217,21 +218,23 @@ export function ChatWindow({ showWelcome }) {
 
   return (
     <div className="chat-window" ref={animationParent}>
-    {user && !showWelcome ? (
-      <>
-        <div className="header-area">
-          <img src={user?.img} alt={user?.username} />
-          <div className="user-details">
-            <h2 className='user-fullname'>{user?.fullName}</h2>
-            {user.isOnline ? (
-              <div className="online-status">Online</div>
-            ) : (
-              <div className="status-info">Last Seen: {timestamp(user.lastSeen)}</div>
-            )}
+      {user && !showWelcome ? (
+        <>
+          <div className="header-area">
+            <img src={user?.img} alt={user?.username} />
+            <div className="user-details">
+              <h2 className="user-fullname">{user?.fullName}</h2>
+              {user.isOnline ? (
+                <div className="online-status">Online</div>
+              ) : (
+                <div className="status-info">
+                  Last Seen: {timestamp(user.lastSeen)}
+                </div>
+              )}
+            </div>
+            {recipientIsTyping && <div>is typing...</div>}
+            {recipientIsRecording && <div>is recording...</div>}
           </div>
-          {recipientIsTyping && <div>is typing...</div>}
-          {recipientIsRecording && <div>is recording...</div>}
-        </div>
           <ul className="conversation-container flex" ref={animationParent}>
             <ConverstationList
               msgs={msgs}

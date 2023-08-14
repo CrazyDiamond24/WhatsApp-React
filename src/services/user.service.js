@@ -43,7 +43,7 @@ async function editLastSeen(user) {
 async function clearChat(targetUserId, loggedInUserId) {
   const data = { targetUserId, loggedInUserId }
   const response = await httpService.post(`contact/clear-chat`, data)
-  return response.data
+  return response
 }
 
 async function blockUnblockUser(actionType, userId, loggedInUserId) {
