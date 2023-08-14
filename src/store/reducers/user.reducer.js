@@ -22,6 +22,7 @@ export const BLOCK_USER = 'BLOCK_USER'
 export const EDIT_USER = 'EDIT_USER'
 export const EDIT_LOGGEDIN_USER = 'EDIT__LOGGEDINUSER'
 export const UPDATE_USER_STATUS = 'UPDATE_USER_STATUS'
+export const CLEAR_CHAT = 'CLEAR_CHAT'
 
 const INITIAL_STATE = {
   loginError: '',
@@ -49,6 +50,18 @@ export function userReducer(state = INITIAL_STATE, action = {}) {
           ),
         },
       }
+    case CLEAR_CHAT:
+      return {
+        ...state,
+        loggedInUser: {
+          ...state.loggedInUser,
+          msgs: state.loggedInUser.msgs.filter(
+            (msg) =>
+              msg.senderId !== action.targetUserId &&
+              msg.recipientId !== action.targetUserId
+          ),
+        },
+      }
     case EDIT_USER:
       return {
         ...state,
@@ -59,7 +72,7 @@ export function userReducer(state = INITIAL_STATE, action = {}) {
     case EDIT_LOGGEDIN_USER:
       return {
         ...state,
-        loggedInUser: action.user
+        loggedInUser: action.user,
       }
     case LOGIN_ERROR:
       return {

@@ -1,6 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { removeContactFromUser , blockUnblockContact} from '../store/actions/user.actions'
+import {
+  removeContactFromUser,
+  blockUnblockContact,
+  clearChat,
+} from '../store/actions/user.actions'
 
 export function ContactOptionsModal({
   position,
@@ -11,7 +15,7 @@ export function ContactOptionsModal({
   const modalRef = useRef()
   const dispatch = useDispatch()
   const isUserBlocked = loggedInUser?.blockedContcats?.includes(user?._id)
-  const [isBlocked , setIsBlocked] = useState(isUserBlocked)
+  const [isBlocked, setIsBlocked] = useState(isUserBlocked)
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -29,13 +33,16 @@ export function ContactOptionsModal({
     dispatch(removeContactFromUser(loggedInUser._id, user._id))
     closeOptionsModal()
   }
-  function blockContact() { 
+  function blockContact() {
     setIsBlocked(isUserBlocked)
-    const actionType = isUserBlocked ? "UNBLOCK_USER" : "BLOCK_USER"
-    dispatch(blockUnblockContact(actionType , user._id , loggedInUser._id))
+    const actionType = isUserBlocked ? 'UNBLOCK_USER' : 'BLOCK_USER'
+    dispatch(blockUnblockContact(actionType, user._id, loggedInUser._id))
     closeOptionsModal()
   }
-  
+  function onClearChat() {
+    dispatch(clearChat(user._id, loggedInUser._id))
+  }
+
   return (
     <>
       <section
@@ -53,7 +60,7 @@ export function ContactOptionsModal({
           <li onClick={blockContact}>
             <button>{isBlocked ? 'Unblock contact' : 'Block contact'}</button>
           </li>
-          <li>
+          <li onClick={onClearChat}>
             <button>clear chat</button>
           </li>
           <li>
