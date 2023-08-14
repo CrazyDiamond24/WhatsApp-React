@@ -5,6 +5,7 @@ import {
   blockUnblockContact,
   clearChat,
 } from '../store/actions/user.actions'
+import { socketService } from '../services/socket.service'
 
 export function ContactOptionsModal({
   position,
