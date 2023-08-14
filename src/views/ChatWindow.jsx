@@ -46,9 +46,6 @@ export function ChatWindow({ showWelcome }) {
       ? msgService.filterMsgs(user, loggedInUser, allMsgs)
       : null
 
-  const amIblocked = user?.blockedContcats?.includes(loggedInUser?._id)
-  // const isUserBlocked = loggedInUser?.blockedContcats?.includes(user?._id)
-
   useEffect(() => {
     const handleUserBlocked = (blockedData) => {
       const { blockedUserId, action } = blockedData
@@ -57,7 +54,7 @@ export function ChatWindow({ showWelcome }) {
         setIsUserBlocked(action === 'BLOCK_USER')
       }
     }
-  
+    setIsUserBlocked(loggedInUser?.blockedContcats?.includes(user?._id))
     socketService.on('user-block-status-updated', handleUserBlocked)
   
     return () => {
@@ -164,9 +161,8 @@ export function ChatWindow({ showWelcome }) {
       !loggedInUser ||
       !user ||
       !msgContent.length ||
-      isUserBlocked ||
-      amIblocked
-    )
+      isUserBlocked
+      )
       return
 
     const trimmedContent = msgContent.trim()

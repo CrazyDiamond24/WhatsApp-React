@@ -35,13 +35,17 @@ export function ContactOptionsModal({
     closeOptionsModal()
   }
 
-  function blockContact() {
+  async function blockContact() {
     setIsBlocked(isUserBlocked)
     const action = isUserBlocked ? "UNBLOCK_USER" : "BLOCK_USER"
-    dispatch(blockUnblockContact(action, user._id, loggedInUser._id))
+   await dispatch(blockUnblockContact(action, user._id, loggedInUser._id))
     closeOptionsModal()
     socketService.emit("user-block-status-updated", {
       blockedUserId: user._id,
+      action,
+    })
+    socketService.emit("user-block-status-updated", {
+      blockedUserId: loggedInUser._id,
       action,
     })
   }
