@@ -19,6 +19,7 @@ import {
   EDIT_USER,
   EDIT_LOGGEDIN_USER,
   UPDATE_USER_STATUS,
+  CLEAR_CHAT,
 } from '../reducers/user.reducer'
 
 export function addContactToUser(name) {
@@ -38,7 +39,7 @@ export function addContactToUser(name) {
 }
 
 export function addStoryToUser(url) {
-  console.log('story action' , url  )
+  console.log('story action', url)
   return async (dispatch, getState) => {
     try {
       const loggedInUser = getState().userModule.loggedInUser
@@ -158,6 +159,41 @@ export function removeContactFromUser(loggedInUserId, contactId) {
   }
 }
 
+export function clearChat(targetUserId, loggedInUserId) {
+  return async (dispatch) => {
+    try {
+      await userService.clearChat(targetUserId, loggedInUserId)
+      const action = {
+        type: CLEAR_CHAT,
+        targetUserId,
+        loggedInUserId,
+      }
+      dispatch(action)
+    } catch (error) {
+      console.log('error:', error)
+    }
+  }
+}
+
+export function addMsg(msgContent, recipientId, senderId, msgType = 'text') {
+  return async (dispatch, getState) => {
+    try {
+      const msg = await msgService.createNewMsg(
+        msgContent,
+        senderId,
+        recipientId,
+        msgType
+      )
+
+      const type = ADD_MSG
+      const action = { type, msg }
+      dispatch(action)
+    } catch (error) {
+      console.log('error:', error)
+    }
+  }
+}
+
 export function setCurrUser(UserId) {
   return async (dispatch, getState) => {
     try {
@@ -180,25 +216,6 @@ export function removeUser(userId) {
       const action = { type: REMOVE_USER, userId }
       dispatch(action)
       return 'Removed!'
-    } catch (error) {
-      console.log('error:', error)
-    }
-  }
-}
-
-export function addMsg(msgContent, recipientId, senderId, msgType = 'text') {
-  return async (dispatch, getState) => {
-    try {
-      const msg = await msgService.createNewMsg(
-        msgContent,
-        senderId,
-        recipientId,
-        msgType
-      )
-
-      const type = ADD_MSG
-      const action = { type, msg }
-      dispatch(action)
     } catch (error) {
       console.log('error:', error)
     }
@@ -230,7 +247,10 @@ export function blockUnblockContact(actionType, contactId, loggedInUserId) {
           contactId,
           loggedInUserId
         )
-      const LoggedInUserAction = { type: EDIT_LOGGEDIN_USER, user: updatedLoggedInUser }
+      const LoggedInUserAction = {
+        type: EDIT_LOGGEDIN_USER,
+        user: updatedLoggedInUser,
+      }
       dispatch(LoggedInUserAction)
       const userAction = { type: EDIT_USER, user: updatedUser }
       dispatch(userAction)

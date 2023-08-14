@@ -1,10 +1,10 @@
-import React, { useEffect, useRef, useState } from "react"
-import { useDispatch } from "react-redux"
+import React, { useEffect, useRef, useState } from 'react'
+import { useDispatch } from 'react-redux'
 import {
   removeContactFromUser,
   blockUnblockContact,
-} from "../store/actions/user.actions"
-import { socketService } from "../services/socket.service"
+  clearChat,
+} from '../store/actions/user.actions'
 
 export function ContactOptionsModal({
   position,
@@ -44,6 +44,9 @@ export function ContactOptionsModal({
       action,
     })
   }
+  function onClearChat() {
+    dispatch(clearChat(user._id, loggedInUser._id))
+  }
 
   return (
     <>
@@ -62,7 +65,7 @@ export function ContactOptionsModal({
           <li onClick={blockContact}>
             <button>{isBlocked ? "Unblock contact" : "Block contact"}</button>
           </li>
-          <li>
+          <li onClick={onClearChat}>
             <button>clear chat</button>
           </li>
           <li>

@@ -18,6 +18,7 @@ export const userService = {
   getFilteredUsers,
   editLastSeen,
   blockUnblockUser,
+  clearChat,
 }
 
 const STORAGE_KEY = 'users'
@@ -37,6 +38,12 @@ async function editLastSeen(user) {
   )
 
   return updatedUser
+}
+
+async function clearChat(targetUserId, loggedInUserId) {
+  const data = { targetUserId, loggedInUserId }
+  const response = await httpService.post(`contact/clear-chat`, data)
+  return response.data
 }
 
 async function blockUnblockUser(actionType, userId, loggedInUserId) {
