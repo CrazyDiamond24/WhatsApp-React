@@ -5,6 +5,7 @@ import {
   blockUnblockContact,
   clearChat,
 } from '../store/actions/user.actions'
+import { socketService } from '../services/socket.service'
 
 export function ContactOptionsModal({
   position,
@@ -23,9 +24,9 @@ export function ContactOptionsModal({
         closeOptionsModal()
       }
     }
-    document.addEventListener('mousedown', handleClickOutside)
+    document.addEventListener("mousedown", handleClickOutside)
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside)
+      document.removeEventListener("mousedown", handleClickOutside)
     }
   }, [modalRef, closeOptionsModal])
 
@@ -33,11 +34,20 @@ export function ContactOptionsModal({
     dispatch(removeContactFromUser(loggedInUser._id, user._id))
     closeOptionsModal()
   }
-  function blockContact() {
+
+  async function blockContact() {
     setIsBlocked(isUserBlocked)
-    const actionType = isUserBlocked ? 'UNBLOCK_USER' : 'BLOCK_USER'
-    dispatch(blockUnblockContact(actionType, user._id, loggedInUser._id))
+    const action = isUserBlocked ? "UNBLOCK_USER" : "BLOCK_USER"
+   await dispatch(blockUnblockContact(action, user._id, loggedInUser._id))
     closeOptionsModal()
+    socketService.emit("user-block-status-updated", {
+      blockedUserId: user._id,
+      action,
+    })
+    socketService.emit("user-block-status-updated", {
+      blockedUserId: loggedInUser._id,
+      action,
+    })
   }
   function onClearChat() {
     dispatch(clearChat(user._id, loggedInUser._id))
@@ -58,7 +68,7 @@ export function ContactOptionsModal({
             <button>Delete contact</button>
           </li>
           <li onClick={blockContact}>
-            <button>{isBlocked ? 'Unblock contact' : 'Block contact'}</button>
+            <button>{isBlocked ? "Unblock contact" : "Block contact"}</button>
           </li>
           <li onClick={onClearChat}>
             <button>clear chat</button>

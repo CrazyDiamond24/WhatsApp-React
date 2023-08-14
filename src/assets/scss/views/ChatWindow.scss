@@ -87,7 +87,10 @@
       }
       &.system {
         background-color: $clr8;
-        
+        transform: translate(90%, 0);
+        height: 60px;
+        display: flex;
+        align-items: center;
       }
     }
   }

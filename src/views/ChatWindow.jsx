@@ -13,7 +13,6 @@ import { WelcomeChatRoom } from '../cmps/WelcomeChatRoom'
 import { ConverstationList } from '../cmps/ConverstationList'
 import MsgModal from '../cmps/MsgModal'
 import { ReactComponent as PlusWhatsapp } from '../assets/imgs/plusWhatsapp.svg'
-
 import { aiService } from '../services/ai.service'
 import AIImageGenerator from '../cmps/AIImageGenerator'
 
@@ -33,7 +32,9 @@ export function ChatWindow({ showWelcome }) {
   const user = useSelector((storeState) => {
     return storeState.userModule.selectedUser
   })
-
+  const [isUserBlocked, setIsUserBlocked] = useState(
+    loggedInUser?.blockedContcats?.includes(user?._id)
+  )
   const allMsgs = useSelector(
     (storeState) => storeState.userModule.loggedInUser?.msgs
   )
@@ -46,8 +47,21 @@ export function ChatWindow({ showWelcome }) {
       : null
   console.log('please render after clear')
 
-  const amIblocked = user?.blockedContcats?.includes(loggedInUser?._id)
-  const isUserBlocked = loggedInUser?.blockedContcats?.includes(user?._id)
+  useEffect(() => {
+    const handleUserBlocked = (blockedData) => {
+      const { blockedUserId, action } = blockedData
+      if (blockedUserId === user?._id) {
+        // Update the isUserBlocked state based on the action
+        setIsUserBlocked(action === 'BLOCK_USER')
+      }
+    }
+    setIsUserBlocked(loggedInUser?.blockedContcats?.includes(user?._id))
+    socketService.on('user-block-status-updated', handleUserBlocked)
+
+    return () => {
+      socketService.off('user-block-status-updated', handleUserBlocked)
+    }
+  }, [user?._id])
 
   useEffect(() => {
     const container = document.querySelector('.conversation-container')
@@ -144,14 +158,7 @@ export function ChatWindow({ showWelcome }) {
   function handelSendMsg(e) {
     e.preventDefault()
 
-    if (
-      !loggedInUser ||
-      !user ||
-      !msgContent.length ||
-      isUserBlocked ||
-      amIblocked
-    )
-      return
+    if (!loggedInUser || !user || !msgContent.length || isUserBlocked) return
 
     const trimmedContent = msgContent.trim()
 
