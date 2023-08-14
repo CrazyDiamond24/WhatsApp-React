@@ -51,6 +51,7 @@ export function ContactOptionsModal({
   }
   function onClearChat() {
     dispatch(clearChat(user._id, loggedInUser._id))
+    closeOptionsModal()
   }
 
   return (

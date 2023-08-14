@@ -45,7 +45,7 @@ async function getUserMessages(userId, loggedInUserId) {
 }
 
 function filterMsgs(user, loggedInUser) {
-  const filteredMsgs = user.msgs
+  const filteredMsgs = loggedInUser.msgs
     .filter(
       (msg) =>
         (msg.senderId === loggedInUser._id && msg.recipientId === user._id) ||

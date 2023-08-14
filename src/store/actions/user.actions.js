@@ -162,11 +162,13 @@ export function removeContactFromUser(loggedInUserId, contactId) {
 export function clearChat(targetUserId, loggedInUserId) {
   return async (dispatch) => {
     try {
-      await userService.clearChat(targetUserId, loggedInUserId)
+      const updatedUser = await userService.clearChat(targetUserId, loggedInUserId)
+      console.log('updatedUser', updatedUser)
       const action = {
         type: CLEAR_CHAT,
-        targetUserId,
-        loggedInUserId,
+        // targetUserId,
+        // loggedInUserId,
+        updatedUser
       }
       dispatch(action)
     } catch (error) {

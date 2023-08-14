@@ -55,11 +55,12 @@ export function userReducer(state = INITIAL_STATE, action = {}) {
         ...state,
         loggedInUser: {
           ...state.loggedInUser,
-          msgs: state.loggedInUser.msgs.filter(
-            (msg) =>
-              msg.senderId !== action.targetUserId &&
-              msg.recipientId !== action.targetUserId
-          ),
+          msgs: action.updatedUser.msgs 
+          // state.loggedInUser.msgs.filter(
+          //   (msg) =>
+          //     msg.senderId !== action.targetUserId &&
+          //     msg.recipientId !== action.targetUserId
+          // ),
         },
       }
     case EDIT_USER:
