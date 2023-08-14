@@ -1,6 +1,10 @@
-import React, { useEffect, useRef, useState } from 'react'
-import { useDispatch } from 'react-redux'
-import { removeContactFromUser , blockUnblockContact} from '../store/actions/user.actions'
+import React, { useEffect, useRef, useState } from "react"
+import { useDispatch } from "react-redux"
+import {
+  removeContactFromUser,
+  blockUnblockContact,
+} from "../store/actions/user.actions"
+import { socketService } from "../services/socket.service"
 
 export function ContactOptionsModal({
   position,
@@ -11,7 +15,7 @@ export function ContactOptionsModal({
   const modalRef = useRef()
   const dispatch = useDispatch()
   const isUserBlocked = loggedInUser?.blockedContcats?.includes(user?._id)
-  const [isBlocked , setIsBlocked] = useState(isUserBlocked)
+  const [isBlocked, setIsBlocked] = useState(isUserBlocked)
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -19,9 +23,9 @@ export function ContactOptionsModal({
         closeOptionsModal()
       }
     }
-    document.addEventListener('mousedown', handleClickOutside)
+    document.addEventListener("mousedown", handleClickOutside)
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside)
+      document.removeEventListener("mousedown", handleClickOutside)
     }
   }, [modalRef, closeOptionsModal])
 
@@ -29,13 +33,18 @@ export function ContactOptionsModal({
     dispatch(removeContactFromUser(loggedInUser._id, user._id))
     closeOptionsModal()
   }
-  function blockContact() { 
+
+  function blockContact() {
     setIsBlocked(isUserBlocked)
-    const actionType = isUserBlocked ? "UNBLOCK_USER" : "BLOCK_USER"
-    dispatch(blockUnblockContact(actionType , user._id , loggedInUser._id))
+    const action = isUserBlocked ? "UNBLOCK_USER" : "BLOCK_USER"
+    dispatch(blockUnblockContact(action, user._id, loggedInUser._id))
     closeOptionsModal()
+    socketService.emit("user-block-status-updated", {
+      blockedUserId: user._id,
+      action,
+    })
   }
-  
+
   return (
     <>
       <section
@@ -51,7 +60,7 @@ export function ContactOptionsModal({
             <button>Delete contact</button>
           </li>
           <li onClick={blockContact}>
-            <button>{isBlocked ? 'Unblock contact' : 'Block contact'}</button>
+            <button>{isBlocked ? "Unblock contact" : "Block contact"}</button>
           </li>
           <li>
             <button>clear chat</button>
