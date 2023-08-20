@@ -59,6 +59,7 @@ export function doSignup(userCred) {
   return async (dispatch, getState) => {
     try {
       const user = await authService.signup(userCred)
+      console.log('user', user)
       const action = {
         type: SIGNUP,
         user,
@@ -66,6 +67,7 @@ export function doSignup(userCred) {
       dispatch(action)
     } catch (error) {
       console.log('error:', error)
+      return
     }
   }
 }
@@ -85,10 +87,6 @@ export function doLogin(userCred) {
 
       showSuccessMsg('like')
 
-      // Add any additional logic here if needed before navigating
-      // For example, you could wait for some socket event to be received
-      // Only then navigate to the home page
-      // window.location.href = '/'
       return user
     } catch (err) {
       console.log('error', err)
