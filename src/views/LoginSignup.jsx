@@ -6,9 +6,9 @@ import chatbotImg from "../assets/imgs/chat-bot.png"
 import chatPeopleImg from "../assets/imgs/chat-people.png"
 import { showErrorMsg } from "../services/event-bus.service"
 
-export function LoginSignup({status}) {
-  const state = status === 'login' 
-  console.log('state', state)
+export function LoginSignup({ status }) {
+  const state = status === "login"
+  console.log("state", state)
   const [hasAccount, setHasAccount] = useState(state)
   const [signupCred, setSignupCred] = useState({
     username: "",
@@ -61,16 +61,15 @@ export function LoginSignup({status}) {
         !signupCred.fullName ||
         !signupCred.password ||
         !signupCred.username
-        ) {
+      ) {
         showErrorMsg("Please fill up all of the fildes")
       } else {
         showErrorMsg("You are now registered. please sign up")
         const answer = await dispatch(doSignup(signupCred))
         if (answer) navigate("/")
         else showErrorMsg("Username is already taken")
+      }
     }
-  }
-  setHasAccount(true)
   }
 
   return (
