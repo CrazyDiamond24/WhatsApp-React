@@ -91,11 +91,11 @@ export function UserPref({ closePrefModal }) {
         </label>
         <label>
           Header Background Color:
-          {/* <CanvasColorPicker
+          <CanvasColorPicker
             onColorSelect={(color) => handleColorSelect(color, 'headerBgColor')}
             show={false}
             important={true}
-          /> */}
+          />
         </label>
         <button type="submit">Apply</button>
       </form>
