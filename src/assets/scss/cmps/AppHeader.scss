@@ -1,11 +1,11 @@
 .app-header {
-  background: $darkerGreen;
+  // background: $darkerGreen;
   color: white;
   height: 70px;
   width: 100%;
   padding: 10px;
   display: flex;
-  
+
   .user-header {
     display: flex;
     align-items: center;
@@ -28,7 +28,11 @@
       position: absolute;
       top: 15px;
       left: 250px;
-      background: linear-gradient(to right, $primaryClr, darken($primaryClr, 10%));
+      background: linear-gradient(
+        to right,
+        $primaryClr,
+        darken($primaryClr, 10%)
+      );
       border: none;
       color: #fff;
       padding: 10px 20px;
@@ -36,21 +40,28 @@
       cursor: pointer;
       font-weight: bold;
       transition: background 0.3s, transform 0.3s;
-    
+
       &:hover {
-        background: linear-gradient(to right, darken($primaryClr, 10%), $primaryClr);
+        background: linear-gradient(
+          to right,
+          darken($primaryClr, 10%),
+          $primaryClr
+        );
         transform: scale(1.05);
       }
-    
+
       &:focus {
         outline: none;
       }
     }
-    
   }
   .header-login {
     margin-left: 260px;
-    background: linear-gradient(to right, $primaryClr, darken($primaryClr, 10%));
+    background: linear-gradient(
+      to right,
+      $primaryClr,
+      darken($primaryClr, 10%)
+    );
     padding: 10px 20px;
     border-radius: 20px;
     cursor: pointer;
@@ -59,9 +70,13 @@
     font-weight: bold;
     transition: background 0.3s, transform 0.3s;
     font-size: 0.9rem;
-  
+
     &:hover {
-      background: linear-gradient(to right, darken($primaryClr, 10%), $primaryClr);
+      background: linear-gradient(
+        to right,
+        darken($primaryClr, 10%),
+        $primaryClr
+      );
       transform: scale(1.05);
     }
   }

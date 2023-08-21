@@ -10,7 +10,6 @@ import {
   SIGNUP,
   LOGIN,
   LOGOUT,
-  SET_LOGGEDIN_USER,
   ADD_MSG,
   ADD_STORY,
   ADD_CONTACT,
@@ -20,6 +19,7 @@ import {
   EDIT_LOGGEDIN_USER,
   UPDATE_USER_STATUS,
   CLEAR_CHAT,
+  SET_LOGGEDIN_USER,
 } from '../reducers/user.reducer'
 
 export function addContactToUser(name) {
@@ -283,9 +283,10 @@ export function updateUserPref(user) {
   return async (dispatch, getState) => {
     try {
       const updatedUser = await userService.updatePref(user)
+      console.log('updatedUser', updatedUser)
       const action = {
-        type: EDIT_USER,
-        user: updatedUser,
+        type: EDIT_LOGGEDIN_USER,
+        user: updatedUser.value,
       }
       dispatch(action)
     } catch (error) {

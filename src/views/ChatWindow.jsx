@@ -247,10 +247,23 @@ export function ChatWindow({ showWelcome }) {
   }
 
   return (
-    <div className="chat-window" ref={animationParent}>
+    <div
+      className="chat-window"
+      ref={animationParent}
+      style={{
+        backgroundImage: loggedInUser?.userPref?.backgroundImage
+          ? `url(${loggedInUser?.userPref?.backgroundImage})`
+          : '',
+        backgroundSize: 'cover',
+        backgroundRepeat: 'no-repeat',
+      }}
+    >
       {user && !showWelcome ? (
         <>
-          <div className="header-area">
+          <div
+            className="header-area"
+            style={{ backgroundColor: loggedInUser?.userPref?.headerBgColor }}
+          >
             <img src={user?.img} alt={user?.username} />
             <div className="user-details">
               <h2 className="user-fullname">{user?.fullName}</h2>

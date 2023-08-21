@@ -1,19 +1,23 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { UserPref } from './UserPref'
-import { doLogout, updateLastSeen } from '../store/actions/user.actions'
+import { doLogout } from '../store/actions/user.actions'
 
 export function AppHeader({ showProfile, openWelcomeChat }) {
   const [showModal, setShowModal] = useState(false)
   const user = useSelector((storeState) => storeState.userModule.loggedInUser)
-
+  console.log('user', user)
   const dispatch = useDispatch()
-  const navigate = useNavigate()
+
+  console.log('app header com,ponent renderred')
 
   function showPrefsModal() {
     setShowModal(!showModal)
+  }
+  function hancleClosePrefModal() {
+    setShowModal(false)
   }
 
   function handelLogout() {
@@ -21,26 +25,30 @@ export function AppHeader({ showProfile, openWelcomeChat }) {
   }
 
   return (
-    <header className="app-header">
+    <header
+      className="app-header"
+      style={{ backgroundColor: user?.userPref?.headerBgColor }}
+    >
       {/* <span
         onClick={showPrefsModal}
         dangerouslySetInnerHTML={{
           __html: getSpotifySvg('plusWhatsapp'),
         }}
       ></span> */}
+      <button onClick={showPrefsModal}>customize</button>
       <section className="user-header">
         {user ? (
           <div className="user-info-header">
             {user.img ? (
               <>
-              <div className='user-actions-header'>
-                <img
-                  onClick={showProfile}
-                  src={user.img}
-                  alt={user.username}
-                  title="Profile"
-                />
-                <button onClick={handelLogout}>Logout</button>
+                <div className="user-actions-header">
+                  <img
+                    onClick={showProfile}
+                    src={user.img}
+                    alt={user.username}
+                    title="Profile"
+                  />
+                  <button onClick={handelLogout}>Logout</button>
                 </div>
                 <img
                   onClick={openWelcomeChat}
@@ -48,7 +56,6 @@ export function AppHeader({ showProfile, openWelcomeChat }) {
                   alt="logo"
                   className="logo-without-word"
                 />
-                
               </>
             ) : (
               <img
@@ -65,14 +72,14 @@ export function AppHeader({ showProfile, openWelcomeChat }) {
               alt="logo"
               className="logo-without-word"
             />
-            
+
             <Link className="header-login" to="/login">
               Login
             </Link>
           </>
         )}
       </section>
-      {showModal && <UserPref />} 
+      {showModal && <UserPref closePrefModal={hancleClosePrefModal} />} 
     </header>
   )
 }

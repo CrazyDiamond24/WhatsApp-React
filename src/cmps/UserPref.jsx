@@ -5,7 +5,7 @@ import { CanvasColorPicker } from './CanvasColorPicker'
 import { FontFamily } from './FontFamily'
 import { ImagePicker } from './ImagePicker'
 
-export function UserPref() {
+export function UserPref({ closePrefModal }) {
   const user = useSelector((storeState) => storeState.userModule.loggedInUser)
   const [editedUser, setEditedUser] = useState({ ...user })
   const dispatch = useDispatch()
@@ -63,6 +63,7 @@ export function UserPref() {
   function handleSubmit(event) {
     event.preventDefault()
     dispatch(updateUserPref(editedUser))
+    closePrefModal()
   }
 
   return (
@@ -90,11 +91,11 @@ export function UserPref() {
         </label>
         <label>
           Header Background Color:
-          <CanvasColorPicker
+          {/* <CanvasColorPicker
             onColorSelect={(color) => handleColorSelect(color, 'headerBgColor')}
             show={false}
             important={true}
-          />
+          /> */}
         </label>
         <button type="submit">Apply</button>
       </form>
