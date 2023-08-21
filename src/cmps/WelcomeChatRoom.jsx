@@ -60,7 +60,7 @@ export function WelcomeChatRoom() {
               log in
             </Link>{' '}
             or{' '}
-            <Link to='/login' className='login-signup-link'>
+            <Link to='/signup' className='login-signup-link'>
               sign up
             </Link>
             . If you don't have an account, you can{' '}

@@ -6,8 +6,10 @@ import chatbotImg from "../assets/imgs/chat-bot.png"
 import chatPeopleImg from "../assets/imgs/chat-people.png"
 import { showErrorMsg } from "../services/event-bus.service"
 
-export function LoginSignup() {
-  const [hasAccount, setHasAccount] = useState(true)
+export function LoginSignup({status}) {
+  const state = status === 'login' 
+  console.log('state', state)
+  const [hasAccount, setHasAccount] = useState(state)
   const [signupCred, setSignupCred] = useState({
     username: "",
     password: "",

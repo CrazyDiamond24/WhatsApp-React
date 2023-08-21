@@ -24,7 +24,8 @@ function App() {
             <Route path="/user/edit/:id?" element={<AddContact />} />
             <Route path="/user/take/picture" element={<TakePicture />} />
             <Route path="/about" element={<About />} />
-            <Route path="/login" element={<LoginSignup />} />
+            <Route path="/login" element={<LoginSignup status={'login'} />} />
+            <Route path="/signup" element={<LoginSignup status={'signup'} />} />
           </Routes>
         </main>
       </section>
