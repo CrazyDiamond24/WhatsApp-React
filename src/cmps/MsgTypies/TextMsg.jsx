@@ -12,6 +12,7 @@ export function TextMsg({ msg }) {
       style={{
         fontSize: user?.userPref?.fontSize + 'px',
         color: user?.userPref?.fontColor,
+        fontFamily: user?.userPref?.fontFamily,
       }}
     >
       {msg?.content}

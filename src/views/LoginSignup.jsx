@@ -31,7 +31,7 @@ export function LoginSignup({ status }) {
     story: [],
     userPref: {
       fontSize: 16,
-      fontColor: '#000000',
+      fontColor: '#222222',
       headerBgColor: '#084b41',
       fontFamily: 'Impact, Haettenschweiler, Arial Narrow Bold, sans-serif',
       backgroundImage: '',
