@@ -51,7 +51,7 @@ export function ChatWindow({ showWelcome }) {
     const handleUserBlocked = (blockedData) => {
       const { blockedUserId, action } = blockedData
       if (blockedUserId === user?._id) {
-        // Update the isUserBlocked state based on the action
+        // Update the isUserBlocked state based on the action 4
         setIsUserBlocked(action === 'BLOCK_USER')
       }
     }
