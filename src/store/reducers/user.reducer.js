@@ -55,7 +55,7 @@ export function userReducer(state = INITIAL_STATE, action = {}) {
         ...state,
         loggedInUser: {
           ...state.loggedInUser,
-          msgs: action.updatedUser.msgs 
+          msgs: action.updatedUser.msgs,
           // state.loggedInUser.msgs.filter(
           //   (msg) =>
           //     msg.senderId !== action.targetUserId &&
@@ -232,14 +232,14 @@ export function userReducer(state = INITIAL_STATE, action = {}) {
           }
           return user
         }),
-        loggedInUser:
-          state.loggedInUser._id === action.userId
-            ? {
-                ...state.loggedInUser,
-                isOnline: action.isOnline,
-                lastSeen: action.lastSeen,
-              }
-            : state.loggedInUser,
+        // loggedInUser:
+        //   state.loggedInUser._id === action.userId
+        //     ? {
+        //         ...state.loggedInUser,
+        //         isOnline: action.isOnline,
+        //         lastSeen: action.lastSeen,
+        //       }
+        //     : state.loggedInUser,
       }
     // case SET_FILTER_BY:
     //   return {

@@ -76,8 +76,6 @@ export function doLogin(userCred) {
   return async (dispatch, getState) => {
     try {
       const user = await authService.login(userCred)
-      // user.isOnline = true
-      // console.log('user', user)
       socketService.login(user._id)
       const action = {
         type: LOGIN,
@@ -160,13 +158,16 @@ export function removeContactFromUser(loggedInUserId, contactId) {
 export function clearChat(targetUserId, loggedInUserId) {
   return async (dispatch) => {
     try {
-      const updatedUser = await userService.clearChat(targetUserId, loggedInUserId)
+      const updatedUser = await userService.clearChat(
+        targetUserId,
+        loggedInUserId
+      )
       console.log('updatedUser', updatedUser)
       const action = {
         type: CLEAR_CHAT,
         // targetUserId,
         // loggedInUserId,
-        updatedUser
+        updatedUser,
       }
       dispatch(action)
     } catch (error) {

@@ -104,11 +104,11 @@ export function UserPreview({
           </h3>
         </div>
         {/* add the timestamp of the last message here */}
-        {/* {user.isOnline ? (
+        {user.isOnline ? (
           <h1>onLine</h1>
         ) : (
           <div>Last Seen: {timestamp(user.lastSeen)}</div>
-        )} */}
+        )}
         {unreadCount > 0 && <span className="unread-count">{unreadCount}</span>}
       </div>
       {showModal && (

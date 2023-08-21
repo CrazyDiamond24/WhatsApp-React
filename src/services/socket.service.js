@@ -28,7 +28,6 @@ socketService.on(SOCKET_EVENT_USER_UPDATED, (userStatusUpdate) => {
     userStatusUpdate.isOnline !== undefined &&
     userStatusUpdate.lastSeen
   ) {
-    // Ensure you have the store imported at the top or available in the scope
     store.dispatch(
       updateUserStatus(
         userStatusUpdate.userId,

@@ -24,11 +24,12 @@ export function ChatWindow({ showWelcome }) {
   const [recipientIsTyping, setUserIsTyping] = useState(false)
   const [isIconRotated, setIsIconRotated] = useState(false)
   const [onlineStatus, setOnlineStatus] = useState(false)
+  const [onLine, showOnline] = useState(false)
   const [showAiModal, setShowAiModal] = useState(false)
   const loggedInUser = useSelector((storeState) => {
     return storeState.userModule.loggedInUser
   })
-
+  console.log('socket work')
   const user = useSelector((storeState) => {
     return storeState.userModule.selectedUser
   })
@@ -120,6 +121,28 @@ export function ChatWindow({ showWelcome }) {
     socketService.on('user-typing', handleTyping)
     return () => {
       socketService.off('user-typing', handleTyping)
+    }
+  }, [user?._id])
+
+  useEffect(() => {
+    const handleUserStatusUpdate = (userStatusUpdate) => {
+      if (userStatusUpdate.userId && userStatusUpdate.userId === user._id) {
+        if (userStatusUpdate.isOnline) {
+          showOnline(true)
+          console.log('user in on', user)
+
+          console.log('userStatusUpdate', userStatusUpdate)
+        } else {
+          showOnline(false)
+          console.log('user in off', user)
+        }
+      }
+    }
+
+    socketService.on('user-updated', handleUserStatusUpdate)
+
+    return () => {
+      socketService.off('user-updated', handleUserStatusUpdate)
     }
   }, [user?._id])
 
@@ -231,8 +254,8 @@ export function ChatWindow({ showWelcome }) {
             <img src={user?.img} alt={user?.username} />
             <div className="user-details">
               <h2 className="user-fullname">{user?.fullName}</h2>
-              {user.isOnline ? (
-                <div className="online-status">Online</div>
+              {onLine ? (
+                <div className="">Online</div>
               ) : (
                 <div className="status-info">
                   Last Seen: {timestamp(user.lastSeen)}
