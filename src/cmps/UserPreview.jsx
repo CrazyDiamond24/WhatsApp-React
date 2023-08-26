@@ -1,9 +1,10 @@
-import React, { useState, useMemo } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { setCurrUser } from '../store/actions/user.actions'
-import { ContactOptionsModal } from './ContactOptionsModal'
-import { PhotoIcon } from './svgs/PhotoIcon'
-import { msgService } from '../services/msg.service'
+import React, { useState, useMemo } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { setCurrUser } from "../store/actions/user.actions"
+import { ContactOptionsModal } from "./ContactOptionsModal"
+import { PhotoIcon } from "./svgs/PhotoIcon"
+import { msgService } from "../services/msg.service"
+import { StoryModal } from "./StoryModal"
 
 export function UserPreview({
   user,
@@ -13,11 +14,17 @@ export function UserPreview({
 }) {
   const [showModal, setShowModal] = useState(false)
   const [modalPosition, setModalPosition] = useState({ top: 0, left: 0 })
+  const [openStoryModal, setOpenStoryModal] = useState(false)
   const isActiveContact = user._id === activeContactId
 
   const loggedInUser = useSelector((storeState) => {
     return storeState.userModule.loggedInUser
   })
+  // real one
+  // const hasStory = user.story.length
+
+  // true - for development
+  const hasStory = 1
 
   const dispatch = useDispatch()
 
@@ -32,7 +39,7 @@ export function UserPreview({
   const lastMsgContent = useMemo(() => {
     if (lastMsg?.length > 0) {
       const lastMessage = lastMsg[lastMsg.length - 1]
-      if (lastMessage.type !== 'image') {
+      if (lastMessage.type !== "image") {
         return lastMessage.content
       } else {
         return (
@@ -43,12 +50,12 @@ export function UserPreview({
         )
       }
     } else {
-      return 'Start a new conversation'
+      return "Start a new conversation"
     }
   }, [lastMsg])
 
   const isLastMsgImage = useMemo(() => {
-    return lastMsg?.length > 0 && lastMsg[lastMsg.length - 1].type === 'image'
+    return lastMsg?.length > 0 && lastMsg[lastMsg.length - 1].type === "image"
   }, [lastMsg])
 
   function handleClick(e) {
@@ -78,15 +85,24 @@ export function UserPreview({
   function timestamp(time) {
     return msgService.getTimestamp(time)
   }
+function onOpenStoryModal() {
+  setOpenStoryModal(true)
 
+  setTimeout(() => {
+    setOpenStoryModal(false)
+  }, 3000)
+}
+  
   return (
     <article
-      className={`contact-preview ${isActiveContact ? 'active' : ''}`}
+      className={`contact-preview ${isActiveContact ? "active" : ""}`}
       onClick={handleClick}
       onContextMenu={showContactModal}
     >
+      {openStoryModal && <StoryModal user={user} />}
       <img
-        className="contact-preview-image"
+        onClick={onOpenStoryModal}
+        className={`${hasStory ? "story-frame" : ""} contact-preview-image`}
         src={user.img}
         alt={user.fullName}
       />
@@ -96,8 +112,8 @@ export function UserPreview({
           <h3
             className={`last-msg-content ${
               isLastMsgImage
-                ? 'last-msg-content-image'
-                : 'last-msg-content-text'
+                ? "last-msg-content-image"
+                : "last-msg-content-text"
             }`}
           >
             {lastMsgContent}

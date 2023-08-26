@@ -77,12 +77,12 @@ export function UserPref({ closePrefModal }) {
         />
         <FontFamily onSelectFontFamily={handleFontFamilySelect} />
         <ImagePicker onSelectImage={handleImageSelect} />
-        <label>Current Font Size: {editedUser.userPref.fontSize}</label>
+        <label>Current Font Size: {editedUser.userPref?.fontSize}</label>
         <label>
           Current Font Color:
           <span
             style={{
-              backgroundColor: editedUser.userPref.fontColor,
+              backgroundColor: editedUser.userPref?.fontColor,
               display: 'inline-block',
               width: '20px',
               height: '20px',
