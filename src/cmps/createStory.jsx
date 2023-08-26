@@ -7,7 +7,7 @@ import { addStoryToUser } from '../store/actions/user.actions'
 import { FontFamily } from './FontFamily'
 import { ColorPick } from './svgs/ColorPick'
 import placeholderImg from '../assets/imgs/story-placeholder.png'
-import {StoryLoader} from '../cmps/StoryLoader'
+import { StoryLoader } from '../cmps/StoryLoader'
 
 export function CreateStory(props) {
   const [imageUrl, setImageUrl] = useState(null)
@@ -19,69 +19,114 @@ export function CreateStory(props) {
   const [textPos, setTextPos] = useState({ x: 50, y: 50 })
   const [showColorModal, setShowColorModal] = useState(false)
   const [dragging, setDragging] = useState(false)
-  const user = useSelector((storeState) => storeState.userModule.loggedInUser)
   const canvasRef = useRef(null)
   const colorModalRef = useRef(null)
   const dispatch = useDispatch()
   const [isLoading, setIsLoading] = useState(false)
 
+  const [sentences, setSentences] = useState([
+    {
+      text: '',
+      color: 'black',
+      pos: { x: 50, y: 50 },
+      width: '20',
+      fontFamily: 'Arial',
+    },
+  ])
+  const [currentSentenceIdx, setCurrentSentenceIdx] = useState(0)
+
   useEffect(() => {
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext("2d");
-  
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-  
-    let img = new Image();
-    img.crossOrigin = "Anonymous";
+    const canvas = canvasRef.current
+    const ctx = canvas.getContext('2d')
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height)
+
+    let img = new Image()
+    img.crossOrigin = 'Anonymous'
     img.onload = () => {
-      const canvasAspectRatio = canvas.width / canvas.height;
-      const imageAspectRatio = img.width / img.height;
-  
-      let newWidth, newHeight;
-  
+      const canvasAspectRatio = canvas.width / canvas.height
+      const imageAspectRatio = img.width / img.height
+
+      let newWidth, newHeight
+
       if (canvasAspectRatio > imageAspectRatio) {
-        newWidth = canvas.width;
-        newHeight = newWidth / imageAspectRatio;
+        newWidth = canvas.width
+        newHeight = newWidth / imageAspectRatio
       } else {
-        newHeight = canvas.height;
-        newWidth = newHeight * imageAspectRatio;
+        newHeight = canvas.height
+        newWidth = newHeight * imageAspectRatio
       }
-  
-      let xOffset = (canvas.width - newWidth) / 2;
-      let yOffset = (canvas.height - newHeight) / 2;
-  
-      ctx.drawImage(img, xOffset, yOffset, newWidth, newHeight);
-      ctx.font = `${textWidth}px ${textFontFamily}`;
-      ctx.fillStyle = textColor;
-      ctx.fillText(text, textPos.x, textPos.y);
-    };
-  
-    if (imageUrl) {
-      img.src = imageUrl;
-    } else {
-      img.src = placeholderImg;
-      ctx.font = `${textWidth}px ${textFontFamily}`;
-      ctx.fillStyle = textColor;
-      ctx.fillText(text, textPos.x, textPos.y);
+
+      let xOffset = (canvas.width - newWidth) / 2
+      let yOffset = (canvas.height - newHeight) / 2
+
+      ctx.drawImage(img, xOffset, yOffset, newWidth, newHeight)
+      ctx.font = `${textWidth}px ${textFontFamily}`
+      ctx.fillStyle = textColor
+      ctx.fillText(text, textPos.x, textPos.y)
     }
-  }, [imageUrl, text, textPos, textColor, textWidth, textFontFamily]);
-  
+
+    if (imageUrl) {
+      img.src = imageUrl
+    } else {
+      img.src = placeholderImg
+      ctx.font = `${textWidth}px ${textFontFamily}`
+      ctx.fillStyle = textColor
+      ctx.fillText(text, textPos.x, textPos.y)
+    }
+  }, [imageUrl, text, textPos, textColor, textWidth, textFontFamily])
+  useEffect(() => {
+    const canvas = canvasRef.current
+    const ctx = canvas.getContext('2d')
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height)
+
+    if (imageUrl) {
+      let img = new Image()
+      img.crossOrigin = 'Anonymous'
+
+      img.onload = () => {
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height)
+
+        sentences.forEach((sentence) => {
+          ctx.font = `${sentence.width}px ${sentence.fontFamily}`
+          ctx.fillStyle = sentence.color
+          ctx.fillText(sentence.text, sentence.pos.x, sentence.pos.y)
+        })
+      }
+
+      img.src = imageUrl
+    } else {
+      sentences.forEach((sentence) => {
+        ctx.font = `${sentence.width}px ${sentence.fontFamily}`
+        ctx.fillStyle = sentence.color
+        ctx.fillText(sentence.text, sentence.pos.x, sentence.pos.y)
+      })
+    }
+  }, [imageUrl, sentences])
 
   function handleMouseDown(e) {
     const rect = canvasRef.current.getBoundingClientRect()
     const x = e.clientX - rect.left
     const y = e.clientY - rect.top
-    const textWidth = canvasRef.current.getContext('2d').measureText(text).width
-    if (
-      y >= textPos.y - 20 &&
-      y <= textPos.y &&
-      x >= textPos.x &&
-      x <= textPos.x + textWidth
-    ) {
-      setDragging(true)
+
+    for (let i = 0; i < sentences.length; i++) {
+      const sentence = sentences[i]
+      const textWidth = canvasRef.current
+        .getContext('2d')
+        .measureText(sentence.text).width
+      if (
+        y >= sentence.pos.y - parseInt(sentence.width, 10) &&
+        y <= sentence.pos.y &&
+        x >= sentence.pos.x &&
+        x <= sentence.pos.x + textWidth
+      ) {
+        setDragging(true)
+        setCurrentSentenceIdx(i)
+        return
+      }
     }
   }
-
   function handleMouseUp() {
     setDragging(false)
   }
@@ -91,12 +136,14 @@ export function CreateStory(props) {
       const rect = canvasRef.current.getBoundingClientRect()
       const newX = e.clientX - rect.left
       const newY = e.clientY - rect.top + 20
-      setTextPos({ x: newX, y: newY })
+      const updatedSentences = [...sentences]
+      updatedSentences[currentSentenceIdx].pos = { x: newX, y: newY }
+      setSentences(updatedSentences)
     }
   }
 
   async function handleImageUpload(ev) {
-    setIsLoading(true) // Start loading
+    setIsLoading(true)
     const file =
       ev.type === 'change' ? ev.target.files[0] : ev.dataTransfer.files[0]
     try {
@@ -105,7 +152,7 @@ export function CreateStory(props) {
     } catch (err) {
       console.log('err', err)
     }
-    setIsLoading(false) // End loading
+    setIsLoading(false)
   }
 
   function handleTextChange(e) {
@@ -113,7 +160,6 @@ export function CreateStory(props) {
   }
 
   function handleShowColorModal(e) {
-    console.log('handleShowColorModal called', showColorModal) // Add this line
     setShowColorModal(!showColorModal)
   }
 
@@ -130,20 +176,63 @@ export function CreateStory(props) {
   }
 
   function addToStory() {
-    console.log("addToStory called - Start");
-    console.log("imageUrl:", imageUrl);
-    console.log("text:", text);
-  
     if (!imageUrl && !text) {
-      console.log("addToStory - No Image or Text");
-      return;
+      return
     }
-    const canvasUrl = canvasRef.current.toDataURL('image/png');
-    console.log("addToStory - Canvas URL:", canvasUrl);
-    dispatch(addStoryToUser(canvasUrl));
-    console.log("addToStory - Dispatched action");
-    handleClose(); // Call the handleClose function here
-    console.log("addToStory - End");
+    const canvasUrl = canvasRef.current.toDataURL('image/png')
+
+    dispatch(addStoryToUser(canvasUrl))
+
+    handleClose()
+  }
+
+  function handleSwitchSentence() {
+    if (currentSentenceIdx + 1 < sentences.length) {
+      setCurrentSentenceIdx(currentSentenceIdx + 1)
+    } else {
+      setCurrentSentenceIdx(0)
+    }
+  }
+
+  function handleAddSentence() {
+    if (sentences.length < 4) {
+      setSentences([
+        ...sentences,
+        {
+          text: '',
+          color: 'black',
+          pos: { x: 50, y: 50 + sentences.length * 50 },
+          width: '20',
+          fontFamily: 'Arial',
+        },
+      ])
+      setCurrentSentenceIdx(sentences.length)
+      setText('')
+    }
+  }
+
+  function handleTextChange(e) {
+    const updatedSentences = [...sentences]
+    updatedSentences[currentSentenceIdx].text = e.target.value
+    setSentences(updatedSentences)
+  }
+
+  function handleColorSelect(color) {
+    const updatedSentences = [...sentences]
+    updatedSentences[currentSentenceIdx].color = color
+    setSentences(updatedSentences)
+  }
+
+  function handleWidthSelect(width) {
+    const updatedSentences = [...sentences]
+    updatedSentences[currentSentenceIdx].width = width
+    setSentences(updatedSentences)
+  }
+
+  function handleFontFamilySelect(font) {
+    const updatedSentences = [...sentences]
+    updatedSentences[currentSentenceIdx].fontFamily = font
+    setSentences(updatedSentences)
   }
 
   useEffect(() => {
@@ -163,44 +252,52 @@ export function CreateStory(props) {
     }
   }, [])
   function handleClose() {
-    console.log("handleClose called - Start");
-    console.log("props.onClose:", props.onClose);
-    props.onClose();
-    console.log("handleClose called - End");
+    props.onClose()
   }
+
   return (
     <>
-      <div className='overlay'></div>
-      <div className='create-story'>
-      {isLoading && <StoryLoader />}
-        <button title='Close' className='close-button' onClick={handleClose}>
+      <div className="overlay"></div>
+
+      <div className="create-story">
+        {isLoading && <StoryLoader />}
+        <button title="Close" className="close-button" onClick={handleClose}>
           X
         </button>
         <input
-          placeholder='choose file'
-          type='file'
-          title='Upload image'
+          placeholder="choose file"
+          type="file"
+          title="Upload image"
           onChange={handleImageUpload}
           className={imageUrl ? 'hidden' : 'story-file-upload'}
         />
 
         <input
-          placeholder='Add text'
-          type='text'
-          value={text}
+          placeholder="Add text"
+          type="text"
+          value={sentences[currentSentenceIdx]?.text || ''}
           onChange={handleTextChange}
         />
 
-<div className='edit-controls-container' style={{ pointerEvents: imageUrl ? 'auto' : 'none' }}>
-  <span
-    onClick={imageUrl ? handleShowColorModal : null}
-    role='img'
-    aria-label='color-picker'
-  >
-    <ColorPick className='color-pick-icon' />
-  </span>
-  <FontFamily onSelectFontFamily={imageUrl ? handleFontFamilySelect : null} />
-</div>
+        <div
+          className="edit-controls-container"
+          style={{ pointerEvents: imageUrl ? 'auto' : 'none' }}
+        >
+          <span
+            onClick={imageUrl ? handleShowColorModal : null}
+            role="img"
+            aria-label="color-picker"
+          >
+            <ColorPick className="color-pick-icon" />
+          </span>
+          <FontFamily
+            onSelectFontFamily={imageUrl ? handleFontFamilySelect : null}
+          />
+        </div>
+        <button onClick={handleAddSentence}>+</button>
+        <button onClick={handleSwitchSentence}>
+          ↓↑ {currentSentenceIdx + 1}
+        </button>
 
         <canvas
           ref={canvasRef}
@@ -221,7 +318,7 @@ export function CreateStory(props) {
           </div>
         )}
 
-        <button className='add-story-button' onClick={addToStory}>
+        <button className="add-story-button" onClick={addToStory}>
           Add to Story
         </button>
       </div>

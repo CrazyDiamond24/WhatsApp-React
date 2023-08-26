@@ -28,6 +28,7 @@ function Transcript({ onSelectAudio }) {
     mediaRecorderRef.current.addEventListener('stop', () => {
       const audioBlob = new Blob(audioChunksRef.current)
       const audioUrl = URL.createObjectURL(audioBlob)
+      console.log(audioUrl)
       onSelectAudio(audioUrl)
       audioChunksRef.current = []
     })

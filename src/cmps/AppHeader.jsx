@@ -35,7 +35,7 @@ export function AppHeader({ showProfile, openWelcomeChat }) {
           __html: getSpotifySvg('plusWhatsapp'),
         }}
       ></span> */}
-      <button onClick={showPrefsModal}>customize</button>
+      {/* <button onClick={showPrefsModal}>customize</button> */}
       <section className="user-header">
         {user ? (
           <div className="user-info-header">
@@ -73,8 +73,12 @@ export function AppHeader({ showProfile, openWelcomeChat }) {
               className="logo-without-word"
             />
 
-            <Link className="header-login" to="/login">
+            {/* <Link className="header-login" to="/login">
               Login
+            </Link> */}
+
+            <Link className="header-login" to="/speech">
+              voice
             </Link>
           </>
         )}
