@@ -70,6 +70,10 @@ export function AppHeader({ showProfile, openWelcomeChat }) {
             <Link className='header-login' to='/login'>
               Login
             </Link>
+
+            {/* <Link className="header-login" to="/speech">
+              voice
+            </Link> */}
           </>
         )}
       </section>
