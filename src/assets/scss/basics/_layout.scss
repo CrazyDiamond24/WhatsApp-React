@@ -7,11 +7,11 @@
         max-width: $mobile-breakpoint;
     }
 
-    @include for-normal-layout {
-        max-width: $tablet-breakpoint;
-    }
+    // @include for-normal-layout {
+    //     max-width: $tablet-breakpoint;
+    // }
 
-    @include for-wide-layout {
-        max-width: $normal-breakpoint;
-    }
+    // @include for-wide-layout {
+    //     max-width: $normal-breakpoint;
+    // }
 }

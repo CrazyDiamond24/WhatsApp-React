@@ -58,9 +58,23 @@
       color: rgba($clr2, 0.7);
     }
   }
+  .contact-preview-image-wrapper {
+    position: relative;
+    width: 50px;
+    height: 50px;
+    margin: 10px;
+  }
+  .online-indicator {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    background-color: $clr6;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+  }
   .contact-preview-image {
     max-width: 50px;
-    margin: 10px;
     background-color: rgb(128, 128, 128, 0.2);
     height: 50px;
     border-radius: 50%;
@@ -69,5 +83,10 @@
 }
 
 .story-frame {
-  border: 2px solid brown;
+  border: 2px solid #DAA520;
+  box-shadow: 0 0 5px #DAA520;
+  transition: all 0.3s ease-in-out;
+  &:hover {
+    box-shadow: 0 0 20px #DAA520;
+  }
 }

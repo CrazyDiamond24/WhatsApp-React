@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from 'react'
 import { FontPick } from './svgs/FontPick'
 
-export function FontFamily({ onSelectFontFamily }) {
+export function FontFamily({ onSelectFontFamily, initialShowDropdown = false }) {
   const [fontFamily, setFontFamily] = useState(
     'Verdana, Geneva, Tahoma, sans-serif'
   )
-  const [showDropdown, setShowDropdown] = useState(false)
+  const [showDropdown, setShowDropdown] = useState(initialShowDropdown)
   const dropdownRef = React.useRef(null)
+
+  useEffect(() => {
+    setShowDropdown(initialShowDropdown)
+  }, [initialShowDropdown])
 
   function handleChange(e) {
     setFontFamily(e.target.value)
@@ -14,23 +18,27 @@ export function FontFamily({ onSelectFontFamily }) {
   }
 
   function toggleDropdown() {
-    setShowDropdown(!showDropdown)
+    if (!initialShowDropdown) {
+      setShowDropdown(!showDropdown)
+    }
   }
 
   useEffect(() => {
-    function handleClickOutside(event) {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setShowDropdown(false)
+    if (!initialShowDropdown) {
+      function handleClickOutside(event) {
+        if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+          setShowDropdown(false)
+        }
+      }
+      document.addEventListener('mousedown', handleClickOutside)
+      return () => {
+        document.removeEventListener('mousedown', handleClickOutside)
       }
     }
-    document.addEventListener('mousedown', handleClickOutside)
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside)
-    }
-  }, [])
+  }, [initialShowDropdown])
 
   return (
-    <div ref={dropdownRef}>
+    <div className='font-container' ref={dropdownRef}>
       <label htmlFor='fontFamily' onClick={toggleDropdown}>
         <FontPick className='font-pick-icon' />
       </label>

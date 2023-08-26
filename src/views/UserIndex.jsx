@@ -20,6 +20,13 @@ export function UserIndex(props) {
   const [activeUserChat, setActiveUserChat] = useState(false)
   const [showCamera, setShowCamera] = useState(true)
   const [isAddContactModalOpen, setIsAddContactModalOpen] = useState(false)
+  const [isChatHidden, setIsChatHidden] = useState(false)
+  const [isListShown, setIsListShown] = useState(false)
+
+  function toggleDisplay() {
+    setIsChatHidden((prevIsChatHidden) => !prevIsChatHidden)
+    setIsListShown((prevIsListShown) => !prevIsListShown)
+  }
 
   const user = useSelector((storeState) => {
     return storeState.userModule.selectedUser
@@ -82,7 +89,7 @@ export function UserIndex(props) {
   return (
     <section className='home-page'>
       {!isShowProfile ? (
-        <section className='contact-list'>
+        <section className={`${isListShown ? 'show-list' : 'contact-list'}`}>
           <AppHeader
             openWelcomeChat={openWelcomeChat}
             showProfile={handleShowProfile}
@@ -108,7 +115,7 @@ export function UserIndex(props) {
                 onChange={(e) => handleInput(e)}
               />
             </div>
-            
+
             <div className='add-contact'>
               <button onClick={openAddContactModal}>
                 <AddContactIcon />
@@ -126,7 +133,9 @@ export function UserIndex(props) {
             openUserChat={openUserChat}
             filterBy={filterBy}
             onRemoveUser={onRemoveUser}
+            toggleDisplay={toggleDisplay}
           />
+
           <div className='accessory-list'></div>
         </section>
       ) : (
@@ -137,11 +146,14 @@ export function UserIndex(props) {
       )}
 
       {/* {!showCamera ? ( */}
+      <button className='back-btn' onClick={toggleDisplay}></button>
       <ChatWindow
+        isChatHidden={isChatHidden}
         showWelcome={showWelcome}
         openUserChat={openUserChat}
         key={user?._id}
       />
+
       {/* ) : ( */}
       {/* <TakePicture closeModal={handleCloseModal} /> */}
       {/* )} */}

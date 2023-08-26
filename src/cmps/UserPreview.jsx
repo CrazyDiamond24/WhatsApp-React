@@ -100,12 +100,18 @@ function onOpenStoryModal() {
       onContextMenu={showContactModal}
     >
       {openStoryModal && <StoryModal user={user} />}
+
+      
+      <div className="contact-preview-image-wrapper">
       <img
         onClick={onOpenStoryModal}
         className={`${hasStory ? "story-frame" : ""} contact-preview-image`}
         src={user.img}
         alt={user.fullName}
       />
+      {user.isOnline && <span className="online-indicator"></span>}
+    </div>
+
       <div className="mini-contant">
         <div className="contact-preview-info">
           <h2>{user.fullName}</h2>
@@ -120,11 +126,12 @@ function onOpenStoryModal() {
           </h3>
         </div>
         {/* add the timestamp of the last message here */}
-        {user.isOnline ? (
-          <h1>onLine</h1>
-        ) : (
-          <div>Last Seen: {timestamp(user.lastSeen)}</div>
-        )}
+
+
+        {/* {user.isOnline && <span className="online-indicator"></span>} */}
+
+
+
         {unreadCount > 0 && <span className="unread-count">{unreadCount}</span>}
       </div>
       {showModal && (

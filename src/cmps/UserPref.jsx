@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { updateUserPref } from '../store/actions/user.actions'
 import { CanvasColorPicker } from './CanvasColorPicker'
@@ -9,6 +9,32 @@ export function UserPref({ closePrefModal }) {
   const user = useSelector((storeState) => storeState.userModule.loggedInUser)
   const [editedUser, setEditedUser] = useState({ ...user })
   const dispatch = useDispatch()
+  const [showFontColorPicker, setShowFontColorPicker] = useState(false)
+  const [showBannerColorPicker, setShowBannerColorPicker] = useState(false)
+
+  const fontColorPickerRef = useRef(null)
+  const bannerColorPickerRef = useRef(null)
+
+  function handleClickOutside(event) {
+    if (
+      fontColorPickerRef.current &&
+      !fontColorPickerRef.current.contains(event.target)
+    ) {
+      setShowFontColorPicker(false)
+    }
+    if (
+      bannerColorPickerRef.current &&
+      !bannerColorPickerRef.current.contains(event.target)
+    ) {
+      setShowBannerColorPicker(false)
+    }
+  }
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [])
 
   function handleColorSelect(color, colorType) {
     if (colorType === 'fontColor') {
@@ -67,37 +93,83 @@ export function UserPref({ closePrefModal }) {
   }
 
   return (
-    <section className="user-pref">
+    <section className='user-pref'>
       <form onSubmit={handleSubmit}>
-        <CanvasColorPicker
-          onColorSelect={(color) => handleColorSelect(color, 'fontColor')}
-          onWidthSelect={handleWidthSelect}
-          show={true}
-          important={false}
+
+
+      <div ref={fontColorPickerRef}>
+        {showFontColorPicker && (
+          <CanvasColorPicker
+            onColorSelect={(color) => handleColorSelect(color, 'fontColor')}
+            onWidthSelect={handleWidthSelect}
+            show={true}
+            important={false}
+          />
+        )}
+        </div>
+
+
+        <FontFamily
+          className='font-family-pick'
+          onSelectFontFamily={handleFontFamilySelect}
+          initialShowDropdown={true}
         />
-        <FontFamily onSelectFontFamily={handleFontFamilySelect} />
+
         <ImagePicker onSelectImage={handleImageSelect} />
-        <label>Current Font Size: {editedUser.userPref?.fontSize}</label>
-        <label>
-          Current Font Color:
+
+        <label className='selected-font'>
+          Select Font Size & Color:
           <span
+            title='Change font color'
+            onClick={() => setShowFontColorPicker(!showFontColorPicker)}
             style={{
               backgroundColor: editedUser.userPref?.fontColor,
               display: 'inline-block',
               width: '20px',
               height: '20px',
+              borderRadius: '50%',
+              cursor: 'pointer',
+              marginLeft: '10px',
+            }}
+          ></span>
+          <span
+            onClick={() => setShowFontColorPicker(!showFontColorPicker)}
+            title='Change font size'
+            className='font-size-num'
+          >
+            {editedUser.userPref?.fontSize}
+          </span>
+        </label>
+
+        <label className='banner-color'>
+          Banner Color:
+          <div ref={bannerColorPickerRef}>
+          {showBannerColorPicker && (
+            <CanvasColorPicker
+              className='color-picker-userpref'
+              onColorSelect={(color) =>
+                handleColorSelect(color, 'headerBgColor')
+              }
+              important={true}
+            />
+          )}
+            </div>
+          <span
+            title='Change banner color'
+            onClick={() => setShowBannerColorPicker(!showBannerColorPicker)}
+            style={{
+              backgroundColor: editedUser.userPref?.headerBgColor,
+              display: 'inline-block',
+              width: '20px',
+              height: '20px',
+              borderRadius: '50%',
+              cursor: 'pointer',
+              marginLeft: '87.6px',
             }}
           ></span>
         </label>
-        <label>
-          Header Background Color:
-          <CanvasColorPicker
-            onColorSelect={(color) => handleColorSelect(color, 'headerBgColor')}
-            show={false}
-            important={true}
-          />
-        </label>
-        <button type="submit">Apply</button>
+
+        <button type='submit'>Apply</button>
       </form>
     </section>
   )

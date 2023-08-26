@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
-
+import { ColorPick } from './svgs/ColorPick'
 import { useState } from 'react'
 import { UserPref } from './UserPref'
 import { doLogout } from '../store/actions/user.actions'
@@ -25,61 +25,55 @@ export function AppHeader({ showProfile, openWelcomeChat }) {
   }
 
   return (
-    <header
-      className="app-header"
-      style={{ backgroundColor: user?.userPref?.headerBgColor }}
-    >
-      {/* <span
-        onClick={showPrefsModal}
-        dangerouslySetInnerHTML={{
-          __html: getSpotifySvg('plusWhatsapp'),
-        }}
-      ></span> */}
-      <button onClick={showPrefsModal}>customize</button>
-      <section className="user-header">
+    <header className='app-header'>
+      <section className='user-header'>
         {user ? (
-          <div className="user-info-header">
-            {user.img ? (
-              <>
-                <div className="user-actions-header">
+          <div className='user-info-header'>
+            {user.img && (
+              <div className='user-actions-header'>
+                <div className='img-and-picker-container'>
                   <img
                     onClick={showProfile}
                     src={user.img}
                     alt={user.username}
-                    title="Profile"
+                    title='Profile'
                   />
-                  <button onClick={handelLogout}>Logout</button>
+                  <ColorPick
+                    className='color-pick-header'
+                    onClick={showPrefsModal}
+                  />
                 </div>
-                <img
-                  onClick={openWelcomeChat}
-                  src="https://res.cloudinary.com/dmox9pnnx/image/upload/v1691422190/Logo-without-word_hoknvz.png"
-                  alt="logo"
-                  className="logo-without-word"
-                />
-              </>
-            ) : (
-              <img
-                src="https://res.cloudinary.com/dmox9pnnx/image/upload/v1691422190/Logo-without-word_hoknvz.png"
-                alt="logo"
-                className="logo-without-word"
-              />
+
+                <div className='logo-and-btn-container'>
+                <button title='Logout' onClick={handelLogout}>
+                    Logout
+                  </button>
+                  <img
+                    onClick={openWelcomeChat}
+                    src='https://res.cloudinary.com/dmox9pnnx/image/upload/v1691422190/Logo-without-word_hoknvz.png'
+                    alt='logo'
+                    className='logo-without-word'
+                    title='Main Page'
+                  />
+                </div>
+              </div>
             )}
           </div>
         ) : (
           <>
             <img
-              src="https://res.cloudinary.com/dmox9pnnx/image/upload/v1691422190/Logo-without-word_hoknvz.png"
-              alt="logo"
-              className="logo-without-word"
+              onClick={openWelcomeChat}
+              src='https://res.cloudinary.com/dmox9pnnx/image/upload/v1691422190/Logo-without-word_hoknvz.png'
+              alt='logo'
+              className='logo-without-word'
             />
-
-            <Link className="header-login" to="/login">
+            <Link className='header-login' to='/login'>
               Login
             </Link>
           </>
         )}
       </section>
-      {showModal && <UserPref closePrefModal={hancleClosePrefModal} />} 
+      {showModal && <UserPref closePrefModal={hancleClosePrefModal} />}
     </header>
   )
 }

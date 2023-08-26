@@ -1,5 +1,6 @@
 .home-page {
   display: flex;
+  position:relative;
   background: linear-gradient($primaryClr 1%, $clr2 80%);
   width: 100vw;
   .contact-list {
@@ -8,6 +9,8 @@
     background: $lighterGreen;
     position: relative;
   }
+
+  
 
   .svg-input-container {
     position: relative;
@@ -68,6 +71,29 @@
     display: flex;
     justify-content: space-between; 
     align-items: center;
+  }
+
+  @media (max-width: 768px) { 
+    .contact-list {
+      display: none;
+    }
+    .show-list{
+      display:block;
+      height: 100vh;
+    }
+  }
+
+  .back-btn{
+    position:absolute;
+    height: 30px;
+    width:30px;
+    z-index: 999; 
+    left: 85%;
+    top: 10px;
+    display:none;
+    @media (max-width: 768px) {
+      display:block;
+    }
   }
 }
 
@@ -148,4 +174,10 @@
       transform: scale(1.1);
     }
   }
+}
+
+
+
+.hide-chat {
+  display:none;
 }

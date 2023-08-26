@@ -12,7 +12,7 @@ const getInitialState = () => ({
   sessionStartTime: storageService.load('sessionStartTime') || Date.now(),
 })
 
-export function UserList({ filterBy, onRemoveUser, openUserChat }) {
+export function UserList({ filterBy, onRemoveUser, openUserChat, toggleDisplay }) {
   const [filteredUsers, setFilteredUsers] = useState([])
   const [activeContactId, setActiveContactId] = useState(null)
   const [state, setState] = useState(getInitialState)
@@ -74,6 +74,7 @@ export function UserList({ filterBy, onRemoveUser, openUserChat }) {
         ...state.unreadCounts,
         [contactId]: 0,
       },
+      
     }
 
     storageService.store(
@@ -83,6 +84,7 @@ export function UserList({ filterBy, onRemoveUser, openUserChat }) {
     setState(updatedState)
     setActiveContactId(contactId)
     openUserChat(contactId)
+    toggleDisplay()
   }
 
   function filterUsers(users, filterBy, loggedInUser) {
@@ -98,6 +100,7 @@ export function UserList({ filterBy, onRemoveUser, openUserChat }) {
             key={user?._id}
             timeout={300}
             classNames="contact-preview"
+            
           >
             <UserPreview
               user={user}

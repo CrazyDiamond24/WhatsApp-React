@@ -63,7 +63,7 @@ export default function MsgModal({
               }}
             ></span>
           </div>
-          <p>images</p>
+          <p>Photo</p>
           <label>
             <input type="file" onChange={handleImg} className="hidden" />
           </label>
@@ -76,7 +76,7 @@ export default function MsgModal({
               }}
             ></span>
           </div>
-          <p>Ai image</p>
+          <p>AI Generated Art</p>
         </li>
         <li>
           <div>
@@ -86,7 +86,7 @@ export default function MsgModal({
               }}
             ></span>
           </div>
-          <p>videos</p>
+          <p>Video</p>
           <label>
             <input type="file" onChange={handleVideoFile} className="hidden" />
           </label>
@@ -99,7 +99,7 @@ export default function MsgModal({
               }}
             ></span>
           </div>
-          <p>camera</p>
+          <p>Camera</p>
         </li>
         <li>
           <div>
@@ -109,7 +109,7 @@ export default function MsgModal({
               }}
             ></span>
           </div>
-          <p>files</p>
+          <p>File</p>
           <label>
             <input
               type="file"

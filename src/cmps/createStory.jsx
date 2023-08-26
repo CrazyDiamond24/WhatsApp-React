@@ -191,7 +191,10 @@ export function CreateStory(props) {
           onChange={handleTextChange}
         />
 
-<div className='edit-controls-container' style={{ pointerEvents: imageUrl ? 'auto' : 'none' }}>
+<div
+  className='edit-controls-container'
+  style={{ pointerEvents: imageUrl ? 'auto' : 'none', cursor: imageUrl ? 'auto' : 'not-allowed' }}
+>
   <span
     onClick={imageUrl ? handleShowColorModal : null}
     role='img'
@@ -201,6 +204,7 @@ export function CreateStory(props) {
   </span>
   <FontFamily onSelectFontFamily={imageUrl ? handleFontFamilySelect : null} />
 </div>
+
 
         <canvas
           ref={canvasRef}

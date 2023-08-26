@@ -8,11 +8,15 @@
   position: relative;
   max-height: 540px;
   scrollbar-width: none; 
-  -ms-overflow-style: none; 
+  -ms-overflow-style: none;
 
   &::-webkit-scrollbar {
     display: none;
   }
+
+  @media (max-width: 768px) { 
+    max-height: 700px;
+     }
 }
 
 

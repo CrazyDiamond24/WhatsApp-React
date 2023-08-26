@@ -9,6 +9,9 @@
     animation: pageExpand 0.2s forwards;
     width: 500px;
   }
+  @media (max-width: 768px) { 
+   height: 100vh;
+     }
 
   .first-section {
     background: $lighterGreen;
