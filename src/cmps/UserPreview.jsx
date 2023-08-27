@@ -85,14 +85,15 @@ export function UserPreview({
   function timestamp(time) {
     return msgService.getTimestamp(time)
   }
-function onOpenStoryModal() {
-  setOpenStoryModal(true)
-
-  setTimeout(() => {
-    setOpenStoryModal(false)
-  }, 3000)
-}
   
+  function onOpenStoryModal() {
+    setOpenStoryModal(true)
+
+    setTimeout(() => {
+      setOpenStoryModal(false)
+    }, 3000)
+  }
+
   return (
     <article
       className={`contact-preview ${isActiveContact ? "active" : ""}`}
@@ -101,16 +102,15 @@ function onOpenStoryModal() {
     >
       {openStoryModal && <StoryModal user={user} />}
 
-      
       <div className="contact-preview-image-wrapper">
-      <img
-        onClick={onOpenStoryModal}
-        className={`${hasStory ? "story-frame" : ""} contact-preview-image`}
-        src={user.img}
-        alt={user.fullName}
-      />
-      {user.isOnline && <span className="online-indicator"></span>}
-    </div>
+        <img
+          onClick={onOpenStoryModal}
+          className={`${hasStory ? "story-frame" : ""} contact-preview-image`}
+          src={user.img}
+          alt={user.fullName}
+        />
+        {user.isOnline && <span className="online-indicator"></span>}
+      </div>
 
       <div className="mini-contant">
         <div className="contact-preview-info">
@@ -127,10 +127,7 @@ function onOpenStoryModal() {
         </div>
         {/* add the timestamp of the last message here */}
 
-
         {/* {user.isOnline && <span className="online-indicator"></span>} */}
-
-
 
         {unreadCount > 0 && <span className="unread-count">{unreadCount}</span>}
       </div>
