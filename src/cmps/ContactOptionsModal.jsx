@@ -60,7 +60,7 @@ export function ContactOptionsModal({
         ref={modalRef}
         className="station-options-modal"
         style={{
-          top: position.top + 40,
+          top: position.top - 100,
           left: position.left,
         }}
       >

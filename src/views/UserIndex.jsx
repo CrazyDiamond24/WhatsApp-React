@@ -24,8 +24,8 @@ export function UserIndex(props) {
   const [isListShown, setIsListShown] = useState(false)
 
   function toggleDisplay() {
-    setIsChatHidden((prevIsChatHidden) => !prevIsChatHidden)
-    setIsListShown((prevIsListShown) => !prevIsListShown)
+    // setIsChatHidden((prevIsChatHidden) => !prevIsChatHidden)
+    // setIsListShown((prevIsListShown) => !prevIsListShown)
   }
 
   const user = useSelector((storeState) => {
