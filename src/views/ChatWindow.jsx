@@ -248,7 +248,7 @@ export function ChatWindow({ showWelcome, isChatHidden }) {
 
   return (
     <div
-    className={` ${isChatHidden ? 'hide-chat' : 'chat-window'}`}
+      className={` ${isChatHidden ? 'hide-chat' : 'chat-window'}`}
       ref={animationParent}
       style={{
         backgroundImage: loggedInUser?.userPref?.backgroundImage
@@ -261,19 +261,19 @@ export function ChatWindow({ showWelcome, isChatHidden }) {
       {user && !showWelcome ? (
         <>
           <div
-            className='header-area'
+            className="header-area"
             style={{ backgroundColor: loggedInUser?.userPref?.headerBgColor }}
           >
-            <div className='header-image-wrapper'>
+            <div className="header-image-wrapper">
               <img src={user?.img} alt={user?.username} />
-              {onLine && <span className='online-indicator'></span>}
+              {onLine && <span className="online-indicator"></span>}
             </div>
-            <div className='user-details'>
-              <h2 className='user-fullname'>{user?.fullName}</h2>
+            <div className="user-details">
+              <h2 className="user-fullname">{user?.fullName}</h2>
               {onLine ? (
-                <div className='online-status-word'>Online</div>
+                <div className="online-status-word">Online</div>
               ) : (
-                <div className='status-info'>
+                <div className="status-info">
                   Last Seen: {timestamp(user.lastSeen)}
                 </div>
               )}
@@ -282,7 +282,7 @@ export function ChatWindow({ showWelcome, isChatHidden }) {
             {recipientIsTyping && <div>is typing...</div>}
             {recipientIsRecording && <div>is recording...</div>}
           </div>
-          <ul className='conversation-container flex' ref={animationParent}>
+          <ul className="conversation-container flex" ref={animationParent}>
             <ConverstationList
               msgs={msgs}
               loggedInUser={loggedInUser}
@@ -290,8 +290,8 @@ export function ChatWindow({ showWelcome, isChatHidden }) {
               isUserBlocked={isUserBlocked}
             />
           </ul>
-          <form className='msg-input' onSubmit={(e) => handelSendMsg(e)}>
-            <div className='multimedia-container'>
+          <form className="msg-input" onSubmit={(e) => handelSendMsg(e)}>
+            <div className="multimedia-container">
               <Giphy
                 onSelectGif={(gifImgUrl) =>
                   handlefilesSelect(gifImgUrl, 'image')
@@ -301,7 +301,7 @@ export function ChatWindow({ showWelcome, isChatHidden }) {
 
               {/* <TakePicture onSelectSelfiePicture={handleGifSelect} /> */}
             </div>
-            <div className='chat-input-container'>
+            <div className="chat-input-container">
               {showModal && (
                 <MsgModal
                   position={modalPosition}
@@ -315,25 +315,25 @@ export function ChatWindow({ showWelcome, isChatHidden }) {
               )}
 
               <PlusWhatsapp
-                title='Attach'
+                title="Attach"
                 className={`plus-icon-svg ${isIconRotated ? 'rotate' : ''}`}
                 onClick={(e) => handleShowModal(e)}
               />
 
               <input
-                className='chat-msg-input'
-                type='text'
-                placeholder='Type a message...'
+                className="chat-msg-input"
+                type="text"
+                placeholder="Type a message..."
                 value={msgContent}
                 onChange={handleInputChange}
               />
 
               <Transcript
-                title='Record'
+                title="Record"
                 onSelectAudio={(audioUrl) =>
                   handlefilesSelect(audioUrl, 'audio')
                 }
-                className='transcript-container'
+                className="transcript-container"
               />
             </div>
           </form>
