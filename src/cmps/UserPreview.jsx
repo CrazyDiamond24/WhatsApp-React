@@ -21,10 +21,10 @@ export function UserPreview({
     return storeState.userModule.loggedInUser
   })
   // real one
-  // const hasStory = user.story.length
+  const hasStory = user.story.length
 
   // true - for development
-  const hasStory = 1
+  // const hasStory = 1
 
   const dispatch = useDispatch()
 

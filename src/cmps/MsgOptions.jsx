@@ -16,7 +16,7 @@ export function MsgOptions({ msg, loggedInUser, user }) {
 
   return (
     <>
-      <div onClick={(e) => showSongOptionsModal(e)}>🔽</div>
+      <div className='hover-icon' onClick={(e) => showSongOptionsModal(e)}>🔽</div>
       {showModal && (
         <MsgOptionsModal
           user={user}

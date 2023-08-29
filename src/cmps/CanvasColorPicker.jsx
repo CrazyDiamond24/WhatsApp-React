@@ -70,7 +70,8 @@ export function CanvasColorPicker({
       </div>
       {show && (
         <>
-          <div className='line'></div>
+          <div className='line'>Font size</div>
+          <span></span>
           <div className='line-size-container'>
             <div onClick={() => handleWidthClick(44)} className='one'></div>
             <div onClick={() => handleWidthClick(32)} className='two'></div>

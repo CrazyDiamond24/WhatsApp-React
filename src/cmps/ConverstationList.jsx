@@ -16,11 +16,14 @@ export function ConverstationList({ isUserBlocked, msgs, loggedInUser, user }) {
   }
 
   function handleMouseEnter(index) {
+    if(hoveredIndex) return
     setHoveredIndex(index)
   }
 
   function handleMouseLeave() {
-    setHoveredIndex(null)
+    setTimeout(() => {
+      setHoveredIndex(null)
+    }, 4000);
   }
 
   useEffect(() => {
