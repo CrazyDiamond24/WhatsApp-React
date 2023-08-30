@@ -13,10 +13,11 @@ export function ContactOptionsModal({
   user,
   loggedInUser,
 }) {
+  const [isBlocked, setIsBlocked] = useState(isUserBlocked)
+
   const modalRef = useRef()
   const dispatch = useDispatch()
   const isUserBlocked = loggedInUser?.blockedContcats?.includes(user?._id)
-  const [isBlocked, setIsBlocked] = useState(isUserBlocked)
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -74,9 +75,9 @@ export function ContactOptionsModal({
           <li onClick={onClearChat}>
             <button>clear chat</button>
           </li>
-          <li>
+          {/* <li>
             <button>Add to haialem shel rania</button>
-          </li>
+          </li> */}
         </ul>
       </section>
     </>
