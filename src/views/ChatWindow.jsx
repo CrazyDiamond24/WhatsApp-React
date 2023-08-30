@@ -1,35 +1,32 @@
-import React from 'react'
-import { useEffect, useState } from 'react'
-
-import { useDispatch, useSelector } from 'react-redux'
-import { addMsg } from '../store/actions/user.actions'
-import { Emojis } from '../cmps/Emojis'
-import { Giphy } from '../cmps/Giphy'
-import { useAutoAnimate } from '@formkit/auto-animate/react'
-import { socketService, SOCKET_EMIT_SEND_MSG } from '../services/socket.service'
-import { msgService } from '../services/msg.service'
-import Transcript from '../cmps/Transcript'
-import { WelcomeChatRoom } from '../cmps/WelcomeChatRoom'
-import { ConverstationList } from '../cmps/ConverstationList'
-import MsgModal from '../cmps/MsgModal'
-import { ReactComponent as PlusWhatsapp } from '../assets/imgs/plusWhatsapp.svg'
-import { aiService } from '../services/ai.service'
-import AIImageGenerator from '../cmps/AIImageGenerator'
+import React from "react"
+import { useEffect, useState } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { addMsg } from "../store/actions/user.actions"
+import { Emojis } from "../cmps/Emojis"
+import { Giphy } from "../cmps/Giphy"
+import { useAutoAnimate } from "@formkit/auto-animate/react"
+import { socketService, SOCKET_EMIT_SEND_MSG } from "../services/socket.service"
+import { msgService } from "../services/msg.service"
+import Transcript from "../cmps/Transcript"
+import { WelcomeChatRoom } from "../cmps/WelcomeChatRoom"
+import { ConverstationList } from "../cmps/ConverstationList"
+import MsgModal from "../cmps/MsgModal"
+import { ReactComponent as PlusWhatsapp } from "../assets/imgs/plusWhatsapp.svg"
+import { aiService } from "../services/ai.service"
+import AIImageGenerator from "../cmps/AIImageGenerator"
 
 export function ChatWindow({ showWelcome, isChatHidden }) {
-  const [msgContent, setMsgContent] = useState('')
+  const [msgContent, setMsgContent] = useState("")
   const [showModal, setShowModal] = useState(false)
   const [modalPosition, setModalPosition] = useState({ top: 0, left: 0 })
   const [recipientIsRecording, setUserIsRecording] = useState(false)
   const [recipientIsTyping, setUserIsTyping] = useState(false)
   const [isIconRotated, setIsIconRotated] = useState(false)
-  const [onlineStatus, setOnlineStatus] = useState(false)
   const [onLine, showOnline] = useState(false)
   const [showAiModal, setShowAiModal] = useState(false)
   const loggedInUser = useSelector((storeState) => {
     return storeState.userModule.loggedInUser
   })
-  console.log('socket work')
   const user = useSelector((storeState) => {
     return storeState.userModule.selectedUser
   })
@@ -46,26 +43,24 @@ export function ChatWindow({ showWelcome, isChatHidden }) {
     loggedInUser && user
       ? msgService.filterMsgs(user, loggedInUser, allMsgs)
       : null
-  console.log('please render after clear')
 
   useEffect(() => {
     const handleUserBlocked = (blockedData) => {
       const { blockedUserId, action } = blockedData
       if (blockedUserId === user?._id) {
-        // Update the isUserBlocked state based on the action 4
-        setIsUserBlocked(action === 'BLOCK_USER')
+        setIsUserBlocked(action === "BLOCK_USER")
       }
     }
     setIsUserBlocked(loggedInUser?.blockedContcats?.includes(user?._id))
-    socketService.on('user-block-status-updated', handleUserBlocked)
+    socketService.on("user-block-status-updated", handleUserBlocked)
 
     return () => {
-      socketService.off('user-block-status-updated', handleUserBlocked)
+      socketService.off("user-block-status-updated", handleUserBlocked)
     }
   }, [user?._id])
 
   useEffect(() => {
-    const container = document.querySelector('.conversation-container')
+    const container = document.querySelector(".conversation-container")
     if (container) {
       container.scrollTop = container.scrollHeight
     }
@@ -73,13 +68,13 @@ export function ChatWindow({ showWelcome, isChatHidden }) {
 
   useEffect(() => {
     const handleTyping = (typing) => {
-      const message = typing ? 'is typing...' : ''
+      const message = typing ? "is typing..." : ""
       const userId = loggedInUser?._id
       return { userId, message }
     }
-    socketService.on('typing', handleTyping(msgContent))
+    socketService.on("typing", handleTyping(msgContent))
     return () => {
-      socketService.off('typing', handleTyping(msgContent))
+      socketService.off("typing", handleTyping(msgContent))
     }
   }, [msgContent])
 
@@ -98,9 +93,9 @@ export function ChatWindow({ showWelcome, isChatHidden }) {
         )
       }
     }
-    socketService.on('chat-add-msg', handleReceivedMsg)
+    socketService.on("chat-add-msg", handleReceivedMsg)
     return () => {
-      socketService.off('chat-add-msg', handleReceivedMsg)
+      socketService.off("chat-add-msg", handleReceivedMsg)
     }
   }, [dispatch])
 
@@ -118,45 +113,34 @@ export function ChatWindow({ showWelcome, isChatHidden }) {
         }
       }
     }
-    socketService.on('user-typing', handleTyping)
+    socketService.on("user-typing", handleTyping)
     return () => {
-      socketService.off('user-typing', handleTyping)
+      socketService.off("user-typing", handleTyping)
     }
   }, [user?._id])
 
   useEffect(() => {
     const handleUserStatusUpdate = (userStatusUpdate) => {
       if (userStatusUpdate.userId && userStatusUpdate.userId === user._id) {
-        if (userStatusUpdate.isOnline) {
-          showOnline(true)
-          console.log('user in on', user)
-
-          console.log('userStatusUpdate', userStatusUpdate)
-        } else {
-          showOnline(false)
-          console.log('user in off', user)
-        }
+        showOnline(userStatusUpdate.isOnline)
       }
     }
-
-    socketService.on('user-updated', handleUserStatusUpdate)
-
+    socketService.on("user-updated", handleUserStatusUpdate)
     return () => {
-      socketService.off('user-updated', handleUserStatusUpdate)
+      socketService.off("user-updated", handleUserStatusUpdate)
     }
   }, [user?._id])
 
   useEffect(() => {
     const handleRecording = (recordingData) => {
       const { userId, isRecording } = recordingData
-
       if (userId !== loggedInUser?._id) {
         setUserIsRecording(isRecording)
       }
     }
-    socketService.on('user-recording', handleRecording)
+    socketService.on("user-recording", handleRecording)
     return () => {
-      socketService.off('user-recording', handleRecording)
+      socketService.off("user-recording", handleRecording)
     }
   }, [user?._id])
 
@@ -166,23 +150,18 @@ export function ChatWindow({ showWelcome, isChatHidden }) {
         contentToSend.content,
         contentToSend.recipientId,
         contentToSend.senderId,
-        'text'
+        "text"
       )
     )
-
     const characterName =
-      'a comedian. You can answer everything with your current knowledge, but make it funny'
-
+      "a comedian. You can answer everything with your current knowledge, but make it funny"
     const res = await aiService.askChatGpt(contentToSend.content, characterName)
-
-    dispatch(addMsg(res, loggedInUser._id, user._id, 'text'))
+    dispatch(addMsg(res, loggedInUser._id, user._id, "text"))
   }
 
   function handelSendMsg(e) {
     e.preventDefault()
-
     if (!loggedInUser || !user || !msgContent.length || isUserBlocked) return
-
     const trimmedContent = msgContent.trim()
 
     if (trimmedContent) {
@@ -191,10 +170,8 @@ export function ChatWindow({ showWelcome, isChatHidden }) {
         senderId: loggedInUser._id,
         recipientId: user._id,
       }
-      setMsgContent('')
-
-      if (user.username === 'gpt') return askGpt(contentToSend)
-
+      setMsgContent("")
+      if (user.username === "gpt") return askGpt(contentToSend)
       socketService.emit(SOCKET_EMIT_SEND_MSG, contentToSend)
     }
   }
@@ -202,10 +179,9 @@ export function ChatWindow({ showWelcome, isChatHidden }) {
   function handleInputChange(e) {
     setMsgContent(e.target.value)
     const trimmedContent = e.target.value.trim()
-    const isTyping = trimmedContent !== ''
-
+    const isTyping = trimmedContent !== ""
     // Don't set recipient's typing state here emit your typing status instead
-    socketService.emit('typing', {
+    socketService.emit("typing", {
       senderId: loggedInUser._id,
       recipientId: user._id,
       isTyping,
@@ -218,15 +194,12 @@ export function ChatWindow({ showWelcome, isChatHidden }) {
 
   function handlefilesSelect(url, type) {
     const contentToSend = msgService.getMsgType(url, loggedInUser, user, type)
-    console.log('contentToSend', contentToSend)
     socketService.emit(SOCKET_EMIT_SEND_MSG, contentToSend)
-    setMsgContent('')
+    setMsgContent("")
   }
-  console.log('onlineStatus hadash', onlineStatus)
 
   function handleShowModal(e) {
     e.stopPropagation()
-
     const rect = e.target.getBoundingClientRect()
     setModalPosition({
       top: rect.top + window.scrollY,
@@ -235,6 +208,7 @@ export function ChatWindow({ showWelcome, isChatHidden }) {
     setShowModal(!showModal)
     setIsIconRotated(!isIconRotated)
   }
+
   function timestamp(time) {
     return msgService.getTimestamp(time)
   }
@@ -242,20 +216,21 @@ export function ChatWindow({ showWelcome, isChatHidden }) {
   function handleOpenAiModal() {
     setShowAiModal(true)
   }
+
   function handleCloseAiModal() {
     setShowAiModal(false)
   }
 
   return (
     <div
-      className={` ${isChatHidden ? 'hide-chat' : 'chat-window'}`}
+      className={` ${isChatHidden ? "hide-chat" : "chat-window"}`}
       ref={animationParent}
       style={{
         backgroundImage: loggedInUser?.userPref?.backgroundImage
           ? `url(${loggedInUser?.userPref?.backgroundImage})`
-          : '',
-        backgroundSize: 'cover',
-        backgroundRepeat: 'no-repeat',
+          : "",
+        backgroundSize: "cover",
+        backgroundRepeat: "no-repeat",
       }}
     >
       {user && !showWelcome ? (
@@ -294,7 +269,7 @@ export function ChatWindow({ showWelcome, isChatHidden }) {
             <div className="multimedia-container">
               <Giphy
                 onSelectGif={(gifImgUrl) =>
-                  handlefilesSelect(gifImgUrl, 'image')
+                  handlefilesSelect(gifImgUrl, "image")
                 }
               />
               <Emojis onSelectEmoji={handleEmojiSelect} />
@@ -305,17 +280,17 @@ export function ChatWindow({ showWelcome, isChatHidden }) {
               {showModal && (
                 <MsgModal
                   onSelectImage={(gifImgUrl) =>
-                    handlefilesSelect(gifImgUrl, 'image')
+                    handlefilesSelect(gifImgUrl, "image")
                   }
-                  onSelectVideo={(url) => handlefilesSelect(url, 'video')}
-                  onSelectFile={(url) => handlefilesSelect(url, 'file')}
+                  onSelectVideo={(url) => handlefilesSelect(url, "video")}
+                  onSelectFile={(url) => handlefilesSelect(url, "file")}
                   openAiModal={handleOpenAiModal}
                 />
               )}
 
               <PlusWhatsapp
                 title="Attach"
-                className={`plus-icon-svg ${isIconRotated ? 'rotate' : ''}`}
+                className={`plus-icon-svg ${isIconRotated ? "rotate" : ""}`}
                 onClick={(e) => handleShowModal(e)}
               />
 
@@ -330,7 +305,7 @@ export function ChatWindow({ showWelcome, isChatHidden }) {
               <Transcript
                 title="Record"
                 onSelectAudio={(audioUrl) =>
-                  handlefilesSelect(audioUrl, 'audio')
+                  handlefilesSelect(audioUrl, "audio")
                 }
                 className="transcript-container"
               />
@@ -340,8 +315,7 @@ export function ChatWindow({ showWelcome, isChatHidden }) {
             <AIImageGenerator
               closeAiModal={handleCloseAiModal}
               onImageGenerated={(gifImgUrl) =>
-                // console.log('gifImgUrl', gifImgUrl)
-                handlefilesSelect(gifImgUrl, 'image')
+                handlefilesSelect(gifImgUrl, "image")
               }
             />
           )}

@@ -13,11 +13,11 @@ export function ContactOptionsModal({
   user,
   loggedInUser,
 }) {
+  const isUserBlocked = loggedInUser?.blockedContcats?.includes(user?._id)
   const [isBlocked, setIsBlocked] = useState(isUserBlocked)
 
   const modalRef = useRef()
   const dispatch = useDispatch()
-  const isUserBlocked = loggedInUser?.blockedContcats?.includes(user?._id)
 
   useEffect(() => {
     function handleClickOutside(event) {
