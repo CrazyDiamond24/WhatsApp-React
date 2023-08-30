@@ -1,8 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react'
 import { uploadImg } from '../services/upload-img.service'
-import { getSpotifySvg } from '../services/SVG.service'
 import { CanvasColorPicker } from './CanvasColorPicker'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { addStoryToUser } from '../store/actions/user.actions'
 import { FontFamily } from './FontFamily'
 import { ColorPick } from './svgs/ColorPick'
@@ -10,20 +9,15 @@ import placeholderImg from '../assets/imgs/story-placeholder.png'
 import { StoryLoader } from '../cmps/StoryLoader'
 
 export function CreateStory(props) {
-  const [imageUrl, setImageUrl] = useState(null)
   const [text, setText] = useState('')
-  const [textColor, setTextColor] = useState('black')
   const [textWidth, setTextWidth] = useState('20')
+  const [textColor, setTextColor] = useState('black')
   const [textFontFamily, setTextFontFamily] = useState('Arial')
-
-  const [textPos, setTextPos] = useState({ x: 50, y: 50 })
+  const [currentSentenceIdx, setCurrentSentenceIdx] = useState(0)
+  const [imageUrl, setImageUrl] = useState(null)
   const [showColorModal, setShowColorModal] = useState(false)
   const [dragging, setDragging] = useState(false)
-  const canvasRef = useRef(null)
-  const colorModalRef = useRef(null)
-  const dispatch = useDispatch()
   const [isLoading, setIsLoading] = useState(false)
-
   const [sentences, setSentences] = useState([
     {
       text: '',
@@ -33,7 +27,11 @@ export function CreateStory(props) {
       fontFamily: 'Arial',
     },
   ])
-  const [currentSentenceIdx, setCurrentSentenceIdx] = useState(0)
+
+  const dispatch = useDispatch()
+  const canvasRef = useRef(null)
+  const colorModalRef = useRef(null)
+  const textPos = { x: 50, y: 50 }
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -75,6 +73,7 @@ export function CreateStory(props) {
       ctx.fillText(text, textPos.x, textPos.y)
     }
   }, [imageUrl, text, textPos, textColor, textWidth, textFontFamily])
+  
   useEffect(() => {
     const canvas = canvasRef.current
     const ctx = canvas.getContext('2d')

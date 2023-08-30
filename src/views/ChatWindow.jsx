@@ -304,7 +304,6 @@ export function ChatWindow({ showWelcome, isChatHidden }) {
             <div className="chat-input-container">
               {showModal && (
                 <MsgModal
-                  position={modalPosition}
                   onSelectImage={(gifImgUrl) =>
                     handlefilesSelect(gifImgUrl, 'image')
                   }

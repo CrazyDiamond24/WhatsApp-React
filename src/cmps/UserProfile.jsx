@@ -1,28 +1,28 @@
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState, useRef } from "react"
 
-import emptyImg from '../../src/assets/imgs/empty-img.png'
-import { uploadImg } from '../services/upload-img.service'
-import { useDispatch, useSelector } from 'react-redux'
-import { editUserProfile } from '../store/actions/user.actions'
-import { CreateStory } from './createStory'
-import { StoryIcon } from './svgs/StoryIcon'
-import { ImageBorder } from './svgs/ImageBorder'
-import { EditPenIcon } from './svgs/EditPenIcon'
-import { TickIcon } from './svgs/TickIcon'
+import emptyImg from "../../src/assets/imgs/empty-img.png"
+import { uploadImg } from "../services/upload-img.service"
+import { useDispatch, useSelector } from "react-redux"
+import { editUserProfile } from "../store/actions/user.actions"
+import { CreateStory } from "./createStory"
+import { StoryIcon } from "./svgs/StoryIcon"
+import { ImageBorder } from "./svgs/ImageBorder"
+import { EditPenIcon } from "./svgs/EditPenIcon"
+import { TickIcon } from "./svgs/TickIcon"
 
 export function UserProfile({ show, closeUserProfile }) {
   const [isUploading, setIsUploading] = useState(false)
   const [fileChanged, setFileChanged] = useState(false)
   const [showModal, setShowModal] = useState(false)
-  const user = useSelector((storeState) => storeState.userModule.loggedInUser)
-  const [editedUser, setEditedUser] = useState({ ...user })
   const [isNameEditable, setIsNameEditable] = useState(false)
   const [isStatusEditable, setIsStatusEditable] = useState(false)
+
+  const user = useSelector((storeState) => storeState.userModule.loggedInUser)
+  const [editedUser, setEditedUser] = useState({ ...user })
   const nameRef = useRef(null)
   const statusRef = useRef(null)
   const nameTempRef = useRef(null)
   const statusTempRef = useRef(null)
-
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -32,31 +32,46 @@ export function UserProfile({ show, closeUserProfile }) {
     }
   }, [editedUser, fileChanged, dispatch])
 
-  function handleSaveFullName() {
-    if (nameTempRef.current !== null) {
-      setEditedUser((prevUser) => ({
-        ...prevUser,
-        fullName: nameTempRef.current,
-      }))
-      dispatch(
-        editUserProfile({
-          ...editedUser,
-          fullName: nameTempRef.current,
-        })
-      )
-    }
-  }
+  // function handleSaveFullName() {
+  //   if (nameTempRef.current !== null) {
+  //     setEditedUser((prevUser) => ({
+  //       ...prevUser,
+  //       fullName: nameTempRef.current,
+  //     }))
+  //     dispatch(
+  //       editUserProfile({
+  //         ...editedUser,
+  //         fullName: nameTempRef.current,
+  //       })
+  //     )
+  //   }
+  // }
 
-  function handleSaveUserStatus() {
-    if (statusTempRef.current !== null) {
+  // function handleSaveUserStatus() {
+  //   if (statusTempRef.current !== null) {
+  //     setEditedUser((prevUser) => ({
+  //       ...prevUser,
+  //       status: statusTempRef.current,
+  //     }))
+  //     dispatch(
+  //       editUserProfile({
+  //         ...editedUser,
+  //         status: statusTempRef.current,
+  //       })
+  //     )
+  //   }
+  // }
+
+  function handleSave(property, ref) {
+    if (ref.current !== null) {
       setEditedUser((prevUser) => ({
         ...prevUser,
-        status: statusTempRef.current,
+        [property]: ref.current,
       }))
       dispatch(
         editUserProfile({
           ...editedUser,
-          status: statusTempRef.current,
+          [property]: ref.current,
         })
       )
     }
@@ -67,38 +82,47 @@ export function UserProfile({ show, closeUserProfile }) {
     setShowModal(!showModal)
   }
   function handleCloseModal() {
-    setShowModal(false);
+    setShowModal(false)
   }
 
   async function handelFile(ev) {
     const file =
-      ev.type === 'change' ? ev.target.files[0] : ev.dataTransfer.files[0]
+      ev.type === "change" ? ev.target.files[0] : ev.dataTransfer.files[0]
     try {
       setIsUploading(true)
       const { url } = await uploadImg(file)
       setEditedUser({ ...editedUser, img: url })
       setFileChanged(true)
     } catch (err) {
-      console.log('err', err)
+      console.log("err", err)
     } finally {
       setIsUploading(false)
     }
   }
 
-  function toggleNameEdit() {
-    setIsNameEditable((prev) => !prev)
-    if (!isNameEditable) {
-      setTimeout(() => {
-        setCursorToEnd(nameRef.current)
-      })
-    }
-  }
+  // function toggleNameEdit() {
+  //   setIsNameEditable((prev) => !prev)
+  //   if (!isNameEditable) {
+  //     setTimeout(() => {
+  //       setCursorToEnd(nameRef.current)
+  //     })
+  //   }
+  // }
 
-  function toggleStatusEdit() {
-    setIsStatusEditable((prev) => !prev)
-    if (!isStatusEditable) {
+  // function toggleStatusEdit() {
+  //   setIsStatusEditable((prev) => !prev)
+  //   if (!isStatusEditable) {
+  //     setTimeout(() => {
+  //       setCursorToEnd(statusRef.current)
+  //     })
+  //   }
+  // }
+
+  function toggleEditState(isEditable, setIsEditable, ref) {
+    setIsEditable((prev) => !prev)
+    if (!isEditable) {
       setTimeout(() => {
-        setCursorToEnd(statusRef.current)
+        setCursorToEnd(ref.current)
       })
     }
   }
@@ -121,7 +145,7 @@ export function UserProfile({ show, closeUserProfile }) {
   }
 
   return (
-    <section className={`user-profile-page ${show ? 'open' : ''}`}>
+    <section className={`user-profile-page ${show ? "open" : ""}`}>
       <div className="first-section">
         <span>{/* <LeftArrow /> */}</span>
         <h1 onClick={closeUserProfile}>Profile</h1>
@@ -162,12 +186,12 @@ export function UserProfile({ show, closeUserProfile }) {
           <span className="name-profile">Your name</span>
         </div>
         <div>
-          <div className={`details-edit ${isNameEditable ? 'editing' : ''}`}>
+          <div className={`details-edit ${isNameEditable ? "editing" : ""}`}>
             {isNameEditable ? (
               <div
                 ref={nameRef}
                 contentEditable
-                onBlur={toggleNameEdit}
+                onBlur={() => toggleEditState(isNameEditable , setIsNameEditable , nameRef)}
                 onInput={handleNameChange}
                 suppressContentEditableWarning={true}
               >
@@ -178,12 +202,12 @@ export function UserProfile({ show, closeUserProfile }) {
             )}
             <div className="icons-container">
               <TickIcon
-                className={isNameEditable ? 'confirm-name' : 'hide-confirm'}
-                onClick={handleSaveFullName}
+                className={isNameEditable ? "confirm-name" : "hide-confirm"}
+                onClick={() => handleSave("fullName", nameTempRef)}
               />
               <EditPenIcon
-                className={isNameEditable ? 'is-editing-name' : ''}
-                onClick={toggleNameEdit}
+                className={isNameEditable ? "is-editing-name" : ""}
+                onClick={() => toggleEditState(isNameEditable , setIsNameEditable , nameRef)}
               />
             </div>
           </div>
@@ -199,12 +223,12 @@ export function UserProfile({ show, closeUserProfile }) {
           <span className="about-profile">About</span>
         </div>
         <div>
-          <div className={`details-edit ${isStatusEditable ? 'editing' : ''}`}>
+          <div className={`details-edit ${isStatusEditable ? "editing" : ""}`}>
             {isStatusEditable ? (
               <div
                 ref={statusRef}
                 contentEditable
-                onBlur={toggleStatusEdit}
+                onBlur={() => toggleEditState(isStatusEditable , setIsStatusEditable , statusRef)}
                 onInput={handleStatusChange}
                 suppressContentEditableWarning={true}
               >
@@ -215,13 +239,13 @@ export function UserProfile({ show, closeUserProfile }) {
             )}
             <div className="icons-container">
               <TickIcon
-                className={isStatusEditable ? 'confirm-status' : 'hide-confirm'}
-                onClick={handleSaveUserStatus}
+                className={isStatusEditable ? "confirm-status" : "hide-confirm"}
+                onClick={() => handleSave("status", statusTempRef)}
               />
 
               <EditPenIcon
-                className={isStatusEditable ? 'is-editing-status' : ''}
-                onClick={toggleStatusEdit}
+                className={isStatusEditable ? "is-editing-status" : ""}
+                onClick={() => toggleEditState(isStatusEditable , setIsStatusEditable , statusRef)}
               />
             </div>
           </div>
@@ -229,7 +253,6 @@ export function UserProfile({ show, closeUserProfile }) {
       </div>
 
       {showModal && <CreateStory onClose={handleCloseModal} />}
-
     </section>
   )
 }

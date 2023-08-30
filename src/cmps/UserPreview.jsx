@@ -104,7 +104,7 @@ export function UserPreview({
 
       <div className="contact-preview-image-wrapper">
         <img
-          // onClick={onOpenStoryModal}
+          onClick={onOpenStoryModal}
           className={`${hasStory ? "story-frame" : ""} contact-preview-image`}
           src={user.img}
           alt={user.fullName}

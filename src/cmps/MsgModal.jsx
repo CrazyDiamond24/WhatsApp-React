@@ -1,13 +1,11 @@
-import React, { useState } from 'react'
-import { uploadImg } from '../services/upload-img.service'
-import { uploadVideo } from '../services/upload-video.service'
-import { uploadFile } from '../services/upload-file.service'
-import { getSpotifySvg } from '../services/SVG.service'
-
-import { useNavigate } from 'react-router-dom'
+import React from "react"
+import { uploadImg } from "../services/upload-img.service"
+import { uploadVideo } from "../services/upload-video.service"
+import { uploadFile } from "../services/upload-file.service"
+import { getSpotifySvg } from "../services/SVG.service"
+import { useNavigate } from "react-router-dom"
 
 export default function MsgModal({
-  position,
   onSelectImage,
   onSelectFile,
   onSelectVideo,
@@ -15,41 +13,68 @@ export default function MsgModal({
 }) {
   const navigate = useNavigate()
 
-  async function handleImg(ev) {
-    const file =
-      ev.type === 'change' ? ev.target.files[0] : ev.dataTransfer.files[0]
-    try {
-      const { url } = await uploadImg(file)
-      onSelectImage(url)
-    } catch (err) {
-      console.log('err', err)
-    }
-  }
+  // async function handleImg(ev) {
+  //   const file =
+  //     ev.type === 'change' ? ev.target.files[0] : ev.dataTransfer.files[0]
+  //   try {
+  //     const { url } = await uploadImg(file)
+  //     onSelectImage(url)
+  //   } catch (err) {
+  //     console.log('err', err)
+  //   }
+  // }
 
-  async function handleVideoFile(ev) {
-    const file =
-      ev.type === 'change' ? ev.target.files[0] : ev.dataTransfer.files[0]
-    try {
-      const { url } = await uploadVideo(file)
-      onSelectVideo(url)
-    } catch (err) {
-      console.log('err', err)
-    }
-  }
+  // async function handleVideoFile(ev) {
+  //   const file =
+  //     ev.type === 'change' ? ev.target.files[0] : ev.dataTransfer.files[0]
+  //   try {
+  //     const { url } = await uploadVideo(file)
+  //     onSelectVideo(url)
+  //   } catch (err) {
+  //     console.log('err', err)
+  //   }
+  // }
 
-  async function handleFile(ev) {
+  // async function handleFile(ev) {
+  //   const file =
+  //     ev.type === 'change' ? ev.target.files[0] : ev.dataTransfer.files[0]
+  //   try {
+  //     const { url } = await uploadFile(file)
+  //     onSelectFile(url)
+  //   } catch (err) {
+  //     console.log('err', err)
+  //   }
+  // }
+
+  async function handleMedia(ev, mediaType) {
     const file =
-      ev.type === 'change' ? ev.target.files[0] : ev.dataTransfer.files[0]
+      ev.type === "change" ? ev.target.files[0] : ev.dataTransfer.files[0]
     try {
-      const { url } = await uploadFile(file)
-      onSelectFile(url)
+      let url
+      switch (mediaType) {
+        case "image":
+          url = await uploadImg(file)
+          onSelectImage(url)
+          break
+        case "video":
+          url = await uploadVideo(file)
+          onSelectVideo(url)
+          break
+        case "file":
+          url = await uploadFile(file)
+          onSelectFile(url)
+          break
+        default:
+          console.log("Invalid media type")
+          break
+      }
     } catch (err) {
-      console.log('err', err)
+      console.log("err", err)
     }
   }
 
   function handleShowModal() {
-    navigate('user/take/picture')
+    navigate("user/take/picture")
   }
 
   return (
@@ -59,20 +84,20 @@ export default function MsgModal({
           <div>
             <span
               dangerouslySetInnerHTML={{
-                __html: getSpotifySvg('imageWhatsapp'),
+                __html: getSpotifySvg("imageWhatsapp"),
               }}
             ></span>
           </div>
           <p>Photo</p>
           <label>
-            <input type="file" onChange={handleImg} className="hidden" />
+            <input type="file" onChange={(ev) => handleMedia(ev,'image')} className="hidden" />
           </label>
         </li>
         <li onClick={openAiModal}>
           <div>
             <span
               dangerouslySetInnerHTML={{
-                __html: getSpotifySvg('imageWhatsapp'),
+                __html: getSpotifySvg("imageWhatsapp"),
               }}
             ></span>
           </div>
@@ -82,20 +107,20 @@ export default function MsgModal({
           <div>
             <span
               dangerouslySetInnerHTML={{
-                __html: getSpotifySvg('imageWhatsapp'),
+                __html: getSpotifySvg("imageWhatsapp"),
               }}
             ></span>
           </div>
           <p>Video</p>
           <label>
-            <input type="file" onChange={handleVideoFile} className="hidden" />
+            <input type="file" onChange={(ev) => handleMedia(ev,'video')} className="hidden" />
           </label>
         </li>
         <li onClick={handleShowModal}>
           <div>
             <span
               dangerouslySetInnerHTML={{
-                __html: getSpotifySvg('cameraWhatsapp'),
+                __html: getSpotifySvg("cameraWhatsapp"),
               }}
             ></span>
           </div>
@@ -105,7 +130,7 @@ export default function MsgModal({
           <div>
             <span
               dangerouslySetInnerHTML={{
-                __html: getSpotifySvg('fileWhatsapp'),
+                __html: getSpotifySvg("fileWhatsapp"),
               }}
             ></span>
           </div>
@@ -113,7 +138,7 @@ export default function MsgModal({
           <label>
             <input
               type="file"
-              onChange={handleFile}
+              onChange={(ev) => handleMedia(ev,'file')}
               accept="image/*,.pdf,.doc,.docx,.xls,.xlsx,.csv,.txt"
               className="hidden"
             />
