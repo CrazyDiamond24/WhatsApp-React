@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { uploadImg } from '../services/upload-img.service'
 import { uploadVideo } from '../services/upload-video.service'
 import { uploadFile } from '../services/upload-file.service'
@@ -7,11 +7,11 @@ import { getSpotifySvg } from '../services/SVG.service'
 import { useNavigate } from 'react-router-dom'
 
 export default function MsgModal({
-  position,
   onSelectImage,
   onSelectFile,
   onSelectVideo,
   openAiModal,
+  onClose,
 }) {
   const navigate = useNavigate()
 
@@ -52,8 +52,24 @@ export default function MsgModal({
     navigate('user/take/picture')
   }
 
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (msgModalRef.current && !msgModalRef.current.contains(event.target)) {
+        onClose()
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => {
+      // Remove the event listener when the component is unmounted
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [onClose])
+
+  const msgModalRef = useRef(null)
+
   return (
-    <section className="msg-modal-section">
+    <section className="msg-modal-section" ref={msgModalRef}>
       <ul>
         <li>
           <div>

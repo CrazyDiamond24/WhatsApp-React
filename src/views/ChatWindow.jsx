@@ -246,6 +246,11 @@ export function ChatWindow({ showWelcome, isChatHidden }) {
     setShowAiModal(false)
   }
 
+  function handleCloseModal() {
+    setShowModal(false)
+    setIsIconRotated(false)
+  }
+
   return (
     <div
       className={` ${isChatHidden ? 'hide-chat' : 'chat-window'}`}
@@ -311,6 +316,7 @@ export function ChatWindow({ showWelcome, isChatHidden }) {
                   onSelectVideo={(url) => handlefilesSelect(url, 'video')}
                   onSelectFile={(url) => handlefilesSelect(url, 'file')}
                   openAiModal={handleOpenAiModal}
+                  onClose={handleCloseModal} // Add this
                 />
               )}
 

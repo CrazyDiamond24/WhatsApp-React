@@ -10,6 +10,7 @@ import { useDispatch } from 'react-redux'
 import { getUser } from './store/actions/user.actions'
 import { useEffect } from 'react'
 import { TakePicture } from './cmps/TakePicture'
+import { St } from './cmps/St'
 
 function App() {
   const dispatch = useDispatch()
@@ -24,7 +25,7 @@ function App() {
             <Route path="/" element={<UserIndex />} />
             <Route path="/user/edit/:id?" element={<AddContact />} />
             <Route path="/user/take/picture" element={<TakePicture />} />
-            <Route path="/speech" element={<SpeechToText />} />
+            <Route path="/speech" element={<St />} />
             <Route path="/about" element={<About />} />
             <Route path="/login" element={<LoginSignup status={'login'} />} />
             <Route path="/signup" element={<LoginSignup status={'signup'} />} />

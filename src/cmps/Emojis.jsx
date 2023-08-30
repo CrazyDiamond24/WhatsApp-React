@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { emojisService } from '../services/emojis.service'
 import { ReactComponent as EmojiIcon } from '../assets/imgs/emojiIcon.svg'
 
@@ -15,6 +15,8 @@ export function Emojis({ onSelectEmoji }) {
     loadEmojis()
   }, [])
 
+  const emojisContainerRef = useRef(null)
+
   function handleEmojiClick(emoji) {
     onSelectEmoji(emoji)
   }
@@ -22,6 +24,24 @@ export function Emojis({ onSelectEmoji }) {
   function handleCategoryClick(category) {
     setSelectedCategory(category)
   }
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (
+        isExpanded &&
+        emojisContainerRef.current &&
+        !emojisContainerRef.current.contains(event.target)
+      ) {
+        setIsExpanded(false)
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => {
+      // Remove the event listener when the component is unmounted
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [isExpanded])
 
   const excludedCategories = ['Component', 'Flags']
 
@@ -82,7 +102,7 @@ export function Emojis({ onSelectEmoji }) {
         <EmojiIcon className="emoji-icon-svg" />
       </div>
       {isExpanded && (
-        <div className="emojis-window">
+        <div className="emojis-window" ref={emojisContainerRef}>
           {Object.entries(emojisList).map(([category, emojis]) => {
             if (excludedCategories.includes(category)) {
               return null
