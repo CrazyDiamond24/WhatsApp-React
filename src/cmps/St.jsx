@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { convertTextToSpeech } from '../services/text-to-speech.service'
-// import fileName from '../../../whatsapp-react-backend/Audio/UserAudio/'
+
 export function St() {
   const [text, setText] = useState('')
   const [loading, setLoading] = useState(false)
@@ -10,8 +10,6 @@ export function St() {
     setLoading(true)
     try {
       const url = await convertTextToSpeech(text)
-      console.log('url', url)
-      // console.log('Audio URL:', response.file)
       setAudioURL(url.file)
     } catch (error) {
       console.error(error)

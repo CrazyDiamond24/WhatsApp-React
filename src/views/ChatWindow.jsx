@@ -309,11 +309,13 @@ export function ChatWindow({ showWelcome, isChatHidden }) {
             <div className="chat-input-container">
               {showModal && (
                 <MsgModal
+                  msgText={msgContent}
                   position={modalPosition}
                   onSelectImage={(gifImgUrl) =>
                     handlefilesSelect(gifImgUrl, 'image')
                   }
                   onSelectVideo={(url) => handlefilesSelect(url, 'video')}
+                  onSendVoice={(url) => handlefilesSelect(url, 'audio')}
                   onSelectFile={(url) => handlefilesSelect(url, 'file')}
                   openAiModal={handleOpenAiModal}
                   onClose={handleCloseModal} // Add this
