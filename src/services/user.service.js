@@ -1,13 +1,10 @@
 import { httpService } from './http.service.js'
-import { storageService } from './storage.service.js'
-import { utilService } from './util.service.js'
-import { authService } from './auth.service.js'
+// import { storageService } from './storage.service.js'
+// import { utilService } from './util.service.js'
+// import { authService } from './auth.service.js'
 export const userService = {
   query,
-  // save,
-  // remove,
   updatePref,
-
   getById,
   addStory,
   getEmptyUser,
@@ -21,14 +18,13 @@ export const userService = {
   clearChat,
 }
 
-const STORAGE_KEY = 'users'
+// const STORAGE_KEY = 'users'
 
 function query() {
   return httpService.get(`contact`)
 }
 async function editProfile(user) {
   const updatedUser = await httpService.put(`contact/${user._id}`, user)
-
   return updatedUser
 }
 async function editLastSeen(user) {
@@ -36,7 +32,6 @@ async function editLastSeen(user) {
     `contact/${user._id}/last-seen`,
     user
   )
-
   return updatedUser
 }
 
@@ -44,7 +39,6 @@ async function clearChat(targetUserId, loggedInUserId) {
   const data = { targetUserId, loggedInUserId }
   const response = await httpService.post(`contact/clear-chat`, data)
   return response
-
 }
 
 async function blockUnblockUser(actionType, userId, loggedInUserId) {
@@ -53,12 +47,10 @@ async function blockUnblockUser(actionType, userId, loggedInUserId) {
     `contact/${userId}/block-un-block`,
     data
   )
-
   return updatedUser
 }
 async function updatePref(user) {
   const updatedUser = await httpService.put(`contact/${user._id}/pref`, user)
-
   return updatedUser
 }
 
@@ -92,9 +84,7 @@ async function createNewMsg(msg, senderId, recipientId) {
     timestamp: Date.now(),
   }
   await httpService.post(`contact/${senderId}/msg`, newMsg)
-
   await httpService.post(`contact/${recipientId}/msg`, newMsg)
-
   return newMsg
 }
 

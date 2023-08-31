@@ -21,34 +21,63 @@ export default function MsgModal({
 
   const [showVoiceModal, setShowVoiceModal] = useState(false)
 
-  async function handleImg(ev) {
-    const file =
-      ev.type === 'change' ? ev.target.files[0] : ev.dataTransfer.files[0]
-    try {
-      const { url } = await uploadImg(file)
-      onSelectImage(url)
-    } catch (err) {
-      console.log('err', err)
-    }
-  }
+  const [showVoiceModal, setShowVoiceModal] = useState(false)
 
-  async function handleVideoFile(ev) {
-    const file =
-      ev.type === 'change' ? ev.target.files[0] : ev.dataTransfer.files[0]
-    try {
-      const { url } = await uploadVideo(file)
-      onSelectVideo(url)
-    } catch (err) {
-      console.log('err', err)
-    }
-  }
+  // async function handleImg(ev) {
+  //   const file =
+  //     ev.type === 'change' ? ev.target.files[0] : ev.dataTransfer.files[0]
+  //   try {
+  //     const { url } = await uploadImg(file)
+  //     onSelectImage(url)
+  //   } catch (err) {
+  //     console.log('err', err)
+  //   }
+  // }
 
-  async function handleFile(ev) {
+  // async function handleVideoFile(ev) {
+  //   const file =
+  //     ev.type === 'change' ? ev.target.files[0] : ev.dataTransfer.files[0]
+  //   try {
+  //     const { url } = await uploadVideo(file)
+  //     onSelectVideo(url)
+  //   } catch (err) {
+  //     console.log('err', err)
+  //   }
+  // }
+
+  // async function handleFile(ev) {
+  //   const file =
+  //     ev.type === 'change' ? ev.target.files[0] : ev.dataTransfer.files[0]
+  //   try {
+  //     const { url } = await uploadFile(file)
+  //     onSelectFile(url)
+  //   } catch (err) {
+  //     console.log('err', err)
+  //   }
+  // }
+
+  async function handleMedia(ev, mediaType) {
     const file =
       ev.type === 'change' ? ev.target.files[0] : ev.dataTransfer.files[0]
     try {
-      const { url } = await uploadFile(file)
-      onSelectFile(url)
+      let url
+      switch (mediaType) {
+        case 'image':
+          url = await uploadImg(file)
+          onSelectImage(url)
+          break
+        case 'video':
+          url = await uploadVideo(file)
+          onSelectVideo(url)
+          break
+        case 'file':
+          url = await uploadFile(file)
+          onSelectFile(url)
+          break
+        default:
+          console.log('Invalid media type')
+          break
+      }
     } catch (err) {
       console.log('err', err)
     }
@@ -107,7 +136,11 @@ export default function MsgModal({
             </div>
             <p>Photo</p>
             <label>
-              <input type="file" onChange={handleImg} className="hidden" />
+              <input
+                type="file"
+                onChange={(ev) => handleMedia(ev, 'image')}
+                className="hidden"
+              />
             </label>
           </li>
           <li onClick={openAiModal}>
@@ -135,7 +168,7 @@ export default function MsgModal({
             <label>
               <input
                 type="file"
-                onChange={handleVideoFile}
+                onChange={(ev) => handleMedia(ev, 'video')}
                 className="hidden"
               />
             </label>
@@ -162,7 +195,7 @@ export default function MsgModal({
             <label>
               <input
                 type="file"
-                onChange={handleFile}
+                onChange={(ev) => handleMedia(ev, 'file')}
                 accept="image/*,.pdf,.doc,.docx,.xls,.xlsx,.csv,.txt"
                 className="hidden"
               />

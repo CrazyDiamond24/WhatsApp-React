@@ -1,7 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
 import { UserList } from '../cmps/UserList'
-
-import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { loadUsers, removeUser } from '../store/actions/user.actions'
 import { ChatWindow } from './ChatWindow'
@@ -12,7 +10,7 @@ import { AddContactIcon } from '../cmps/svgs/AddContactIcon'
 import { ReusableModal } from '../cmps/ReusableModal'
 import { AddContact } from './AddContact'
 
-export function UserIndex(props) {
+export function UserIndex() {
   const [filterBy, setFilterBy] = useState('')
   const [isShowProfile, setIsShowProfile] = useState(false)
   const [isInputOpen, setIsInputOpen] = useState(false)
@@ -34,12 +32,16 @@ export function UserIndex(props) {
 
   const dispatch = useDispatch()
 
-  const openWelcomeChat = () => {
+  useEffect(() => {
+    dispatch(loadUsers())
+  }, [user])
+
+  function openWelcomeChat() {
     setShowWelcome(true)
     setActiveUserChat(false)
   }
 
-  const openUserChat = (userId) => {
+  function openUserChat(userId) {
     // set the active user here...
     setShowWelcome(false)
     setActiveUserChat(true)
@@ -51,10 +53,6 @@ export function UserIndex(props) {
   function closeAddContactModal() {
     setIsAddContactModalOpen(false)
   }
-
-  useEffect(() => {
-    dispatch(loadUsers())
-  }, [user])
 
   const onRemoveUser = useCallback(async (userId) => {
     try {

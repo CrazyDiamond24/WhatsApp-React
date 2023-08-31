@@ -8,7 +8,6 @@ import { showErrorMsg } from '../services/event-bus.service'
 
 export function LoginSignup({ status }) {
   const state = status === 'login'
-  console.log('state', state)
   const [hasAccount, setHasAccount] = useState(state)
   const [signupCred, setSignupCred] = useState({
     username: '',
@@ -38,7 +37,6 @@ export function LoginSignup({ status }) {
     },
   })
 
-  // const user = useSelector((storeState) => storeState.userModule.loggedInUser)
   const users = useSelector((storeState) => storeState.userModule.users)
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -126,9 +124,6 @@ export function LoginSignup({ status }) {
               required
             />
           </div>
-          {/* {loginError && hasAccount && (
-            <div className="error-msg">{loginError}</div>
-          )} */}
           <div className="form-group">
             <button type="submit">{hasAccount ? 'Login' : 'Sign Up'}</button>
           </div>

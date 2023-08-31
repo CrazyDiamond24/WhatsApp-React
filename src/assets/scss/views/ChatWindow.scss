@@ -81,10 +81,12 @@
     padding: 25px;
     list-style: none;
     width: 100%;
+    
     @media (max-width: 768px) {
       padding: 10px;
     }
     .chat-msg {
+      position: relative;
       margin-bottom: 10px;
       background-color: $secondaryClr;
       padding: 10px;
@@ -124,6 +126,7 @@
         width: max-content;
       }
       &.system {
+        position: relative;
         background-color: $clr8;
         transform: translate(50%);
         height: 60px;

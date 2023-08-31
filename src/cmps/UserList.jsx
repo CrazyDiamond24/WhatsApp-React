@@ -17,14 +17,12 @@ export function UserList({ filterBy, onRemoveUser, openUserChat, toggleDisplay }
   const [activeContactId, setActiveContactId] = useState(null)
   const [state, setState] = useState(getInitialState)
 
-  const { unreadCounts, sessionStartTime } = state
-
   const users = useSelector((storeState) => storeState.userModule.users)
   const loggedInUser = useSelector(
     (storeState) => storeState.userModule.loggedInUser
   )
-
   const [animationParent] = useAutoAnimate()
+  const { unreadCounts, sessionStartTime } = state
 
   useEffect(() => {
     storageService.store('sessionStartTime', sessionStartTime)
@@ -90,6 +88,7 @@ export function UserList({ filterBy, onRemoveUser, openUserChat, toggleDisplay }
   function filterUsers(users, filterBy, loggedInUser) {
     return userService.getFilteredUsers(users, filterBy, loggedInUser)
   }
+  
   return (
     <section className="user-list simple-cards-grid" ref={animationParent}>
       {filteredUsers?.map((user) => {

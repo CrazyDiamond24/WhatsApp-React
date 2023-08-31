@@ -21,10 +21,10 @@ export function UserPreview({
     return storeState.userModule.loggedInUser
   })
   // real one
-  // const hasStory = user.story.length
+  const hasStory = user.story.length
 
   // true - for development
-  const hasStory = 1
+  // const hasStory = 1
 
   const dispatch = useDispatch()
 
@@ -104,7 +104,7 @@ export function UserPreview({
 
       <div className="contact-preview-image-wrapper">
         <img
-          // onClick={onOpenStoryModal}
+          onClick={onOpenStoryModal}
           className={`${hasStory ? "story-frame" : ""} contact-preview-image`}
           src={user.img}
           alt={user.fullName}

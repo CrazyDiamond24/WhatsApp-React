@@ -1,6 +1,6 @@
-import React, { useRef } from 'react'
-import { useDispatch } from 'react-redux'
-import { deleteMsg } from '../store/actions/user.actions'
+import React, { useRef } from "react"
+import { useDispatch } from "react-redux"
+import { deleteMsg } from "../store/actions/user.actions"
 
 export function MsgOptionsModal({
   position,
@@ -23,8 +23,8 @@ export function MsgOptionsModal({
         ref={msgModalRef}
         className="msg-options-modal"
         style={{
-          top: position.top + 20,
-          left: position.left - 170,
+          top: position.top,
+          left: position.left,
         }}
       >
         <ul>

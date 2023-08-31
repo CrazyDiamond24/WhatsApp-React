@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { generateImageFromText } from '../services/ai-image.service'
-import { useDispatch } from 'react-redux'
 import { getSpotifySvg } from '../services/SVG.service'
 
 export default function AIImageGenerator({ closeAiModal, onImageGenerated }) {
@@ -11,9 +10,7 @@ export default function AIImageGenerator({ closeAiModal, onImageGenerated }) {
     e.preventDefault()
     setLoading(true)
     try {
-      console.log('hi')
       const url = await generateImageFromText(prompt)
-      console.log('url', url)
       onImageGenerated(url)
     } catch (error) {
       console.error(error)

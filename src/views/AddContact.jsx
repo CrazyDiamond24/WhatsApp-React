@@ -1,13 +1,10 @@
 import { useState } from 'react'
-
-import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { addContactToUser } from '../store/actions/user.actions'
 import addIllustration from '../assets/imgs/add-illustration.png'
 
 export function AddContact({ onAdded }) {
   const [name, setName] = useState('')
-
   const dispatch = useDispatch()
 
   function handleChange(e) {

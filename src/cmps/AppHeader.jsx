@@ -8,10 +8,7 @@ import { doLogout } from '../store/actions/user.actions'
 export function AppHeader({ showProfile, openWelcomeChat }) {
   const [showModal, setShowModal] = useState(false)
   const user = useSelector((storeState) => storeState.userModule.loggedInUser)
-  console.log('user', user)
   const dispatch = useDispatch()
-
-  console.log('app header com,ponent renderred')
 
   function showPrefsModal() {
     setShowModal(!showModal)
@@ -19,7 +16,6 @@ export function AppHeader({ showProfile, openWelcomeChat }) {
   function hancleClosePrefModal() {
     setShowModal(false)
   }
-
   function handelLogout() {
     dispatch(doLogout(user._id))
   }
@@ -70,7 +66,6 @@ export function AppHeader({ showProfile, openWelcomeChat }) {
             <Link className='header-login' to='/login'>
               Login
             </Link>
-
             {/* <Link className="header-login" to="/speech">
               voice
             </Link> */}

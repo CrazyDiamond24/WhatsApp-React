@@ -7,42 +7,6 @@ export function Emojis({ onSelectEmoji }) {
   const [emojisList, setEmojisList] = useState({})
   const [selectedCategory, setSelectedCategory] = useState('Smileys & Emotion')
 
-  useEffect(() => {
-    const loadEmojis = async () => {
-      const emojis = await emojisService.fetchEmojis()
-      setEmojisList(emojis)
-    }
-    loadEmojis()
-  }, [])
-
-  const emojisContainerRef = useRef(null)
-
-  function handleEmojiClick(emoji) {
-    onSelectEmoji(emoji)
-  }
-
-  function handleCategoryClick(category) {
-    setSelectedCategory(category)
-  }
-
-  useEffect(() => {
-    function handleClickOutside(event) {
-      if (
-        isExpanded &&
-        emojisContainerRef.current &&
-        !emojisContainerRef.current.contains(event.target)
-      ) {
-        setIsExpanded(false)
-      }
-    }
-
-    document.addEventListener('mousedown', handleClickOutside)
-    return () => {
-      // Remove the event listener when the component is unmounted
-      document.removeEventListener('mousedown', handleClickOutside)
-    }
-  }, [isExpanded])
-
   const excludedCategories = ['Component', 'Flags']
 
   const brokenEmojis = [
@@ -67,6 +31,22 @@ export function Emojis({ onSelectEmoji }) {
     '☺️',
     '❤️‍🩹',
   ]
+
+  useEffect(() => {
+    const loadEmojis = async () => {
+      const emojis = await emojisService.fetchEmojis()
+      setEmojisList(emojis)
+    }
+    loadEmojis()
+  }, [])
+
+  function handleEmojiClick(emoji) {
+    onSelectEmoji(emoji)
+  }
+
+  function handleCategoryClick(category) {
+    setSelectedCategory(category)
+  }
 
   function getCategoryEmoji(categoryName) {
     switch (categoryName) {

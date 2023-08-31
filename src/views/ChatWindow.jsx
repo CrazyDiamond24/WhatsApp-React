@@ -1,6 +1,5 @@
 import React from 'react'
 import { useEffect, useState } from 'react'
-
 import { useDispatch, useSelector } from 'react-redux'
 import { addMsg } from '../store/actions/user.actions'
 import { Emojis } from '../cmps/Emojis'
@@ -23,13 +22,11 @@ export function ChatWindow({ showWelcome, isChatHidden }) {
   const [recipientIsRecording, setUserIsRecording] = useState(false)
   const [recipientIsTyping, setUserIsTyping] = useState(false)
   const [isIconRotated, setIsIconRotated] = useState(false)
-  const [onlineStatus, setOnlineStatus] = useState(false)
   const [onLine, showOnline] = useState(false)
   const [showAiModal, setShowAiModal] = useState(false)
   const loggedInUser = useSelector((storeState) => {
     return storeState.userModule.loggedInUser
   })
-  console.log('socket work')
   const user = useSelector((storeState) => {
     return storeState.userModule.selectedUser
   })
@@ -46,13 +43,11 @@ export function ChatWindow({ showWelcome, isChatHidden }) {
     loggedInUser && user
       ? msgService.filterMsgs(user, loggedInUser, allMsgs)
       : null
-  console.log('please render after clear')
 
   useEffect(() => {
     const handleUserBlocked = (blockedData) => {
       const { blockedUserId, action } = blockedData
       if (blockedUserId === user?._id) {
-        // Update the isUserBlocked state based on the action 4
         setIsUserBlocked(action === 'BLOCK_USER')
       }
     }
@@ -127,20 +122,10 @@ export function ChatWindow({ showWelcome, isChatHidden }) {
   useEffect(() => {
     const handleUserStatusUpdate = (userStatusUpdate) => {
       if (userStatusUpdate.userId && userStatusUpdate.userId === user._id) {
-        if (userStatusUpdate.isOnline) {
-          showOnline(true)
-          console.log('user in on', user)
-
-          console.log('userStatusUpdate', userStatusUpdate)
-        } else {
-          showOnline(false)
-          console.log('user in off', user)
-        }
+        showOnline(userStatusUpdate.isOnline)
       }
     }
-
     socketService.on('user-updated', handleUserStatusUpdate)
-
     return () => {
       socketService.off('user-updated', handleUserStatusUpdate)
     }
@@ -149,7 +134,6 @@ export function ChatWindow({ showWelcome, isChatHidden }) {
   useEffect(() => {
     const handleRecording = (recordingData) => {
       const { userId, isRecording } = recordingData
-
       if (userId !== loggedInUser?._id) {
         setUserIsRecording(isRecording)
       }
@@ -169,20 +153,15 @@ export function ChatWindow({ showWelcome, isChatHidden }) {
         'text'
       )
     )
-
     const characterName =
       'a comedian. You can answer everything with your current knowledge, but make it funny'
-
     const res = await aiService.askChatGpt(contentToSend.content, characterName)
-
     dispatch(addMsg(res, loggedInUser._id, user._id, 'text'))
   }
 
   function handelSendMsg(e) {
     e.preventDefault()
-
     if (!loggedInUser || !user || !msgContent.length || isUserBlocked) return
-
     const trimmedContent = msgContent.trim()
 
     if (trimmedContent) {
@@ -192,9 +171,7 @@ export function ChatWindow({ showWelcome, isChatHidden }) {
         recipientId: user._id,
       }
       setMsgContent('')
-
       if (user.username === 'gpt') return askGpt(contentToSend)
-
       socketService.emit(SOCKET_EMIT_SEND_MSG, contentToSend)
     }
   }
@@ -203,7 +180,6 @@ export function ChatWindow({ showWelcome, isChatHidden }) {
     setMsgContent(e.target.value)
     const trimmedContent = e.target.value.trim()
     const isTyping = trimmedContent !== ''
-
     // Don't set recipient's typing state here emit your typing status instead
     socketService.emit('typing', {
       senderId: loggedInUser._id,
@@ -218,15 +194,12 @@ export function ChatWindow({ showWelcome, isChatHidden }) {
 
   function handlefilesSelect(url, type) {
     const contentToSend = msgService.getMsgType(url, loggedInUser, user, type)
-    console.log('contentToSend', contentToSend)
     socketService.emit(SOCKET_EMIT_SEND_MSG, contentToSend)
     setMsgContent('')
   }
-  console.log('onlineStatus hadash', onlineStatus)
 
   function handleShowModal(e) {
     e.stopPropagation()
-
     const rect = e.target.getBoundingClientRect()
     setModalPosition({
       top: rect.top + window.scrollY,
@@ -235,6 +208,7 @@ export function ChatWindow({ showWelcome, isChatHidden }) {
     setShowModal(!showModal)
     setIsIconRotated(!isIconRotated)
   }
+
   function timestamp(time) {
     return msgService.getTimestamp(time)
   }
@@ -242,6 +216,7 @@ export function ChatWindow({ showWelcome, isChatHidden }) {
   function handleOpenAiModal() {
     setShowAiModal(true)
   }
+
   function handleCloseAiModal() {
     setShowAiModal(false)
   }
@@ -349,7 +324,6 @@ export function ChatWindow({ showWelcome, isChatHidden }) {
             <AIImageGenerator
               closeAiModal={handleCloseAiModal}
               onImageGenerated={(gifImgUrl) =>
-                // console.log('gifImgUrl', gifImgUrl)
                 handlefilesSelect(gifImgUrl, 'image')
               }
             />

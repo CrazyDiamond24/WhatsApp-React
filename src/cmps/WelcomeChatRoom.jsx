@@ -2,13 +2,12 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { ReactComponent as TextingSVG } from '../assets/imgs/texting.svg'
 import { Link } from 'react-router-dom'
-import { authService } from '../services/auth.service'
 import { doLogin } from '../store/actions/user.actions'
+
 export function WelcomeChatRoom() {
   const loggedInUser = useSelector((storeState) => {
     return storeState.userModule.loggedInUser
   })
-
   const dispatch = useDispatch()
 
   function continueAsGuest() {
