@@ -26,7 +26,7 @@ function Transcript({ onSelectAudio }) {
     }
   }, [])
 
-  const startRecording = async () => {
+  async function startRecording() {
     const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
     mediaRecorderRef.current = new MediaRecorder(stream)
 
@@ -52,7 +52,7 @@ function Transcript({ onSelectAudio }) {
     })
   }
 
-  const stopRecording = () => {
+  function stopRecording() {
     if (mediaRecorderRef.current) {
       mediaRecorderRef.current.stop()
       setRecording(false)
@@ -65,7 +65,7 @@ function Transcript({ onSelectAudio }) {
     })
   }
 
-  const toggleRecording = () => {
+  function toggleRecording() {
     recording ? stopRecording() : startRecording()
   }
 
