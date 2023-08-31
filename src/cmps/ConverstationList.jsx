@@ -21,9 +21,7 @@ export function ConverstationList({ isUserBlocked, msgs, loggedInUser, user }) {
   }
 
   function handleMouseLeave() {
-    setTimeout(() => {
       setHoveredIndex(null)
-    }, 4000);
   }
 
   useEffect(() => {

@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { MsgOptionsModal } from './MsgOptionsModal'
+import { MsgOptionsIcon } from './svgs/MsgOptionsIcon'
 
 export function MsgOptions({ msg, loggedInUser, user }) {
   const [modalPosition, setModalPosition] = useState({ top: 0, left: 0 })
@@ -16,7 +17,7 @@ export function MsgOptions({ msg, loggedInUser, user }) {
 
   return (
     <>
-      <div className='hover-icon' onClick={(e) => showSongOptionsModal(e)}>🔽</div>
+      <div className='hover-icon' onClick={(e) => showSongOptionsModal(e)}> <MsgOptionsIcon /> </div>
       {showModal && (
         <MsgOptionsModal
           user={user}
