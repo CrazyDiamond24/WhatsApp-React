@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect } from 'react'
 import { emojisService } from '../services/emojis.service'
 import { ReactComponent as GifIcon } from '../assets/imgs/gifIcon.svg'
 
@@ -7,8 +7,6 @@ export function Giphy({ onSelectGif }) {
   const [searchQuery, setSearchQuery] = useState('')
   const [searchedGifs, setSearchedGifs] = useState([])
   const [trendingGifs, setTrendingGifs] = useState([])
-
-  const gifsContainerRef = useRef(null)
 
   const isQueryNotEmpty = searchQuery.trim() !== ''
 
@@ -60,43 +58,25 @@ export function Giphy({ onSelectGif }) {
     setSearchQuery('')
   }
 
-  useEffect(() => {
-    function handleClickOutside(event) {
-      if (
-        isExpanded &&
-        gifsContainerRef.current &&
-        !gifsContainerRef.current.contains(event.target)
-      ) {
-        setIsExpanded(false)
-      }
-    }
-
-    document.addEventListener('mousedown', handleClickOutside)
-    return () => {
-      // Remove the event listener when the component is unmounted
-      document.removeEventListener('mousedown', handleClickOutside)
-    }
-  }, [isExpanded])
-
   return (
-    <div className="giphy-container">
+    <div className='giphy-container'>
       <div
         className={`giphy-icon ${isExpanded ? 'expanded' : ''}`}
         onClick={() => setIsExpanded((prevState) => !prevState)}
       >
-        <GifIcon className="gif-icon-svg" title="GIF" />
+        <GifIcon className='gif-icon-svg' title='GIF' />
       </div>
       {isExpanded && (
-        <div className="giphy-search-container" ref={gifsContainerRef}>
+        <div className='giphy-search-container'>
           <input
-            type="text"
+            type='text'
             value={searchQuery}
             onChange={handleSearchInputChange}
-            className="giphy-search-input"
-            placeholder="Search for GIFs..."
+            className='giphy-search-input'
+            placeholder='Search for GIFs...'
           />
           {!isQueryNotEmpty && trendingGifs.length > 0 && (
-            <div className="giphy-grid">
+            <div className='giphy-grid'>
               {trendingGifs.map((gif) => (
                 <img
                   key={gif.id}
@@ -111,7 +91,7 @@ export function Giphy({ onSelectGif }) {
             </div>
           )}
           {isQueryNotEmpty && searchedGifs.length > 0 && (
-            <div className="giphy-grid">
+            <div className='giphy-grid'>
               {searchedGifs.map((gif) => (
                 <img
                   key={gif.id}
