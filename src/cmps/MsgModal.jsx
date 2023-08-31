@@ -21,7 +21,7 @@ export default function MsgModal({
 
   const [showVoiceModal, setShowVoiceModal] = useState(false)
 
-  const [showVoiceModal, setShowVoiceModal] = useState(false)
+  // const [showVoiceModal, setShowVoiceModal] = useState(false)
 
   // async function handleImg(ev) {
   //   const file =
