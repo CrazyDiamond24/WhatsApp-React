@@ -22,6 +22,7 @@ export const BLOCK_USER = 'BLOCK_USER'
 export const EDIT_USER = 'EDIT_USER'
 export const EDIT_LOGGEDIN_USER = 'EDIT__LOGGEDINUSER'
 export const UPDATE_USER_STATUS = 'UPDATE_USER_STATUS'
+export const UPDATE_USER_STORY_STATUS = 'UPDATE_USER_STORY_STATUS'
 export const CLEAR_CHAT = 'CLEAR_CHAT'
 
 const INITIAL_STATE = {
@@ -232,20 +233,20 @@ export function userReducer(state = INITIAL_STATE, action = {}) {
           }
           return user
         }),
-        // loggedInUser:
-        //   state.loggedInUser._id === action.userId
-        //     ? {
-        //         ...state.loggedInUser,
-        //         isOnline: action.isOnline,
-        //         lastSeen: action.lastSeen,
-        //       }
-        //     : state.loggedInUser,
       }
-    // case SET_FILTER_BY:
-    //   return {
-    //     ...state,
-    //     filterBy: { ...action.filterBy },
-    //   }
+    case UPDATE_USER_STORY_STATUS:
+      return {
+        ...state,
+        users: state.users.map((user) => {
+          if (user._id === action.userId) {
+            return {
+              ...user,
+              haveStory: action.haveStory,
+            }
+          }
+          return user
+        }),
+      }
 
     default:
       return state

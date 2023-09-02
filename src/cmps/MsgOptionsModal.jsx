@@ -1,11 +1,12 @@
-import React, { useRef } from "react"
-import { useDispatch } from "react-redux"
-import { deleteMsg } from "../store/actions/user.actions"
+import React, { useRef } from 'react'
+import { useDispatch } from 'react-redux'
+import { deleteMsg } from '../store/actions/user.actions'
 
 export function MsgOptionsModal({
   position,
   closeModal,
   user,
+  dir,
   loggedInUser,
   msg,
 }) {
@@ -23,8 +24,8 @@ export function MsgOptionsModal({
         ref={msgModalRef}
         className="msg-options-modal"
         style={{
-          top: position.top,
-          left: position.left,
+          top: dir === 'left' ? position.top + 200 : position.top + 30,
+          left: dir === 'left' ? position.left - 170 : position.left - 170,
         }}
       >
         <ul>

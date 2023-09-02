@@ -1,16 +1,21 @@
 import io from 'socket.io-client'
 import { authService } from './auth.service'
 import { store } from '../store/index'
-import { updateUserStatus } from '../store/actions/user.actions'
+import {
+  updateUserStatus,
+  updateUserStoryStatus,
+} from '../store/actions/user.actions'
 export const SOCKET_EVENT_ADD_MSG = 'chat-add-msg'
 export const SOCKET_EMIT_SEND_MSG = 'chat-send-msg'
 export const SOCKET_EMIT_SET_TOPIC = 'chat-set-topic'
 export const SOCKET_EMIT_USER_WATCH = 'user-watch'
 export const SOCKET_EVENT_USER_UPDATED = 'user-updated'
+export const SOCKET_EVENT_USER_UPDATED_ADDED_STORY = 'user-updated-added-story'
 export const SOCKET_EVENT_REVIEW_ADDED = 'review-added'
 export const SOCKET_EVENT_REVIEW_ABOUT_YOU = 'review-about-you'
 
 const SOCKET_EMIT_LOGIN = 'set-user-socket'
+const SOCKET_EMIT_STORY_ADDED = 'added-story-socket'
 const SOCKET_EMIT_LOGOUT = 'unset-user-socket'
 
 const baseUrl = process.env.NODE_ENV === 'production' ? '' : '//localhost:3030'
@@ -37,6 +42,23 @@ socketService.on(SOCKET_EVENT_USER_UPDATED, (userStatusUpdate) => {
     )
   }
 })
+
+socketService.on(
+  SOCKET_EVENT_USER_UPDATED_ADDED_STORY,
+  (userStoryStatusUpdate) => {
+    if (
+      userStoryStatusUpdate.userId &&
+      userStoryStatusUpdate.haveStory !== undefined
+    ) {
+      store.dispatch(
+        updateUserStoryStatus(
+          userStoryStatusUpdate.userId,
+          userStoryStatusUpdate.haveStory
+        )
+      )
+    }
+  }
+)
 
 function createSocketService() {
   var socket = null
@@ -89,6 +111,9 @@ function createSocketService() {
       // Clear the registeredEvents array when the socket is terminated
       registeredEvents.length = 0
       socket = null
+    },
+    addedStory(userId) {
+      socket.emit(SOCKET_EMIT_STORY_ADDED, userId)
     },
   }
   return socketService

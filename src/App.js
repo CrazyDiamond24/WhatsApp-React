@@ -11,6 +11,7 @@ import { getUser } from './store/actions/user.actions'
 import { useEffect } from 'react'
 import { TakePicture } from './cmps/TakePicture'
 import { Ts } from './cmps/Ts'
+import { BackGround } from './cmps/BackGround'
 
 function App() {
   const dispatch = useDispatch()
@@ -26,6 +27,7 @@ function App() {
             <Route path="/user/edit/:id?" element={<AddContact />} />
             <Route path="/user/take/picture" element={<TakePicture />} />
             <Route path="/speech" element={<Ts />} />
+            <Route path="/sp" element={<BackGround />} />
             <Route path="/about" element={<About />} />
             <Route path="/login" element={<LoginSignup status={'login'} />} />
             <Route path="/signup" element={<LoginSignup status={'signup'} />} />

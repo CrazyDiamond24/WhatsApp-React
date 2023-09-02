@@ -9,6 +9,8 @@ export function Emojis({ onSelectEmoji }) {
 
   const excludedCategories = ['Component', 'Flags']
 
+  const emojisContainerRef = useRef(null)
+
   const brokenEmojis = [
     '🫨',
     '🩷',

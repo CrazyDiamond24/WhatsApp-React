@@ -20,6 +20,7 @@ import {
   UPDATE_USER_STATUS,
   CLEAR_CHAT,
   SET_LOGGEDIN_USER,
+  UPDATE_USER_STORY_STATUS,
 } from '../reducers/user.reducer'
 
 export function addContactToUser(name) {
@@ -44,6 +45,7 @@ export function addStoryToUser(url) {
     try {
       const loggedInUser = getState().userModule.loggedInUser
       await userService.addStory(loggedInUser._id, url)
+      socketService.addedStory(loggedInUser._id)
       const action = {
         type: ADD_STORY,
         url,
@@ -312,6 +314,14 @@ export function updateUserStatus(userId, isOnline, lastSeen) {
   return async (dispatch) => {
     try {
       const action = { type: UPDATE_USER_STATUS, userId, isOnline, lastSeen }
+      dispatch(action)
+    } catch (error) {}
+  }
+}
+export function updateUserStoryStatus(userId, haveStory) {
+  return async (dispatch) => {
+    try {
+      const action = { type: UPDATE_USER_STORY_STATUS, userId, haveStory }
       dispatch(action)
     } catch (error) {}
   }

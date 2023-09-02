@@ -1,10 +1,10 @@
-import React, { useState, useMemo } from "react"
-import { useDispatch, useSelector } from "react-redux"
-import { setCurrUser } from "../store/actions/user.actions"
-import { ContactOptionsModal } from "./ContactOptionsModal"
-import { PhotoIcon } from "./svgs/PhotoIcon"
-import { msgService } from "../services/msg.service"
-import { StoryModal } from "./StoryModal"
+import React, { useState, useMemo } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { setCurrUser } from '../store/actions/user.actions'
+import { ContactOptionsModal } from './ContactOptionsModal'
+import { PhotoIcon } from './svgs/PhotoIcon'
+import { msgService } from '../services/msg.service'
+import { StoryModal } from './StoryModal'
 
 export function UserPreview({
   user,
@@ -21,8 +21,8 @@ export function UserPreview({
     return storeState.userModule.loggedInUser
   })
   // real one
-  const hasStory = user.story.length
-
+  const hasStory = user.haveStory
+  console.log('user.haveStory', user.haveStory)
   // true - for development
   // const hasStory = 1
 
@@ -39,7 +39,7 @@ export function UserPreview({
   const lastMsgContent = useMemo(() => {
     if (lastMsg?.length > 0) {
       const lastMessage = lastMsg[lastMsg.length - 1]
-      if (lastMessage.type !== "image") {
+      if (lastMessage.type !== 'image') {
         return lastMessage.content
       } else {
         return (
@@ -50,12 +50,12 @@ export function UserPreview({
         )
       }
     } else {
-      return "Start a new conversation"
+      return 'Start a new conversation'
     }
   }, [lastMsg])
 
   const isLastMsgImage = useMemo(() => {
-    return lastMsg?.length > 0 && lastMsg[lastMsg.length - 1].type === "image"
+    return lastMsg?.length > 0 && lastMsg[lastMsg.length - 1].type === 'image'
   }, [lastMsg])
 
   function handleClick(e) {
@@ -96,7 +96,7 @@ export function UserPreview({
 
   return (
     <article
-      className={`contact-preview ${isActiveContact ? "active" : ""}`}
+      className={`contact-preview ${isActiveContact ? 'active' : ''}`}
       onClick={handleClick}
       onContextMenu={showContactModal}
     >
@@ -105,7 +105,7 @@ export function UserPreview({
       <div className="contact-preview-image-wrapper">
         <img
           onClick={onOpenStoryModal}
-          className={`${hasStory ? "story-frame" : ""} contact-preview-image`}
+          className={`${hasStory ? 'story-frame' : ''} contact-preview-image`}
           src={user.img}
           alt={user.fullName}
         />
@@ -118,8 +118,8 @@ export function UserPreview({
           <h3
             className={`last-msg-content ${
               isLastMsgImage
-                ? "last-msg-content-image"
-                : "last-msg-content-text"
+                ? 'last-msg-content-image'
+                : 'last-msg-content-text'
             }`}
           >
             {lastMsgContent}
