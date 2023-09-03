@@ -4,12 +4,21 @@
   // top: 0
 }
 
-.msg-options-modal {
-  position: absolute;
-}
+// @mixin dynamic-modal-width {
+//   display: flex;
+//   flex-direction: column;
+//   justify-content: space-between;
+//   align-items: center;
+//   max-width: 80%; /* Adjust the maximum width as needed */
+//   margin: 0 auto; /* Center the modal horizontally */
+//   padding: 20px; /* Add padding as needed */
+// }
 
 .msg-options-modal {
+  // @include dynamic-modal-width;
   position: absolute;
+  top: 0;
+  left: 0;
   z-index: 1000; /* Adjust the z-index value as needed */
   background-color: white;
   border-radius: 8px;
@@ -29,19 +38,3 @@
   display: none;
 }
 
-/* Style for the list items */
-.msg-options-modal ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.msg-options-modal li {
-  padding: 10px;
-  cursor: pointer;
-}
-
-.msg-options-modal li:hover {
-  background-color: #f0f0f0;
-  border-radius: 4px;
-}

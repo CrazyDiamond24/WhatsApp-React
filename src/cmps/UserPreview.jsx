@@ -22,7 +22,7 @@ export function UserPreview({
   })
   // real one
   const hasStory = user.haveStory
-  console.log('user.haveStory', user.haveStory)
+  // console.log('user.haveStory', user.haveStory)
   // true - for development
   // const hasStory = 1
 
