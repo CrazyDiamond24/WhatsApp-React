@@ -154,13 +154,12 @@ export function CreateStory(props) {
     setIsLoading(false)
   }
 
-  function handleTextChange(e) {
-    setText(e.target.value)
-  }
-
   function handleShowColorModal(e) {
     setShowColorModal(!showColorModal)
   }
+  // function handleTextChange(e) {
+  //   setText(e.target.value)
+  // }
 
   function handleColorSelect(color) {
     setTextColor(color)
@@ -301,10 +300,13 @@ export function CreateStory(props) {
           <FontFamily
             onSelectFontFamily={imageUrl ? handleFontFamilySelect : null}
           />
-          <button onClick={handleAddSentence}>+</button>
-          <button onClick={handleSwitchSentence}>
-            ↓↑ {currentSentenceIdx + 1}
+          <button className="controle-btns" onClick={handleAddSentence}>
+            +
           </button>
+          <button className="controle-btns" onClick={handleSwitchSentence}>
+            ↓↑
+          </button>
+          <p>{currentSentenceIdx + 1}</p>
         </div>
 
         <canvas

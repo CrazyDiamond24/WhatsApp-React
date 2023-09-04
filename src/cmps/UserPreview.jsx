@@ -20,7 +20,7 @@ export function UserPreview({
   const loggedInUser = useSelector((storeState) => {
     return storeState.userModule.loggedInUser
   })
-  // real one
+
   const hasStory = user.haveStory
   // console.log('user.haveStory', user.haveStory)
   // true - for development

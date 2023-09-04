@@ -4,7 +4,7 @@ $mic-active-scale: 1.1;
 $pulse-color: #ff8080;
 $pulse-animation-duration: 1s;
 
-.mic {
+.transcript-icon-svg.mic {
   border: none;
   background-color: $mic-bg-color;
   transition: all $mic-transition-time ease-in-out;
@@ -19,8 +19,8 @@ $pulse-animation-duration: 1s;
       top: 50%;
       left: 85%;
       transform: translate(-50%, -50%);
-      width: 20px;
-      height: 20px;
+      width: 100px;
+      height: 100px;
       border-radius: 50%;
       background-color: $pulse-color;
       animation: pulse $pulse-animation-duration ease-in-out infinite;

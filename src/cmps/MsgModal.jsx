@@ -6,6 +6,7 @@ import { getSpotifySvg } from '../services/SVG.service'
 import { convertTextToSpeech } from '../services/text-to-speech.service'
 import { useNavigate } from 'react-router-dom'
 import { VoiceModal } from './VoiceModal'
+import { TakePicture } from './TakePicture'
 
 export default function MsgModal({
   onSelectImage,
@@ -19,6 +20,7 @@ export default function MsgModal({
 }) {
   const navigate = useNavigate()
 
+  const [showCameraModal, setShowCameraModal] = useState(false)
   const [showVoiceModal, setShowVoiceModal] = useState(false)
 
   // const [showVoiceModal, setShowVoiceModal] = useState(false)
@@ -60,19 +62,19 @@ export default function MsgModal({
     const file =
       ev.type === 'change' ? ev.target.files[0] : ev.dataTransfer.files[0]
     try {
-      let url
+      let res
       switch (mediaType) {
         case 'image':
-          url = await uploadImg(file)
-          onSelectImage(url)
+          res = await uploadImg(file)
+          onSelectImage(res.url)
           break
         case 'video':
-          url = await uploadVideo(file)
-          onSelectVideo(url)
+          res = await uploadVideo(file)
+          onSelectVideo(res.url)
           break
         case 'file':
-          url = await uploadFile(file)
-          onSelectFile(url)
+          res = await uploadFile(file)
+          onSelectFile(res.url)
           break
         default:
           console.log('Invalid media type')
@@ -84,7 +86,7 @@ export default function MsgModal({
   }
 
   function handleShowModal() {
-    navigate('user/take/picture')
+    setShowCameraModal(true)
   }
 
   // useEffect(() => {
@@ -118,6 +120,9 @@ export default function MsgModal({
 
   function handleCloseVoiceModal() {
     setShowVoiceModal(false)
+  }
+  function handleCloseCameraModal() {
+    setShowCameraModal(false)
   }
 
   const msgModalRef = useRef(null)
@@ -202,7 +207,7 @@ export default function MsgModal({
             </label>
           </li>
         </ul>
-        {/* {showModal && <TakePicture />} */}
+        {showCameraModal && <TakePicture closeModal={handleCloseCameraModal} />}
       </section>
       {showVoiceModal && (
         <VoiceModal
