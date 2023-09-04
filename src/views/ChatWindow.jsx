@@ -194,6 +194,8 @@ export function ChatWindow({ showWelcome, isChatHidden }) {
 
   function handlefilesSelect(url, type) {
     const contentToSend = msgService.getMsgType(url, loggedInUser, user, type)
+    console.log('contentToSend', contentToSend)
+    if (user.fullName === 'gpt') return
     socketService.emit(SOCKET_EMIT_SEND_MSG, contentToSend)
     setMsgContent('')
   }

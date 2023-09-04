@@ -1,0 +1,44 @@
+.full {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 9999;
+  // position: relative;
+}
+
+.full video {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 80vw;
+  max-height: 80vh;
+  position: relative;
+}
+
+/* Camera Icon */
+.full .take-picture-btn {
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  border: none;
+  border-radius: 50%;
+  background-color: green;
+  bottom: 125px;
+  left: 50%;
+  transform: translateX(-50%);
+  cursor: pointer;
+}
+.full .close-camera-btn {
+  background-color: transparent;
+  border: none;
+  font-size: 1.2rem;
+  margin-block-end: 29%;
+  transform: translate(-22px);
+  cursor: pointer;
+}

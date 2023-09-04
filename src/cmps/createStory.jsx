@@ -73,7 +73,7 @@ export function CreateStory(props) {
       ctx.fillText(text, textPos.x, textPos.y)
     }
   }, [imageUrl, text, textPos, textColor, textWidth, textFontFamily])
-  
+
   useEffect(() => {
     const canvas = canvasRef.current
     const ctx = canvas.getContext('2d')
@@ -154,25 +154,24 @@ export function CreateStory(props) {
     setIsLoading(false)
   }
 
-  function handleTextChange(e) {
-    setText(e.target.value)
-  }
-
   function handleShowColorModal(e) {
     setShowColorModal(!showColorModal)
   }
+  // function handleTextChange(e) {
+  //   setText(e.target.value)
+  // }
 
-  function handleColorSelect(color) {
-    setTextColor(color)
-  }
+  // function handleColorSelect(color) {
+  //   setTextColor(color)
+  // }
 
-  function handleWidthSelect(width) {
-    setTextWidth(width)
-  }
+  // function handleWidthSelect(width) {
+  //   setTextWidth(width)
+  // }
 
-  function handleFontFamilySelect(font) {
-    setTextFontFamily(font)
-  }
+  // function handleFontFamilySelect(font) {
+  //   setTextFontFamily(font)
+  // }
 
   function addToStory() {
     if (!imageUrl && !text) {
@@ -256,30 +255,30 @@ export function CreateStory(props) {
 
   return (
     <>
-      <div className='overlay'></div>
+      <div className="overlay"></div>
 
-      <div className='create-story'>
+      <div className="create-story">
         {isLoading && <StoryLoader />}
-        <button title='Close' className='close-button' onClick={handleClose}>
+        <button title="Close" className="close-button" onClick={handleClose}>
           X
         </button>
         <input
-          placeholder='choose file'
-          type='file'
-          title='Upload image'
+          placeholder="choose file"
+          type="file"
+          title="Upload image"
           onChange={handleImageUpload}
           className={imageUrl ? 'hidden' : 'story-file-upload'}
         />
 
         <input
-          placeholder='Add text'
-          type='text'
+          placeholder="Add text"
+          type="text"
           value={sentences[currentSentenceIdx]?.text || ''}
           onChange={handleTextChange}
         />
 
         <div
-          className='edit-controls-container'
+          className="edit-controls-container"
           style={{
             pointerEvents: imageUrl ? 'auto' : 'none',
             cursor: imageUrl ? 'auto' : 'not-allowed',
@@ -287,18 +286,21 @@ export function CreateStory(props) {
         >
           <span
             onClick={imageUrl ? handleShowColorModal : null}
-            role='img'
-            aria-label='color-picker'
+            role="img"
+            aria-label="color-picker"
           >
-            <ColorPick className='color-pick-icon' />
+            <ColorPick className="color-pick-icon" />
           </span>
           <FontFamily
             onSelectFontFamily={imageUrl ? handleFontFamilySelect : null}
           />
-          <button onClick={handleAddSentence}>+</button>
-          <button onClick={handleSwitchSentence}>
-            ↓↑ {currentSentenceIdx + 1}
+          <button className="controle-btns" onClick={handleAddSentence}>
+            +
           </button>
+          <button className="controle-btns" onClick={handleSwitchSentence}>
+            ↓↑
+          </button>
+          <p>{currentSentenceIdx + 1}</p>
         </div>
 
         <canvas
@@ -320,7 +322,7 @@ export function CreateStory(props) {
           </div>
         )}
 
-        <button className='add-story-button' onClick={addToStory}>
+        <button className="add-story-button" onClick={addToStory}>
           Add to Story
         </button>
       </div>

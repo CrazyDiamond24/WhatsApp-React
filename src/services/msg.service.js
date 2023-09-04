@@ -114,6 +114,8 @@ function getMsgType(url, loggedInUser, user, type) {
 }
 
 function getReceivedMsgType(msg) {
+  console.log('msg', msg)
+  console.log('msg.content', msg.content)
   if (msg.content.includes('image')) return 'image'
   if (msg.content.includes('gif')) return 'image'
   if (msg.content.includes('deepai')) return 'image'

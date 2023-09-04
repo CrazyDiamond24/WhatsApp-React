@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useRef } from "react"
-import { useSelector, useDispatch } from "react-redux"
-import { updateUserPref } from "../store/actions/user.actions"
-import { CanvasColorPicker } from "./CanvasColorPicker"
-import { FontFamily } from "./FontFamily"
-import { ImagePicker } from "./ImagePicker"
+import React, { useState, useEffect, useRef } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { updateUserPref } from '../store/actions/user.actions'
+import { CanvasColorPicker } from './CanvasColorPicker'
+import { FontFamily } from './FontFamily'
+import { ImagePicker } from './ImagePicker'
 
 export function UserPref({ closePrefModal }) {
   const user = useSelector((storeState) => storeState.userModule.loggedInUser)
@@ -31,9 +31,9 @@ export function UserPref({ closePrefModal }) {
   }
 
   useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside)
+    document.addEventListener('mousedown', handleClickOutside)
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside)
+      document.removeEventListener('mousedown', handleClickOutside)
     }
   }, [])
 
@@ -58,8 +58,8 @@ export function UserPref({ closePrefModal }) {
   // }
   function handleColorSelect(color, colorType) {
     const type = {
-      fontColor: "fontColor",
-      headerBgColor: "headerBgColor",
+      fontColor: 'fontColor',
+      headerBgColor: 'headerBgColor',
     }
 
     if (type[colorType]) {
@@ -121,12 +121,15 @@ export function UserPref({ closePrefModal }) {
 
   return (
     <section className="user-pref">
+      <button title="Close" className="close-button" onClick={closePrefModal}>
+        X
+      </button>
       <form onSubmit={handleSubmit}>
         <div ref={fontColorPickerRef}>
           {showFontColorPicker && (
             <CanvasColorPicker
-              onColorSelect={(color) => handleColorSelect(color, "fontColor")}
-              onWidthSelect={(width) => handleSelect("fontSize", width)}
+              onColorSelect={(color) => handleColorSelect(color, 'fontColor')}
+              onWidthSelect={(width) => handleSelect('fontSize', width)}
               show={true}
               important={false}
             />
@@ -136,13 +139,13 @@ export function UserPref({ closePrefModal }) {
         <FontFamily
           className="font-family-pick"
           onSelectFontFamily={(fontFamily) =>
-            handleSelect("fontFamily", fontFamily)
+            handleSelect('fontFamily', fontFamily)
           }
           initialShowDropdown={true}
         />
 
         <ImagePicker
-          onSelectImage={(image) => handleSelect("backgroundImage", image)}
+          onSelectImage={(image) => handleSelect('backgroundImage', image)}
         />
 
         <label className="selected-font">
@@ -152,12 +155,12 @@ export function UserPref({ closePrefModal }) {
             onClick={() => setShowFontColorPicker(!showFontColorPicker)}
             style={{
               backgroundColor: editedUser.userPref?.fontColor,
-              display: "inline-block",
-              width: "20px",
-              height: "20px",
-              borderRadius: "50%",
-              cursor: "pointer",
-              marginLeft: "10px",
+              display: 'inline-block',
+              width: '20px',
+              height: '20px',
+              borderRadius: '50%',
+              cursor: 'pointer',
+              marginLeft: '10px',
             }}
           ></span>
           <span
@@ -176,7 +179,7 @@ export function UserPref({ closePrefModal }) {
               <CanvasColorPicker
                 className="color-picker-userpref"
                 onColorSelect={(color) =>
-                  handleColorSelect(color, "headerBgColor")
+                  handleColorSelect(color, 'headerBgColor')
                 }
                 important={true}
               />
@@ -187,12 +190,12 @@ export function UserPref({ closePrefModal }) {
             onClick={() => setShowBannerColorPicker(!showBannerColorPicker)}
             style={{
               backgroundColor: editedUser.userPref?.headerBgColor,
-              display: "inline-block",
-              width: "20px",
-              height: "20px",
-              borderRadius: "50%",
-              cursor: "pointer",
-              marginLeft: "87.6px",
+              display: 'inline-block',
+              width: '20px',
+              height: '20px',
+              borderRadius: '50%',
+              cursor: 'pointer',
+              marginLeft: '87.6px',
             }}
           ></span>
         </label>
