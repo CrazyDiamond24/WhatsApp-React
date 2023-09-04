@@ -10,6 +10,7 @@ export function MsgOptionsModal({
   loggedInUser,
   msg,
 }) {
+  console.log('dir', dir)
   const msgModalRef = useRef()
   const dispatch = useDispatch()
 
@@ -24,8 +25,8 @@ export function MsgOptionsModal({
         ref={msgModalRef}
         className="msg-options-modal"
         style={{
-          top: dir === 'left' ? position.top + 200 : position.top + 30,
-          left: dir === 'left' ? position.left - 170 : position.left - 170,
+          top: dir === 'left' ? -43 : -55,
+          left: dir === 'left' ? -120 : 220,
         }}
       >
         <ul>

@@ -22,6 +22,9 @@ export function UserPreview({
   })
 
   const hasStory = user.haveStory
+  // console.log('user.haveStory', user.haveStory)
+  // true - for development
+  // const hasStory = 1
 
   const dispatch = useDispatch()
 

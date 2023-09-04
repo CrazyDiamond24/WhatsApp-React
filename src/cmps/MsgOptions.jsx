@@ -14,9 +14,6 @@ export function MsgOptions({ msg, loggedInUser, user, direction }) {
     })
     setShowOptionsModal((prevState) => !prevState)
   }
-  console.log('direction', direction)
-
-  console.log('top', modalPosition)
   return (
     <>
       <div className="hover-icon" onClick={(e) => showSongOptionsModal(e)}>
