@@ -1,12 +1,12 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { uploadImg } from '../services/upload-img.service'
 import { uploadVideo } from '../services/upload-video.service'
 import { uploadFile } from '../services/upload-file.service'
 import { getSpotifySvg } from '../services/SVG.service'
-import { convertTextToSpeech } from '../services/text-to-speech.service'
-import { useNavigate } from 'react-router-dom'
+
 import { VoiceModal } from './VoiceModal'
 import { TakePicture } from './TakePicture'
+import { TranscriptIcon } from './svgs/TranscriptIcon'
 
 export default function MsgModal({
   onSelectImage,
@@ -14,49 +14,10 @@ export default function MsgModal({
   onSelectFile,
   onSelectVideo,
   openAiModal,
-  onSelectAudio,
   onSendVoice,
-  onClose,
 }) {
-  const navigate = useNavigate()
-
   const [showCameraModal, setShowCameraModal] = useState(false)
   const [showVoiceModal, setShowVoiceModal] = useState(false)
-
-  // const [showVoiceModal, setShowVoiceModal] = useState(false)
-
-  // async function handleImg(ev) {
-  //   const file =
-  //     ev.type === 'change' ? ev.target.files[0] : ev.dataTransfer.files[0]
-  //   try {
-  //     const { url } = await uploadImg(file)
-  //     onSelectImage(url)
-  //   } catch (err) {
-  //     console.log('err', err)
-  //   }
-  // }
-
-  // async function handleVideoFile(ev) {
-  //   const file =
-  //     ev.type === 'change' ? ev.target.files[0] : ev.dataTransfer.files[0]
-  //   try {
-  //     const { url } = await uploadVideo(file)
-  //     onSelectVideo(url)
-  //   } catch (err) {
-  //     console.log('err', err)
-  //   }
-  // }
-
-  // async function handleFile(ev) {
-  //   const file =
-  //     ev.type === 'change' ? ev.target.files[0] : ev.dataTransfer.files[0]
-  //   try {
-  //     const { url } = await uploadFile(file)
-  //     onSelectFile(url)
-  //   } catch (err) {
-  //     console.log('err', err)
-  //   }
-  // }
 
   async function handleMedia(ev, mediaType) {
     const file =
@@ -89,33 +50,8 @@ export default function MsgModal({
     setShowCameraModal(true)
   }
 
-  // useEffect(() => {
-  //   function handleClickOutside(event) {
-  //     if (msgModalRef.current && !msgModalRef.current.contains(event.target)) {
-  //       onClose()
-  //     }
-  //   }
-
-  //   document.addEventListener('mousedown', handleClickOutside)
-  //   return () => {
-  //     // Remove the event listener when the component is unmounted
-  //     document.removeEventListener('mousedown', handleClickOutside)
-  //   }
-  // }, [onClose])
-
-  // const vocie = 'CYw3kZ02Hs0563khs1Fj'
   function handleTextToVoice() {
     setShowVoiceModal(true)
-    // try {
-    //   const url = await convertTextToSpeech(msgText, vocie)
-    //   console.log('url', url)
-    //   // Instead of setting the audio URL in a state,
-    //   // you can pass it to ChatWindow to handle the sending part.
-    //   // Or handle the sending right here.
-    //   onSelectAudio(url.file) // Assuming you want to use the onSelectFile prop for this purpose
-    // } catch (error) {
-    //   console.error(error)
-    // }
   }
 
   function handleCloseVoiceModal() {
@@ -159,6 +95,9 @@ export default function MsgModal({
             <p>AI Generated Art</p>
           </li>
           <li onClick={handleTextToVoice}>
+            <div>
+              <TranscriptIcon className="transcript-icon-svg" />
+            </div>
             <p>Convert to voice msg</p>
           </li>
           <li>

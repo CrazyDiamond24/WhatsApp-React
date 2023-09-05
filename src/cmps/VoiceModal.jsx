@@ -1,7 +1,7 @@
 import React, { useState } from 'react' // Remember to import useState
 import { convertTextToSpeech } from '../services/text-to-speech.service'
 
-export function VoiceModal({ onSelectAudio, msg,closeModal }) {
+export function VoiceModal({ onSelectAudio, msg, closeModal }) {
   // Assuming onSelectAudio and msgText are props
 
   const [voice, setVoice] = useState('CYw3kZ02Hs0563khs1Fj')
@@ -13,7 +13,7 @@ export function VoiceModal({ onSelectAudio, msg,closeModal }) {
   ]
   async function onSendAudio() {
     try {
-        closeModal()
+      closeModal()
       const url = await convertTextToSpeech(msg, voice)
       console.log('url', url)
       // Instead of setting the audio URL in a state,
@@ -25,19 +25,27 @@ export function VoiceModal({ onSelectAudio, msg,closeModal }) {
     }
   }
   return (
-    <div className="voice-modal-container">
-      <select
-        className="voice-selector"
-        value={voice}
-        onChange={(e) => setVoice(e.target.value)}
-      >
-        {voices.map((voice) => (
-          <option key={voice.voice_id} value={voice.voice_id}>
-            {voice.name}
-          </option>
-        ))}
-      </select>
-      <button onClick={onSendAudio}>send the msg</button>
+    <div className="voice-modal-backdrop">
+      <div className="voice-modal-container">
+        <button className="close-modal-btn" onClick={closeModal}>
+          X
+        </button>
+        <h1>Choose Voice</h1>
+        <select
+          className="voice-selector"
+          value={voice}
+          onChange={(e) => setVoice(e.target.value)}
+        >
+          {voices.map((voice) => (
+            <option key={voice.voice_id} value={voice.voice_id}>
+              {voice.name}
+            </option>
+          ))}
+        </select>
+        <button className="send-msg-btn" onClick={onSendAudio}>
+          send the msg
+        </button>
+      </div>
     </div>
   )
 }

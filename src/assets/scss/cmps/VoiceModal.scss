@@ -1,31 +1,62 @@
-.voice-modal-container {
+.voice-modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.7);
   display: flex;
   justify-content: center;
   align-items: center;
-  position: fixed; // This will ensure it's relative to the viewport
-  top: 0;
-  left: 0;
-  height: 100vh;
-  width: 100vw;
-  z-index: 1000; // This ensures the modal is on top
+  z-index: 1000;
+}
+
+.voice-modal-container {
+  width: 400px;
+  background-color: #fff;
+  padding: 25px;
+  border-radius: 10px;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+  position: relative;
+}
+
+h1 {
+  margin-top: 0;
+  font-size: 24px;
+  text-align: center;
+  margin-bottom: 20px;
 }
 
 .voice-selector {
-  width: 200px;
-  padding: 8px 12px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
   font-size: 16px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
-
-  /* Add a gradient for a nicer appearance */
-  background: linear-gradient(145deg, #f5f5f5, #e1e1e1);
-  box-shadow: 5px 5px 15px #bebebe, -5px -5px 15px #ffffff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
 }
 
-.voice-selector:focus {
-  border-color: #007bff;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 0 0 2px rgba(0, 123, 255, 0.25);
-  outline: none;
+.close-modal-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: transparent;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: #888;
+}
+
+.send-msg-btn {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: #0056b3;
+  }
 }
