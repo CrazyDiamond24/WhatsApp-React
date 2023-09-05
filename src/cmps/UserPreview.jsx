@@ -40,7 +40,7 @@ export function UserPreview({
     if (lastMsg?.length > 0) {
       const lastMessage = lastMsg[lastMsg.length - 1]
       if (lastMessage.type !== 'image') {
-        return lastMessage.content
+        return msgService.getType(lastMessage)
       } else {
         return (
           <>

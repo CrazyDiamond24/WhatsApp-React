@@ -154,6 +154,7 @@ export function CreateStory(props) {
       }
     }
   }
+
   function handleMouseUp() {
     setDragging(false)
   }

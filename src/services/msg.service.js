@@ -9,6 +9,7 @@ export const msgService = {
   getTimestamp,
   getMsgType,
   getReceivedMsgType,
+  getType,
 }
 
 async function createNewMsg(msg, senderId, recipientId, type) {
@@ -114,8 +115,6 @@ function getMsgType(url, loggedInUser, user, type) {
 }
 
 function getReceivedMsgType(msg) {
-  console.log('msg', msg)
-  console.log('msg.content', msg.content)
   if (msg.content.includes('image')) return 'image'
   if (msg.content.includes('gif')) return 'image'
   if (msg.content.includes('deepai')) return 'image'
@@ -123,4 +122,9 @@ function getReceivedMsgType(msg) {
   if (msg.content.includes('blob')) return 'audio'
   if (msg.content.includes('raw')) return 'file'
   else return 'text'
+}
+function getType(msg) {
+  if (msg.type === 'audio') return 'Audio msg'
+  if (msg.type === 'video') return 'Video msg'
+  if (msg.type === 'file') return 'File msg'
 }
