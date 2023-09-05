@@ -1,15 +1,15 @@
-import React, { useRef, useState, useEffect } from "react"
-import { uploadImg } from "../services/upload-img.service"
-import { CanvasColorPicker } from "./CanvasColorPicker"
-import { useDispatch } from "react-redux"
-import { addStoryToUser } from "../store/actions/user.actions"
-import { FontFamily } from "./FontFamily"
-import { ColorPick } from "./svgs/ColorPick"
-import placeholderImg from "../assets/imgs/story-placeholder.png"
-import { StoryLoader } from "../cmps/StoryLoader"
+import React, { useRef, useState, useEffect } from 'react'
+import { uploadImg } from '../services/upload-img.service'
+import { CanvasColorPicker } from './CanvasColorPicker'
+import { useDispatch } from 'react-redux'
+import { addStoryToUser } from '../store/actions/user.actions'
+import { FontFamily } from './FontFamily'
+import { ColorPick } from './svgs/ColorPick'
+import placeholderImg from '../assets/imgs/story-placeholder.png'
+import { StoryLoader } from '../cmps/StoryLoader'
 
 export function CreateStory(props) {
-  const [text, setText] = useState("")
+  const [text, setText] = useState('')
   const [currentSentenceIdx, setCurrentSentenceIdx] = useState(0)
   const [imageUrl, setImageUrl] = useState(null)
   const [showColorModal, setShowColorModal] = useState(false)
@@ -17,11 +17,11 @@ export function CreateStory(props) {
   const [isLoading, setIsLoading] = useState(false)
   const [sentences, setSentences] = useState([
     {
-      text: "",
-      color: "black",
+      text: '',
+      color: 'black',
       pos: { x: 50, y: 50 },
-      width: "20",
-      fontFamily: "Arial",
+      width: '20',
+      fontFamily: 'Arial',
     },
   ])
 
@@ -29,9 +29,9 @@ export function CreateStory(props) {
   const canvasRef = useRef(null)
   const colorModalRef = useRef(null)
   const textPos = { x: 50, y: 50 }
-  const textWidth = "20"
-  const textColor = "black"
-  const textFontFamily = "Arial"
+  const textWidth = '20'
+  const textColor = 'black'
+  const textFontFamily = 'Arial'
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -52,12 +52,12 @@ export function CreateStory(props) {
 
   useEffect(() => {
     const canvas = canvasRef.current
-    const ctx = canvas.getContext("2d")
+    const ctx = canvas.getContext('2d')
 
     ctx.clearRect(0, 0, canvas.width, canvas.height)
 
     let img = new Image()
-    img.crossOrigin = "Anonymous"
+    img.crossOrigin = 'Anonymous'
     img.onload = () => {
       const canvasAspectRatio = canvas.width / canvas.height
       const imageAspectRatio = img.width / img.height
@@ -93,13 +93,13 @@ export function CreateStory(props) {
 
   useEffect(() => {
     const canvas = canvasRef.current
-    const ctx = canvas.getContext("2d")
+    const ctx = canvas.getContext('2d')
 
     ctx.clearRect(0, 0, canvas.width, canvas.height)
 
     if (imageUrl) {
       let img = new Image()
-      img.crossOrigin = "Anonymous"
+      img.crossOrigin = 'Anonymous'
 
       img.onload = () => {
         ctx.drawImage(img, 0, 0, canvas.width, canvas.height)
@@ -122,7 +122,15 @@ export function CreateStory(props) {
     return () => {
       console.log('hi')
     }
-  }, [imageUrl, sentences])
+  }, [
+    imageUrl,
+    sentences,
+    currentSentenceIdx,
+    textPos,
+    textColor,
+    textWidth,
+    textFontFamily,
+  ])
 
   function handleMouseDown(e) {
     const rect = canvasRef.current.getBoundingClientRect()
@@ -132,7 +140,7 @@ export function CreateStory(props) {
     for (let i = 0; i < sentences.length; i++) {
       const sentence = sentences[i]
       const textWidth = canvasRef.current
-        .getContext("2d")
+        .getContext('2d')
         .measureText(sentence.text).width
       if (
         y >= sentence.pos.y - parseInt(sentence.width, 10) &&
@@ -164,12 +172,12 @@ export function CreateStory(props) {
   async function handleImageUpload(ev) {
     setIsLoading(true)
     const file =
-      ev.type === "change" ? ev.target.files[0] : ev.dataTransfer.files[0]
+      ev.type === 'change' ? ev.target.files[0] : ev.dataTransfer.files[0]
     try {
       const { url } = await uploadImg(file)
       setImageUrl(url)
     } catch (err) {
-      console.log("err", err)
+      console.log('err', err)
     }
     setIsLoading(false)
   }
@@ -177,15 +185,12 @@ export function CreateStory(props) {
   function handleShowColorModal(e) {
     setShowColorModal(!showColorModal)
   }
-  // function handleTextChange(e) {
-  //   setText(e.target.value)
-  // }
 
   function addToStory() {
     if (!imageUrl && !text) {
       return
     }
-    const canvasUrl = canvasRef.current.toDataURL("image/png")
+    const canvasUrl = canvasRef.current.toDataURL('image/png')
 
     dispatch(addStoryToUser(canvasUrl))
 
@@ -205,15 +210,15 @@ export function CreateStory(props) {
       setSentences([
         ...sentences,
         {
-          text: "",
-          color: "black",
+          text: '',
+          color: 'black',
           pos: { x: 50, y: 50 + sentences.length * 50 },
-          width: "20",
-          fontFamily: "Arial",
+          width: '20',
+          fontFamily: 'Arial',
         },
       ])
       setCurrentSentenceIdx(sentences.length)
-      setText("")
+      setText('')
     }
   }
 
@@ -247,21 +252,21 @@ export function CreateStory(props) {
           type="file"
           title="Upload image"
           onChange={handleImageUpload}
-          className={imageUrl ? "hidden" : "story-file-upload"}
+          className={imageUrl ? 'hidden' : 'story-file-upload'}
         />
 
         <input
           placeholder="Add text"
           type="text"
-          value={sentences[currentSentenceIdx]?.text || ""}
+          value={sentences[currentSentenceIdx]?.text || ''}
           onChange={handleTextChange}
         />
 
         <div
           className="edit-controls-container"
           style={{
-            pointerEvents: imageUrl ? "auto" : "none",
-            cursor: imageUrl ? "auto" : "not-allowed",
+            pointerEvents: imageUrl ? 'auto' : 'none',
+            cursor: imageUrl ? 'auto' : 'not-allowed',
           }}
         >
           <span
@@ -275,7 +280,7 @@ export function CreateStory(props) {
             onSelectFontFamily={
               imageUrl
                 ? (selectedFont) =>
-                    handlePropertySelect("fontFamily", selectedFont)
+                    handlePropertySelect('fontFamily', selectedFont)
                 : null
             }
           />
@@ -300,10 +305,10 @@ export function CreateStory(props) {
           <div ref={colorModalRef}>
             <CanvasColorPicker
               onColorSelect={(selectedColor) =>
-                handlePropertySelect("color", selectedColor)
+                handlePropertySelect('color', selectedColor)
               }
               onWidthSelect={(selectedWidth) =>
-                handlePropertySelect("width", selectedWidth)
+                handlePropertySelect('width', selectedWidth)
               }
               show={true}
               important={false}
