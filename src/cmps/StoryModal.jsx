@@ -13,6 +13,7 @@ export function StoryModal({ user, closeStoryModal }) {
             return 0
           }
           clearInterval(progressInterval)
+          closeStoryModal()
           return prevProgress
         }
         return prevProgress + 1
@@ -26,6 +27,8 @@ export function StoryModal({ user, closeStoryModal }) {
     if (currentStoryIndex < user?.story?.length - 1) {
       setCurrentStoryIndex(currentStoryIndex + 1)
       setProgress(0)
+    } else {
+      closeStoryModal()
     }
   }
 
