@@ -88,10 +88,9 @@ export function UserPreview({
 
   function onOpenStoryModal() {
     setOpenStoryModal(true)
-
-    setTimeout(() => {
-      setOpenStoryModal(false)
-    }, 3000)
+  }
+  function handleCloseStoryModal() {
+    setOpenStoryModal(false)
   }
 
   return (
@@ -100,7 +99,9 @@ export function UserPreview({
       onClick={handleClick}
       onContextMenu={showContactModal}
     >
-      {openStoryModal && <StoryModal user={user} />}
+      {openStoryModal && (
+        <StoryModal user={user} closeStoryModal={handleCloseStoryModal} />
+      )}
 
       <div className="contact-preview-image-wrapper">
         <img
