@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react'
 
 export function AudioMsg({ msg }) {
   const [playbackRate, setPlaybackRate] = useState(1)
-  const audioRef = useRef(null) // Create a reference to the audio element
+  const audioRef = useRef(null)
 
   useEffect(() => {
     if (audioRef.current) {
