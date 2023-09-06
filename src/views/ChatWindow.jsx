@@ -82,17 +82,19 @@ export function ChatWindow({ showWelcome, isChatHidden }) {
     const handleReceivedMsg = (receivedMsg) => {
       if (receivedMsg.content) {
         const type = msgService.getReceivedMsgType(receivedMsg)
+        const {content , recipientId , senderId} = receivedMsg
 
         dispatch(
           addMsg(
-            receivedMsg.content,
-            receivedMsg.recipientId,
-            receivedMsg.senderId,
+            content,
+            recipientId,
+            senderId,
             type
           )
         )
       }
     }
+    
     socketService.on('chat-add-msg', handleReceivedMsg)
     return () => {
       socketService.off('chat-add-msg', handleReceivedMsg)
