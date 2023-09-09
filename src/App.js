@@ -6,7 +6,7 @@ import { LoginSignup } from './views/LoginSignup'
 import { useDispatch } from 'react-redux'
 import { getUser } from './store/actions/user.actions'
 import { useEffect } from 'react'
-
+import { UserMsg } from './cmps/UserMsg'
 function App() {
   const dispatch = useDispatch()
   useEffect(() => {
@@ -15,6 +15,7 @@ function App() {
   return (
     <Router>
       <section className="main-app">
+        <UserMsg />
         <main className="container">
           <Routes>
             <Route path="/" element={<UserIndex />} />

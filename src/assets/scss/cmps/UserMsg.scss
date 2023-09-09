@@ -1,0 +1,23 @@
+.alert {
+  background-color: #0d72ea;
+  width: max-content;
+  padding: 1em;
+  height: rem(45px);
+  font-family: circular-book;
+  position: fixed;
+  bottom: rem(100px);
+  left: 42%;
+  border-radius: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  line-height: 0;
+  text-align: center;
+  z-index: 1000;
+  font-weight: 400;
+  font-size: 1.2em;
+  letter-spacing: 1px;
+  @include for-mobile-layout {
+    left: 15%;
+  }
+}

@@ -26,18 +26,21 @@ window.socketService = socketService
 
 socketService.setup()
 
-socketService.on(SOCKET_EVENT_USER_UPDATED, (userStatusUpdate) => {
-  console.log('userStatusUpdate', userStatusUpdate)
+socketService.on(SOCKET_EVENT_USER_UPDATED, (user) => {
+  // console.log('updatedUser', updatedUser)
+  // console.log('userStatusUpdate', userStatusUpdate)
   if (
-    userStatusUpdate.userId &&
-    userStatusUpdate.isOnline !== undefined &&
-    userStatusUpdate.lastSeen
+    user
+    // userStatusUpdate.userId &&
+    // userStatusUpdate.isOnline !== undefined &&
+    // userStatusUpdate.lastSeen
   ) {
     store.dispatch(
       updateUserStatus(
-        userStatusUpdate.userId,
-        userStatusUpdate.isOnline,
-        userStatusUpdate.lastSeen
+        user.updatedUser
+        // userStatusUpdate.userId,
+        // userStatusUpdate.isOnline,
+        // userStatusUpdate.lastSeen
       )
     )
   }

@@ -27,10 +27,8 @@ export const CLEAR_CHAT = 'CLEAR_CHAT'
 
 const INITIAL_STATE = {
   loginError: '',
-  // filterBy: {},
   selectedUser: null,
   users: null,
-  // blockedUsers: [],
   loggedInUser: authService.getLoggedinUser(),
 }
 
@@ -57,11 +55,6 @@ export function userReducer(state = INITIAL_STATE, action = {}) {
         loggedInUser: {
           ...state.loggedInUser,
           msgs: action.updatedUser.msgs,
-          // state.loggedInUser.msgs.filter(
-          //   (msg) =>
-          //     msg.senderId !== action.targetUserId &&
-          //     msg.recipientId !== action.targetUserId
-          // ),
         },
       }
     case EDIT_USER:

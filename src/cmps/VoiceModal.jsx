@@ -16,10 +16,7 @@ export function VoiceModal({ onSelectAudio, msg, closeModal }) {
       closeModal()
       const url = await convertTextToSpeech(msg, voice)
       console.log('url', url)
-      // Instead of setting the audio URL in a state,
-      // you can pass it to ChatWindow to handle the sending part.
-      // Or handle the sending right here.
-      onSelectAudio(url.file) // Assuming you want to use the onSelectFile prop for this purpose
+      onSelectAudio(url.file)
     } catch (error) {
       console.error(error)
     }
