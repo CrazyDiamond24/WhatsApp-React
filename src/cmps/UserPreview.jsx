@@ -20,9 +20,9 @@ export function UserPreview({
   const loggedInUser = useSelector((storeState) => {
     return storeState.userModule.loggedInUser
   })
-  // real one
+
   const hasStory = user.haveStory
-  console.log('user.haveStory', user.haveStory)
+  // console.log('user.haveStory', user.haveStory)
   // true - for development
   // const hasStory = 1
 
@@ -40,7 +40,7 @@ export function UserPreview({
     if (lastMsg?.length > 0) {
       const lastMessage = lastMsg[lastMsg.length - 1]
       if (lastMessage.type !== 'image') {
-        return lastMessage.content
+        return msgService.getType(lastMessage)
       } else {
         return (
           <>
@@ -88,10 +88,9 @@ export function UserPreview({
 
   function onOpenStoryModal() {
     setOpenStoryModal(true)
-
-    setTimeout(() => {
-      setOpenStoryModal(false)
-    }, 3000)
+  }
+  function handleCloseStoryModal() {
+    setOpenStoryModal(false)
   }
 
   return (
@@ -100,7 +99,9 @@ export function UserPreview({
       onClick={handleClick}
       onContextMenu={showContactModal}
     >
-      {openStoryModal && <StoryModal user={user} />}
+      {openStoryModal && (
+        <StoryModal user={user} closeStoryModal={handleCloseStoryModal} />
+      )}
 
       <div className="contact-preview-image-wrapper">
         <img

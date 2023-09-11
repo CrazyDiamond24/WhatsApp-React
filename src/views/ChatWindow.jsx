@@ -1,5 +1,4 @@
-import React from 'react'
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { addMsg } from '../store/actions/user.actions'
 import { Emojis } from '../cmps/Emojis'
@@ -24,6 +23,7 @@ export function ChatWindow({ showWelcome, isChatHidden }) {
   const [isIconRotated, setIsIconRotated] = useState(false)
   const [onLine, showOnline] = useState(false)
   const [showAiModal, setShowAiModal] = useState(false)
+  const [isGptAnswer, setIsGptAnswer] = useState(false)
   const loggedInUser = useSelector((storeState) => {
     return storeState.userModule.loggedInUser
   })
@@ -82,17 +82,12 @@ export function ChatWindow({ showWelcome, isChatHidden }) {
     const handleReceivedMsg = (receivedMsg) => {
       if (receivedMsg.content) {
         const type = msgService.getReceivedMsgType(receivedMsg)
+        const { content, recipientId, senderId } = receivedMsg
 
-        dispatch(
-          addMsg(
-            receivedMsg.content,
-            receivedMsg.recipientId,
-            receivedMsg.senderId,
-            type
-          )
-        )
+        dispatch(addMsg(content, recipientId, senderId, type))
       }
     }
+
     socketService.on('chat-add-msg', handleReceivedMsg)
     return () => {
       socketService.off('chat-add-msg', handleReceivedMsg)
@@ -119,17 +114,18 @@ export function ChatWindow({ showWelcome, isChatHidden }) {
     }
   }, [user?._id])
 
-  useEffect(() => {
-    const handleUserStatusUpdate = (userStatusUpdate) => {
-      if (userStatusUpdate.userId && userStatusUpdate.userId === user._id) {
-        showOnline(userStatusUpdate.isOnline)
-      }
-    }
-    socketService.on('user-updated', handleUserStatusUpdate)
-    return () => {
-      socketService.off('user-updated', handleUserStatusUpdate)
-    }
-  }, [user?._id])
+  // useEffect(() => {
+  //   const handleUserStatusUpdate = (userStatusUpdate) => {
+  //     console.log('userStatusUpdate', userStatusUpdate)
+  //     // if (userStatusUpdate.userId && userStatusUpdate.userId === user._id) {
+  //     showOnline(true)
+  //     // }
+  //   }
+  //   socketService.on('user-updated', handleUserStatusUpdate)
+  //   return () => {
+  //     socketService.off('user-updated', handleUserStatusUpdate)
+  //   }
+  // }, [user?._id])
 
   useEffect(() => {
     const handleRecording = (recordingData) => {
@@ -145,18 +141,29 @@ export function ChatWindow({ showWelcome, isChatHidden }) {
   }, [user?._id])
 
   async function askGpt(contentToSend) {
-    dispatch(
-      addMsg(
-        contentToSend.content,
-        contentToSend.recipientId,
-        contentToSend.senderId,
-        'text'
+    setIsGptAnswer(true)
+    try {
+      dispatch(
+        addMsg(
+          contentToSend.content,
+          contentToSend.recipientId,
+          contentToSend.senderId,
+          'text'
+        )
       )
-    )
-    const characterName =
-      'a comedian. You can answer everything with your current knowledge, but make it funny'
-    const res = await aiService.askChatGpt(contentToSend.content, characterName)
-    dispatch(addMsg(res, loggedInUser._id, user._id, 'text'))
+
+      const res = await aiService.askChatGpt(
+        contentToSend.content,
+        user.character
+      )
+
+      console.log('user', user)
+      dispatch(addMsg(res, loggedInUser._id, user._id, 'text'))
+    } catch (error) {
+      console.error('An error occurred while asking GPT:', error)
+    } finally {
+      setIsGptAnswer(false)
+    }
   }
 
   function handelSendMsg(e) {
@@ -171,7 +178,7 @@ export function ChatWindow({ showWelcome, isChatHidden }) {
         recipientId: user._id,
       }
       setMsgContent('')
-      if (user.username === 'gpt') return askGpt(contentToSend)
+      if (user.fullName === 'gpt') return askGpt(contentToSend)
       socketService.emit(SOCKET_EMIT_SEND_MSG, contentToSend)
     }
   }
@@ -180,7 +187,6 @@ export function ChatWindow({ showWelcome, isChatHidden }) {
     setMsgContent(e.target.value)
     const trimmedContent = e.target.value.trim()
     const isTyping = trimmedContent !== ''
-    // Don't set recipient's typing state here emit your typing status instead
     socketService.emit('typing', {
       senderId: loggedInUser._id,
       recipientId: user._id,
@@ -194,6 +200,8 @@ export function ChatWindow({ showWelcome, isChatHidden }) {
 
   function handlefilesSelect(url, type) {
     const contentToSend = msgService.getMsgType(url, loggedInUser, user, type)
+    console.log('contentToSend', contentToSend)
+    if (user.fullName === 'gpt') return
     socketService.emit(SOCKET_EMIT_SEND_MSG, contentToSend)
     setMsgContent('')
   }
@@ -246,11 +254,11 @@ export function ChatWindow({ showWelcome, isChatHidden }) {
           >
             <div className="header-image-wrapper">
               <img src={user?.img} alt={user?.username} />
-              {onLine && <span className="online-indicator"></span>}
+              {user.isOnline && <span className="online-indicator"></span>}
             </div>
             <div className="user-details">
               <h2 className="user-fullname">{user?.fullName}</h2>
-              {onLine ? (
+              {user.isOnline ? (
                 <div className="online-status-word">Online</div>
               ) : (
                 <div className="status-info">
@@ -259,7 +267,7 @@ export function ChatWindow({ showWelcome, isChatHidden }) {
               )}
             </div>
 
-            {recipientIsTyping && <div>is typing...</div>}
+            {(recipientIsTyping || isGptAnswer) && <div>is typing...</div>}
             {recipientIsRecording && <div>is recording...</div>}
           </div>
           <ul className="conversation-container flex" ref={animationParent}>
@@ -278,8 +286,6 @@ export function ChatWindow({ showWelcome, isChatHidden }) {
                 }
               />
               <Emojis onSelectEmoji={handleEmojiSelect} />
-
-              {/* <TakePicture onSelectSelfiePicture={handleGifSelect} /> */}
             </div>
             <div className="chat-input-container">
               {showModal && (
@@ -293,7 +299,7 @@ export function ChatWindow({ showWelcome, isChatHidden }) {
                   onSendVoice={(url) => handlefilesSelect(url, 'audio')}
                   onSelectFile={(url) => handlefilesSelect(url, 'file')}
                   openAiModal={handleOpenAiModal}
-                  onClose={handleCloseModal} // Add this
+                  onClose={handleCloseModal}
                 />
               )}
 

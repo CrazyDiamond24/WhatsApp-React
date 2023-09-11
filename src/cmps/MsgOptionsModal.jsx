@@ -1,20 +1,23 @@
-import React, { useRef } from 'react'
+import React, { useRef, useCallback } from 'react'
 import { useDispatch } from 'react-redux'
 import { deleteMsg } from '../store/actions/user.actions'
 
-export function MsgOptionsModal({
-  position,
-  closeModal,
-  user,
-  dir,
-  loggedInUser,
-  msg,
-}) {
+export function MsgOptionsModal({ closeModal, user, dir, loggedInUser, msg }) {
   const msgModalRef = useRef()
   const dispatch = useDispatch()
 
-  function deleteMsgHandler() {
+  const deleteMsgHandler = () => {
     dispatch(deleteMsg(msg.id, loggedInUser._id, user._id))
+    closeModal()
+  }
+
+  const copyToClipboard = () => {
+    const el = document.createElement('textarea')
+    el.value = msg.content
+    document.body.appendChild(el)
+    el.select()
+    document.execCommand('copy')
+    document.body.removeChild(el)
     closeModal()
   }
 
@@ -24,12 +27,13 @@ export function MsgOptionsModal({
         ref={msgModalRef}
         className="msg-options-modal"
         style={{
-          top: dir === 'left' ? position.top + 200 : position.top + 30,
-          left: dir === 'left' ? position.left - 170 : position.left - 170,
+          top: dir === 'left' ? 10 : 0,
+          left: dir === 'left' ? -100 : 100,
         }}
       >
         <ul>
           <li onClick={deleteMsgHandler}>Delete message</li>
+          {msg.type === 'text' && <li onClick={copyToClipboard}>Copy</li>}
         </ul>
       </div>
     </>

@@ -9,6 +9,7 @@ export const msgService = {
   getTimestamp,
   getMsgType,
   getReceivedMsgType,
+  getType,
 }
 
 async function createNewMsg(msg, senderId, recipientId, type) {
@@ -121,4 +122,9 @@ function getReceivedMsgType(msg) {
   if (msg.content.includes('blob')) return 'audio'
   if (msg.content.includes('raw')) return 'file'
   else return 'text'
+}
+function getType(msg) {
+  if (msg.type === 'audio') return 'Audio msg'
+  if (msg.type === 'video') return 'Video msg'
+  if (msg.type === 'file') return 'File msg'
 }

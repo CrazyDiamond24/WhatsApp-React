@@ -10,9 +10,6 @@ import { StoryLoader } from '../cmps/StoryLoader'
 
 export function CreateStory(props) {
   const [text, setText] = useState('')
-  const [textWidth, setTextWidth] = useState('20')
-  const [textColor, setTextColor] = useState('black')
-  const [textFontFamily, setTextFontFamily] = useState('Arial')
   const [currentSentenceIdx, setCurrentSentenceIdx] = useState(0)
   const [imageUrl, setImageUrl] = useState(null)
   const [showColorModal, setShowColorModal] = useState(false)
@@ -32,6 +29,26 @@ export function CreateStory(props) {
   const canvasRef = useRef(null)
   const colorModalRef = useRef(null)
   const textPos = { x: 50, y: 50 }
+  const textWidth = '20'
+  const textColor = 'black'
+  const textFontFamily = 'Arial'
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (
+        colorModalRef.current &&
+        !colorModalRef.current.contains(event.target)
+      ) {
+        setShowColorModal(false)
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [])
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -73,7 +90,7 @@ export function CreateStory(props) {
       ctx.fillText(text, textPos.x, textPos.y)
     }
   }, [imageUrl, text, textPos, textColor, textWidth, textFontFamily])
-  
+
   useEffect(() => {
     const canvas = canvasRef.current
     const ctx = canvas.getContext('2d')
@@ -102,7 +119,18 @@ export function CreateStory(props) {
         ctx.fillText(sentence.text, sentence.pos.x, sentence.pos.y)
       })
     }
-  }, [imageUrl, sentences])
+    return () => {
+      console.log('hi')
+    }
+  }, [
+    imageUrl,
+    sentences,
+    currentSentenceIdx,
+    textPos,
+    textColor,
+    textWidth,
+    textFontFamily,
+  ])
 
   function handleMouseDown(e) {
     const rect = canvasRef.current.getBoundingClientRect()
@@ -126,6 +154,7 @@ export function CreateStory(props) {
       }
     }
   }
+
   function handleMouseUp() {
     setDragging(false)
   }
@@ -154,24 +183,8 @@ export function CreateStory(props) {
     setIsLoading(false)
   }
 
-  function handleTextChange(e) {
-    setText(e.target.value)
-  }
-
   function handleShowColorModal(e) {
     setShowColorModal(!showColorModal)
-  }
-
-  function handleColorSelect(color) {
-    setTextColor(color)
-  }
-
-  function handleWidthSelect(width) {
-    setTextWidth(width)
-  }
-
-  function handleFontFamilySelect(font) {
-    setTextFontFamily(font)
   }
 
   function addToStory() {
@@ -216,70 +229,42 @@ export function CreateStory(props) {
     setSentences(updatedSentences)
   }
 
-  function handleColorSelect(color) {
+  function handlePropertySelect(property, value) {
     const updatedSentences = [...sentences]
-    updatedSentences[currentSentenceIdx].color = color
+    updatedSentences[currentSentenceIdx][property] = value
     setSentences(updatedSentences)
   }
 
-  function handleWidthSelect(width) {
-    const updatedSentences = [...sentences]
-    updatedSentences[currentSentenceIdx].width = width
-    setSentences(updatedSentences)
-  }
-
-  function handleFontFamilySelect(font) {
-    const updatedSentences = [...sentences]
-    updatedSentences[currentSentenceIdx].fontFamily = font
-    setSentences(updatedSentences)
-  }
-
-  useEffect(() => {
-    function handleClickOutside(event) {
-      if (
-        colorModalRef.current &&
-        !colorModalRef.current.contains(event.target)
-      ) {
-        setShowColorModal(false)
-      }
-    }
-
-    document.addEventListener('mousedown', handleClickOutside)
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside)
-    }
-  }, [])
   function handleClose() {
     props.onClose()
   }
 
   return (
     <>
-      <div className='overlay'></div>
+      <div className="overlay"></div>
 
-      <div className='create-story'>
+      <div className="create-story">
         {isLoading && <StoryLoader />}
-        <button title='Close' className='close-button' onClick={handleClose}>
+        <button title="Close" className="close-button" onClick={handleClose}>
           X
         </button>
         <input
-          placeholder='choose file'
-          type='file'
-          title='Upload image'
+          placeholder="choose file"
+          type="file"
+          title="Upload image"
           onChange={handleImageUpload}
           className={imageUrl ? 'hidden' : 'story-file-upload'}
         />
 
         <input
-          placeholder='Add text'
-          type='text'
+          placeholder="Add text"
+          type="text"
           value={sentences[currentSentenceIdx]?.text || ''}
           onChange={handleTextChange}
         />
 
         <div
-          className='edit-controls-container'
+          className="edit-controls-container"
           style={{
             pointerEvents: imageUrl ? 'auto' : 'none',
             cursor: imageUrl ? 'auto' : 'not-allowed',
@@ -287,18 +272,26 @@ export function CreateStory(props) {
         >
           <span
             onClick={imageUrl ? handleShowColorModal : null}
-            role='img'
-            aria-label='color-picker'
+            role="img"
+            aria-label="color-picker"
           >
-            <ColorPick className='color-pick-icon' />
+            <ColorPick className="color-pick-icon" />
           </span>
           <FontFamily
-            onSelectFontFamily={imageUrl ? handleFontFamilySelect : null}
+            onSelectFontFamily={
+              imageUrl
+                ? (selectedFont) =>
+                    handlePropertySelect('fontFamily', selectedFont)
+                : null
+            }
           />
-          <button onClick={handleAddSentence}>+</button>
-          <button onClick={handleSwitchSentence}>
-            ↓↑ {currentSentenceIdx + 1}
+          <button className="controle-btns" onClick={handleAddSentence}>
+            +
           </button>
+          <button className="controle-btns" onClick={handleSwitchSentence}>
+            ↓↑
+          </button>
+          <p>{currentSentenceIdx + 1}</p>
         </div>
 
         <canvas
@@ -312,15 +305,19 @@ export function CreateStory(props) {
         {showColorModal && (
           <div ref={colorModalRef}>
             <CanvasColorPicker
-              onColorSelect={handleColorSelect}
-              onWidthSelect={handleWidthSelect}
+              onColorSelect={(selectedColor) =>
+                handlePropertySelect('color', selectedColor)
+              }
+              onWidthSelect={(selectedWidth) =>
+                handlePropertySelect('width', selectedWidth)
+              }
               show={true}
               important={false}
             />
           </div>
         )}
 
-        <button className='add-story-button' onClick={addToStory}>
+        <button className="add-story-button" onClick={addToStory}>
           Add to Story
         </button>
       </div>

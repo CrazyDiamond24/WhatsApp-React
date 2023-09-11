@@ -67,6 +67,7 @@ export function doSignup(userCred) {
         user,
       }
       dispatch(action)
+      return user
     } catch (error) {
       console.log('error:', error)
       return
@@ -84,9 +85,6 @@ export function doLogin(userCred) {
         user,
       }
       dispatch(action)
-
-      showSuccessMsg('like')
-
       return user
     } catch (err) {
       console.log('error', err)
@@ -310,10 +308,10 @@ export function updateLastSeen(user) {
   }
 }
 
-export function updateUserStatus(userId, isOnline, lastSeen) {
+export function updateUserStatus(user) {
   return async (dispatch) => {
     try {
-      const action = { type: UPDATE_USER_STATUS, userId, isOnline, lastSeen }
+      const action = { type: SET_USER, user }
       dispatch(action)
     } catch (error) {}
   }

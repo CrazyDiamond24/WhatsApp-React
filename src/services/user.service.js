@@ -1,7 +1,4 @@
 import { httpService } from './http.service.js'
-// import { storageService } from './storage.service.js'
-// import { utilService } from './util.service.js'
-// import { authService } from './auth.service.js'
 export const userService = {
   query,
   updatePref,
