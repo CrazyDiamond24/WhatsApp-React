@@ -148,7 +148,7 @@ export function UserProfile({ show, closeUserProfile }) {
     <section className={`user-profile-page ${show ? "open" : ""}`}>
       <div className="first-section">
         <span>{/* <LeftArrow /> */}</span>
-        <h1 onClick={closeUserProfile}>Profile</h1>
+        <h1 title="Contacts" className="back-to-list" onClick={closeUserProfile}>Back</h1>
       </div>
       <div className="second-section">
         <div className="image-container">

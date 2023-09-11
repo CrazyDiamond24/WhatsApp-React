@@ -41,7 +41,7 @@ export function AppHeader({ showProfile, openWelcomeChat }) {
                 </div>
 
                 <div className='logo-and-btn-container'>
-                <button title='Logout' onClick={handelLogout}>
+                <button className="logout-btn" title='Logout' onClick={handelLogout}>
                     Logout
                   </button>
                   <img

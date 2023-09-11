@@ -22,9 +22,12 @@ export function UserIndex() {
   const [isListShown, setIsListShown] = useState(false)
 
   function toggleDisplay() {
-    // setIsChatHidden((prevIsChatHidden) => !prevIsChatHidden)
-    // setIsListShown((prevIsListShown) => !prevIsListShown)
+    if (window.innerWidth <= 768) {
+      setIsChatHidden((prevIsChatHidden) => !prevIsChatHidden);
+      setIsListShown((prevIsListShown) => !prevIsListShown);
+    }
   }
+  
 
   const user = useSelector((storeState) => {
     return storeState.userModule.selectedUser
@@ -144,7 +147,13 @@ export function UserIndex() {
       )}
 
       {/* {!showCamera ? ( */}
-      <button className='back-btn' onClick={toggleDisplay}></button>
+      <span class="back-btn" onClick={toggleDisplay}>
+  <svg class="arrow-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M12 4L4 12L12 20M20 12H4H20Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+</span>
+
+
       <ChatWindow
         isChatHidden={isChatHidden}
         showWelcome={showWelcome}
