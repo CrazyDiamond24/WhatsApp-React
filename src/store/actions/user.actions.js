@@ -67,6 +67,7 @@ export function doSignup(userCred) {
         user,
       }
       dispatch(action)
+      return user
     } catch (error) {
       console.log('error:', error)
       return
@@ -84,9 +85,6 @@ export function doLogin(userCred) {
         user,
       }
       dispatch(action)
-
-      showSuccessMsg('like')
-
       return user
     } catch (err) {
       console.log('error', err)
