@@ -22,7 +22,6 @@ export function ChatWindow({ showWelcome, isChatHidden }) {
   const [recipientIsRecording, setUserIsRecording] = useState(false)
   const [recipientIsTyping, setUserIsTyping] = useState(false)
   const [isIconRotated, setIsIconRotated] = useState(false)
-  const [onLine, showOnline] = useState(false)
   const [showAiModal, setShowAiModal] = useState(false)
   const [isGptAnswer, setIsGptAnswer] = useState(false)
   const loggedInUser = useSelector((storeState) => {
@@ -269,7 +268,7 @@ export function ChatWindow({ showWelcome, isChatHidden }) {
               )}
             </div>
 
-            {(recipientIsTyping || isGptAnswer) && <div>is typing...</div>}
+            {(recipientIsTyping || isGptAnswer) && <div className='typing'>is typing...</div>}
             {recipientIsRecording && <div>is recording...</div>}
           </div>
           <ul className="conversation-container flex" ref={animationParent}>
