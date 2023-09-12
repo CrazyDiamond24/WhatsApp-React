@@ -75,7 +75,6 @@ export function LoginSignup({ status }) {
       showErrorMsg("You are not listed as a user, Please sign up.")
       return setHasAccount(false)
     }
-
     setHasAccount(true)
   }
 
