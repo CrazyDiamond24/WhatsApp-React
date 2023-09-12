@@ -13,6 +13,7 @@ import MsgModal from '../cmps/MsgModal'
 import { ReactComponent as PlusWhatsapp } from '../assets/imgs/plusWhatsapp.svg'
 import { aiService } from '../services/ai.service'
 import AIImageGenerator from '../cmps/AIImageGenerator'
+import { showErrorMsg } from '../services/event-bus.service'
 
 export function ChatWindow({ showWelcome, isChatHidden }) {
   const [msgContent, setMsgContent] = useState('')
@@ -201,7 +202,8 @@ export function ChatWindow({ showWelcome, isChatHidden }) {
   function handlefilesSelect(url, type) {
     const contentToSend = msgService.getMsgType(url, loggedInUser, user, type)
     console.log('contentToSend', contentToSend)
-    if (user.fullName === 'gpt') return
+    if(isUserBlocked) return
+    if (user.fullName === 'gpt') return showErrorMsg('You cant send this msg to Ai tool')
     socketService.emit(SOCKET_EMIT_SEND_MSG, contentToSend)
     setMsgContent('')
   }
