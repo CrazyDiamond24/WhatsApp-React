@@ -127,4 +127,5 @@ function getType(msg) {
   if (msg.type === 'audio') return 'Audio msg'
   if (msg.type === 'video') return 'Video msg'
   if (msg.type === 'file') return 'File msg'
+  if (msg.type === 'text') return 'problem'
 }

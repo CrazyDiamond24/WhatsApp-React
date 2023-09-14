@@ -178,7 +178,10 @@ export function ChatWindow({ showWelcome, isChatHidden }) {
         recipientId: user._id,
       }
       setMsgContent('')
-      if (user.fullName === 'gpt') return askGpt(contentToSend)
+      if (user.username.toLowerCase().includes('gpt')) {
+        return askGpt(contentToSend);
+      }
+      
       socketService.emit(SOCKET_EMIT_SEND_MSG, contentToSend)
     }
   }

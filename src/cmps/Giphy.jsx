@@ -12,7 +12,17 @@ export function Giphy({ onSelectGif }) {
 
   const loadTrendingGifs = async () => {
     const gifs = await emojisService.fetchTrendingGiphy()
-    setTrendingGifs(gifs)
+
+    const uniqueGifs = gifs.reduce((acc, current) => {
+      const x = acc.find((item) => item.id === current.id)
+      if (!x) {
+        return acc.concat([current])
+      } else {
+        return acc
+      }
+    }, [])
+
+    setTrendingGifs(uniqueGifs)
   }
 
   useEffect(() => {
@@ -27,7 +37,17 @@ export function Giphy({ onSelectGif }) {
     async function fetchGifs(value) {
       if (value.trim() !== '') {
         const gifs = await emojisService.fetchGiphy(value)
-        setSearchedGifs(gifs)
+
+        const uniqueGifs = gifs.reduce((acc, current) => {
+          const x = acc.find((item) => item.id === current.id)
+          if (!x) {
+            return acc.concat([current])
+          } else {
+            return acc
+          }
+        }, [])
+
+        setSearchedGifs(uniqueGifs)
       } else {
         setSearchedGifs([])
       }

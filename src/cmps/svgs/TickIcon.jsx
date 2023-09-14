@@ -7,7 +7,7 @@ export function TickIcon({ onClick, className  }) {
       height='24'
       width='24'
       preserveAspectRatio='xMidYMid meet'
-      class={className}
+      className={className}
       version='1.1'
       x='0px'
       y='0px'
