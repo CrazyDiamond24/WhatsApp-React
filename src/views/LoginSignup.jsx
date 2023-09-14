@@ -50,15 +50,15 @@ export function LoginSignup({ status }) {
   function handleToggle() {
     setHasAccount((prevHasAccount) => !prevHasAccount)
   }
-
+  
   async function handleSubmit(e) {
+    console.log('users', users)
     e.preventDefault()
     const isRegistered = users?.some((user) => {
       return user.username === signupCred.username
     })
     setHasAccount(isRegistered)
-
-    if (isRegistered) {
+    if (isRegistered && state) {
       dispatch(doLogin(signupCred))
       navigate("/")
     } else if (
@@ -72,10 +72,9 @@ export function LoginSignup({ status }) {
         showErrorMsg("You are now registered. Enjoy!")
         return navigate("/")
       }
-      showErrorMsg("You are not listed as a user, Please sign up.")
+      showErrorMsg("Username is already taken.")
       return setHasAccount(false)
     }
-
     setHasAccount(true)
   }
 

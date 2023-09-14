@@ -13,6 +13,7 @@ import MsgModal from '../cmps/MsgModal'
 import { ReactComponent as PlusWhatsapp } from '../assets/imgs/plusWhatsapp.svg'
 import { aiService } from '../services/ai.service'
 import AIImageGenerator from '../cmps/AIImageGenerator'
+import { showErrorMsg } from '../services/event-bus.service'
 
 export function ChatWindow({ showWelcome, isChatHidden }) {
   const [msgContent, setMsgContent] = useState('')
@@ -21,7 +22,6 @@ export function ChatWindow({ showWelcome, isChatHidden }) {
   const [recipientIsRecording, setUserIsRecording] = useState(false)
   const [recipientIsTyping, setUserIsTyping] = useState(false)
   const [isIconRotated, setIsIconRotated] = useState(false)
-  const [onLine, showOnline] = useState(false)
   const [showAiModal, setShowAiModal] = useState(false)
   const [isGptAnswer, setIsGptAnswer] = useState(false)
   const loggedInUser = useSelector((storeState) => {
@@ -204,7 +204,8 @@ export function ChatWindow({ showWelcome, isChatHidden }) {
   function handlefilesSelect(url, type) {
     const contentToSend = msgService.getMsgType(url, loggedInUser, user, type)
     console.log('contentToSend', contentToSend)
-    if (user.fullName === 'gpt') return
+    if(isUserBlocked) return
+    if (user.fullName === 'gpt') return showErrorMsg('You cant send this msg to Ai tool')
     socketService.emit(SOCKET_EMIT_SEND_MSG, contentToSend)
     setMsgContent('')
   }
@@ -270,7 +271,7 @@ export function ChatWindow({ showWelcome, isChatHidden }) {
               )}
             </div>
 
-            {(recipientIsTyping || isGptAnswer) && <div>is typing...</div>}
+            {(recipientIsTyping || isGptAnswer) && <div className='typing'>is typing...</div>}
             {recipientIsRecording && <div>is recording...</div>}
           </div>
           <ul className="conversation-container flex" ref={animationParent}>
