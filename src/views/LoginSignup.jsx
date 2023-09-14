@@ -49,6 +49,8 @@ export function LoginSignup({ status }) {
 
   function handleToggle() {
     setHasAccount((prevHasAccount) => !prevHasAccount)
+    if(hasAccount) return navigate('/signup')
+    navigate('/login')
   }
   
   async function handleSubmit(e) {
@@ -58,6 +60,8 @@ export function LoginSignup({ status }) {
       return user.username === signupCred.username
     })
     setHasAccount(isRegistered)
+    console.log('isRegistered', isRegistered)
+    console.log('state', state)
     if (isRegistered && state) {
       dispatch(doLogin(signupCred))
       navigate("/")
