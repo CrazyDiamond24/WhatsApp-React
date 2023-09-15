@@ -17,7 +17,6 @@ import {
   REMOVE_CONTACT,
   EDIT_USER,
   EDIT_LOGGEDIN_USER,
-  UPDATE_USER_STATUS,
   CLEAR_CHAT,
   SET_LOGGEDIN_USER,
   UPDATE_USER_STORY_STATUS,
@@ -84,9 +83,6 @@ export function doLogin(userCred) {
         user,
       }
       dispatch(action)
-
-      showSuccessMsg('like')
-
       return user
     } catch (err) {
       console.log('error', err)

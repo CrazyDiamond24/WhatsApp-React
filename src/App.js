@@ -7,6 +7,7 @@ import { useDispatch } from 'react-redux'
 import { getUser } from './store/actions/user.actions'
 import { useEffect } from 'react'
 import { UserMsg } from './cmps/UserMsg'
+import { SpeechToText } from './cmps/SpeechToText'
 function App() {
   const dispatch = useDispatch()
   useEffect(() => {
@@ -22,6 +23,7 @@ function App() {
             <Route path="/user/edit/:id?" element={<AddContact />} />
             <Route path="/login" element={<LoginSignup status={'login'} />} />
             <Route path="/signup" element={<LoginSignup status={'signup'} />} />
+            <Route path="/speech" element={<SpeechToText />} />
           </Routes>
         </main>
       </section>

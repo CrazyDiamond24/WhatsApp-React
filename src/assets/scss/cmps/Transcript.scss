@@ -5,6 +5,7 @@ $pulse-color: #ff8080;
 $pulse-animation-duration: 1s;
 
 .transcript-icon-svg.mic {
+  cursor: pointer;
   border: none;
   background-color: $mic-bg-color;
   transition: all $mic-transition-time ease-in-out;
