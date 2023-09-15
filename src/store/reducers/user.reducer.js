@@ -28,7 +28,7 @@ export const CLEAR_CHAT = 'CLEAR_CHAT'
 const INITIAL_STATE = {
   loginError: '',
   selectedUser: null,
-  users: null,
+  users: [],
   loggedInUser: authService.getLoggedinUser(),
 }
 

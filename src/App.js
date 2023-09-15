@@ -4,7 +4,7 @@ import { UserIndex } from './views/UserIndex'
 import { AddContact } from './views/AddContact'
 import { LoginSignup } from './views/LoginSignup'
 import { useDispatch } from 'react-redux'
-import { getUser } from './store/actions/user.actions'
+import { getUser , loadUsers} from './store/actions/user.actions'
 import { useEffect } from 'react'
 import { UserMsg } from './cmps/UserMsg'
 import { SpeechToText } from './cmps/SpeechToText'
@@ -12,6 +12,7 @@ function App() {
   const dispatch = useDispatch()
   useEffect(() => {
     dispatch(getUser())
+    dispatch(loadUsers())
   }, [])
   return (
     <Router>

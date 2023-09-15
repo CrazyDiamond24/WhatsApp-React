@@ -66,6 +66,7 @@ export function doSignup(userCred) {
         user,
       }
       dispatch(action)
+      return user
     } catch (error) {
       console.log('error:', error)
       return
