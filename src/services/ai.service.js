@@ -5,5 +5,6 @@ export const aiService = {
 }
 
 async function askChatGpt(prompt, character) {
+  console.log('character in ser front', character)
   return httpService.post('openai/ask', { prompt, character })
 }

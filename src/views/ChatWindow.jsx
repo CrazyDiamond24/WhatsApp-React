@@ -151,6 +151,7 @@ export function ChatWindow({ showWelcome, isChatHidden }) {
           'text'
         )
       )
+      console.log('user.character', user.character)
 
       const res = await aiService.askChatGpt(
         contentToSend.content,
