@@ -8,7 +8,7 @@ export function StoryIcon({ onClick , className}) {
       xmlns='http://www.w3.org/2000/svg'
       viewBox='0 0 122.64 122.88'
       fill='white'
-      class={className}
+      className={className}
       height='30px'
       cursor='pointer'
       onClick={onClick}

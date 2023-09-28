@@ -6,7 +6,6 @@ export function MsgOptionsIcon() {
       viewBox="0 0 18 18"
       height="18"
       width="18"
-      class=""
       version="1.1"
     >
       <path

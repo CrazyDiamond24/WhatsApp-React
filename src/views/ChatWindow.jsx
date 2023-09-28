@@ -114,19 +114,6 @@ export function ChatWindow({ showWelcome, isChatHidden }) {
     }
   }, [user?._id])
 
-  // useEffect(() => {
-  //   const handleUserStatusUpdate = (userStatusUpdate) => {
-  //     console.log('userStatusUpdate', userStatusUpdate)
-  //     // if (userStatusUpdate.userId && userStatusUpdate.userId === user._id) {
-  //     showOnline(true)
-  //     // }
-  //   }
-  //   socketService.on('user-updated', handleUserStatusUpdate)
-  //   return () => {
-  //     socketService.off('user-updated', handleUserStatusUpdate)
-  //   }
-  // }, [user?._id])
-
   useEffect(() => {
     const handleRecording = (recordingData) => {
       const { userId, isRecording } = recordingData
@@ -179,7 +166,10 @@ export function ChatWindow({ showWelcome, isChatHidden }) {
         recipientId: user._id,
       }
       setMsgContent('')
-      if (user.fullName === 'gpt') return askGpt(contentToSend)
+      if (user.username.toLowerCase().includes('gpt')) {
+        return askGpt(contentToSend)
+      }
+
       socketService.emit(SOCKET_EMIT_SEND_MSG, contentToSend)
     }
   }
@@ -202,8 +192,9 @@ export function ChatWindow({ showWelcome, isChatHidden }) {
   function handlefilesSelect(url, type) {
     const contentToSend = msgService.getMsgType(url, loggedInUser, user, type)
     console.log('contentToSend', contentToSend)
-    if(isUserBlocked) return
-    if (user.fullName === 'gpt') return showErrorMsg('You cant send this msg to Ai tool')
+    if (isUserBlocked) return
+    if (user.fullName === 'gpt')
+      return showErrorMsg('You cant send this msg to Ai tool')
     socketService.emit(SOCKET_EMIT_SEND_MSG, contentToSend)
     setMsgContent('')
   }
@@ -251,28 +242,29 @@ export function ChatWindow({ showWelcome, isChatHidden }) {
       {user && !showWelcome ? (
         <>
           <div
-            className="header-area"
+            className='header-area'
             style={{ backgroundColor: loggedInUser?.userPref?.headerBgColor }}
           >
-            <div className="header-image-wrapper">
+            <div className='header-image-wrapper'>
               <img src={user?.img} alt={user?.username} />
-              {user.isOnline && <span className="online-indicator"></span>}
+              {user.isOnline && <span className='online-indicator'></span>}
             </div>
-            <div className="user-details">
-              <h2 className="user-fullname">{user?.fullName}</h2>
-              {user.isOnline ? (
-                <div className="online-status-word">Online</div>
-              ) : (
-                <div className="status-info">
-                  Last Seen: {timestamp(user.lastSeen)}
-                </div>
-              )}
+            <div className='user-details'>
+              <h2 className='user-fullname'>{user?.fullName}</h2>
+              <div className='online-status-word'>
+                {recipientIsTyping || isGptAnswer
+                  ? 'is typing...'
+                  : user.isOnline
+                  ? 'Online'
+                  : `Last Seen: ${timestamp(user.lastSeen)}`}
+              </div>
             </div>
 
-            {(recipientIsTyping || isGptAnswer) && <div className='typing'>is typing...</div>}
+            {/* {(recipientIsTyping || isGptAnswer) && <div className='typing'>is typing...</div>} */}
+
             {recipientIsRecording && <div>is recording...</div>}
           </div>
-          <ul className="conversation-container flex" ref={animationParent}>
+          <ul className='conversation-container flex' ref={animationParent}>
             <ConverstationList
               msgs={msgs}
               loggedInUser={loggedInUser}
@@ -280,8 +272,8 @@ export function ChatWindow({ showWelcome, isChatHidden }) {
               isUserBlocked={isUserBlocked}
             />
           </ul>
-          <form className="msg-input" onSubmit={(e) => handelSendMsg(e)}>
-            <div className="multimedia-container">
+          <form className='msg-input' onSubmit={(e) => handelSendMsg(e)}>
+            <div className='multimedia-container'>
               <Giphy
                 onSelectGif={(gifImgUrl) =>
                   handlefilesSelect(gifImgUrl, 'image')
@@ -289,7 +281,7 @@ export function ChatWindow({ showWelcome, isChatHidden }) {
               />
               <Emojis onSelectEmoji={handleEmojiSelect} />
             </div>
-            <div className="chat-input-container">
+            <div className='chat-input-container'>
               {showModal && (
                 <MsgModal
                   msgText={msgContent}
@@ -306,25 +298,25 @@ export function ChatWindow({ showWelcome, isChatHidden }) {
               )}
 
               <PlusWhatsapp
-                title="Attach"
+                title='Attach'
                 className={`plus-icon-svg ${isIconRotated ? 'rotate' : ''}`}
                 onClick={(e) => handleShowModal(e)}
               />
 
               <input
-                className="chat-msg-input"
-                type="text"
-                placeholder="Type a message..."
+                className='chat-msg-input'
+                type='text'
+                placeholder='Type a message...'
                 value={msgContent}
                 onChange={handleInputChange}
               />
 
               <Transcript
-                title="Record"
+                title='Record'
                 onSelectAudio={(audioUrl) =>
                   handlefilesSelect(audioUrl, 'audio')
                 }
-                className="transcript-container"
+                className='transcript-container'
               />
             </div>
           </form>

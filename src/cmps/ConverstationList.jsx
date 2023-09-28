@@ -65,7 +65,7 @@ export function ConverstationList({ isUserBlocked, msgs, loggedInUser, user }) {
       ))}
       {isUserBlocked && (
         <li className="chat-msg system">
-          This user is blocked. You cannot send or recive messages from them
+          This user is blocked. You cannot send or receive messages from them.
         </li>
       )}
     </>

@@ -90,7 +90,7 @@ export function UserList({ filterBy, onRemoveUser, openUserChat, toggleDisplay }
   }
   
   return (
-    <section className="user-list simple-cards-grid" ref={animationParent}>
+    <section className="user-list" ref={animationParent}>
       {filteredUsers?.map((user) => {
         const unreadCount = unreadCounts[user._id] || 0
 

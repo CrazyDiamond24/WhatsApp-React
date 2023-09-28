@@ -7,6 +7,7 @@ import { FontFamily } from './FontFamily'
 import { ColorPick } from './svgs/ColorPick'
 import placeholderImg from '../assets/imgs/story-placeholder.png'
 import { StoryLoader } from '../cmps/StoryLoader'
+import { SelectArrows } from './svgs/SelectArrows'
 
 export function CreateStory(props) {
   const [text, setText] = useState('')
@@ -95,33 +96,91 @@ export function CreateStory(props) {
     const canvas = canvasRef.current
     const ctx = canvas.getContext('2d')
 
-    ctx.clearRect(0, 0, canvas.width, canvas.height)
+    const loadImage = (src) => {
+      return new Promise((resolve) => {
+        const img = new Image()
+        img.crossOrigin = 'Anonymous'
+        img.onload = () => resolve(img)
+        img.src = src
+      })
+    }
 
-    if (imageUrl) {
-      let img = new Image()
-      img.crossOrigin = 'Anonymous'
+    const drawRoundedRect = (ctx, x, y, width, height, radius) => {
+      ctx.beginPath()
+      ctx.moveTo(x + radius, y)
+      ctx.lineTo(x + width - radius, y)
+      ctx.quadraticCurveTo(x + width, y, x + width, y + radius)
+      ctx.lineTo(x + width, y + height - radius)
+      ctx.quadraticCurveTo(
+        x + width,
+        y + height,
+        x + width - radius,
+        y + height
+      )
+      ctx.lineTo(x + radius, y + height)
+      ctx.quadraticCurveTo(x, y + height, x, y + height - radius)
+      ctx.lineTo(x, y + radius)
+      ctx.quadraticCurveTo(x, y, x + radius, y)
+      ctx.closePath()
+      ctx.stroke()
+    }
 
-      img.onload = () => {
-        ctx.drawImage(img, 0, 0, canvas.width, canvas.height)
+    const drawEverything = async () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height)
 
-        sentences.forEach((sentence) => {
-          ctx.font = `${sentence.width}px ${sentence.fontFamily}`
-          ctx.fillStyle = sentence.color
-          ctx.fillText(sentence.text, sentence.pos.x, sentence.pos.y)
-        })
-      }
+      const img = await loadImage(imageUrl || placeholderImg)
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height)
 
-      img.src = imageUrl
-    } else {
-      sentences.forEach((sentence) => {
+      sentences.forEach((sentence, idx) => {
         ctx.font = `${sentence.width}px ${sentence.fontFamily}`
         ctx.fillStyle = sentence.color
         ctx.fillText(sentence.text, sentence.pos.x, sentence.pos.y)
+
+        if (
+          sentences.length > 0 &&
+          idx === currentSentenceIdx &&
+          sentence.text !== '' &&
+          currentSentenceIdx !== -1
+        ) {
+          // console.log(sentences.length, 'the lengthhhhh')
+
+          console.log(
+            'Attempting to draw rectangle around text:',
+            sentence.text
+          )
+          console.log(
+            'Current Sentence Index from use effect:',
+            currentSentenceIdx
+          )
+          // console.log('Sentences:', sentences)
+
+          const textWidth = ctx.measureText(sentence.text).width
+          const textHeight = parseInt(sentence.width, 10)
+          ctx.strokeStyle = '#25D366'
+
+          const padding = 10
+          const roundedX = sentence.pos.x - padding
+          const roundedY = sentence.pos.y - textHeight - padding
+          const roundedWidth = textWidth + padding * 2
+          const roundedHeight = textHeight + padding * 2
+
+          // Radius for rounded corners
+          const radius = 8
+          ctx.lineWidth = 2
+
+          drawRoundedRect(
+            ctx,
+            roundedX,
+            roundedY,
+            roundedWidth,
+            roundedHeight,
+            radius
+          )
+        }
       })
     }
-    return () => {
-      console.log('hi')
-    }
+
+    drawEverything()
   }, [
     imageUrl,
     sentences,
@@ -133,12 +192,17 @@ export function CreateStory(props) {
   ])
 
   function handleMouseDown(e) {
+    if (sentences.length === 0 || sentences[currentSentenceIdx]?.text === '')
+      return
     const rect = canvasRef.current.getBoundingClientRect()
     const x = e.clientX - rect.left
     const y = e.clientY - rect.top
 
+    let found = false;
     for (let i = 0; i < sentences.length; i++) {
-      const sentence = sentences[i]
+      if (sentences[i]) {
+        const sentence = sentences[i];
+      
       const textWidth = canvasRef.current
         .getContext('2d')
         .measureText(sentence.text).width
@@ -150,9 +214,18 @@ export function CreateStory(props) {
       ) {
         setDragging(true)
         setCurrentSentenceIdx(i)
+        found = true;
         return
       }
     }
+    if (!found) {
+      setCurrentSentenceIdx(-1);
+    }
+    console.log('Mouse down at position', { x, y })
+    console.log("Debug: sentences array", sentences);
+console.log("Debug: currentSentenceIdx", currentSentenceIdx);
+
+  }
   }
 
   function handleMouseUp() {
@@ -199,31 +272,45 @@ export function CreateStory(props) {
   }
 
   function handleSwitchSentence() {
-    if (currentSentenceIdx + 1 < sentences.length) {
-      setCurrentSentenceIdx(currentSentenceIdx + 1)
-    } else {
-      setCurrentSentenceIdx(0)
-    }
+    if (sentences.length === 0 && currentSentenceIdx !== -1) return
+    setCurrentSentenceIdx((prevIdx) => {
+      // console.log('Previous Index:', prevIdx, 'Array Length:', sentences.length);
+      if (prevIdx + 1 < sentences.length) {
+        // console.log('Current index after switching:', prevIdx + 1);
+        return prevIdx + 1
+      } else {
+        // console.log('Current index after switching back to zero:', 0);
+        return 0
+      }
+    })
   }
+
+  //for debugging, remove later
+  useEffect(() => {
+    console.log('Updated currentSentenceIdx:', currentSentenceIdx)
+  }, [currentSentenceIdx])
 
   function handleAddSentence() {
     if (sentences.length < 4) {
-      setSentences([
-        ...sentences,
+      console.log(sentences.length, 'from add sentence lenthgth')
+      setSentences((prevSentences) => [
+        ...prevSentences,
         {
           text: '',
           color: 'black',
-          pos: { x: 50, y: 50 + sentences.length * 50 },
+          pos: { x: 50, y: 50 + prevSentences.length * 50 },
           width: '20',
           fontFamily: 'Arial',
         },
       ])
-      setCurrentSentenceIdx(sentences.length)
+
+      setCurrentSentenceIdx((prevIdx) => prevIdx + 1)
       setText('')
     }
   }
 
   function handleTextChange(e) {
+    if (currentSentenceIdx < 0 || !sentences[currentSentenceIdx]) return
     const updatedSentences = [...sentences]
     updatedSentences[currentSentenceIdx].text = e.target.value
     setSentences(updatedSentences)
@@ -241,30 +328,30 @@ export function CreateStory(props) {
 
   return (
     <>
-      <div className="overlay"></div>
+      <div className='overlay'></div>
 
-      <div className="create-story">
+      <div className='create-story'>
         {isLoading && <StoryLoader />}
-        <button title="Close" className="close-button" onClick={handleClose}>
+        <button title='Close' className='close-button' onClick={handleClose}>
           X
         </button>
         <input
-          placeholder="choose file"
-          type="file"
-          title="Upload image"
+          placeholder='choose file'
+          type='file'
+          title='Upload image'
           onChange={handleImageUpload}
           className={imageUrl ? 'hidden' : 'story-file-upload'}
         />
 
         <input
-          placeholder="Add text"
-          type="text"
+          placeholder='Add text'
+          type='text'
           value={sentences[currentSentenceIdx]?.text || ''}
           onChange={handleTextChange}
         />
 
         <div
-          className="edit-controls-container"
+          className='edit-controls-container'
           style={{
             pointerEvents: imageUrl ? 'auto' : 'none',
             cursor: imageUrl ? 'auto' : 'not-allowed',
@@ -272,10 +359,10 @@ export function CreateStory(props) {
         >
           <span
             onClick={imageUrl ? handleShowColorModal : null}
-            role="img"
-            aria-label="color-picker"
+            role='img'
+            aria-label='color-picker'
           >
-            <ColorPick className="color-pick-icon" />
+            <ColorPick className='color-pick-icon' />
           </span>
           <FontFamily
             onSelectFontFamily={
@@ -285,13 +372,21 @@ export function CreateStory(props) {
                 : null
             }
           />
-          <button className="controle-btns" onClick={handleAddSentence}>
+          <button
+            title='Add a new text'
+            className='add-txt'
+            onClick={handleAddSentence}
+          >
             +
           </button>
-          <button className="controle-btns" onClick={handleSwitchSentence}>
-            ↓↑
+          {/* <button
+            title='Select text'
+            className='select-txt'
+            onClick={handleSwitchSentence}
+          >
+            <SelectArrows />
           </button>
-          <p>{currentSentenceIdx + 1}</p>
+          <p className='currTxt'>Text {currentSentenceIdx + 1}</p> */}
         </div>
 
         <canvas
@@ -317,7 +412,7 @@ export function CreateStory(props) {
           </div>
         )}
 
-        <button className="add-story-button" onClick={addToStory}>
+        <button className='add-story-button' onClick={addToStory}>
           Add to Story
         </button>
       </div>

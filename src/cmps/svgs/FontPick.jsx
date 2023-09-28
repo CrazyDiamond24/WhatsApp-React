@@ -5,13 +5,13 @@ export function FontPick({ onClick, className }) {
     <svg
       viewBox='0 0 24 24'
       version='1.1'
-      class={className}
+      className={className}
       onClick={onClick}
     >
       <title>Font</title>
       <g
         stroke='none'
-        stroke-width='1'
+        strokeWidth='1'
         fill='none'
 
       >

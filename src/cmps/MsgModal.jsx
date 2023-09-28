@@ -35,6 +35,7 @@ export default function MsgModal({
           break
         case 'file':
           res = await uploadFile(file)
+          console.log('a file was sent')
           onSelectFile(res.url)
           break
         default:

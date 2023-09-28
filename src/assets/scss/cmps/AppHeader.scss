@@ -104,6 +104,16 @@
       fill: white;
     }
   }
+
+   
+  @media (max-width: 768px) {
+    .logo-without-word {
+display: none;
+    }
+    .logout-btn{
+      transform: translate(-30px);
+    }
+  }
 }
 
 @keyframes rainbow {

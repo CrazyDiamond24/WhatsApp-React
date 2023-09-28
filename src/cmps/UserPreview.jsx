@@ -40,14 +40,17 @@ export function UserPreview({
     if (lastMsg?.length > 0) {
       const lastMessage = lastMsg[lastMsg.length - 1]
       if (lastMessage.type !== 'image') {
-        return msgService.getType(lastMessage)
-      } else {
+        return lastMessage.content
+        // return msgService.getType(lastMessage)
+      } else if (lastMessage.type === 'image') {
         return (
           <>
             <PhotoIcon />
             Photo
           </>
         )
+      } else {
+        return msgService.getType(lastMessage)
       }
     } else {
       return 'Start a new conversation'
@@ -103,18 +106,18 @@ export function UserPreview({
         <StoryModal user={user} closeStoryModal={handleCloseStoryModal} />
       )}
 
-      <div className="contact-preview-image-wrapper">
+      <div className='contact-preview-image-wrapper'>
         <img
           onClick={onOpenStoryModal}
           className={`${hasStory ? 'story-frame' : ''} contact-preview-image`}
           src={user.img}
           alt={user.fullName}
         />
-        {user.isOnline && <span className="online-indicator"></span>}
+        {user.isOnline && <span className='online-indicator'></span>}
       </div>
 
-      <div className="mini-contant">
-        <div className="contact-preview-info">
+      <div className='mini-contant'>
+        <div className='contact-preview-info'>
           <h2>{user.fullName}</h2>
           <h3
             className={`last-msg-content ${
@@ -130,7 +133,7 @@ export function UserPreview({
 
         {/* {user.isOnline && <span className="online-indicator"></span>} */}
 
-        {unreadCount > 0 && <span className="unread-count">{unreadCount}</span>}
+        {unreadCount > 0 && <span className='unread-count'>{unreadCount}</span>}
       </div>
       {showModal && (
         <ContactOptionsModal
