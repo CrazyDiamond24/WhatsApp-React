@@ -1,0 +1,183 @@
+.home-page {
+  display: flex;
+  position:relative;
+  background: linear-gradient($primaryClr 1%, $clr2 80%);
+  width: 100vw;
+  .contact-list {
+    // padding: 0.5rem;
+    width:500px;
+    background: $lighterGreen;
+    position: relative;
+  }
+
+  
+
+  .svg-input-container {
+    position: relative;
+    margin: rem(10px) 0 0 rem(10px);
+    .search-input {
+      height: 30px;
+      padding: 8px 30px;
+      text-overflow: ellipsis;
+      position: absolute;
+      transition: all 0.3s ease-in;
+      width: 0;
+      opacity: 0;
+      margin-block-start:5px;
+      border: 2px solid transparent;
+      border-radius: 15px; 
+      background-color: #f5f5f5; 
+      &.open {
+        animation: inputExpand 0.3s forwards;
+        opacity: 1;
+      }
+      &.close {
+        animation: inputCollapse 0.3s forwards;
+      }
+      &:focus {
+        outline: none;
+      }
+    }
+    .search-icon-svg.icon-open {
+      fill: #fff;
+    }
+    
+    .search-icon-svg.icon-close {
+      fill: rgb(192, 192, 192);
+    }
+    
+    .search-svg {
+      margin-block-start: -17px;
+      margin-inline-start: -5px;
+      position: absolute;
+      z-index: 1;
+    }
+  }
+  .add-contact {
+   margin-block-start: 5px;
+   margin-inline-end: 5px;
+   button {
+    background: transparent;
+    outline: none;
+    border: none;
+    color: $primaryClr;
+
+    &:hover {
+      color: darken($primaryClr, 10%);
+    }
+   }
+  }
+  .action-container {
+    display: flex;
+    justify-content: space-between; 
+    align-items: center;
+  }
+
+  @media (max-width: 768px) { 
+    .contact-list {
+      display: none;
+    }
+    .show-list{
+      display:block;
+      height: 100vh;
+    }
+  }
+
+  .back-btn{
+    position:absolute;
+    height: 30px;
+    width:30px;
+    z-index: 999; 
+    left: 85%;
+    top: 10px;
+    display:none;
+    @media (max-width: 768px) {
+      display:block;
+    }
+  }
+}
+
+@keyframes inputExpand {
+  0% {
+    width: 0;
+  }
+  25% {
+    width: 100px;
+  }
+  50% {
+    width: 200px;
+  }
+  75% {
+    width: 250px;
+  }
+  100% {
+    width: 300px;
+  }
+}
+
+@keyframes inputCollapse {
+  0% {
+    width: 300px;
+  }
+  25% {
+    width: 250px; 
+  }
+  50% {
+    width: 200px;
+  }
+  75% {
+    width: 100px; 
+  }
+  100% {
+    width: 0;
+  }
+}
+
+
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; // to make sure it's on top of other elements
+}
+
+.modal-container {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  width: 100%;
+  position: relative;
+
+  .close-btn-modal {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: transparent;
+    border: none;
+    color: $primaryClr;
+    font-weight: bolder;
+    font-size: 16px;
+    cursor: pointer;
+    outline: none;
+
+    &:hover {
+      color: darken($primaryClr, 10%);
+      transform: scale(1.1);
+    }
+  }
+}
+
+
+
+.hide-chat {
+  display:none;
+}

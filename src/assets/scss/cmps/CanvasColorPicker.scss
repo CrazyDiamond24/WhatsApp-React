@@ -1,0 +1,109 @@
+.color-picker-canvas-overlay {
+  width: max-content;
+  background-color: white;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  position: absolute;
+  top: 135px;
+  left: -120px;
+  border-radius: 1rem;
+  // &.important {
+  //   top: 0;
+  //   right: 0;
+  // }
+  .color-canvas-picker {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 10px;
+  }
+
+  .color-canvas {
+    border-radius: 50%;
+    height: 20px;
+    width: 20px;
+    cursor: pointer;
+    &:hover {
+      transform: scale(1.1); 
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1); 
+    }
+    &.selected {
+      border: 2px solid $clr4;
+      transform: scale(1.1); 
+    }
+  }  
+}
+.line {
+  width: 100%;
+  background-color: #000000;
+  height: 1px;
+  margin-top: 5px;
+}
+
+.line-size-container {
+  display: flex;
+  gap: 20px;
+  margin-top: 20px;
+  align-items: center;
+  
+
+  .one {
+    width: 28px;
+    height: 28px;
+    background-color: #000000;
+    border-radius: 50px;
+    cursor: pointer;
+  }
+  .two {
+    width: 24px;
+    height: 24px;
+    background-color: #000000;
+    border-radius: 50px;
+    cursor: pointer;
+  }
+  .three {
+    width: 20px;
+    height: 20px;
+    background-color: #000000;
+    border-radius: 50px;
+    cursor: pointer;
+  }
+  .four {
+    width: 16px;
+    height: 16px;
+    background-color: #000000;
+    border-radius: 50px;
+    cursor: pointer;
+  }
+  .five {
+    width: 12px;
+    height: 12px;
+    background-color: #000000;
+    border-radius: 50px;
+    cursor: pointer;
+  }
+
+  .six {
+    width: 8px;
+    height: 8px;
+    background-color: #000000;
+    border-radius: 50px;
+    cursor: pointer;
+  }
+  .seven {
+    width: 4px;
+    height: 4px;
+    background-color: #000000;
+    border-radius: 50px;
+    cursor: pointer;
+  }
+  .eight {
+    width: 2px;
+    height: 2px;
+    background-color: #000000;
+    border-radius: 50px;
+    cursor: pointer;
+  }
+}
+.pencil {
+  position: relative;
+}

@@ -1,0 +1,141 @@
+.app-header {
+  background: $darkerGreen;
+  color: white;
+  height: 70px;
+  width: 100%;
+  padding: 10px;
+  display: flex;
+  min-width: 420px;
+  .user-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    img {
+      height: 50px;
+      width: 50px;
+      border-radius: 50%;
+      margin-left: 0;
+      cursor: pointer;
+      object-fit: cover;
+    }
+    .user-info-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      white-space: nowrap;
+      align-items: center;
+    }
+    .user-actions-header {
+      display: flex;
+      min-width: 385px;
+      align-items: center;
+      justify-content: space-between;
+
+      .img-and-picker-container,
+      .logo-and-btn-container {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      button {
+        background: linear-gradient(
+          to right,
+          $primaryClr,
+          darken($primaryClr, 10%)
+        );
+        border: none;
+        color: #fff;
+        padding: 10px 20px;
+        border-radius: 20px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: background 0.3s, transform 0.3s;
+
+        &:hover {
+          background: linear-gradient(
+            to right,
+            darken($primaryClr, 10%),
+            $primaryClr
+          );
+          transform: scale(1.05);
+        }
+
+        &:focus {
+          outline: none;
+        }
+      }
+    }
+  }
+  .header-login {
+    margin-left: 260px;
+    background: linear-gradient(
+      to right,
+      $primaryClr,
+      darken($primaryClr, 10%)
+    );
+    padding: 10px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    text-decoration: none;
+    color: #fff;
+    font-weight: bold;
+    transition: background 0.3s, transform 0.3s;
+    font-size: 0.9rem;
+
+    &:hover {
+      background: linear-gradient(
+        to right,
+        darken($primaryClr, 10%),
+        $primaryClr
+      );
+      transform: scale(1.05);
+    }
+  }
+  .user-profile-link {
+    cursor: pointer;
+  }
+  .color-pick-header {
+    animation: rainbow 20s linear infinite;
+    height: 30px;
+    margin-inline-start: 10px;
+    cursor: pointer;
+    &:hover {
+      animation: none;
+      fill: white;
+    }
+  }
+}
+
+@keyframes rainbow {
+  0%,
+  100% {
+    fill: #ffb6c1;
+  } /* Light Pink */
+  10% {
+    fill: #ffdab9;
+  } /* Peach */
+  20% {
+    fill: #fafad2;
+  } /* Light Goldenrod Yellow */
+  30% {
+    fill: #98fb98;
+  } /* Pale Green */
+  40% {
+    fill: #87ceeb;
+  } /* Sky Blue */
+  50% {
+    fill: #b0e0e6;
+  } /* Powder Blue */
+  60% {
+    fill: #dda0dd;
+  } /* Plum */
+  70% {
+    fill: #ffc0cb;
+  } /* Pink */
+  80% {
+    fill: #20b2aa;
+  } /* Light Sea Green */
+  90% {
+    fill: #d879f5;
+  } /* Khaki */
+}

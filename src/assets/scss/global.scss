@@ -1,0 +1,74 @@
+//fonts
+@font-face {
+  font-family: rubik-regular;
+  src: url('https://res.cloudinary.com/dmox9pnnx/raw/upload/v1691421912/Rubik-Regular_hvc2dk.ttf');
+}
+@font-face {
+  font-family: nunito-regular;
+  src: url('https://res.cloudinary.com/dmox9pnnx/raw/upload/v1691421904/Nunito-Regular_ckhywa.ttf');
+}
+
+@font-face {
+  font-family: caveat;
+  src: url('../fonts/Caveat.ttf');
+}
+
+@font-face {
+  font-family: gloria-hallelujah;
+  src: url('../fonts/GloriaHallelujah-Regular.ttf');
+}
+
+@font-face {
+  font-family: marrieweather;
+  src: url('../fonts/Merriweather-Bold.ttf');
+}
+
+@font-face {
+  font-family: tangerine;
+  src: url('../fonts/Tangerine-Bold.ttf');
+}
+
+// Setup
+@import 'setup/variables';
+@import 'setup/functions';
+@import 'setup/mixins';
+
+// Basics
+@import 'basics/typography';
+@import 'basics/base';
+@import 'basics/helpers';
+@import 'basics/layout';
+@import 'basics/modals';
+@import 'basics/animations';
+
+// Views
+@import 'views/UserIndex';
+@import 'views/UserDetails';
+@import 'views/UserEdit';
+@import 'views/About';
+@import 'views/ChatWindow';
+@import 'views/LoginSignup';
+
+// Components
+@import 'cmps/UserPreview';
+@import 'cmps/UserList';
+@import 'cmps/UserFilter';
+@import 'cmps/AppHeader';
+@import 'cmps/nice-button';
+@import 'cmps/Emojis';
+@import 'cmps/UserProfile';
+@import 'cmps/ContactOptionsModal';
+@import 'cmps/StoryLoader';
+@import 'cmps/StoryModal';
+@import 'cmps/MsgOptions.scss';
+@import 'cmps/Transcript.scss';
+@import 'cmps/MsgModal.scss';
+@import 'cmps/CanvasColorPicker.scss';
+@import 'cmps/CreateStory.scss';
+@import 'cmps/UserPref.scss';
+@import 'cmps/ImagePicker.scss';
+@import 'cmps/AIImageGenerator.scss';
+@import 'cmps/VoiceModal.scss';
+@import 'cmps/AILoader.scss';
+@import 'cmps/TakePicture.scss';
+@import 'cmps/UserMsg.scss';
